@@ -1,0 +1,30 @@
+﻿using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace ESCenter.Persistence.Entity_Framework_Core.Configs;
+
+internal class SubjectConfiguration : IEntityTypeConfiguration<Subject>
+{
+    public void Configure(EntityTypeBuilder<Subject> builder)
+    {
+        builder.ToTable(nameof(Subject));
+        builder.HasKey(r => r.Id);
+        builder.Property(r => r.Id)
+            .HasColumnName("Id")
+            .ValueGeneratedNever()
+            .HasConversion(
+                id => id.Value,
+                value => SubjectId.Create(value)
+            );
+
+        builder.Property(r => r.Name)
+            .HasMaxLength(32)
+            .IsRequired();
+
+        builder.Property(r => r.Description)
+            .HasMaxLength(128)
+            .IsRequired();
+    }
+}
