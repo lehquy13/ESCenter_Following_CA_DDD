@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ESCenter.Application.Contract\ESCenter.Application.Contract.csproj" />
+      <ProjectReference Include="..\ESCenter.Application\ESCenter.Application.csproj" />
+      <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj" />
+      <ProjectReference Include="..\ESCenter.Infrastructure\ESCenter.Infrastructure.csproj" />
+      <ProjectReference Include="..\ESCenter.Persistence\ESCenter.Persistence.csproj" />
+    </ItemGroup>
+
+</Project>
