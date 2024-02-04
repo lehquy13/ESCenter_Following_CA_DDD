@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Matt.SharedKernel" Version="1.0.9" />
+  </ItemGroup>
+
 </Project>

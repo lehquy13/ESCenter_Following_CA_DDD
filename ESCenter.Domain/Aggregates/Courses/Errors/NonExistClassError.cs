@@ -1,0 +1,28 @@
+using Matt.ResultObject;
+
+namespace ESCenter.Domain.Aggregates.Courses.Errors;
+
+public static class CourseError
+{
+    public static readonly string InvalidSectionRange = "Invalid section range! It must be between 1 and 7!";
+    public static readonly string InvalidMinuteValue  = "Invalid minute value! It must be equal or more than 60!";
+
+    public static Error NonExistCourseError => new Error("NonExistCourseError", "This course doesn't exist!");
+    public static Error UnAvailableClassError => new Error("UnAvailableClassError", "This course isn't available!");
+    public static Error NonExistSubjectError => new Error("NonExistSubjectError", "This subject doesn't exist!");
+
+    public static Error IncorrectUserOfCourseError =>
+        new("IncorrectUserOfCourseError", "This user isn't the owner of this course!");
+
+    public static Error NonExistCourseRequestError => new("NonExistCourseRequestError", "This request doesn't exist!");
+
+    public static Error RequestedCourseError => new("RequestedCourseError", "This course was requested by the user!");
+
+    public static Error InvalidStatusForReview { get; } = new("ReviewFailError",
+        "This class isn't available for review due to not being confirmed!");
+
+    public static Error InsufficientLearningDayForReview { get; } = new("ReviewFailError",
+        "This class can't be reviewed due to insufficient learning days!");
+
+    public static Error AlreadyReviewedErrorMessage { get; } = new("ReviewFailError", "This class has been reviewed!");
+}
