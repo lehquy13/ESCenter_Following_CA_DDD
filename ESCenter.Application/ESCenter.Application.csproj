@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ESCenter.Application.Contract\ESCenter.Application.Contract.csproj" />
+    <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
