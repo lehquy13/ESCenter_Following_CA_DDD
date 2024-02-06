@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contracts.Interfaces.Loggers;
+﻿namespace ESCenter.Application.Contract.Interfaces.Loggers;
 
 /// <summary>
 /// This type eliminates the need to depend directly on the ASP.NET Core logging types.

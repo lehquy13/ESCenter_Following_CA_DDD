@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Authentications;
+﻿using ESCenter.Application.Contract.Authentications;
 using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Application.ServiceImpls.Accounts.Queries.Login;

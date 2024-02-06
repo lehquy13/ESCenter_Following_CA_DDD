@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contracts.Users.Tutors;
+﻿namespace ESCenter.Application.Contract.Users.Tutors;
 
 
 public class TutorBasicForUpdateDto

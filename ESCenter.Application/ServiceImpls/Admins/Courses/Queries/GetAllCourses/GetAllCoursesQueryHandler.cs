@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Application.Contract.Courses.Dtos;
 using ESCenter.Domain.Aggregates.Courses;
 using MapsterMapper;
 using Matt.ResultObject;

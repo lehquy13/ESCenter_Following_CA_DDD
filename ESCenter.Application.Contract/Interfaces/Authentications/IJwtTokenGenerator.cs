@@ -1,8 +1,8 @@
 ﻿//using EduSmart.Application.Users;
 
-using ESCenter.Application.Contracts.Authentications;
+using ESCenter.Application.Contract.Authentications;
 
-namespace ESCenter.Application.Contracts.Interfaces.Authentications
+namespace ESCenter.Application.Contract.Interfaces.Authentications
 {
     public interface IJwtTokenGenerator
     {

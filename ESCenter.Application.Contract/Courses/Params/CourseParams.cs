@@ -1,7 +1,7 @@
 ﻿using ESCenter.Domain.Shared.Courses;
 using Matt.Paginated;
 
-namespace ESCenter.Application.Contracts.Courses.Params;
+namespace ESCenter.Application.Contract.Courses.Params;
 
 public class CourseParams : PaginatedParams
 {

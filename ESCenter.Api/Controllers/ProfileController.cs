@@ -1,6 +1,6 @@
-﻿using ESCenter.Application.Contracts.Courses.Dtos;
-using ESCenter.Application.Contracts.Users.Learners;
-using ESCenter.Application.Contracts.Users.Tutors;
+﻿using ESCenter.Application.Contract.Courses.Dtos;
+using ESCenter.Application.Contract.Users.Learners;
+using ESCenter.Application.Contract.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.ChangeAvatar;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.UpdateTutorProfile;

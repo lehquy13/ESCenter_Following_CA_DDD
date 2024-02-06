@@ -1,4 +1,4 @@
-namespace ESCenter.Application.Contracts.Commons.Primitives.Auditings;
+namespace ESCenter.Application.Contract.Commons.Primitives.Auditings;
 
 public abstract class AuditedEntityDto<TId> : EntityDto<TId>
     where TId : notnull

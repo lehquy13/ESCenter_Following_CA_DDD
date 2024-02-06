@@ -1,7 +1,6 @@
-using ESCenter.Application.Contracts.Commons.Primitives;
-using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Commons.Primitives.Auditings;
 
-namespace ESCenter.Application.Contracts.Users.Tutors;
+namespace ESCenter.Application.Contract.Users.Tutors;
 
 public class TutorVerificationInfoDto : BasicAuditedEntityDto<int>
 {

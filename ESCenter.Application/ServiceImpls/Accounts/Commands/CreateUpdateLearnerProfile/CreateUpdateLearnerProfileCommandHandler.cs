@@ -1,5 +1,5 @@
-﻿using ESCenter.Application.Contracts.Authentications;
-using ESCenter.Application.Contracts.Interfaces.Authentications;
+﻿using ESCenter.Application.Contract.Authentications;
+using ESCenter.Application.Contract.Interfaces.Authentications;
 using ESCenter.Application.NotificationImpls;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Errors;

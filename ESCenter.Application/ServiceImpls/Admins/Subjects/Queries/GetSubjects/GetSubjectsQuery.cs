@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Application.Contract.Courses.Dtos;
 using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;

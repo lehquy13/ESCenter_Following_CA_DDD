@@ -1,4 +1,4 @@
-namespace ESCenter.Application.Contracts.Interfaces.Authentications;
+namespace ESCenter.Application.Contract.Interfaces.Authentications;
 
 public interface IValidator
 {

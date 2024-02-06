@@ -1,4 +1,4 @@
-namespace ESCenter.Application.Contracts.Charts;
+namespace ESCenter.Application.Contract.Charts;
 
 /// <summary>
 /// Get financial data for Area Chart

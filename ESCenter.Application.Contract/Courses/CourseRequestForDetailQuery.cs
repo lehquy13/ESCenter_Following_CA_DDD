@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contracts.Courses;
+﻿namespace ESCenter.Application.Contract.Courses;
 
 public class CourseRequestForDetailQuery
 {

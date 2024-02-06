@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Users.BasicUsers;
+﻿using ESCenter.Application.Contract.Users.BasicUsers;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using Mapster;

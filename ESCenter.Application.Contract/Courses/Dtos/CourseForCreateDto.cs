@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contracts.Courses.Dtos;
+﻿namespace ESCenter.Application.Contract.Courses.Dtos;
 
 public class CourseForCreateDto
 {

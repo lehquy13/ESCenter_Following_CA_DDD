@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using ESCenter.Application.Contracts.Interfaces.Authentications;
+using ESCenter.Application.Contract.Interfaces.Authentications;
 
 namespace ESCenter.Infrastructure.ServiceImpls.Authentication;
 

@@ -1,7 +1,6 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives;
-using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
 
-namespace ESCenter.Application.Contracts.Users.Tutors;
+namespace ESCenter.Application.Contract.Users.Tutors;
 public class TutorForListDto : BasicAuditedEntityDto<Guid>
 {
     //Admin information
@@ -23,16 +22,4 @@ public class TutorForListDto : BasicAuditedEntityDto<Guid>
     public bool IsVerified { get; set; } = false;
     public short Rate { get; set; } = 5;
     public short NumberOfChangeRequests  { get; set; } = 0;
-}
-
-public class TutorListForClientPageDto : EntityDto<Guid>
-{
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public int BirthYear { get; set; } = 1960;
-    public string Description { get; set; } = string.Empty;
-    public string Image { get; set; } = @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
-
-    public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.Student.ToString();
-    public string University { get; set; } = string.Empty;
 }

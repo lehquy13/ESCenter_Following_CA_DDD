@@ -1,8 +1,7 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives;
-using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
 using ESCenter.Domain.Shared.Courses;
 
-namespace ESCenter.Application.Contracts.Courses.Dtos;
+namespace ESCenter.Application.Contract.Courses.Dtos;
 
 public class CourseDto : FullAuditedAggregateRootDto<int>
 {

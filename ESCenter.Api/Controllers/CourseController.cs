@@ -1,5 +1,5 @@
-﻿using ESCenter.Application.Contracts.Courses.Dtos;
-using ESCenter.Application.Contracts.Courses.Params;
+﻿using ESCenter.Application.Contract.Courses.Dtos;
+using ESCenter.Application.Contract.Courses.Params;
 using ESCenter.Application.ServiceImpls.Admins.Courses.Commands.CreateCourseRequest;
 using ESCenter.Application.ServiceImpls.Admins.Courses.Queries.GetCourseDetail;
 using ESCenter.Application.ServiceImpls.Clients.Courses.Commands.CreateCourse;

@@ -1,7 +1,6 @@
-using ESCenter.Application.Contracts.Commons.Primitives;
-using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Commons.Primitives.Auditings;
 
-namespace ESCenter.Application.Contracts.Courses.Dtos;
+namespace ESCenter.Application.Contract.Courses.Dtos;
 
 public sealed class CourseForListDto : BasicAuditedEntityDto<int>
 {

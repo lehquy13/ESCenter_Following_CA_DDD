@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Users.Learners;
+﻿using ESCenter.Application.Contract.Users.Learners;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;

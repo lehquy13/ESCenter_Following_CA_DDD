@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contracts.Users.BasicUsers;
+﻿namespace ESCenter.Application.Contract.Users.BasicUsers;
 public class UserForCreateDto : UserForDetailDto
 {
     //is tutor related informations

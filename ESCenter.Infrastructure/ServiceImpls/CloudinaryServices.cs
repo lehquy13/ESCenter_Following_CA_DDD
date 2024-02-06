@@ -1,6 +1,6 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using ESCenter.Application.Contracts.Interfaces.Cloudinarys;
+using ESCenter.Application.Contract.Interfaces.Cloudinarys;
 using ESCenter.Infrastructure.Commons;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

@@ -1,6 +1,6 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
 
-namespace ESCenter.Application.Contracts.Users.BasicUsers;
+namespace ESCenter.Application.Contract.Users.BasicUsers;
 public class UserForDetailDto : BasicAuditedEntityDto<Guid>
 {
     public string FirstName { get; set; } = string.Empty;

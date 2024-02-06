@@ -1,4 +1,4 @@
-namespace ESCenter.Application.Contracts.Commons.Primitives;
+namespace ESCenter.Application.Contract.Commons.Primitives;
 
 public abstract class AggregateRootDto<TId> : EntityDto<TId>
     where TId : notnull

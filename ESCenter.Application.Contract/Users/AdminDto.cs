@@ -1,8 +1,7 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives;
-using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
 using ESCenter.Domain.Shared.Courses;
 
-namespace ESCenter.Application.Contracts.Users;
+namespace ESCenter.Application.Contract.Users;
 
 public class AdminDto : FullAuditedAggregateRootDto<int>
 {

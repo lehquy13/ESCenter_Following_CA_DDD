@@ -1,6 +1,6 @@
-using ESCenter.Application.Contracts.Commons.Primitives.Interfaces;
+using ESCenter.Application.Contract.Commons.Primitives.Interfaces;
 
-namespace ESCenter.Application.Contracts.Commons.Primitives;
+namespace ESCenter.Application.Contract.Commons.Primitives;
 
 public abstract class EntityDto<TId> : IEntity<TId>, IEquatable<EntityDto<TId>>
     where TId : notnull

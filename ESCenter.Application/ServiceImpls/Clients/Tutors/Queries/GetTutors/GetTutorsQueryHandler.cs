@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Users.Tutors;
+﻿using ESCenter.Application.Contract.Users.Tutors;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Discoveries;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;
@@ -18,7 +18,7 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
-namespace ESCenter.Application.ServiceImpls.Clients.Tutors.GetTutors;
+namespace ESCenter.Application.ServiceImpls.Clients.Tutors.Queries.GetTutors;
 
 public class GetTutorsQueryHandler(
     ICurrentUserService currentUserService,
@@ -87,8 +87,7 @@ public class GetTutorsQueryHandler(
                 .ThenByDescending(record => record.Tutor.Rate);
 
             var totalCount = await asyncQueryableExecutor.LongCountAsync(tutors, cancellationToken);
-
-
+            
             if (!string.IsNullOrEmpty(currentUserService.CurrentUserId))
             {
                 var userGuid = IdentityGuid.Create(new Guid(currentUserService.CurrentUserId));
@@ -104,7 +103,6 @@ public class GetTutorsQueryHandler(
 
                 var userDiscoverySubjects = await asyncQueryableExecutor
                     .ToListAsync(discoveryQueryable, false, cancellationToken);
-
 
                 // Order by the number of subjects that the user has discovered
                 tutors = tutors.OrderByDescending(
@@ -126,7 +124,6 @@ public class GetTutorsQueryHandler(
 
                 var learntSubjects = await asyncQueryableExecutor
                     .ToListAsync(learntSubjectQueryable, false, cancellationToken);
-
 
                 tutors = tutors.OrderByDescending(
                     record => record.TutorMajors.Join(

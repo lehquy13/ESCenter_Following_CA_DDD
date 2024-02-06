@@ -1,8 +1,8 @@
-﻿using ESCenter.Application.Contracts.Charts;
-using ESCenter.Application.Contracts.Notifications;
+﻿using ESCenter.Application.Contract.Charts;
+using ESCenter.Application.Contract.Notifications;
 using Matt.ResultObject;
 
-namespace ESCenter.Application.Contracts.Interfaces.DashBoards;
+namespace ESCenter.Application.Contract.Interfaces.DashBoards;
 
 public interface IDashboardServices
 {

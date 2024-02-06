@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contracts.Commons.Primitives.Interfaces;
+﻿namespace ESCenter.Application.Contract.Commons.Primitives.Interfaces;
 
 public interface IEntity<TId> where TId : notnull
 {

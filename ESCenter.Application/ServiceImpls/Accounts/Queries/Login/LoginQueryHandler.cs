@@ -1,5 +1,5 @@
-﻿using ESCenter.Application.Contracts.Authentications;
-using ESCenter.Application.Contracts.Interfaces.Authentications;
+﻿using ESCenter.Application.Contract.Authentications;
+using ESCenter.Application.Contract.Interfaces.Authentications;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using MapsterMapper;
 using Matt.ResultObject;

@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Interfaces.Emails;
+﻿using ESCenter.Application.Contract.Interfaces.Emails;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Specifications.Identities;
 using Matt.ResultObject;

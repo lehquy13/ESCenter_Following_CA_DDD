@@ -1,6 +1,6 @@
 ﻿using Matt.Paginated;
 
-namespace ESCenter.Application.Contracts.Users.Params;
+namespace ESCenter.Application.Contract.Users.Params;
 
 public class TutorParams : PaginatedParams
 {

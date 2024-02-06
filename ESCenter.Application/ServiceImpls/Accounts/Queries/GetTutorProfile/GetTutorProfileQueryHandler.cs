@@ -1,4 +1,5 @@
-﻿using ESCenter.Application.Contracts.Users.Tutors;
+﻿using ESCenter.Application.Contract.Users.Tutors;
+using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Specifications.Tutors;

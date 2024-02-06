@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using ESCenter.Application.Contracts.Interfaces.Authentications;
-using ESCenter.Application.Contracts.Interfaces.Cloudinarys;
-using ESCenter.Application.Contracts.Interfaces.Emails;
+using ESCenter.Application.Contract.Interfaces.Authentications;
+using ESCenter.Application.Contract.Interfaces.Cloudinarys;
+using ESCenter.Application.Contract.Interfaces.Emails;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Infrastructure.Commons;
 using ESCenter.Infrastructure.ServiceImpls;

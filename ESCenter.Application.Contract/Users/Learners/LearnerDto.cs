@@ -1,9 +1,9 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
-using ESCenter.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Courses.Dtos;
 using ESCenter.Domain.Shared.Courses;
 using Matt.Paginated;
 
-namespace ESCenter.Application.Contracts.Users.Learners;
+namespace ESCenter.Application.Contract.Users.Learners;
 public class LearnerDto : FullAuditedAggregateRootDto<int>
 {
     //Admin information

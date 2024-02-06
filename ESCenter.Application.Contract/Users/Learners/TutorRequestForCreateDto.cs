@@ -1,7 +1,6 @@
-﻿using ESCenter.Application.Contracts.Users.BasicUsers;
-using ESCenter.Application.Contracts.Users.Tutors;
+﻿using ESCenter.Application.Contract.Users.Tutors;
 
-namespace ESCenter.Application.Contracts.Users.Learners;
+namespace ESCenter.Application.Contract.Users.Learners;
 
 public class TutorRequestForCreateDto
 {

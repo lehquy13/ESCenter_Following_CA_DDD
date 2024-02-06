@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contracts.Authentications;
+﻿namespace ESCenter.Application.Contract.Authentications;
 
 public record UserLoginDto
 {

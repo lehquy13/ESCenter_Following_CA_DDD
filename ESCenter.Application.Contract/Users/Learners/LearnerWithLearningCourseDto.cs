@@ -1,7 +1,7 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
-using ESCenter.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Courses.Dtos;
 
-namespace ESCenter.Application.Contracts.Users.Learners;
+namespace ESCenter.Application.Contract.Users.Learners;
 
 public sealed class LearnerWithLearningCourseDto : BasicAuditedEntityDto<int>
 {

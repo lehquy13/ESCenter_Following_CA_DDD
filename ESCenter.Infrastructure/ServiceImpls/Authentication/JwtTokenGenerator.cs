@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ESCenter.Application.Contracts.Authentications;
-using ESCenter.Application.Contracts.Interfaces.Authentications;
+using ESCenter.Application.Contract.Authentications;
+using ESCenter.Application.Contract.Interfaces.Authentications;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

@@ -1,7 +1,8 @@
-using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
-using ESCenter.Application.Contracts.Courses.Dtos;
+using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Courses.Dtos;
+using ESCenter.Application.Contract.Users.Tutors;
 
-namespace ESCenter.Application.Contracts.Users.Tutors;
+namespace ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
 
 public class TutorForProfileDto : BasicAuditedEntityDto<Guid>
 {

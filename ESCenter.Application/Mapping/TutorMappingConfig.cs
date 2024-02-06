@@ -1,5 +1,7 @@
-﻿using ESCenter.Application.Contracts.Users.Learners;
-using ESCenter.Application.Contracts.Users.Tutors;
+﻿using ESCenter.Application.Contract.Users.Learners;
+using ESCenter.Application.Contract.Users.Tutors;
+using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
+using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using Mapster;
@@ -28,5 +30,12 @@ public class TutorMappingConfig : IRegister
             .Map(dest => dest.RequestMessage, src => src.Item3)
             .Map(dest => dest, src => src.Item2);
 
+        config.NewConfig<(Tutor, User, IEnumerable<Review>), TutorDetailForClientDto>()
+            .Map(dest => dest.FullName, src => src.Item2.GetFullName())
+            .Map(dest => dest.AcademicLevel, src => src.Item1.AcademicLevel.ToString())
+            .Map(dest => dest.Rate, src => src.Item1.Rate)
+            .Map(dest => dest.TutorMajors, src => src.Item1.TutorMajors.Select(x => x.SubjectName))
+            .Map(dest => dest.Reviews, src => src.Item3)
+            .Map(dest => dest, src => src);
     }
 }

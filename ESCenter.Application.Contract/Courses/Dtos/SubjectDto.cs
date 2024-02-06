@@ -1,6 +1,6 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives;
+﻿using ESCenter.Application.Contract.Commons.Primitives;
 
-namespace ESCenter.Application.Contracts.Courses.Dtos;
+namespace ESCenter.Application.Contract.Courses.Dtos;
 
 public class SubjectDto : EntityDto<int>
 {

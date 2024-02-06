@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Mail;
-using ESCenter.Application.Contracts.Interfaces.Emails;
+using ESCenter.Application.Contract.Interfaces.Emails;
 using FluentEmail.Core;
 using FluentEmail.Smtp;
 using Microsoft.Extensions.Options;

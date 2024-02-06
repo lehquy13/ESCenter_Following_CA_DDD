@@ -1,8 +1,6 @@
-﻿using ESCenter.Application.Contracts.Commons.Primitives;
-using ESCenter.Application.Contracts.Commons.Primitives.Auditings;
-using ESCenter.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
 
-namespace ESCenter.Application.Contracts.Users.Tutors;
+namespace ESCenter.Application.Contract.Users.Tutors;
 public class TutorBasicDto : BasicAuditedEntityDto<int>
 {
     //is tutor related informtions
@@ -14,12 +12,4 @@ public class TutorBasicDto : BasicAuditedEntityDto<int>
     public List<string> Majors { get; set; } = new();
     public List<string> TutorVerificationInfoDtos { get; set; } = new();
 
-}
-
-public class TutorMinimalBasicDto : BasicAuditedEntityDto<int>
-{
-    public string AcademicLevel { get; set; } = "Student";
-    public string University { get; set; } = string.Empty;
-    public bool IsVerified { get; set; } = false;
-    public short Rate { get; set; } = 5;
 }

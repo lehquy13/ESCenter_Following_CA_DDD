@@ -1,4 +1,4 @@
-namespace ESCenter.Application.Contracts.Users;
+namespace ESCenter.Application.Contract.Users;
 
 public record AddressDto(List<CityDto> Cities);
 
