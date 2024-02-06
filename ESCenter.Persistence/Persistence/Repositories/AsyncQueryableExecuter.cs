@@ -1,10 +1,9 @@
-﻿using ESCenter.Persistence.Entity_Framework_Core;
-using Matt.SharedKernel.Application.Contracts.Interfaces;
+﻿using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace ESCenter.Persistence.Persistence.Repositories;
 
-internal class AsyncQueryableExecutor(AppDbContext dbContext) : IAsyncQueryableExecutor
+internal class AsyncQueryableExecutor : IAsyncQueryableExecutor
 {
     public async Task<List<T>> ToListAsync<T>(IQueryable<T> queryable, CancellationToken cancellationToken = default)
     {

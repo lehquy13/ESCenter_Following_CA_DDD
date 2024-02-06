@@ -1,6 +1,6 @@
 namespace ESCenter.Infrastructure.ServiceImpls.EmailServices;
 
-public class EmailSettingNames
+internal class EmailSettingNames
 {
     public static string _SectionName { get; set; } = "EmailSettingNames";
     public string Email { get; set; } = string.Empty;

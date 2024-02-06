@@ -54,18 +54,20 @@ public class ReviewCourseCommandHandler(
                 select new
                 {
                     Tutor = tutorQ,
-                    ReviewRate = courseQs.Select(x => x.Review.Rate),
+                    ReviewRate = courseQs
+                        .Where(x => x.Review != null)
+                        .Select(x => x.Review!.Rate),
                 };
 
             var tutorToUpdate = await asyncQueryableExecutor.FirstOrDefaultAsync(tutorToUpdateRateQuery, true,
                 cancellationToken);
-            
-            if(tutorToUpdate is null)
+
+            if (tutorToUpdate is null)
             {
                 Logger.LogError("Doesnt have any tutor to update rate");
                 return Result.Fail(CourseAppServiceErrors.TutorNotExistsError);
             }
-            
+
             tutorToUpdate.Tutor.UpdateRate(tutorToUpdate.ReviewRate.Average(x => x));
 
             if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
@@ -76,7 +78,7 @@ public class ReviewCourseCommandHandler(
             var message = "Review class: " + courseFromDb.Title + " at " + courseFromDb.CreationTime.ToLongDateString();
             await publisher.Publish(new NewObjectCreatedEvent(courseFromDb.Id.Value.ToString(), message,
                 NotificationEnum.Course), cancellationToken);
-            
+
             return Result.Success();
         }
         catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Interfaces.Authentications;
+﻿using ESCenter.Application.Interfaces.Authentications;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators;

@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using ESCenter.Application.Contract.Interfaces.Authentications;
-using ESCenter.Application.Contract.Interfaces.Cloudinarys;
-using ESCenter.Application.Contract.Interfaces.Emails;
+using ESCenter.Application.Interfaces.Authentications;
+using ESCenter.Application.Interfaces.Cloudinarys;
+using ESCenter.Application.Interfaces.Emails;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Infrastructure.Commons;
 using ESCenter.Infrastructure.ServiceImpls;
@@ -36,14 +36,10 @@ namespace ESCenter.Infrastructure
                 options.Cookie.IsEssential = true;
             });
             
-           
-          
-            
             // set configuration settings to emailSettingName and turn it into Singleton
             var emailSettingNames = new EmailSettingNames();
             configuration.Bind(EmailSettingNames._SectionName, emailSettingNames);
             services.AddSingleton(Options.Create(emailSettingNames));
-
 
             // set configuration settings to cloudinarySettings and turn it into Singleton
             var cloudinary = new CloudinarySetting();
@@ -56,7 +52,8 @@ namespace ESCenter.Infrastructure
             //services.AddHostedService<InfrastructureBackgroundService>();
             return services;
         }
-        public static IServiceCollection AddAuth(
+
+        private static IServiceCollection AddAuth(
             this IServiceCollection services,
             ConfigurationManager configuration
         )

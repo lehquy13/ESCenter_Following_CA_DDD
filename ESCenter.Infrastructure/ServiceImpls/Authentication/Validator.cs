@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using ESCenter.Application.Contract.Interfaces.Authentications;
+using ESCenter.Application.Interfaces.Authentications;
 
 namespace ESCenter.Infrastructure.ServiceImpls.Authentication;
 
@@ -11,9 +11,9 @@ public class Validator : IValidator
         using RandomNumberGenerator rg = RandomNumberGenerator.Create();
         byte[] rno = new byte[5];
         rg.GetBytes(rno);
-        int randomvalue = BitConverter.ToInt32(rno, 0);
+        int randomValue = BitConverter.ToInt32(rno, 0);
 
-        return randomvalue.ToString();
+        return randomValue.ToString();
     }
 
     public string HashPassword(string input)

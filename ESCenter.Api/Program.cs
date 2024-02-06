@@ -1,7 +1,4 @@
-using ESCenter.Api;
-using ESCenter.Application;
-using ESCenter.Infrastructure;
-using ESCenter.Persistence;
+using ESCenter.Host;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services
-    .AddPersistence(builder.Configuration)
-    .AddInfrastructure(builder.Configuration)
-    .AddApplication()
-    .AddPresentation();
+builder.Services.AddHost(builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {

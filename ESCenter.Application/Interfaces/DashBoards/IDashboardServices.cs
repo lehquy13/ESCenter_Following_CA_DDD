@@ -2,7 +2,7 @@
 using ESCenter.Application.Contract.Notifications;
 using Matt.ResultObject;
 
-namespace ESCenter.Application.Contract.Interfaces.DashBoards;
+namespace ESCenter.Application.Interfaces.DashBoards;
 
 public interface IDashboardServices
 {

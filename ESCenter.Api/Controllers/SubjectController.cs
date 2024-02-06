@@ -22,7 +22,6 @@ public class SubjectController(
     public async Task<IActionResult> GetSubjectById(int id)
     {
         var subject = await mediator.Send(new GetSubjectQuery(id));
-
         return Ok(subject);
     }
 }

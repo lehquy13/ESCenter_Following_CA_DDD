@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Application.Contract.Interfaces.Cloudinarys;
+﻿namespace ESCenter.Application.Interfaces.Cloudinarys;
 
 public interface ICloudinaryServices
 {

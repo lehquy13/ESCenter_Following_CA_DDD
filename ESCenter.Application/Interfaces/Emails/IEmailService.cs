@@ -1,4 +1,4 @@
-namespace ESCenter.Application.Contract.Interfaces.Emails;
+namespace ESCenter.Application.Interfaces.Emails;
 
 public interface IEmailSender
 {

@@ -1,28 +1,28 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using ESCenter.Application.Contract.Interfaces.Cloudinarys;
+using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Infrastructure.Commons;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace ESCenter.Infrastructure.ServiceImpls;
 
-public class CloudinaryServices : ICloudinaryServices
+public class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting, ILogger<CloudinaryServices> logger)
+    : ICloudinaryServices
 {
-    private readonly ILogger<CloudinaryServices> _logger;
-    private Cloudinary Cloudinary { get; set; }
-    public CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting, ILogger<CloudinaryServices> logger)
+    private Cloudinary Cloudinary { get; set; } = new(
+        new Account(
+            cloudinarySetting.Value.CloudName,
+            cloudinarySetting.Value.ApiKey,
+            cloudinarySetting.Value.ApiSecret
+        ))
     {
-        _logger = logger;
+        Api =
+        {
+            Secure = true
+        }
+    };
 
-        Cloudinary = new Cloudinary(
-            new Account(
-                cloudinarySetting.Value.CloudName,
-                cloudinarySetting.Value.ApiKey,
-                cloudinarySetting.Value.ApiSecret
-            ));
-        Cloudinary.Api.Secure = true;
-    }
     public string GetImage(string fileName)
     {
         try
@@ -35,13 +35,13 @@ public class CloudinaryServices : ICloudinaryServices
             var resultJson = getResourceResult.JsonObj;
 
             // Log quality analysis score to the console
-            _logger.LogInformation("{Message}", resultJson["quality_analysis"]);
+            logger.LogInformation("{Message}", resultJson["quality_analysis"]);
 
             return resultJson["url"]?.ToString()??"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
         }
         catch (Exception ex)
         {
-            _logger.LogError("{ExMessage}", ex.Message);
+            logger.LogError("{ExMessage}", ex.Message);
             return @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
         }
     }
@@ -59,13 +59,13 @@ public class CloudinaryServices : ICloudinaryServices
             };
             
             var uploadResult = Cloudinary.Upload(uploadParams);
-            _logger.LogInformation("{ResultValue}",uploadResult.JsonObj.ToString());
+            logger.LogInformation("{ResultValue}",uploadResult.JsonObj.ToString());
 
             return uploadResult.Url.ToString();
         }
         catch (Exception ex)
         {
-            _logger.LogError("{ExMessage}", ex.Message);
+            logger.LogError("{ExMessage}", ex.Message);
             return @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
         }
     }
@@ -89,7 +89,7 @@ public class CloudinaryServices : ICloudinaryServices
         }
         catch (Exception ex)
         {
-            _logger.LogError("{ExMessage}", ex.Message);
+            logger.LogError("{ExMessage}", ex.Message);
             return string.Empty;
         }
     }

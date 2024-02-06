@@ -60,7 +60,7 @@ public class GetLearningCourseDetailQueryHandler(
         }
         catch (Exception ex)
         {
-            Logger.LogError("{Message} {Detail}", ex.Message, ex.StackTrace);
+            Logger.LogError("{Message} {Detail}", ex.Message, ex.InnerException?.Message ?? string.Empty);
             return Result.Fail(ex.Message);
         }
     }

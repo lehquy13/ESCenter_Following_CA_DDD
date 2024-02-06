@@ -19,16 +19,16 @@ public class RemoveCourseReviewCommandHandler(
     public override async Task<Result> Handle(RemoveCourseReviewCommand command, CancellationToken cancellationToken)
     {
         var courseFromDb = await courseRepository.GetAsync(CourseId.Create(command.CourseId), cancellationToken);
-        
-        if (courseFromDb is  null)
+
+        if (courseFromDb is null)
         {
             return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
 
         courseFromDb.RemoveReview();
-        
+
         // TODO: Should we split the tutor's rate updating into domain event?
-        
+
         var tutorToUpdateRateQuery =
             from tutorQ in tutorRepository.GetAll()
             join courseQ in courseRepository.GetAll() on tutorQ.Id equals courseQ.TutorId into courseQs
@@ -36,18 +36,20 @@ public class RemoveCourseReviewCommandHandler(
             select new
             {
                 Tutor = tutorQ,
-                ReviewRate = courseQs.Select(x => x.Review.Rate),
+                ReviewRate = courseQs
+                    .Where(x => x.Review != null)
+                    .Select(x => x.Review!.Rate),
             };
 
         var tutorToUpdate = await asyncQueryableExecutor.FirstOrDefaultAsync(tutorToUpdateRateQuery, true,
             cancellationToken);
-            
-        if(tutorToUpdate is null)
+
+        if (tutorToUpdate is null)
         {
             Logger.LogError("Doesnt have any tutor to update rate");
             return Result.Fail(CourseAppServiceErrors.TutorNotExistsError);
         }
-            
+
         tutorToUpdate.Tutor.UpdateRate(tutorToUpdate.ReviewRate.Average(x => x));
 
 

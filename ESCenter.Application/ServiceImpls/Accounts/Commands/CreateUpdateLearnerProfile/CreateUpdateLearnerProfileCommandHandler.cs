@@ -1,6 +1,6 @@
 ﻿using ESCenter.Application.Contract.Authentications;
-using ESCenter.Application.Contract.Interfaces.Authentications;
 using ESCenter.Application.EventHandlers;
+using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;

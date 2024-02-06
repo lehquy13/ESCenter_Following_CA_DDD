@@ -2,7 +2,7 @@
 
 using ESCenter.Application.Contract.Authentications;
 
-namespace ESCenter.Application.Contract.Interfaces.Authentications
+namespace ESCenter.Application.Interfaces.Authentications
 {
     public interface IJwtTokenGenerator
     {

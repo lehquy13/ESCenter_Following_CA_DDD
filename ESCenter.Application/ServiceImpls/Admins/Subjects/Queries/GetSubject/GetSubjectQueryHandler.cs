@@ -18,7 +18,12 @@ public class GetSubjectQueryHandler(
     public override async Task<Result<SubjectDto>> Handle(GetSubjectQuery request,
         CancellationToken cancellationToken)
     {
-        var subjects = await subjectRepository.GetAsync(SubjectId.Create(request.Id),cancellationToken);
+        var subjects = await subjectRepository.GetAsync(SubjectId.Create(request.Id), cancellationToken);
+
+        if (subjects is null)
+        {
+            return Result.Fail(SubjectAppServiceError.NonExistSubjectError);
+        }
 
         var subjectDtos = Mapper.Map<SubjectDto>(subjects);
         return subjectDtos;

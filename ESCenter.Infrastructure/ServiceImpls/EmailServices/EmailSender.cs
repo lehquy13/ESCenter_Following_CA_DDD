@@ -1,20 +1,15 @@
 using System.Net;
 using System.Net.Mail;
-using ESCenter.Application.Contract.Interfaces.Emails;
+using ESCenter.Application.Interfaces.Emails;
 using FluentEmail.Core;
 using FluentEmail.Smtp;
 using Microsoft.Extensions.Options;
 
 namespace ESCenter.Infrastructure.ServiceImpls.EmailServices;
 
-public class EmailSender : IEmailSender
+internal class EmailSender(IOptions<EmailSettingNames> options) : IEmailSender
 {
-    private readonly EmailSettingNames _emailSettingNames;
-
-    public EmailSender(IOptions<EmailSettingNames> options)
-    {
-        _emailSettingNames = options.Value;
-    }
+    private readonly EmailSettingNames _emailSettingNames = options.Value;
 
     public async Task SendEmail(string email, string subject, string message)
     {

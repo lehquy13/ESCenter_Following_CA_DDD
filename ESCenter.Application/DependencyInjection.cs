@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Interfaces.DashBoards;
+﻿using ESCenter.Application.Interfaces.DashBoards;
 using ESCenter.Application.Mapping;
 using ESCenter.Application.ServiceImpls;
 using Microsoft.Extensions.DependencyInjection;

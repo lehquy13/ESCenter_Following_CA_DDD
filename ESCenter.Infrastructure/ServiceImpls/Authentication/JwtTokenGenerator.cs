@@ -2,20 +2,15 @@
 using System.Security.Claims;
 using System.Text;
 using ESCenter.Application.Contract.Authentications;
-using ESCenter.Application.Contract.Interfaces.Authentications;
+using ESCenter.Application.Interfaces.Authentications;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ESCenter.Infrastructure.ServiceImpls.Authentication;
 
-public class JwtTokenGenerator : IJwtTokenGenerator
+internal class JwtTokenGenerator(IOptions<JwtSettings> options) : IJwtTokenGenerator
 {
-    private readonly JwtSettings _jwtSettings;
-
-    public JwtTokenGenerator(IOptions<JwtSettings> options)
-    {
-        _jwtSettings = options.Value;
-    }
+    private readonly JwtSettings _jwtSettings = options.Value;
 
     public string GenerateToken(UserLoginDto userLoginDto)
     {

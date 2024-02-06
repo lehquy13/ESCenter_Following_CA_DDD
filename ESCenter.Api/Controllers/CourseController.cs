@@ -24,7 +24,6 @@ public class CourseController(
     public async Task<IActionResult> GetAllCourses([FromQuery] CourseParams courseParams)
     {
         courseParams.Status = Status.Available;
-
         var courseResult = await mediator.Send(new GetCoursesQuery(courseParams));
         return Ok(courseResult);
     }
@@ -35,7 +34,6 @@ public class CourseController(
     public async Task<IActionResult> GetCourse(Guid id)
     {
         var courseById = await mediator.Send(new GetCourseDetailQuery(id));
-
         return Ok(courseById);
     }
 
