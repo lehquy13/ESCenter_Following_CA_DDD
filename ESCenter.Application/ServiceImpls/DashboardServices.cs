@@ -1,5 +1,5 @@
-﻿using ESCenter.Application.Contract.Charts;
-using ESCenter.Application.Contract.Notifications;
+﻿using ESCenter.Application.Contracts.Charts;
+using ESCenter.Application.Contracts.Notifications;
 using ESCenter.Application.Interfaces.DashBoards;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Notifications;

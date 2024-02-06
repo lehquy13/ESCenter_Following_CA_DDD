@@ -1,11 +1,10 @@
-﻿using ESCenter.Application.Contract.Courses.Dtos;
-using ESCenter.Application.Contract.Courses.Params;
+﻿using ESCenter.Application.Contracts.Courses.Dtos;
+using ESCenter.Application.Contracts.Courses.Params;
 using ESCenter.Application.ServiceImpls.Admins.Courses.Commands.CreateCourseRequest;
 using ESCenter.Application.ServiceImpls.Admins.Courses.Queries.GetCourseDetail;
 using ESCenter.Application.ServiceImpls.Clients.Courses.Commands.CreateCourse;
 using ESCenter.Application.ServiceImpls.Clients.Courses.Queries.GetCourses;
 using ESCenter.Domain.Shared.Courses;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,6 @@ public class CourseController(
     IMediator mediator)
     : ApiControllerBase(logger)
 {
-    // Query
     // GET: api/<CourseController>
     [HttpGet]
     [Route("")]

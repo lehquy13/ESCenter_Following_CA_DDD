@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Courses.Dtos;
+﻿using ESCenter.Application.Contracts.Courses.Dtos;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using Matt.SharedKernel.Application.Mediators.Queries;
 

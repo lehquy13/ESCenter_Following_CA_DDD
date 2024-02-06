@@ -1,7 +1,7 @@
-using ESCenter.Application.Contract.Courses.Dtos;
-using ESCenter.Application.Contract.Notifications;
-using ESCenter.Application.Contract.Users.BasicUsers;
-using ESCenter.Application.Contract.Users.Tutors;
+using ESCenter.Application.Contracts.Courses.Dtos;
+using ESCenter.Application.Contracts.Notifications;
+using ESCenter.Application.Contracts.Users.BasicUsers;
+using ESCenter.Application.Contracts.Users.Tutors;
 
 namespace ESCenter.Administrator.Models;
 

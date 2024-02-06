@@ -1,5 +1,5 @@
-﻿using ESCenter.Application.Contract.Users.Learners;
-using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.Learners;
+using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Tutors;

@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Users.Learners;
+﻿using ESCenter.Application.Contracts.Users.Learners;
 using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorRequests;

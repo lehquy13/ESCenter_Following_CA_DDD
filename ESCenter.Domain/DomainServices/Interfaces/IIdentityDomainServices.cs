@@ -1,5 +1,4 @@
-﻿using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
+﻿using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using Matt.ResultObject;

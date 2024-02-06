@@ -1,4 +1,4 @@
-using ESCenter.Application.Contract.Users.Learners;
+using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.ChangePassword;
 
 namespace ESCenter.Administrator.Models;

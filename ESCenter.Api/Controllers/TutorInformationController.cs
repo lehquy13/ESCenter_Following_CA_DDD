@@ -1,15 +1,12 @@
-﻿using ESCenter.Application.Contract.Users.Learners;
-using ESCenter.Application.Contract.Users.Params;
-using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.Learners;
+using ESCenter.Application.Contracts.Users.Params;
+using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Commands.RequestTutor;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries.GetTutors;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ESCenter.Api.Controllers;
 

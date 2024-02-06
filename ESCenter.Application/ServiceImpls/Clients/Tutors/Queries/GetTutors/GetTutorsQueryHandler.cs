@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Discoveries;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;

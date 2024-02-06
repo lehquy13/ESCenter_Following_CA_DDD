@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;

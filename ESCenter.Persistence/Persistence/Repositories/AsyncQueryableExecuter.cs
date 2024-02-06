@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ESCenter.Persistence.Persistence.Repositories;
 
-internal class AsyncQueryableExecutor : IAsyncQueryableExecutor
+public class AsyncQueryableExecutor : IAsyncQueryableExecutor
 {
     public async Task<List<T>> ToListAsync<T>(IQueryable<T> queryable, CancellationToken cancellationToken = default)
     {

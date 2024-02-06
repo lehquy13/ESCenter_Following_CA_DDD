@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Specifications\Discoveries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ESCenter.Domain.Shared\ESCenter.Domain.Shared.csproj" />
   </ItemGroup>
 

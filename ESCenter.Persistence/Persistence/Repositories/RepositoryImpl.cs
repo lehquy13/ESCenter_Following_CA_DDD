@@ -12,8 +12,7 @@ namespace ESCenter.Persistence.Persistence.Repositories;
 internal class RepositoryImpl<TEntity, TId>(
     AppDbContext appDbContext,
     IAppLogger<RepositoryImpl<TEntity, TId>> logger)
-    :
-        ReadOnlyRepositoryImpl<TEntity, TId>(appDbContext, logger), IRepository<TEntity, TId>,
+    : ReadOnlyRepositoryImpl<TEntity, TId>(appDbContext, logger), IRepository<TEntity, TId>,
         IOpenGenericService<IRepository<TEntity, TId>>
     where TEntity : Entity<TId>, IAggregateRoot<TId>
     where TId : notnull

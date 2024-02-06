@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using Matt.SharedKernel.Application.Mediators.Commands;
 

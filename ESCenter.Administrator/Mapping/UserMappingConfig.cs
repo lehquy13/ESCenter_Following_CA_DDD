@@ -1,5 +1,4 @@
-﻿using ESCenter.Application.Contract.Users.BasicUsers;
-using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.BasicUsers;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using Mapster;

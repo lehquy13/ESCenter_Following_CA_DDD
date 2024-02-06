@@ -1,5 +1,5 @@
-﻿using ESCenter.Application.Contract.Courses.Dtos;
-using ESCenter.Application.Contract.Courses.Params;
+﻿using ESCenter.Application.Contracts.Courses.Dtos;
+using ESCenter.Application.Contracts.Courses.Params;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;

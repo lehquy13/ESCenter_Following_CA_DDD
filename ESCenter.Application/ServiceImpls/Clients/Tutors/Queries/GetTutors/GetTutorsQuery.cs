@@ -1,5 +1,5 @@
-﻿using ESCenter.Application.Contract.Users.Params;
-using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.Params;
+using ESCenter.Application.Contracts.Users.Tutors;
 using Matt.Paginated;
 using Matt.SharedKernel.Application.Mediators.Queries;
 

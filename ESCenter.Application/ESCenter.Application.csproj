@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj" />
+    <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contract\" />
+    <Folder Include="Contracts\" />
   </ItemGroup>
 
 </Project>

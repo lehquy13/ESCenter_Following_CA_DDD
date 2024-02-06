@@ -1,6 +1,6 @@
-using ESCenter.Application.Contract.Commons;
-using ESCenter.Application.Contract.Courses.Dtos;
-using ESCenter.Application.Contract.Users.Tutors;
+using ESCenter.Application.Contracts.Commons;
+using ESCenter.Application.Contracts.Courses.Dtos;
+using ESCenter.Application.Contracts.Users.Tutors;
 
 namespace ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
 

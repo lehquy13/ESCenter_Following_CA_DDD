@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Authentications;
+﻿using ESCenter.Application.Contracts.Authentications;
 using ESCenter.Application.EventHandlers;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Domain.Aggregates.Users;

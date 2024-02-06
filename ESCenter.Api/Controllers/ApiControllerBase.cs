@@ -4,12 +4,7 @@ namespace ESCenter.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ApiControllerBase : ControllerBase
+public class ApiControllerBase(ILogger<ApiControllerBase> logger) : ControllerBase
 {
-    protected readonly ILogger<ApiControllerBase> Logger;
-
-    public ApiControllerBase(ILogger<ApiControllerBase> logger)
-    {
-        Logger = logger;
-    }
+    protected readonly ILogger<ApiControllerBase> Logger = logger;
 }

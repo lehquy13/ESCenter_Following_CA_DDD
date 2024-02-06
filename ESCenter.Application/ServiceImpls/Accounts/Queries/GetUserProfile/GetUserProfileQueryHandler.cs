@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Users.BasicUsers;
+﻿using ESCenter.Application.Contracts.Users.BasicUsers;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;

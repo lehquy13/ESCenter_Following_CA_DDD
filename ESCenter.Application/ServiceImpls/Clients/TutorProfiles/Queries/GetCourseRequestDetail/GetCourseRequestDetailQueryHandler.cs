@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Courses.Dtos;
+﻿using ESCenter.Application.Contracts.Courses.Dtos;
 using ESCenter.Application.ServiceImpls.Admins.Courses;
 using ESCenter.Domain.Aggregates.CourseRequests;
 using ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;

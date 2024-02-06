@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Users.Tutors;
+﻿using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries;
 using ESCenter.Domain.Aggregates.Tutors;

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace ESCenter.Infrastructure.ServiceImpls;
 
-public class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting, ILogger<CloudinaryServices> logger)
+internal class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting, ILogger<CloudinaryServices> logger)
     : ICloudinaryServices
 {
     private Cloudinary Cloudinary { get; set; } = new(

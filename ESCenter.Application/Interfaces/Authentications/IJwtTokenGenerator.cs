@@ -1,6 +1,6 @@
 ﻿//using EduSmart.Application.Users;
 
-using ESCenter.Application.Contract.Authentications;
+using ESCenter.Application.Contracts.Authentications;
 
 namespace ESCenter.Application.Interfaces.Authentications
 {
