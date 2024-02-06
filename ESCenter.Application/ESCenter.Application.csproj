@@ -11,8 +11,4 @@
     <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ServiceImpls\Clients\Tutors\Commands\RegisterAsTutor\" />
-  </ItemGroup>
-
 </Project>

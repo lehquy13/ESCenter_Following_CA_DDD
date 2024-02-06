@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.NotificationImpls;
+﻿using ESCenter.Application.EventHandlers;
 using ESCenter.Application.ServiceImpls.Admins.Courses;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.Errors;

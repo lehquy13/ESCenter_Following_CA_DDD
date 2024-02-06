@@ -1,9 +1,9 @@
-using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Commons;
 
 namespace ESCenter.Application.Contract.Users.Tutors;
 
-public class TutorVerificationInfoDto : BasicAuditedEntityDto<int>
+public class TutorVerificationInfoDto : BasicAuditedEntityDto<Guid>
 {
-    public int TutorId { get; set; }
+    public Guid TutorId { get; set; }
     public string Image { get; set; } = "doc_contract.png";
 }

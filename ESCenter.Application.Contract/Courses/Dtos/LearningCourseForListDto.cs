@@ -1,8 +1,8 @@
-using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Commons;
 
 namespace ESCenter.Application.Contract.Courses.Dtos;
 
-public sealed class LearningCourseForListDto : BasicAuditedEntityDto<int>
+public sealed class LearningCourseForListDto : BasicAuditedEntityDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public string Status { get; set; } = "OnVerifying";

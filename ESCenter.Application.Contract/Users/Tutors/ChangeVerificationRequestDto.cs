@@ -8,5 +8,5 @@ public class ChangeVerificationRequestDto
     
     public string RequestStatus { get; set; } = null!;
 
-    public List<string> ChangeVerificationRequestDetails { get; set; } = new();
+    public List<string> ChangeVerificationRequestDetails { get; set; } = null!;
 }

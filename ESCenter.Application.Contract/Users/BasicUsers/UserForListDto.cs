@@ -1,7 +1,7 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 
 namespace ESCenter.Application.Contract.Users.BasicUsers;
-public class UserForListDto : BasicAuditedEntityDto<int>
+public class UserForListDto : BasicAuditedEntityDto<Guid>
 {
     //User information
     public string FirstName { get; set; } = string.Empty;
@@ -17,6 +17,5 @@ public class UserForListDto : BasicAuditedEntityDto<int>
     public string PhoneNumber { get; set; } = string.Empty;
 
     public string Role { get; set; } = "Learner";
-
 }
 

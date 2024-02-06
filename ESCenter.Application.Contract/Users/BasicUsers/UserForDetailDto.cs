@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 
 namespace ESCenter.Application.Contract.Users.BasicUsers;
 public class UserForDetailDto : BasicAuditedEntityDto<Guid>
@@ -11,12 +11,9 @@ public class UserForDetailDto : BasicAuditedEntityDto<Guid>
     public string Description { get; set; } = string.Empty;
     public string Image { get; set; } = string.Empty;
 
-
     public string Email { get; set; } = string.Empty;
     public bool IsEmailConfirmed { get; set; } = false;
-
     public string PhoneNumber { get; set; } = string.Empty;
-  
     public string Role { get; set; } = Domain.Shared.Courses.UserRole.Learner.ToString();
 
 }

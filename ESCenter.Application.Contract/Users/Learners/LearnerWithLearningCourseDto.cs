@@ -1,9 +1,9 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 using ESCenter.Application.Contract.Courses.Dtos;
 
 namespace ESCenter.Application.Contract.Users.Learners;
 
-public sealed class LearnerWithLearningCourseDto : BasicAuditedEntityDto<int>
+public sealed class LearnerWithLearningCourseDto : BasicAuditedEntityDto<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

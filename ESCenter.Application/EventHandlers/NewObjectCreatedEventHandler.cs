@@ -3,7 +3,7 @@ using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace ESCenter.Application.NotificationImpls;
+namespace ESCenter.Application.EventHandlers;
 
 internal class NewObjectCreatedEventHandler(
     IRepository<Notification, int> notificationRepository,

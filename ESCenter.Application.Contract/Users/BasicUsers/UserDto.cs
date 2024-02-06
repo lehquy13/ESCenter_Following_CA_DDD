@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 using ESCenter.Domain.Shared.Courses;
 
 namespace ESCenter.Application.Contract.Users.BasicUsers;

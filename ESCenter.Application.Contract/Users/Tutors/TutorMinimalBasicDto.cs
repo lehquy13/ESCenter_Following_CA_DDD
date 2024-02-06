@@ -1,8 +1,8 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 
 namespace ESCenter.Application.Contract.Users.Tutors;
 
-public class TutorMinimalBasicDto : BasicAuditedEntityDto<int>
+public class TutorMinimalBasicDto : BasicAuditedEntityDto<Guid>
 {
     public string AcademicLevel { get; set; } = "Student";
     public string University { get; set; } = string.Empty;

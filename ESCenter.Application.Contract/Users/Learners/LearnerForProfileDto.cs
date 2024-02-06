@@ -1,8 +1,8 @@
-using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Commons;
 
 namespace ESCenter.Application.Contract.Users.Learners;
 
-public class LearnerForProfileDto : BasicAuditedEntityDto<int>
+public class LearnerForProfileDto : BasicAuditedEntityDto<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

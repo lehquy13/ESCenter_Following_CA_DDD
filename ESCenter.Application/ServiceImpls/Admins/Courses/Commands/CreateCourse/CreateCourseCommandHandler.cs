@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.NotificationImpls;
+﻿using ESCenter.Application.EventHandlers;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
 using MapsterMapper;

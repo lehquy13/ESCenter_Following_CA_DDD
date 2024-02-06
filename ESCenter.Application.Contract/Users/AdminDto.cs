@@ -1,9 +1,9 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 using ESCenter.Domain.Shared.Courses;
 
 namespace ESCenter.Application.Contract.Users;
 
-public class AdminDto : FullAuditedAggregateRootDto<int>
+public class AdminDto : BasicAuditedEntityDto<int>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

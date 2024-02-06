@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives;
+﻿using Matt.SharedKernel.Application.Contracts.Primitives;
 
 namespace ESCenter.Application.Contract.Users.Tutors;
 

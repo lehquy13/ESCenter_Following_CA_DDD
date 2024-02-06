@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.NotificationImpls;
+﻿using ESCenter.Application.EventHandlers;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;

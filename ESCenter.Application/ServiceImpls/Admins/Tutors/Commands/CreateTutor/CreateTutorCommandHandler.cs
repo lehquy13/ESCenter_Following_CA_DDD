@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.NotificationImpls;
+﻿using ESCenter.Application.EventHandlers;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;

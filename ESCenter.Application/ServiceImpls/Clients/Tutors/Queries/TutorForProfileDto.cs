@@ -1,4 +1,4 @@
-using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+using ESCenter.Application.Contract.Commons;
 using ESCenter.Application.Contract.Courses.Dtos;
 using ESCenter.Application.Contract.Users.Tutors;
 

@@ -1,9 +1,9 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 using ESCenter.Application.Contract.Courses.Dtos;
 
 namespace ESCenter.Application.Contract.Users.Tutors;
 
-public class TutorDetailForClientDto : BasicAuditedEntityDto<int>
+public class TutorDetailForClientDto : BasicAuditedEntityDto<Guid>
 {
     //Admin information
     public string FullName { get; set; } = string.Empty;

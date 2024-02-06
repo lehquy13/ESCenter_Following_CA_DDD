@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contract.Commons.Primitives.Auditings;
+﻿using ESCenter.Application.Contract.Commons;
 
 namespace ESCenter.Application.Contract.Users.Tutors;
 public class TutorForListDto : BasicAuditedEntityDto<Guid>
