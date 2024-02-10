@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Users.BasicUsers;
+﻿using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -17,11 +17,11 @@ public class GetLearnerDetailQueryHandler(
     IIdentityRepository identityRepository,
     IUserRepository userRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor)
-    : QueryHandlerBase<GetLearnerDetail, UserForDetailDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetLearnerDetail, LearnerForCreateUpdateDto>(unitOfWork, logger, mapper)
 {
     private readonly IMapper _mapper = mapper;
 
-    public override async Task<Result<UserForDetailDto>> Handle(GetLearnerDetail request,
+    public override async Task<Result<LearnerForCreateUpdateDto>> Handle(GetLearnerDetail request,
         CancellationToken cancellationToken)
     {
         var identityId = IdentityGuid.Create(request.Id);
@@ -44,7 +44,7 @@ public class GetLearnerDetailQueryHandler(
         }
 
         // TODO: this mapper may cause some problems
-        var userForDetailDto = _mapper.Map<UserForDetailDto>(resultFromDb);
+        var userForDetailDto = _mapper.Map<LearnerForCreateUpdateDto>(resultFromDb);
         return userForDetailDto;
     }
 }

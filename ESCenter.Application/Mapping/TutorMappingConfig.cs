@@ -3,6 +3,7 @@ using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
 using Mapster;
 
@@ -12,6 +13,12 @@ public class TutorMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
+        config.NewConfig<ChangeVerificationRequest, ChangeVerificationRequestDto>()
+            .Map(dest => dest.ChangeVerificationRequestDetails,
+                src => src.ChangeVerificationRequestDetails.Select(x => x.ImageUrl).ToList())
+            .Map(dest => dest, src => src);
+
+
         config.NewConfig<Tutor, TutorForProfileDto>()
             .Map(dest => dest.ChangeVerificationRequestDtos, src => src.ChangeVerificationRequests)
             .Map(dest => dest.TutorVerificationInfoDtos, src => src.TutorVerificationInfos)

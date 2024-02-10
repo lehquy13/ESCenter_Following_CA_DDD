@@ -4,6 +4,7 @@ using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Commands.RequestTutor;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries.GetTutors;
+using ESCenter.Host;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

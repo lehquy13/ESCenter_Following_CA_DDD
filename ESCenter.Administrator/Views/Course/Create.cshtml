@@ -1,0 +1,200 @@
+﻿@using ESCenter.Application.Contracts.Courses.Dtos
+@model ESCenter.Application.Contracts.Courses.Dtos.CourseForCreateDto
+
+@{
+    ViewData["Title"] = "Create new user";
+    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
+    List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
+
+    List<SubjectDto>? subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
+
+}
+<h1>Create new class</h1>
+
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<h4>@Model.Title</h4>
+
+<hr />
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Class' Information</h5>
+
+        <!-- Multi Columns Form -->
+        <form class="row g-3" asp-action="Create" asp-controller="Course">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-6">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input type="text" asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="SubjectId" class="form-label">Subject Name</label>
+                <select asp-for="SubjectId" class="form-select">
+                    
+                    
+
+                    @foreach (var i in subjects)
+                    {
+                        @if (i.Name != Model.SubjectName)
+                        {
+                            <option selected value="@i.Id">
+                                @i.Name
+                            </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                     <label asp-for="LearnerName" class="form-label">Learner Name</label>
+                       <input type="text" class="form-control" asp-for="LearnerName" placeholder="John Nathan" />
+                       <span asp-validation-for="LearnerName" class="text-danger"></span></div>
+            <!-- ----------------------------------- -->
+
+            <div class="col-md-4">
+                <label asp-for="GenderRequirement" class="form-label">GenderRequirement</label>
+                <select asp-for="GenderRequirement" class="form-select">
+                    <option selected>@Model.GenderRequirement.ToString()</option>
+
+                    @foreach (string i in genders)
+                    {
+                        @if (i != Model.GenderRequirement.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="GenderRequirement" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="LearningMode" class="form-label">Learning Mode</label>
+                <select asp-for="LearningMode" class="form-select">
+                    <option selected>@Model.LearningMode.ToString()</option>
+
+                    @foreach (string i in learningModes)
+                    {
+                        @if (i != Model.LearningMode.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="LearningMode" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="AcademicLevelRequirement" class="form-label">Academic level requirement</label>
+                <select asp-for="AcademicLevelRequirement" class="form-select">
+                    <option selected>@Model.AcademicLevelRequirement.ToString()</option>
+
+                    @foreach (string i in academics)
+                    {
+                        @if (i != Model.AcademicLevelRequirement.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="AcademicLevelRequirement" class="text-danger"></span>
+            </div>
+            <!-- ----------------------------------- -->
+
+
+            <div class="col-md-4">
+                <label asp-for="Fee" class="form-label">Fee</label>
+                <input type="number" class="form-control" asp-for="Fee" placeholder="0.99" />
+                <span asp-validation-for="Fee" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ChargeFee" class="form-label">Charge Fee</label>
+                <input type="number" class="form-control" asp-for="ChargeFee" placeholder="0.99" />
+                <span asp-validation-for="ChargeFee" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ContactNumber" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" asp-for="ContactNumber" placeholder="ex: 09325631723" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+
+            </div>
+            <!-- ----------------------------------- -->
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                </div>
+            </div>
+            <!-- ----------------------------------- -->
+            <!-- student infor -->
+            <div class="col-md-3">
+                <label asp-for="LearnerGender" class="form-label">Student's Gender</label>
+                <select asp-for="LearnerGender" class="form-select">
+                    <option selected>@Model.LearnerGender.ToString()</option>
+
+                    @foreach (string i in genders)
+                    {
+                        @if (i != Model.LearnerGender.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="LearnerGender" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="NumberOfLearner" class="form-label">Number Of Student</label>
+                <input type="number" class="form-control" asp-for="NumberOfLearner" value="1" />
+                <span asp-validation-for="NumberOfLearner" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-3">
+                <label asp-for="MinutePerSession" class="form-label">Minute/Session</label>
+                <input type="number" class="form-control" asp-for="MinutePerSession" value="90" />
+                <span asp-validation-for="MinutePerSession" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-3">
+                <label asp-for="SessionPerWeek" class="form-label">Session/Week</label>
+                <input type="number" class="form-control" asp-for="SessionPerWeek" value="1" />
+                <span asp-validation-for="SessionPerWeek" class="text-danger"></span>
+
+            </div>
+            <!-- address advanced set up----------------------------------- -->
+
+            <div class="col-12">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+            @Html.AntiForgeryToken()
+        </form><!-- End Multi Columns Form -->
+
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

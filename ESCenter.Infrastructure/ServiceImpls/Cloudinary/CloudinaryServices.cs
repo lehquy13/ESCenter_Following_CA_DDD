@@ -1,16 +1,15 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using ESCenter.Application.Interfaces.Cloudinarys;
-using ESCenter.Infrastructure.Commons;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace ESCenter.Infrastructure.ServiceImpls;
+namespace ESCenter.Infrastructure.ServiceImpls.Cloudinary;
 
 internal class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting, ILogger<CloudinaryServices> logger)
     : ICloudinaryServices
 {
-    private Cloudinary Cloudinary { get; set; } = new(
+    private CloudinaryDotNet.Cloudinary Cloudinary { get; set; } = new(
         new Account(
             cloudinarySetting.Value.CloudName,
             cloudinarySetting.Value.ApiKey,

@@ -18,11 +18,6 @@ public class ValidateTokenQueryHandler(
     public override async Task<Result> Handle(ValidateTokenQuery request, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
-        if (jwtTokenGenerator.ValidateToken(request.ValidateToken))
-        {
-            return Result.Success();
-        }
-
-        return Result.Fail("Token is invalid.");
+        return jwtTokenGenerator.ValidateToken(request.ValidateToken) ? Result.Success() : Result.Fail("Token is invalid.");
     }
 }

@@ -12,6 +12,7 @@ using ESCenter.Application.ServiceImpls.Clients.Profiles.Queries.GetLearningCour
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetCourseRequests;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetLearningCourse;
+using ESCenter.Host;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,8 @@ public class ProfileController(
     }
 
     [HttpPut("edit")]
-    public async Task<IActionResult> Edit([FromBody] LearnerForCreateUpdateDto learnerForCreateUpdateDto)
+    public async Task<IActionResult> Edit(
+        [FromBody] LearnerForCreateUpdateDto learnerForCreateUpdateDto)
     {
         var result = await mediator.Send(new CreateUpdateLearnerProfileCommand(learnerForCreateUpdateDto));
         return Ok(result);

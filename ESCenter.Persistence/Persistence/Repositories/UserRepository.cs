@@ -1,7 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.Entity_Framework_Core;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +20,31 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
                     u => u.Id,
                     ur => ur.Id,
                     (u, ur) => new { u, ur })
-                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Learner) && o.u.IsDeleted == false)
+                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Learner) &&
+                            o.u.IsDeleted == false)
+                .AsNoTracking()
+                .Select(x => x.u)
+                .ToListAsync();
+
+            return users;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<List<User>> GetTutors()
+    {
+        try
+        {
+            var users = await AppDbContext.Users
+                .Join(AppDbContext.IdentityUsers,
+                    u => u.Id,
+                    ur => ur.Id,
+                    (u, ur) => new { u, ur })
+                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Tutor) &&
+                            o.u.IsDeleted == false)
                 .AsNoTracking()
                 .Select(x => x.u)
                 .ToListAsync();

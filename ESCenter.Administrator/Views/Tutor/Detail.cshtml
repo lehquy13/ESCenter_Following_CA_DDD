@@ -1,0 +1,122 @@
+﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorForDetailDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>
+    <span style="color:#5c7bd9" class="font-weight-bold">@Model.FirstName @Model.LastName</span>'s information
+</h1>
+<h4></h4>
+
+
+<div>
+    
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-4" hidden>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-8" hidden>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-4" hidden>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-8" hidden>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.BirthYear)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.BirthYear)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.IsEmailConfirmed)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IsEmailConfirmed)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        @* <dt class="col-sm-4" hidden> *@
+        @*     @Html.DisplayNameFor(model => model.Password) *@
+        @* </dt> *@
+        @* <dd class="col-sm-8" hidden> *@
+        @*     @Html.DisplayFor(model => model.Password) *@
+        @* </dd> *@
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.AcademicLevel)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.AcademicLevel)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.University)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.University)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.IsVerified)
+        </dd>
+       
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.LastModificationTime)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.LastModificationTime)
+        </dd>
+        
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.CreationTime)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.CreationTime)
+        </dd>
+        
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

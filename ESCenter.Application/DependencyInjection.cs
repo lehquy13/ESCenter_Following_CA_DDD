@@ -1,4 +1,5 @@
-﻿using ESCenter.Application.Interfaces.DashBoards;
+﻿using System.Reflection;
+using ESCenter.Application.Interfaces.DashBoards;
 using ESCenter.Application.Mapping;
 using ESCenter.Application.ServiceImpls;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,5 +14,11 @@ namespace ESCenter.Application
             services.AddScoped<IDashboardServices, DashboardServices>();
             return services;
         }
+
+        public static Assembly[] GetApplicationCoreAssemblies =>
+        [
+            typeof(DependencyInjection).Assembly,
+            typeof(ESCenter.Domain.DependencyInjection).Assembly
+        ];
     }
 }

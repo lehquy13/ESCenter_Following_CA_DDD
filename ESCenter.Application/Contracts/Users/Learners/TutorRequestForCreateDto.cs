@@ -16,10 +16,7 @@ public class TutorRequestForListDto
     public TutorForListDto Tutor { get; set; } = null!;
     
     public Guid LearnerId { get; set; }
-    public string Email { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
-    public int BirthYear { get; set; } = 1960;
-    public string Address { get; set; } = string.Empty;
     public string Name { get; set; }= string.Empty;
     public string RequestMessage { get; set; } = null!;
 }

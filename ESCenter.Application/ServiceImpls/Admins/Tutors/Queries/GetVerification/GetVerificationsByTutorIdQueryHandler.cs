@@ -28,8 +28,7 @@ public class GetVerificationsByTutorIdQueryHandler(
                 .Where(x => x.Id == IdentityGuid.Create(request.TutorId))
                 .Select(x => new
                 {
-                    TutorVerificationInfos = x.TutorVerificationInfos,
-                    ChangeVerificationRequests = x.ChangeVerificationRequests
+                    x.TutorVerificationInfos, x.ChangeVerificationRequests
                 });
 
         var queryResult = await asyncQueryableExecutor.FirstOrDefaultAsync(query, true, cancellationToken);
@@ -41,9 +40,12 @@ public class GetVerificationsByTutorIdQueryHandler(
 
         var result = new TutorVerificationInfoForEditDto()
         {
-            TutorId = request.TutorId.ToString(),
-            TutorVerificationInfoDtos = Mapper.Map<List<TutorVerificationInfoDto>>(queryResult.TutorVerificationInfos),
-            ChangeVerificationRequestDtos = Mapper.Map<List<ChangeVerificationRequestDto>>(queryResult.ChangeVerificationRequests)
+            TutorId = request.TutorId,
+            TutorVerificationInfoDtos = queryResult
+                .TutorVerificationInfos
+                .Select(x => x.Image),
+            ChangeVerificationRequestDtos =
+                Mapper.Map<List<ChangeVerificationRequestDto>>(queryResult.ChangeVerificationRequests)
         };
 
         return result;

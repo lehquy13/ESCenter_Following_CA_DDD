@@ -5,6 +5,7 @@ using ESCenter.Application.ServiceImpls.Admins.Courses.Queries.GetCourseDetail;
 using ESCenter.Application.ServiceImpls.Clients.Courses.Commands.CreateCourse;
 using ESCenter.Application.ServiceImpls.Clients.Courses.Queries.GetCourses;
 using ESCenter.Domain.Shared.Courses;
+using ESCenter.Host;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

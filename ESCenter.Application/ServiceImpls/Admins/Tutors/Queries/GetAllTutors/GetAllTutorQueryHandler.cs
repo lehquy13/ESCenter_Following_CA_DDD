@@ -1,5 +1,6 @@
 ﻿using ESCenter.Application.Contracts.Users.BasicUsers;
 using ESCenter.Application.ServiceImpls.Admins.Users.Queries.GetLearners;
+using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using MapsterMapper;
 using Matt.ResultObject;
@@ -13,15 +14,15 @@ public class GetAllTutorQueryHandler(
     IAppLogger<GetLearnersQueryHandler> logger,
     IMapper mapper,
     IUnitOfWork unitOfWork)
-    : QueryHandlerBase<GetAllTutorQuery, List<UserForListDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetAllTutorsQuery, IEnumerable<UserForListDto>>(unitOfWork, logger, mapper)
 {
     private readonly IMapper _mapper = mapper;
 
-    public override async Task<Result<List<UserForListDto>>> Handle(GetAllTutorQuery request,
+    public override async Task<Result<IEnumerable<UserForListDto>>> Handle(GetAllTutorsQuery request,
         CancellationToken cancellationToken)
     {
-        var learnersFromDb = await userRepository.GetLearners();
-        var userForListDtos = _mapper.Map<List<UserForListDto>>(learnersFromDb);
+        var tutors = await userRepository.GetTutors();
+        var userForListDtos = _mapper.Map<List<UserForListDto>>(tutors);
 
         return userForListDtos;
     }

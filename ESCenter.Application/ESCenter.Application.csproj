@@ -1,17 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj"/>
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ESCenter.Domain.Shared\ESCenter.Domain.Shared.csproj"/>
+        <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj" PrivateAssets="compile"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Contracts\"/>
+    </ItemGroup>
 
 </Project>

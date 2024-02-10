@@ -7,6 +7,6 @@ public class ProfileViewModel
 {
     public LearnerForProfileDto LearnerForProfileDto { get; set; } = new();
 
-    public ChangePasswordCommand ChangePasswordRequest { get; set; } =
+    public ChangePasswordCommand ChangePasswordCommand { get; set; } =
         new(Guid.Empty, string.Empty, string.Empty, string.Empty);
 }

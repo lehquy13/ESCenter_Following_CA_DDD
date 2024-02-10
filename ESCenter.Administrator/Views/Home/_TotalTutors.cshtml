@@ -1,0 +1,26 @@
+﻿@model TotalValueModel<ESCenter.Application.Contracts.Users.Tutors.TutorForListDto>
+
+<!-- Change Password Form -->
+<h5 class="card-title">Tutors <span>| @Model.Time </span></h5>
+
+<div class="d-flex align-items-center">
+    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+        <i class="bi bi-people"></i>
+    </div>
+    <div class="ps-3">
+        <h6>@Model.Models.Count</h6>
+        <span class="text-success small pt-1 fw-bold">@Model.IncreasePercentage%</span>
+        @if (Model.IsIncrease is true)
+        {
+            <span class="text-muted small pt-2 ps-1"> increase </span>
+        }
+        else
+        {
+            <span class="text-muted small pt-2 ps-1"> decrease </span>
+        }
+
+
+    </div>
+</div>
+
+<!-- End Change Password Form -->

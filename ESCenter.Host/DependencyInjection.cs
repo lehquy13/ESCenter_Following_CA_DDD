@@ -2,6 +2,7 @@
 using ESCenter.Application;
 using ESCenter.Infrastructure;
 using ESCenter.Persistence;
+using FluentEmail.Core;
 using Matt.AutoDI;
 using Matt.SharedKernel.DependencyInjections;
 using Microsoft.AspNetCore.Http;
@@ -16,15 +17,16 @@ public static class DependencyInjection
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
-        Assembly[] assemblies =
+        Assembly[] assemblies = [];
+        assemblies.AddRange(ESCenter.Application.DependencyInjection.GetApplicationCoreAssemblies);
+        assemblies.AddRange(new[]
         {
-            typeof(ESCenter.Domain.DependencyInjection).Assembly,
-            typeof(ESCenter.Application.DependencyInjection).Assembly,
             typeof(ESCenter.Infrastructure.DependencyInjection).Assembly,
-            typeof(ESCenter.Persistence.DependencyInjection).Assembly,
-        };
+            typeof(ESCenter.Persistence.DependencyInjection).Assembly
+        });
+
         services.AddServiced(assemblies);
-        
+
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddCors();
 

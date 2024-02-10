@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ESCenter.Infrastructure\ESCenter.Infrastructure.csproj"/>
-        <ProjectReference Include="..\ESCenter.Persistence\ESCenter.Persistence.csproj">
-        </ProjectReference>
+        <ProjectReference Include="..\ESCenter.Infrastructure\ESCenter.Infrastructure.csproj" />
+        <ProjectReference Include="..\ESCenter.Persistence\ESCenter.Persistence.csproj" />
+        <ProjectReference Include="..\ESCenter.Application\ESCenter.Application.csproj" />
     </ItemGroup>
 
 </Project>

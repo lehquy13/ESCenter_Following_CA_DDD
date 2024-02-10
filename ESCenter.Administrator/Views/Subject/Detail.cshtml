@@ -1,0 +1,50 @@
+﻿@model ESCenter.Application.Contracts.Courses.Dtos.SubjectDto
+
+<h1>Detail</h1>
+
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<hr />
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+
+        <!-- Multi Columns Form -->
+        <div class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-12">
+                <p  class="form-control">
+                    @Model.Name
+                </p>
+            </div>
+
+            <!-- ----------------------------------- --> 
+            <div class="col-md-12">
+                <p  class="form-control">
+                    @Model.Description
+                </p>
+            </div>
+
+            <div class="text-center">
+                <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                <a asp-action="Edit" asp-route-Id="@Model.Id" class="btn btn-secondary">Edit</a>
+            </div>
+            @Html.AntiForgeryToken()
+        </div><!-- End Multi Columns Form -->
+      
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

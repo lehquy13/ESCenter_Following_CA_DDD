@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.Contracts.Commons;
+using Matt.SharedKernel.Application.Contracts.Primitives;
 
 namespace ESCenter.Application.Contracts.Users.Tutors;
 public class TutorForListDto : BasicAuditedEntityDto<Guid>
@@ -15,11 +16,21 @@ public class TutorForListDto : BasicAuditedEntityDto<Guid>
     //Account References
     public string PhoneNumber { get; set; } = string.Empty;
 
-    //is tutor related informtions
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.Student.ToString();
     public string University { get; set; } = string.Empty;
     public short NumberOfRequests { get; set; } = 0;
     public bool IsVerified { get; set; } = false;
     public short Rate { get; set; } = 5;
     public short NumberOfChangeRequests  { get; set; } = 0;
+}
+
+public class TutorListDto : EntityDto<Guid>
+{
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string University { get; set; } = string.Empty;
+    public int NumberOfRequests { get; set; } = 0;
+    public int NumberOfChangeRequests  { get; set; } = 0;
+    public bool IsVerified { get; set; } = false;
+    public string PhoneNumber { get; set; } = string.Empty;
 }

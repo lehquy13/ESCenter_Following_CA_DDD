@@ -16,5 +16,6 @@ public class LearnerForCreateUpdateDto : BasicAuditedEntityDto<Guid>
 
     public string PhoneNumber { get; set; } = string.Empty;
     public string Role { get; set; } = "Learner";
+    public bool IsEmailConfirmed { get; set; } = false;
 }
 

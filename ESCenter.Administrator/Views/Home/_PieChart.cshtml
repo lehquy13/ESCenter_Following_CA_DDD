@@ -1,0 +1,22 @@
+﻿@model PieChartViewModel
+
+<h5 class="card-title"> Current Status <span>| @Model.ByTime </span></h5>
+
+<!-- Pie Chart -->
+<div id="pieChart"></div>
+
+<script>
+  new ApexCharts(document.querySelector("#pieChart"), {
+    series: @Html.Raw(Model.Series),
+    chart: {
+      height: 350,
+      type: 'pie',
+      toolbar: {
+        show: true
+      }
+    },
+    labels: @Html.Raw(Model.Labels)
+  }).render();
+
+</script>
+<!-- End Pie Chart -->

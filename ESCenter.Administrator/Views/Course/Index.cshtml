@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ESCenter.Application.Contracts.Courses.Dtos.CourseForListDto>
+@{
+    int i = 0;
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Class Informations</h5>
+
+        <a type="button" class="btn btn-success rounded-pill" asp-action="Create" asp-controller="Course">Create</a>
+
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+            <tr>
+
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Status</th>
+                <th scope="col">Academic Level</th>
+                <th scope="col">Gender Requirement</th>
+                <th scope="col">Learning mode</th>
+                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var user in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">
+                        <input hidden name="Id" value="@user.Id"/>
+                        @i
+                    </th>
+                    <td>@user.Title</td>
+                    <td>@user.SubjectName</td>
+                    <td>@user.Status</td>
+                    <td>@user.AcademicLevelRequirement</td>
+                    <td>@user.GenderRequirement</td>
+                    <td>@user.LearningMode</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@user.Id">Edit</a>|
+                        <a asp-action="Detail" asp-route-id="@user.Id">Details</a> |
+
+                        <a href="#" onclick="OpenGetDialog('@Url.Action("Delete", "Course", new { id = @user.Id })','Are you sure you want to delete this class?');">Delete</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+    </div>
+</div>
+
+

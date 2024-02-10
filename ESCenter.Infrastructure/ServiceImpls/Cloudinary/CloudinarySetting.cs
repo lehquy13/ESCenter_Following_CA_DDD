@@ -1,4 +1,4 @@
-﻿namespace ESCenter.Infrastructure.Commons;
+﻿namespace ESCenter.Infrastructure.ServiceImpls.Cloudinary;
 
 public class CloudinarySetting
 {

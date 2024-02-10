@@ -1,0 +1,679 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    int i = 1;
+    int y = 0;
+}
+
+@using ESCenter.Domain.Shared.Courses
+@using ESCenter.Domain.Shared.NotificationConsts
+@model DashBoardViewModel
+
+<div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section dashboard">
+<div class="row">
+
+<!-- Left side columns -->
+<div class="col-lg-8">
+<div class="row">
+<!-- Class Card -->
+<div class="col-xxl-4 col-md-6">
+    <div class="card info-card revenue-card" id="_TotalClasses">
+
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalClasses", "Home", new { ByTime = "" })')">
+                        Today
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalClasses", "Home", new { ByTime = ByTime.Week })')">
+                        This Week
+                    </a>
+                </li>
+                <li>
+
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalClasses", "Home", new { ByTime = ByTime.Month })')">
+                        This Month
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalClasses", "Home", new { ByTime = ByTime.Year })')">
+                        This Year
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <partial name="_TotalClasses" model="Model.ClassTotalValueModel"/>
+        </div>
+
+    </div>
+</div><!-- End Revenue Card -->
+<!-- Tutors Card -->
+<div class="col-xxl-4 col-md-6">
+    <div class="card info-card sales-card" id="_TotalTutors">
+
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalTutors", "Home", new { ByTime = "" })')">
+                        Today
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalTutors", "Home", new { ByTime = ByTime.Week })')">
+                        This Week
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalTutors", "Home", new { ByTime = ByTime.Month })')">
+                        This Month
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalTutors", "Home", new { ByTime = ByTime.Year })')">
+                        This Year
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <partial name="_TotalTutors" model="Model.TutorTotalValueModel"/>
+
+        </div>
+
+    </div>
+</div><!-- End Tutors Card -->
+<!-- Students Card -->
+<div class="col-xxl-4 col-xl-12">
+
+    <div class="card info-card customers-card" id="_TotalStudents">
+
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalStudents", "Home", new { ByTime = "" })')">
+                        Today
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalStudents", "Home", new { ByTime = ByTime.Week })')">
+                        This week
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalStudents", "Home", new { ByTime = ByTime.Month })')">
+                        This Month
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:TotalValueCardReload('@Url.Action("FilterTotalStudents", "Home", new { ByTime = ByTime.Year })')">
+                        This Year
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <partial name="_TotalStudents" model="Model.StudentTotalValueModel"/>
+
+        </div>
+    </div>
+
+</div><!-- End Students Card -->
+<!-- Reports -->
+<div class="col-12">
+    <div class="card">
+
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+                <li>
+                    <a class="dropdown-item"
+                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = "week" })')">
+                        This Week
+                    </a>
+                </li>
+                <li>
+
+                    <a class="dropdown-item"
+                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = "month" })')">
+                        This Month
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">Reports </h5>
+
+            <!-- Line Chart -->
+            <div id="reportsChart"></div>
+
+            <script>
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    window.reportsChartStore = new ApexCharts(document.querySelector("#reportsChart"), {
+                                        series: @Html.Raw(Model.ChartWeekData),
+                                        id: 'reportsChart1',
+                                        chart: {
+                                            height: 350,
+                                            type: 'area',
+                                            toolbar: {
+                                                show: false
+                                            },
+                                        },
+                                        markers: {
+                                            size: 4
+                                        },
+                                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                                        fill: {
+                                            type: "gradient",
+                                            gradient: {
+                                                shadeIntensity: 1,
+                                                opacityFrom: 0.3,
+                                                opacityTo: 0.4,
+                                                stops: [0, 90, 100]
+                                            }
+                                        },
+                                        dataLabels: {
+                                            enabled: false
+                                        },
+                                        stroke: {
+                                            curve: 'smooth',
+                                            width: 2
+                                        },
+                                        xaxis: @Html.Raw(@Model.DatesWeekData),
+                                        tooltip: {
+                                            x: {
+                                                format: 'dd/MM/yy HH:mm'
+                                            },
+                                        }
+                                    });
+                                    reportsChartStore.render();
+                                });
+                            </script>
+            <!-- End Line Chart -->
+
+        </div>
+
+    </div>
+</div><!-- End Reports -->
+<!-- Recent Classes -->
+<div class="col-12">
+    <div class="card recent-sales overflow-auto">
+
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="#">Today</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">This Month</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">This Year</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">Recent Classes <span>| Today</span></h5>
+
+            <table class="table table-striped ">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Learning Mode</th>
+                    <th scope="col">Charge Fee</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var classInfo in Model.ClassTotalValueModel.Models.Where(x => x.Status == Status.OnVerifying.ToString()))
+                {
+                    @if (i > 4)
+                    {
+                        break;
+                    }
+
+                    <tr>
+                        <th scope="row" class="text-primary">
+                            @i
+                        </th>
+                        <td>
+                            <a href="@Url.Action("Edit", "Course", new { id = classInfo.Id })" class="text-primary">@classInfo.Title</a>
+                        </td>
+                        <td>@classInfo.LearningMode</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Course", new { id = classInfo.Id })" class="text-primary">
+                                $@classInfo.ChargeFee
+                            </a>
+                        </td>
+                        @switch (classInfo.Status)
+                        {
+                            case "Waiting":
+                                <td>
+                                    <span class="badge bg-primary">@classInfo.Status</span>
+                                </td>
+                                break;
+                            case "Canceled":
+                                <td>
+                                    <span class="badge bg-danger">@classInfo.Status</span>
+
+                                </td>
+                                break;
+                            case "Confirmed":
+                                <td>
+                                    <span class="badge bg-success">@classInfo.Status</span>
+
+                                </td>
+                                break;
+                            case "OnConfirming":
+                                <td>
+                                    <span class="badge bg-warning">@classInfo.Status</span>
+
+                                </td>
+                                break;
+                        }
+                    </tr>
+                    i++;
+                }
+                </tbody>
+            </table>
+            <a asp-controller="Course" asp-action="Index">See more...</a>
+        </div>
+
+    </div>
+</div><!-- End Recent Sales -->
+<!-- Top Selling -->
+<div class="col-12">
+    <div class="card top-selling overflow-auto">
+
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="#">Today</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">This Month</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">This Year</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body pb-0">
+            <h5 class="card-title">Tutors </h5>
+
+            <!-- Table with stripped rows -->
+            <table id="example" class="table datatable">
+                <thead>
+                <tr>
+                    <!-- a avatar column will be added -->
+                    <th scope="col">#</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
+                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach (var user in Model.TutorTotalValueModel.Models)
+                {
+                    y++;
+                    <tr>
+                        <th scope="row">
+                            <input hidden name="Id" value="@user.Id"/>
+                            @y
+                        </th>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>
+
+                            @user.Gender
+                        </td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>
+                            <a class="btn btn-link" asp-action="Detail" asp-controller="Tutor" asp-route-id="@user.Id">Details</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
+
+        </div>
+
+    </div>
+</div><!-- End Top Selling -->
+
+</div>
+</div><!-- End Left side columns -->
+<!-- Right side columns -->
+<div class="col-lg-4">
+
+    <!-- Recent Activity -->
+    <div class="card">
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="#">Today</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">This Month</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">This Year</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">Recent Activity <span>| Today</span></h5>
+
+            <div class="activity">
+                @foreach (var noti in Model.NotificationDtos)
+                {
+                    <div class="activity-item d-flex">
+                        <div class="activite-label">@DateTime.Now.Subtract(noti.CreationTime).Minutes</div>
+                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                        <div class="activity-content">
+
+                            @noti.Message
+                            <a href="@noti.DetailPath" class="fw-bold text-dark">See detail</a>
+                        </div>
+                    </div>
+
+                    <!-- End activity item-->
+                }
+
+
+                @* <div class="activity-item d-flex">
+                            <div class="activite-label">56 min</div>
+                            <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                            <div class="activity-content">
+                                Voluptatem blanditiis blanditiis eveniet
+                            </div>
+                        </div><!-- End activity item-->
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">2 hrs</div>
+                            <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
+                            <div class="activity-content">
+                                Voluptates corrupti molestias voluptatem
+                            </div>
+                        </div><!-- End activity item-->
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">1 day</div>
+                            <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
+                            <div class="activity-content">
+                                Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
+                            </div>
+                        </div><!-- End activity item-->
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">2 days</div>
+                            <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
+                            <div class="activity-content">
+                                Est sit eum reiciendis exercitationem
+                            </div>
+                        </div><!-- End activity item-->
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">4 weeks</div>
+                            <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
+                            <div class="activity-content">
+                                Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
+                            </div>
+                        </div><!-- End activity item-->
+*@
+            </div>
+
+        </div>
+    </div><!-- End Recent Activity -->
+    <!-- Area Chart -->
+    <div class="card" id="areaChartCard">
+
+        <div class="card-body">
+            <h5 class="card-title">Incomes for the last 7 days</h5>
+
+            <div id="areaChart"></div>
+
+            <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            new ApexCharts(document.querySelector("#areaChart"), {
+                                series: [{
+                                    name: "@Model.AreaChartViewModel.TotalRevenue",
+                                    data: @Html.Raw(Model.AreaChartViewModel.TotalRevenueSeries)
+                                                                            }, {
+                                    name: "@Model.AreaChartViewModel.Refunded",
+                                    data: @Html.Raw(Model.AreaChartViewModel.RefundedSeries)
+                                                                            }, {
+                                    name: "@Model.AreaChartViewModel.Incoming",
+                                    data: @Html.Raw(Model.AreaChartViewModel.IncomingSeries)
+                                                                            }],
+                                chart: {
+                                    type: 'area',
+                                    height: 350,
+                                    zoom: {
+                                        enabled: false
+                                    }
+                                },
+                                colors:
+                                    ['#00F200', '#F10000', '#00A4E3']
+                                ,
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                stroke: {
+                                    curve: 'smooth'
+                                },
+                                subtitle: {
+                                    text: 'Incomes Movements',
+                                    align: 'left'
+                                },
+                                labels: @Html.Raw(Model.AreaChartViewModel.Dates),
+                                xaxis: {
+                                    type: 'int',
+                                },
+                                yaxis: {
+                                    type: 'float',
+                                    opposite: true
+                                },
+                                legend: {
+                                    horizontalAlign: 'left'
+                                }
+                            }).render();
+                        });
+                    </script>
+            <!-- End Area Chart -->
+        </div>
+    </div>
+    <!-- End Area Chart -->
+    <!-- Current Status PieChart -->
+    <div class="card" id="pieChartCard">
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+
+                <li>
+                    <a class="dropdown-item" href="javascript:PieChartReload('@Url.Action("FilterPieChart", "Home", new { ByTime = "" })')">
+                        Today
+                    </a>
+                </li>
+
+                <li>
+                    <a class="dropdown-item"
+                       href="javascript:PieChartReload('@Url.Action("FilterPieChart", "Home", new { ByTime = ByTime.Week })')">
+                        This Week
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="javascript:PieChartReload('@Url.Action("FilterPieChart", "Home", new { ByTime = ByTime.Month })')">
+                        This Month
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body pb-0">
+            <h5 class="card-title"> Current Status <span>| Today</span></h5>
+
+            <!-- Pie Chart -->
+            <div id="pieChart"></div>
+
+            <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            window.pieChartStore = new ApexCharts(document.querySelector("#pieChart"), {
+                                series: @Html.Raw(Model.PieWeekData1),
+                                chart: {
+                                    height: 350,
+                                    type: 'pie',
+                                    toolbar: {
+                                        show: true
+                                    }
+                                },
+                                labels: @Html.Raw(Model.PieWeekData2)
+                                                                  });
+                            pieChartStore.render();
+                        });
+                    </script>
+            <!-- End Pie Chart -->
+
+        </div>
+    </div><!-- End Website Traffic -->
+    @* <!-- News & Updates Traffic --> *@
+    @* <div class="card"> *@
+    @*   <div class="filter"> *@
+    @*     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> *@
+    @*     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> *@
+    @*       <li class="dropdown-header text-start"> *@
+    @*         <h6>Filter</h6> *@
+    @*       </li> *@
+    @* *@
+    @*       <li><a class="dropdown-item" href="#">Today</a></li> *@
+    @*       <li><a class="dropdown-item" href="#">This Month</a></li> *@
+    @*       <li><a class="dropdown-item" href="#">This Year</a></li> *@
+    @*     </ul> *@
+    @*   </div> *@
+    @* *@
+    @*   <div class="card-body pb-0"> *@
+    @*     <h5 class="card-title">News &amp; Updates <span>| Today</span></h5> *@
+    @* *@
+    @*     <div class="news"> *@
+    @*       <div class="post-item clearfix"> *@
+    @*         <img src="assets/img/news-1.jpg" alt=""> *@
+    @*         <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4> *@
+    @*         <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p> *@
+    @*       </div> *@
+    @* *@
+    @*       <div class="post-item clearfix"> *@
+    @*         <img src="assets/img/news-2.jpg" alt=""> *@
+    @*         <h4><a href="#">Quidem autem et impedit</a></h4> *@
+    @*         <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p> *@
+    @*       </div> *@
+    @* *@
+    @*       <div class="post-item clearfix"> *@
+    @*         <img src="assets/img/news-3.jpg" alt=""> *@
+    @*         <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4> *@
+    @*         <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p> *@
+    @*       </div> *@
+    @* *@
+    @*       <div class="post-item clearfix"> *@
+    @*         <img src="assets/img/news-4.jpg" alt=""> *@
+    @*         <h4><a href="#">Laborum corporis quo dara net para</a></h4> *@
+    @*         <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p> *@
+    @*       </div> *@
+    @* *@
+    @*       <div class="post-item clearfix"> *@
+    @*         <img src="assets/img/news-5.jpg" alt=""> *@
+    @*         <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4> *@
+    @*         <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p> *@
+    @*       </div> *@
+    @* *@
+    @*     </div><!-- End sidebar recent posts--> *@
+    @* *@
+    @*   </div> *@
+    @* </div><!-- End News & Updates --> *@
+
+</div><!-- End Right side columns -->
+
+</div>
+</section>
+
+@section Scripts
+{
+
+    <script>
+
+    </script>
+}

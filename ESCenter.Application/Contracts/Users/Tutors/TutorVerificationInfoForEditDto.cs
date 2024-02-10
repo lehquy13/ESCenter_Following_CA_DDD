@@ -2,8 +2,8 @@
 
 public class TutorVerificationInfoForEditDto
 {
-    public string TutorId { get; set; } = null!;
+    public Guid TutorId { get; set; }
     public string TutorName { get; set; } = null!;
-    public List<TutorVerificationInfoDto> TutorVerificationInfoDtos { get; set; } = null!;
+    public IEnumerable<string> TutorVerificationInfoDtos { get; set; } = null!;
     public List<ChangeVerificationRequestDto> ChangeVerificationRequestDtos { get; set; } = null!;
 }

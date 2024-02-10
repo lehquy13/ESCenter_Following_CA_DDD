@@ -1,0 +1,115 @@
+﻿@model ESCenter.Application.Contracts.Courses.Dtos.CourseForDetailDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>
+    <span style="color:#5c7bd9" class="font-weight-bold">@Model.Title</span>
+</h1>
+<h4></h4>
+
+
+<div>
+    
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-4" hidden>
+            @Html.DisplayNameFor(model => model.SubjectName)
+        </dt>
+        <dd class="col-sm-8" hidden>
+            @Html.DisplayFor(model => model.SubjectName)
+        </dd>
+        <dt class="col-sm-4" hidden>
+            @Html.DisplayNameFor(model => model.GenderRequirement)
+        </dt>
+        <dd class="col-sm-8" hidden>
+            @Html.DisplayFor(model => model.GenderRequirement)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.AcademicLevelRequirement)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.AcademicLevelRequirement)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Fee)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Fee)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.ChargeFee)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.ChargeFee)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.LearnerGender)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.LearnerGender)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.NumberOfLearner)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.NumberOfLearner)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.MinutePerSession)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.MinutePerSession)
+        </dd>
+        <dt class="col-sm-4" hidden>
+            @Html.DisplayNameFor(model => model.SessionPerWeek)
+        </dt>
+        <dd class="col-sm-8" hidden>
+            @Html.DisplayFor(model => model.SessionPerWeek)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        
+    
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.LastModificationTime)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.LastModificationTime)
+        </dd>
+        @* <dt class="col-sm-4" hidden> *@
+        @*     @Html.DisplayNameFor(model => model.LastModifierUserId) *@
+        @* </dt> *@
+        @* <dd class="col-sm-8" hidden> *@
+        @*     @Html.DisplayFor(model => model.LastModifierUserId) *@
+        @* </dd> *@
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.CreationTime)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.CreationTime)
+        </dd>
+        @* <dt class="col-sm-4" hidden> *@
+        @*     @Html.DisplayNameFor(model => model.CreatorUserId) *@
+        @* </dt> *@
+        @* <dd class="col-sm-8" hidden> *@
+        @*     @Html.DisplayFor(model => model.CreatorUserId) *@
+        @* </dd> *@
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

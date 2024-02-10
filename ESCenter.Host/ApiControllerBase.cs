@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-namespace ESCenter.Api.Controllers;
+namespace ESCenter.Host;
 
 [Route("api/[controller]")]
 [ApiController]

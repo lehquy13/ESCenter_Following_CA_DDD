@@ -1,4 +1,4 @@
-﻿using ESCenter.Application.Contracts.Users.BasicUsers;
+﻿using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -18,9 +18,10 @@ public class GetUserProfileQueryHandler(
     IIdentityRepository identityDomainServices,
     ICurrentUserService currentUserService
 )
-    : QueryHandlerBase<GetUserProfileQuery, UserDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetUserProfileQuery, LearnerForProfileDto>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<UserDto>> Handle(GetUserProfileQuery request,
+    public override async Task<Result<LearnerForProfileDto>> Handle(
+        GetUserProfileQuery request,
         CancellationToken cancellationToken)
     {
         try
@@ -38,7 +39,7 @@ public class GetUserProfileQueryHandler(
                 return Result.Fail(UserError.NonExistUserError);
             }
 
-            return Mapper.Map<UserDto>(userProfileAsync);
+            return Mapper.Map<LearnerForProfileDto>(userProfileAsync);
         }
         catch (Exception ex)
         {

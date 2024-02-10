@@ -7,7 +7,7 @@ namespace ESCenter.Administrator.Models;
 
 public class DashBoardViewModel
 {
-    public TotalValueModel<TutorForListDto> TutorTotalValueModel{ get; set; } = new();
+    public TotalValueModel<UserForListDto> TutorTotalValueModel{ get; set; } = new();
     public TotalValueModel<UserForListDto> StudentTotalValueModel{ get; set; } = new();
 
     public TotalValueModel<CourseForListDto> ClassTotalValueModel{ get; set; } = new();

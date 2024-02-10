@@ -22,6 +22,7 @@ public class RequestTutorCommandHandler(
 {
     public override async Task<Result> Handle(RequestTutorCommand command, CancellationToken cancellationToken)
     {
+        // TODO: we may need to check if the tutor is verified or exists or not
         if (command.TutorRequestForCreateDto.TutorId == command.TutorRequestForCreateDto.LearnerId)
         {
             return Result.Fail(TutorAppServiceError.CantRequestTutorToSelf);

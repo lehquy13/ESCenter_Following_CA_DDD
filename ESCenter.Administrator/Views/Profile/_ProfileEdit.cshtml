@@ -1,0 +1,168 @@
+﻿
+@model ESCenter.Application.Contracts.Users.Learners.LearnerForProfileDto
+@{
+    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+    //AddressDto addressDto = ViewData["Addresses"] as AddressDto ?? new AddressDto(new List<CityDto>());
+
+}
+<!-- Profile Edit Form -->
+<form asp-action="ChoosePicture" asp-controller="Profile">
+<div class="row mb-3">
+    <label asp-for="Image" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+    <div class="col-md-8 col-lg-9">
+        <img src="@Model.Image" alt="Profile" id="avatar">
+        <input id="image" asp-for="Image" hidden type="text"/>
+        <div class="pt-2">
+
+            <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", new {id = @Model.Id})','avatar'); return false;"/>
+            <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
+                <i class="bi bi-upload"></i>
+            </a>
+
+            <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </div>
+</div>
+</form>
+<form asp-action="Edit" asp-controller="Profile" onsubmit="return callPostActionWithForm(this);">
+    
+
+    <div class="row mb-3">
+        <label asp-for="FirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+        <div class="col-md-8 col-lg-9">
+            <input asp-for="FirstName" type="text" class="form-control" id="firstname">
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="about" class="col-md-4 col-lg-3 col-form-label">LastName</label>
+        <div class="col-md-8 col-lg-9">
+            <input asp-for="LastName" type="text" class="form-control" id="lastname">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label asp-for="BirthYear" class="col-md-4 col-lg-3 col-form-label">Birth</label>
+        <div class="col-md-8 col-lg-9">
+            <input type="number" class="form-control" asp-for="BirthYear"/>
+            <span asp-validation-for="BirthYear" class="text-danger"></span>
+
+        </div>
+
+
+    </div>
+    <div class="row mb-3">
+        <label for="about" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+        <div class="col-md-8 col-lg-9">
+            <select asp-for="Gender" class="form-select">
+                <option selected>@Model.Gender.ToString()</option>
+
+                @foreach (string i in genders)
+                {
+                    @if (i != Model.Gender.ToString())
+                    {
+                        <option> @i </option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+        <div class="col-md-8 col-lg-9">
+            <textarea asp-for="Description" class="form-control" id="about" style="height: 100px"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+
+        </div>
+
+    </div>
+
+    <div class="row mb-3">
+        <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
+        <div class="col-md-8 col-lg-9">
+            <input readonly name="company" type="text" class="form-control" id="company" value="Educational Development And Consulting Center - CED ">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="Role" class="col-md-4 col-lg-3 col-form-label">Role</label>
+        <div class="col-md-8 col-lg-9">
+            <input readonly asp-for="Role" type="text" class="form-control" id="Job">
+            <span asp-validation-for="Role" class="text-danger"></span>
+
+        </div>
+
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+        <div class="col-md-8 col-lg-9">
+            <input asp-for="Address" readonly type="text" class="form-control" id="Address">
+            <span asp-validation-for="Address" class="text-danger"></span>
+
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="PhoneNumber" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+        <div class="col-md-8 col-lg-9">
+            <input asp-for="PhoneNumber" readonly type="text" class="form-control" id="Phone">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+        </div>
+
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+        <div class="col-md-8 col-lg-9">
+            <input asp-for="Email" readonly type="email" class="form-control" id="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
+        <div class="col-md-8 col-lg-9">
+            <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
+        <div class="col-md-8 col-lg-9">
+            <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
+        <div class="col-md-8 col-lg-9">
+            <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
+        <div class="col-md-8 col-lg-9">
+            <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
+        </div>
+    </div>
+    
+    <input type="hidden" asp-for="Id"/>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+</form>
+
+<!-- End Profile Edit Form -->

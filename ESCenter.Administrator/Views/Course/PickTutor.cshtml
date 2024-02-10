@@ -1,0 +1,53 @@
+﻿@model List<ESCenter.Application.Contracts.Users.Tutors.TutorForListDto>
+@{
+    int i = 0;
+    Layout = "_ScriptLayout";
+
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Pick the tutor for class</h5>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+            <tr>
+                <!-- a avatar comlumn will be added -->
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Academic Level</th>
+                <th scope="col">University</th>
+                <th scope="col">Phone Number</th>
+                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var user in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">
+                        <input hidden name="Id" value="@user.Id"/>
+                        @i
+                    </th>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.AcademicLevel.ToString()</td>
+                    <td>@user.University</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="ChooseTutor('@user.Id','@user.FirstName @user.LastName', '@user.PhoneNumber');">
+                            Choose
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+    </div>
+</div>
+
+
+

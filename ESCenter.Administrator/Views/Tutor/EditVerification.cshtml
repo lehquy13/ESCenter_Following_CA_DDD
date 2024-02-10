@@ -1,0 +1,103 @@
+﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorVerificationInfoForEditDto
+
+@{
+    ViewData["Title"] = "Edit";
+
+    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
+    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
+}
+<h1>Edit</h1>
+
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<h4>@Model.TutorName</h4>
+
+<hr/>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Personal Information</h5>
+
+        <!-- Multi Columns Form -->
+
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title row">
+                    <h5 class="col-11">Tutor Verifications</h5>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-4 col-lg-3 col-form-label">Current Verification Images</label>
+                    <div class="col-md-8 col-lg-9">
+                        <div class="row d-flex" id="filesInputValues">
+
+                            @foreach (var i in Model.TutorVerificationInfoDtos)
+                            {
+                                //<img src="@i.Image" style="max-width: 400px; max-height: 400px;" alt="Profile" id="avatar">
+                                //<input id="image" asp-for="@i.Image" hidden type="text" />
+                                <div style="position:relative;">
+                                    <img src="@i" style="max-width: 400px; max-height: 400px;" alt="Profile" id="avatar">
+                                    <input id="image" asp-for="@i" hidden type="text"/>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-4 col-lg-3 col-form-label">New Verfication Images</label>
+                    <div class="col-md-8 col-lg-9">
+                        <div class="d-flex" id="filesInputValues1">
+
+                            @foreach (var i in Model.ChangeVerificationRequestDtos)
+                            {
+                                <form class="row g-3" asp-action="EditTutorVerificationInformation" asp-route-changeVerificationRequestId="@i.Id" asp-controller="Tutor">
+
+                                    <button type="submit" style="align-self: baseline;" class="btn btn-primary">
+                                        <span>Accept</span>
+                                    </button>
+
+                                    @foreach (var iDetail in i.ChangeVerificationRequestDetails)
+                                    {
+                                        //<img src="@i.Image" style="max-width: 400px; max-height: 400px;" alt="Profile" id="avatar">
+                                        //<input id="image" asp-for="@i.Image" hidden type="text" />
+                                        <div style="position:relative;" id="@i.Id-verification">
+
+                                            <img src="@iDetail" style="max-width: 400px; max-height: 400px;" alt="Profile" id="avatar">
+                                            <input id="image" asp-for="@iDetail" hidden type="text"/>
+                                        </div>
+                                    }
+
+                                </form>
+                                <!-- End Multi Columns Form -->
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ----------------------------------- hidden info -->
+
+        <input type="hidden" asp-for="TutorId"/>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
