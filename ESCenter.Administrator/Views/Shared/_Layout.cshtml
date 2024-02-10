@@ -26,11 +26,8 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="~/assets/vendor/quill/quill.snow.css" rel="stylesheet">
-    <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="~/assets/vendor/alertifyjs/css/alertify.min.css" rel="stylesheet">
@@ -43,7 +40,7 @@
 <body>
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="/Home" class="logo d-flex align-items-center">
+        <a href="/home" class="logo d-flex align-items-center">
             <img src="~/assets/img/logo.png" alt="">
             <span class="d-none d-lg-block">EduSmart Website</span>
         </a>
@@ -76,7 +73,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="/Profile">
+                        <a class="dropdown-item d-flex align-items-center" href="/profile">
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>
@@ -85,13 +82,13 @@
                         <hr class="dropdown-divider">
                     </li>
 
-                  
+
                     <li>
                         <hr class="dropdown-divider">
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="/Logout">
+                        <a class="dropdown-item d-flex align-items-center" href="/logout">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
@@ -107,7 +104,7 @@
 
     <ul class="sidebar-nav " id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/Home">
+            <a class="nav-link collapsed" href="/home">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -119,7 +116,7 @@
             </a>
             <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="/User">
+                    <a href="/user">
                         <i class="bi bi-circle"></i><span>General</span>
                     </a>
                 </li>
@@ -129,7 +126,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/User/Student">
+                    <a href="/user/student">
                         <i class="bi bi-circle"></i><span>Student</span>
                     </a>
                 </li>
@@ -137,35 +134,35 @@
         </li><!-- End Tables Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" >
+            <a class="nav-link collapsed">
                 <i class="bi bi-info-square"></i>
                 <span>Class Information</span>
             </a>
-             <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-                            <li>
-                                <a asp-action="Index" asp-controller="Course">
-                                    <i class="bi bi-circle"></i><span>All</span>
-                                </a>
-                            </li>
-                             <li>
-                                 <a asp-action="Index" asp-controller="Course" asp-route-type="Verifying">
-                                     <i class="bi bi-circle"></i><span>Verifying</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a asp-action="Index" asp-controller="Course" asp-route-type="Purchasing">
-                                     <i class="bi bi-circle"></i><span>Purchasing</span>
-                                 </a>
-                             </li>
-                            <li>
-                                <a asp-action="Index" asp-controller="Course" asp-route-type="Today">
-                                    <i class="bi bi-circle"></i><span>Today</span>
-                                </a>
-                            </li>
-                        </ul>
+            <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a asp-action="Index" asp-controller="Course">
+                        <i class="bi bi-circle"></i><span>All</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="Verifying">
+                        <i class="bi bi-circle"></i><span>Verifying</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="Purchasing">
+                        <i class="bi bi-circle"></i><span>Purchasing</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="Today">
+                        <i class="bi bi-circle"></i><span>Today</span>
+                    </a>
+                </li>
+            </ul>
         </li><!-- End Subject Nav -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/Subject">
+            <a class="nav-link collapsed" href="/subject">
                 <i class="bi bi-journal-bookmark"></i>
                 <span>Subject</span>
             </a>
@@ -174,14 +171,14 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/Profile">
+            <a class="nav-link collapsed" href="/profile">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
         </li><!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/Logout">
+            <a class="nav-link collapsed" href="/logout">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>Logout</span>
             </a>
@@ -253,13 +250,10 @@
 
 <!-- Vendor JS Files -->
 <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
 <script src="~/assets/vendor/echarts/echarts.min.js"></script>
-<script src="~/assets/vendor/quill/quill.min.js"></script>
 <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
-<script src="~/assets/vendor/php-email-form/validate.js"></script>
 <script src="~/assets/vendor/alertifyjs/alertify.min.js"></script>
 
 <!-- Template Main JS File -->

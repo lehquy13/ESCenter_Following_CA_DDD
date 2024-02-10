@@ -17,7 +17,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
-        Assembly[] assemblies = [];
+        IList<Assembly> assemblies = [];
         assemblies.AddRange(ESCenter.Application.DependencyInjection.GetApplicationCoreAssemblies);
         assemblies.AddRange(new[]
         {
@@ -25,7 +25,7 @@ public static class DependencyInjection
             typeof(ESCenter.Persistence.DependencyInjection).Assembly
         });
 
-        services.AddServiced(assemblies);
+        services.AddServiced(assemblies.ToArray());
 
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddCors();

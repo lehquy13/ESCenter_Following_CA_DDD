@@ -1,18 +1,10 @@
-using ESCenter.Administrator;
-using ESCenter.Application;
-using ESCenter.Infrastructure;
-using ESCenter.Persistence;
+using ESCenter.Host;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-
-    builder.Services
-        .AddApplication()
-        .AddInfrastructure(builder.Configuration)
-        .AddPresentation()
-        .AddPersistence(builder.Configuration);
+    builder.Services.AddHost(builder.Configuration);
 }
 
 var app = builder.Build();
