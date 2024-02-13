@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;
-using ESCenter.Domain.Aggregates.Courses;
+﻿using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;

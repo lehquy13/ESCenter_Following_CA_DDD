@@ -17,7 +17,7 @@ internal class DiscoveryConfiguration : IEntityTypeConfiguration<Discovery>
 
         builder.Property(r => r.Id)
             .HasColumnName("Id")
-            .ValueGeneratedNever()
+            .ValueGeneratedOnAdd()
             .HasConversion(
                 id => id.Value,
                 value => DiscoveryId.Create(value)
@@ -41,7 +41,7 @@ internal class DiscoveryConfiguration : IEntityTypeConfiguration<Discovery>
                     value => SubjectId.Create(value)
                 );
             
-            builder.HasOne<Subject>()
+            ib.HasOne<Subject>()
                 .WithMany()
                 .HasForeignKey(nameof(DiscoverySubject.SubjectId))
                 .IsRequired();

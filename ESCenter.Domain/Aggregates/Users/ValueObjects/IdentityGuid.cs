@@ -4,25 +4,18 @@ namespace ESCenter.Domain.Aggregates.Users.ValueObjects;
 
 public class IdentityGuid : ValueObject
 {
-    public Guid Value { get; }
-
-    private IdentityGuid(Guid value)
-    {
-        Value = value;
-    }
+    public Guid Value { get; private set; }
 
     private IdentityGuid()
     {
     }
 
-    public static IdentityGuid Create()
+    public static IdentityGuid Create(Guid guid = default)
     {
-        return new IdentityGuid(Guid.NewGuid());
-    }
-
-    public static IdentityGuid Create(Guid guid)
-    {
-        return new IdentityGuid(guid);
+        return new IdentityGuid()
+        {
+            Value = guid == default ? Guid.NewGuid() : guid
+        };
     }
 
     public override IEnumerable<object> GetEqualityComponents()

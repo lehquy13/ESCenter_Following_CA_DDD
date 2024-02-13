@@ -1,4 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,28 +11,37 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable(nameof(User));
+
         builder.HasKey(r => r.Id);
+
         builder.Property(r => r.Id)
-            .HasColumnName("Id")
+            .HasColumnName(nameof(User.Id))
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
                 value => IdentityGuid.Create(value)
             );
 
+        // TODO: learn how to config one to one relationship
+        //'The relationship from 'User' to 'IdentityUser' with foreign key properties {'Id' : IdentityGuid} cannot target the primary key {'Id' : string} because it is not compatible.
+        // Configure a principal key or a set of foreign key properties with compatible types for this relationship.' was thrown while attempting to create an instance.
+
+        builder
+            .HasOne<IdentityUser>()
+            .WithOne()
+            .HasForeignKey<IdentityUser>(nameof(User.Id)) 
+            .IsRequired();
+
         builder.Property(r => r.FirstName)
-            .HasMaxLength(32)
             .IsRequired();
 
         builder.Property(r => r.LastName)
-            .HasMaxLength(32)
             .IsRequired();
 
         builder.HasIndex(r => r.Email)
             .IsUnique();
 
-        builder.Property(r => r.PhoneNumber)
-            .HasMaxLength(15);
+        builder.Property(r => r.PhoneNumber);
 
         builder.Property(r => r.Gender)
             .IsRequired();
@@ -43,7 +53,6 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(r => r.Description)
-            .HasMaxLength(128)
             .IsRequired();
 
         builder.OwnsOne(user => user.Address,

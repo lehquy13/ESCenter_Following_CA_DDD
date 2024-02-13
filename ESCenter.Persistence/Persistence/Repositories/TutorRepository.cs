@@ -1,4 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.Entity_Framework_Core;
@@ -10,7 +11,7 @@ namespace ESCenter.Persistence.Persistence.Repositories;
 internal class TutorRepository(
     AppDbContext appDbContext,
     IAppLogger<TutorRepository> appLogger)
-    : RepositoryImpl<Tutor, IdentityGuid>(appDbContext, appLogger), ITutorRepository
+    : RepositoryImpl<Tutor, TutorId>(appDbContext, appLogger), ITutorRepository
 {
     public async Task<List<Tutor>> GetPopularTutors()
     {
@@ -32,5 +33,11 @@ internal class TutorRepository(
             .ToListAsync();
         
         return tutors;
+    }
+
+    public Task<Tutor?> GetTutorByUserId(IdentityGuid userId)
+    {
+        return AppDbContext.Tutors
+            .FirstOrDefaultAsync(x => x.UserId == userId);
     }
 }

@@ -6,14 +6,16 @@ public class IdentityRoleId : ValueObject
 {
     public int Value { get; private set; }
     
-    private IdentityRoleId(int value)
+    private IdentityRoleId()
     {
-        Value = value;
     }
     
     public static IdentityRoleId Create(int value = 0)
     {
-        return new(value);
+        return new()
+        {
+            Value = value
+        };
     }
     
     public override IEnumerable<object> GetEqualityComponents()

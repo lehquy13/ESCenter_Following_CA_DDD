@@ -2,15 +2,15 @@
 
 namespace ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 
-public class TutorMajorId : ValueObject
+public class TutorId : ValueObject
 {
     public Guid Value { get; private set; }
 
-    private TutorMajorId()
+    private TutorId()
     {
     }
 
-    public static TutorMajorId Create(Guid value = default)
+    public static TutorId Create(Guid value = default)
     {
         return new()
         {

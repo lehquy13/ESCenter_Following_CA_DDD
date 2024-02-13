@@ -1,6 +1,5 @@
 ﻿using ESCenter.Application.Contracts.Courses.Dtos;
 using ESCenter.Application.Contracts.Notifications;
-using ESCenter.Domain.Aggregates.CourseRequests;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.CourseRequests;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;

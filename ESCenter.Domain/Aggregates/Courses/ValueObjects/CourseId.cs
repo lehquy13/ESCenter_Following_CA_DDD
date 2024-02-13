@@ -6,15 +6,15 @@ public class CourseId : ValueObject
 {
     public Guid Value { get; private set; }
     
-    private CourseId(Guid value)
+    private CourseId()
     {
-        Value = value;
     }
     
-    public static CourseId Create(Guid? value)
+    public static CourseId Create(Guid value = default)
     {
-        return new(value ?? Guid.NewGuid());
+        return new CourseId { Value = value == default ? Guid.NewGuid() : value };
     }
+
     
     public override IEnumerable<object> GetEqualityComponents()
     {

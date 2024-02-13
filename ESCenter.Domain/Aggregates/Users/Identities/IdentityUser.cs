@@ -27,7 +27,27 @@ public class IdentityUser : AggregateRoot<IdentityGuid>
         identityUser.HandlePassword(password);
         identityUser.IdentityRoleId = identityRoleId;
         identityUser.PhoneNumber = phoneNumber;
-        //identityUserId = User.Create(identityUser.Id);
+
+        return identityUser;
+    }
+    
+    public static IdentityUser Create(
+        string? userName,
+        string? email,
+        string? password,
+        string? phoneNumber,
+        IdentityGuid identityId,
+        IdentityRoleId identityRoleId)
+    {
+        var identityUser = new IdentityUser
+        {
+            Id = identityId
+        };
+        identityUser.SetUserName(userName);
+        identityUser.SetEmail(email);
+        identityUser.HandlePassword(password);
+        identityUser.IdentityRoleId = identityRoleId;
+        identityUser.PhoneNumber = phoneNumber;
 
         return identityUser;
     }

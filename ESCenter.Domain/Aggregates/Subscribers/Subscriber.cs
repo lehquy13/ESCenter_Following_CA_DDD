@@ -4,7 +4,7 @@ using Matt.SharedKernel.Domain.Primitives.Auditing;
 namespace ESCenter.Domain.Aggregates.Subscribers;
 public class Subscriber : CreationAuditedAggregateRoot<int>
 {
-    public IdentityGuid TutorId { get; private set; } = null!;
+    public IdentityGuid SubscriberId { get; private set; } = null!;
 
     private Subscriber()
     {
@@ -14,7 +14,7 @@ public class Subscriber : CreationAuditedAggregateRoot<int>
     {
         return new Subscriber()
         {
-            TutorId = tutorId
+            SubscriberId = tutorId
         };
     }
 }

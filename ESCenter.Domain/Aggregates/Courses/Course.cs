@@ -1,9 +1,9 @@
 ﻿using ESCenter.Domain.Aggregates.Courses.CourseRequests;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
-using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Courses;
@@ -32,47 +32,11 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public IReadOnlyCollection<CourseRequest> CourseRequests => _courseRequests.AsReadOnly();
 
-    public IdentityGuid? TutorId { get; private set; }
+    public TutorId? TutorId { get; private set; }
     public Review? Review { get; private set; }
 
     private Course()
     {
-    }
-
-    private Course(
-        string title,
-        string description,
-        LearningMode learningMode,
-        Fee sectionFee,
-        Fee chargeFee,
-        Gender genderRequirement,
-        AcademicLevel academicLevelRequirement,
-        string learnerGender,
-        string learnerName,
-        int numberOfLearner,
-        string contactNumber,
-        SessionDuration minutePerSession,
-        SessionPerWeek sessionPerWeek,
-        string address,
-        SubjectId subjectId,
-        IdentityGuid? learnerId)
-    {
-        Title = title;
-        Description = description;
-        LearningMode = learningMode;
-        SectionFee = sectionFee;
-        ChargeFee = chargeFee;
-        GenderRequirement = genderRequirement;
-        AcademicLevelRequirement = academicLevelRequirement;
-        LearnerGender = learnerGender;
-        LearnerName = learnerName;
-        NumberOfLearner = numberOfLearner;
-        ContactNumber = contactNumber;
-        SessionDuration = minutePerSession;
-        SessionPerWeek = sessionPerWeek;
-        Address = address;
-        SubjectId = subjectId;
-        LearnerId = learnerId;
     }
 
     public static Course Create(
@@ -95,24 +59,27 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         SubjectId subjectId,
         IdentityGuid? learnerId)
     {
-        return new Course(
-            title,
-            description,
-            learningMode,
-            Fee.Create(sectionFee, currency),
-            Fee.Create(chargeFee, currency),
-            genderRequirement,
-            academicLevelRequirement,
-            learnerGender,
-            learnerName,
-            numberOfLearner,
-            contactNumber,
-            SessionDuration.Create(sectionDuration, sectionType),
-            SessionPerWeek.Create(sectionPerWeek),
-            address,
-            subjectId,
-            learnerId
-        );
+        return new Course()
+        {
+            Id = CourseId.Create(),
+            Title = title,
+            Description = description,
+            LearningMode = learningMode,
+            SectionFee = Fee.Create(sectionFee, currency),
+            ChargeFee = Fee.Create(chargeFee, currency),
+            GenderRequirement = genderRequirement,
+            AcademicLevelRequirement = academicLevelRequirement,
+            LearnerGender = learnerGender,
+            LearnerName = learnerName,
+            NumberOfLearner = numberOfLearner,
+            ContactNumber = contactNumber,
+            SessionDuration = SessionDuration.Create(sectionDuration, sectionType),
+            SessionPerWeek = SessionPerWeek.Create(sectionPerWeek),
+            Address = address,
+            SubjectId = subjectId,
+            LearnerId = learnerId
+        };
+
     }
 
     public void ReviewCourse(short rate, string detail)
@@ -160,5 +127,9 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public void SetLearnerId(IdentityGuid learnerId)
     {
         LearnerId = learnerId;
+    }
+    public void SetTutorId(TutorId tutorId)
+    {
+        TutorId = tutorId;
     }
 }

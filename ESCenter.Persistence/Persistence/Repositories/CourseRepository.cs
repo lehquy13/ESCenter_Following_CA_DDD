@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;
-using ESCenter.Domain.Aggregates.Courses;
+﻿using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Persistence.Entity_Framework_Core;

@@ -16,12 +16,13 @@ public class Discovery : AggregateRoot<DiscoveryId>
     {
     }
 
-    public static Discovery Create(string title, string description)
+    public static Discovery Create(string title, string description, List<DiscoverySubject> discoverySubjects)
     {
         return new Discovery
         {
             Title = title,
-            Description = description
+            Description = description,
+            _discoverySubjects = discoverySubjects
         };
     }
 }

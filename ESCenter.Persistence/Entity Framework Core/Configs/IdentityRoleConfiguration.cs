@@ -13,7 +13,7 @@ public class IdentityRoleConfiguration : IEntityTypeConfiguration<IdentityRole>
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
             .HasColumnName("Id")
-            .ValueGeneratedNever()
+            .ValueGeneratedOnAdd()
             .HasConversion(
                 id => id.Value,
                 value => IdentityRoleId.Create(value)

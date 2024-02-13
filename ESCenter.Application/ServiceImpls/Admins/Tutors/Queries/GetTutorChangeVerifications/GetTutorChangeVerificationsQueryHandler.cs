@@ -1,7 +1,7 @@
 ﻿using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -26,8 +26,8 @@ public class GetTutorChangeVerificationsQueryHandler(
     {
         var tutorQ =
             from tutorR in tutorRepository.GetAll()
-            join userR in userRepository.GetAll() on tutorR.Id equals userR.Id 
-            where tutorR.Id == IdentityGuid.Create(request.TutorId)
+            join userR in userRepository.GetAll() on tutorR.UserId equals userR.Id 
+            where tutorR.Id == TutorId.Create(request.TutorId)
             select new
             {
                 Id = userR.Id.Value,

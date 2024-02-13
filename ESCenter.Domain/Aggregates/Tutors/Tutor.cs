@@ -1,11 +1,12 @@
 using ESCenter.Domain.Aggregates.Tutors.Entities;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Tutors;
 
-public class Tutor : AuditedAggregateRoot<IdentityGuid>
+public class Tutor : AuditedAggregateRoot<TutorId>
 {
     private List<TutorVerificationInfo> _tutorVerificationInfos = new();
     private List<ChangeVerificationRequest> _changeVerificationRequests = new();
@@ -16,6 +17,8 @@ public class Tutor : AuditedAggregateRoot<IdentityGuid>
     public string University { get; private set; } = string.Empty;
     public bool IsVerified { get; private set; }
     public float Rate { get; private set; }
+
+    public IdentityGuid UserId { get; private set; } = null!;
 
     // Acceptable entity because it is an entity that belongs to the aggregate root
     public IReadOnlyList<TutorVerificationInfo> TutorVerificationInfos => _tutorVerificationInfos.AsReadOnly();
@@ -48,12 +51,12 @@ public class Tutor : AuditedAggregateRoot<IdentityGuid>
     {
         _changeVerificationRequests.Add(tutorVerificationInfos);
     }
-    
+
     public void AddTutorMajor(TutorMajor tutorMajor)
     {
         _tutorMajors.Add(tutorMajor);
     }
-    
+
     public void UpdateAllMajor(List<TutorMajor> tutorMajors)
     {
         _tutorMajors = tutorMajors;
@@ -71,12 +74,14 @@ public class Tutor : AuditedAggregateRoot<IdentityGuid>
         bool isVerified,
         short rate = 0)
     {
+        var id = TutorId.Create();
+
         var tutorVerificationInfos = new List<TutorVerificationInfo>();
         foreach (var i in verificationInfos)
         {
             var tutorVerificationInfo = TutorVerificationInfo.Create(
                 i,
-                userId
+                id
             );
 
             tutorVerificationInfos.Add(tutorVerificationInfo);
@@ -85,7 +90,8 @@ public class Tutor : AuditedAggregateRoot<IdentityGuid>
 
         return new()
         {
-            Id = userId,
+            Id = id,
+            UserId = userId,
             AcademicLevel = academicLevel,
             _tutorVerificationInfos = tutorVerificationInfos,
             University = university,
@@ -107,5 +113,10 @@ public class Tutor : AuditedAggregateRoot<IdentityGuid>
     public void RemoveMajor(TutorMajor major)
     {
         _tutorMajors.Remove(major);
+    }
+
+    public void SetUserId(IdentityGuid id)
+    {
+        UserId = id;
     }
 }

@@ -1,8 +1,8 @@
 ﻿using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Specifications.Subjects;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -23,7 +23,7 @@ public class UpdateTutorInformationCommandHandler(
     {
         try
         {
-            var tutorId = IdentityGuid.Create(command.TutorBasicForUpdateDto.Id);
+            var tutorId = TutorId.Create(command.TutorBasicForUpdateDto.Id);
             var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
 
             // Check if the tutor exist

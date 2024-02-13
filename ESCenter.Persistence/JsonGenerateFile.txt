@@ -1,65 +1,166 @@
-﻿/*15 random course of male, no account*/
+﻿/*15 random course of MALE, no account*/
 [
-  '{{repeat(15, 15)}}',
+  '{{repeat(150, 150)}}',
   {
-            title: '{{lorem(1,"sentence")}}',
-            description: '{{lorem(1,"paragraph")}}',
-            status: '{{integer(0, 6)}}',
-            learningMode: 0,
-            fee:'{{floating(1000, 4000, 2, "0,0.00")}}',
-            chargeFee: '{{floating(1000, 4000, 2, "0,0.00")}}',
-            genderRequirement: '{{integer(0, 2)}}',
-            academicLevelRequirement: '{{integer(0, 3)}}',
-            learnerGender: 1,
-            learnerName: '{{firstName(["male"])}} {{surname()}}',
-            numberOfLearner: 1,
-            contactNumber: '+{{integer(1, 100)}} {{phone()}}',
-            minutePerSession: 90,
-            sessionPerWeek: 2,
-            address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',           
-            subjectId:'{{integer(0, 30)}}',
-            isDeleted: false,
-            deleterUserId: null,
-            deletionTime: null,
-            lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
-            lastModifierUserId: null,
-            creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
-            creatorUserId: null,
-            id: '0'
+    title: '{{lorem(1,"sentence")}}',
+    description: '{{lorem(1,"paragraph")}}',
+    status: '{{integer(0, 6)}}',
+    learningMode: 0,
+    fee:{
+      amount: '{{floating(1000, 4000, 2, "0,0.00")}}',
+      currency: 'USD'
+    },
+    chargeFee:{
+      amount:  '{{floating(1000, 4000, 2, "0,0.00")}}',
+      currency: 'USD'
+    },
+    genderRequirement: '{{integer(0, 2)}}',
+    academicLevelRequirement: '{{integer(0, 3)}}',
+    learnerGender: 1,
+    learnerName: '{{firstName(["male"])}} {{surname()}}',
+    numberOfLearner: 1,
+    contactNumber: '+{{integer(1, 100)}} {{phone()}}',
+    sessionDuration: {
+      value: 90,
+      type: 'Minute'
+    },
+    sessionPerWeek: {
+      value: 2
+    },
+    address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',           
+    subjectId:{
+      value : '{{integer(1, 30)}}'
+    },
+    isDeleted: false,
+    deleterUserId: null,
+    deletionTime: null,
+    lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    lastModifierUserId: null,
+    creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    creatorUserId: null,
+    id: {
+      value: '{{guid()}}'
+    }
+  }
+]
+
+/*15 random course of FEMALE, no account*/
+[
+  '{{repeat(50, 50)}}',
+  {
+    title: '{{lorem(1,"sentence")}}',
+    description: '{{lorem(1,"paragraph")}}',
+    status: '{{integer(0, 6)}}',
+    learningMode: 0,
+    fee:{
+      amount: '{{floating(1000, 4000, 2, "0,0.00")}}',
+      currency: 'USD'
+    },
+    chargeFee:{
+      amount:  '{{floating(1000, 4000, 2, "0,0.00")}}',
+      currency: 'USD'
+    },
+    genderRequirement: '{{integer(0, 2)}}',
+    academicLevelRequirement: '{{integer(0, 3)}}',
+    learnerGender: 2, // female?
+    learnerName: '{{firstName(["female"])}} {{surname()}}',
+    numberOfLearner: 1,
+    contactNumber: '+{{integer(1, 100)}} {{phone()}}',
+    sessionDuration: {
+      value: 90,
+      type: 'Minute'
+    },
+    sessionPerWeek: {
+      value: 2
+    },
+    address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',           
+    subjectId:{
+      value : '{{integer(1, 30)}}'
+    },
+    isDeleted: false,
+    deleterUserId: null,
+    deletionTime: null,
+    lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    lastModifierUserId: null,
+    creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    creatorUserId: null,
+     id: {
+          value: '{{guid()}}'
+        }
   }
 ]
 
 /*15 random female account*/
 [
-  '{{repeat(30, 30)}}',
+  [
+    '{{repeat(150, 150)}}',
+    {
+      firstName: '{{firstName(["female"])}}',
+      lastname:'{{surname()}}',
+        userName: function (tags) {
+          return this.firstName + this.lastName + tags.integer(1, 10);
+        },
+      gender: 'female',
+      birthYear:'{{integer(1980, 2003)}}',
+      address: {
+        city: '{{city()}}',
+        country: ' {{state()}}'
+      },       
+      description: '{{lorem(1,"paragraph")}}',
+      avatar: '{{random("https://res.cloudinary.com/dhehywasc/image/upload/v1696829332/female/female6.jpg",      "https://res.cloudinary.com/dhehywasc/image/upload/v1696829330/female/female5.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829330/female/female4.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829328/female/female3.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female7.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female2.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female1.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309984/female/female8_xdyrbh.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female9_w5km5c.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female10_qddbox.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female11_ziuigw.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female12_ut5g6u.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309986/female/female13_eqmlwt.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309984/female/female14_dzjcri.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829325/female/female0.png",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829325/female/female0.png")}}',
+      email:'{{email()}}',
+      isEmailConfirmed:'true',
+      phoneNumber: '+{{integer(1, 100)}} {{phone()}}',
+      password:'1q2w3E',
+      role:'learner',         
+      isDeleted: false,
+      deleterUserId: null,
+      deletionTime: null,
+      lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+      lastModifierUserId: null,
+      creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+      creatorUserId: null,
+      id: {
+        value:'{{guid()}}'
+      }
+    }
+  ]
+]
+
+/*15 random male account*/
+
+[
+  '{{repeat(200, 200)}}',
   {
-            firstName: '{{firstName(["female"])}}',
+    firstName: '{{firstName(["male"])}}',
     lastname:'{{surname()}}',
-    gender: 1,
     birthYear:'{{integer(1980, 2003)}}',
-     address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',       
+    userName: function (tags) {
+              return this.firstName + this.lastName + this.birthYear;
+            },
+    gender: 'male',
+    
+    address: {
+      city: '{{city()}}',
+      country: ' {{state()}}'
+    },       
     description: '{{lorem(1,"paragraph")}}',
-    image: '{{random("https://res.cloudinary.com/dhehywasc/image/upload/v1696829332/female/female6.jpg",  
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829330/female/female5.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829330/female/female4.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829328/female/female3.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female7.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female2.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female1.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829325/female/female0.png")}}',
+    avatar: '{{random( "https://res.cloudinary.com/dhehywasc/image/upload/v1702309842/male/male13_xrkqe2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male12_hfb0gy.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male11_g11pit.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male10.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male9.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male7.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male8.jpg", https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male5.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male6.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male3.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male4.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829233/male/male1.jpg", https://res.cloudinary.com/dhehywasc/image/upload/v1697006256/male/male0.png")}}',
     email:'{{email()}}',
     isEmailConfirmed:'true',
     phoneNumber: '+{{integer(1, 100)}} {{phone()}}',
-    password:'1q2w3E*',
+    password:'1q2w3E',
     role:'learner',         
-            isDeleted: false,
-            deleterUserId: null,
-            deletionTime: null,
-            lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
-            lastModifierUserId: null,
-            creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
-            creatorUserId: null,
-            id: '0'
+    isDeleted: false,
+    deleterUserId: null,
+    deletionTime: null,
+    lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    lastModifierUserId: null,
+    creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    creatorUserId: null,
+    id: {
+      value:'{{guid()}}'
+    }
   }
 ]
 
@@ -80,45 +181,40 @@
 [
   '{{repeat(50, 50)}}',
   {
-            firstName: '{{firstName(["male"])}}',
+    firstName: '{{firstName(["male"])}}',
     lastname:'{{surname()}}',
-    gender: 1,
+    gender: 'male',
     birthYear:'{{integer(1980, 2003)}}',
-     address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',       
+    address: {
+      city: '{{city()}}',
+      country: ' {{state()}}'
+    },   
     description: '{{lorem(1,"paragraph")}}',
-    image: '{{random(
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male10.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male9.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male7.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male8.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male5.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male6.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male2.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male3.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male4.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829233/male/male1.jpg",
-    "https://res.cloudinary.com/dhehywasc/image/upload/v1697006256/male/male0.png"
-    
-    ,)}}',
+    avatar: '{{random( "https://res.cloudinary.com/dhehywasc/image/upload/v1702309842/male/male13_xrkqe2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male12_hfb0gy.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male11_g11pit.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male10.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male9.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male7.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male8.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male5.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male6.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male3.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male4.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829233/male/male1.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006256/male/male0.png")}}',
     email:'{{email()}}',
     isEmailConfirmed:'true',
     phoneNumber: '+{{integer(1, 100)}} {{phone()}}',
     password:'1q2w3E*',
     role:'tutor',         
-            isDeleted: false,
-            deleterUserId: null,
-            deletionTime: null,
-            lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
-            lastModifierUserId: null,
-            creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
-            creatorUserId: null,
+    isDeleted: false,
+    deleterUserId: null,
+    deletionTime: null,
+    lastModificationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    lastModifierUserId: null,
+    creationTime: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    creatorUserId: null,
     academicLevel: '{{random("Student","Graduated","Lecturer")}}',
     university:'{{city()}} University',
     isVerify: true,
-    rate: 5,
-            id: '0'
+    rate: 0,
+    id: {
+      value: '{{guid()}}'
+    }
   }
 ]
+
+// Discovery
+
 
 'https://res.cloudinary.com/dhehywasc/image/upload/v1696829332/female/female6.jpg' or
 'https://res.cloudinary.com/dhehywasc/image/upload/v1696829330/female/female5.jpg' or  

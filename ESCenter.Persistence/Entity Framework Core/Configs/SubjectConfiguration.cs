@@ -11,20 +11,19 @@ internal class SubjectConfiguration : IEntityTypeConfiguration<Subject>
     {
         builder.ToTable(nameof(Subject));
         builder.HasKey(r => r.Id);
+        
         builder.Property(r => r.Id)
             .HasColumnName("Id")
-            .ValueGeneratedNever()
+            .ValueGeneratedOnAdd()
             .HasConversion(
                 id => id.Value,
                 value => SubjectId.Create(value)
             );
 
         builder.Property(r => r.Name)
-            .HasMaxLength(32)
             .IsRequired();
 
         builder.Property(r => r.Description)
-            .HasMaxLength(128)
             .IsRequired();
     }
 }

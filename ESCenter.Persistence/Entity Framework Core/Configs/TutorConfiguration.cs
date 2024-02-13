@@ -28,11 +28,11 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             ib.ToTable(nameof(ChangeVerificationRequest));
             ib.HasKey(x => x.Id);
             ib.Property(r => r.TutorId)
-                .HasColumnName("TutorId")
+                .HasColumnName(nameof(ChangeVerificationRequest.TutorId))
                 .ValueGeneratedNever()
                 .HasConversion(
                     id => id.Value,
-                    value => IdentityGuid.Create(value)
+                    value => TutorId.Create(value)
                 );
 
             ib.Property(r => r.RequestStatus).IsRequired();
@@ -85,7 +85,7 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
                 .WithMany()
                 .HasForeignKey(nameof(TutorMajor.SubjectId))
                 .IsRequired();
-            ib.Property(r => r.SubjectName).HasMaxLength(32).IsRequired();
+            ib.Property(r => r.SubjectName).IsRequired();
         });
     }
 
@@ -97,13 +97,21 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => IdentityGuid.Create(value)
+                value => TutorId.Create(value)
             );
 
         //Lack of User foreign key
+        builder.Property(r => r.UserId)
+            .HasColumnName(nameof(Tutor.UserId))
+            .ValueGeneratedNever()
+            .HasConversion(
+                id => id.Value,
+                value => IdentityGuid.Create(value)
+            );
+        
         builder.HasOne<User>()
-            .WithMany()
-            .HasForeignKey(nameof(Tutor.Id))
+            .WithOne()
+            .HasForeignKey<Tutor>(nameof(Tutor.UserId))
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
 

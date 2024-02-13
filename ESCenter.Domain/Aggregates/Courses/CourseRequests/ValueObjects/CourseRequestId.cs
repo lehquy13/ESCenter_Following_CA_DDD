@@ -1,6 +1,6 @@
 ﻿using Matt.SharedKernel.Domain.Primitives;
 
-namespace ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;
+namespace ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
 
 public class CourseRequestId : ValueObject
 {

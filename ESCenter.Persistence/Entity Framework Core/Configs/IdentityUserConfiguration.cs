@@ -14,7 +14,7 @@ internal class IdentityUserConfiguration : IEntityTypeConfiguration<IdentityUser
 
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
-            .HasColumnName("Id")
+            .HasColumnName(nameof(IdentityUser.Id))
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
@@ -37,19 +37,19 @@ internal class IdentityUserConfiguration : IEntityTypeConfiguration<IdentityUser
         builder.Property(r => r.PasswordHash).IsRequired();
         builder.Property(r => r.PasswordSalt).IsRequired();
 
-        builder.Property(r => r.UserName).HasMaxLength(128);
-        builder.Property(r => r.NormalizedUserName).HasMaxLength(128);
+        builder.Property(r => r.UserName);
+        builder.Property(r => r.NormalizedUserName);
 
-        builder.Property(r => r.PasswordHash).HasMaxLength(128);
+        builder.Property(r => r.PasswordHash);
 
         //Email is unique
         builder.HasIndex(r => r.Email).IsUnique();
-        builder.Property(r => r.Email).HasMaxLength(128);
-        
-        builder.Property(r => r.NormalizedEmail).HasMaxLength(128);
+        builder.Property(r => r.Email);
+
+        builder.Property(r => r.NormalizedEmail);
         builder.Property(r => r.EmailConfirmed);
 
-        builder.Property(r => r.PhoneNumber).HasMaxLength(11);
+        builder.Property(r => r.PhoneNumber);
         builder.Property(r => r.PhoneNumberConfirmed);
 
         builder.Property(r => r.ConcurrencyStamp).IsRequired();

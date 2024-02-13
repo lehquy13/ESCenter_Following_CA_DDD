@@ -1,6 +1,5 @@
 ﻿using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles;
-using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -26,7 +25,7 @@ public class GetTutorDetailQueryHandler(
     {
         var tutorDetailAsQueryable =
             from user in userRepository.GetAll()
-            join tutor in tutorRepository.GetAll() on user.Id equals tutor.Id
+            join tutor in tutorRepository.GetAll() on user.Id equals tutor.UserId
             where user.Id == IdentityGuid.Create(request.TutorId)
             select new
             {

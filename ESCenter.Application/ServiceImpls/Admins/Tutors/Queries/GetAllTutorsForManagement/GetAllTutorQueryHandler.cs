@@ -29,7 +29,7 @@ public class GetAllTutorQueryHandler(
     {
         var tutorQ =
             from userR in userRepository.GetAll()
-            join tutorR in tutorRepository.GetAll() on userR.Id equals tutorR.Id
+            join tutorR in tutorRepository.GetAll() on userR.Id equals tutorR.UserId
             join tutorRequestR in tutorRequestRepository.GetAll() on tutorR.Id equals tutorRequestR.TutorId into
                 tutorRequests
             select new TutorListDto()

@@ -3,6 +3,7 @@ using ESCenter.Application.ServiceImpls.Admins.Courses;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -19,6 +20,7 @@ public class GetLearningCourseDetailQueryHandler(
     ICourseRepository courseRepository,
     ISubjectRepository subjectRepository,
     IUserRepository userRepository,
+    ITutorRepository tutorRepository,
     IIdentityRepository identityRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IUnitOfWork unitOfWork,
@@ -27,14 +29,16 @@ public class GetLearningCourseDetailQueryHandler(
 )
     : QueryHandlerBase<GetLearningCourseDetailQuery, CourseForDetailDto>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<CourseForDetailDto>> Handle(GetLearningCourseDetailQuery request, CancellationToken cancellationToken)
+    public override async Task<Result<CourseForDetailDto>> Handle(GetLearningCourseDetailQuery request,
+        CancellationToken cancellationToken)
     {
         try
         {
             var courseRequestQueryable =
-                from courseFromDb in courseRepository.GetAll() 
+                from courseFromDb in courseRepository.GetAll()
                 join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-                join tutor in userRepository.GetAll() on courseFromDb.TutorId equals tutor.Id
+                join tutor1 in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor1.Id
+                join tutor in userRepository.GetAll() on tutor1.UserId equals tutor.Id
                 join identityFromDb in identityRepository.GetAll() on tutor.Id equals identityFromDb.Id
                 where courseFromDb.TutorId == IdentityGuid.Create(request.LearnerId) &&
                       courseFromDb.Id == CourseId.Create(request.CourseId)
@@ -53,7 +57,7 @@ public class GetLearningCourseDetailQueryHandler(
             {
                 return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
             }
-            
+
             var classDto = Mapper.Map<CourseForDetailDto>(course);
 
             return classDto;

@@ -18,7 +18,7 @@ internal class DiscoveryUserConfiguration : IEntityTypeConfiguration<DiscoveryUs
 
         builder.Property(r => r.Id)
             .HasColumnName(nameof(DiscoveryUser.Id))
-            .ValueGeneratedNever()
+            .ValueGeneratedOnAdd()
             .HasConversion(
                 id => id.Value,
                 value => DiscoveryUserId.Create(value)

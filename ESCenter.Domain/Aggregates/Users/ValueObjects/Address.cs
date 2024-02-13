@@ -4,18 +4,21 @@ namespace ESCenter.Domain.Aggregates.Users.ValueObjects;
 
 public class Address : ValueObject
 {
-    public string City { get; } = string.Empty;
+    public string City { get; private set; } = string.Empty;
 
-    public string Country { get; } = string.Empty;
+    public string Country { get; private set; } = string.Empty;
 
-    public Address()
+    private Address()
     {
     }
 
-    public Address(string city, string country)
+    public static Address Create(string city, string country)
     {
-        City = city;
-        Country = country;
+        return new Address
+        {
+            City = city,
+            Country = country
+        };
     }
 
     public override string ToString()

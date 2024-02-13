@@ -1,5 +1,6 @@
-using ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;
+using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
@@ -8,7 +9,7 @@ namespace ESCenter.Domain.Aggregates.Courses.CourseRequests;
 
 public class CourseRequest : AuditedEntity<CourseRequestId>
 {
-    public IdentityGuid TutorId { get; private set; } = null!;
+    public TutorId TutorId { get; private set; } = null!;
     public CourseId CourseId { get; private set; } = null!;
     public string Description { get; private set; } = string.Empty;
     public RequestStatus RequestStatus { get; private set; } = RequestStatus.Pending;
@@ -18,7 +19,7 @@ public class CourseRequest : AuditedEntity<CourseRequestId>
     }
 
     public static CourseRequest Create(
-        IdentityGuid tutorId,
+        TutorId tutorId,
         CourseId courseId,
         string description)
     {

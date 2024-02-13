@@ -1,10 +1,11 @@
-﻿using ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;
-using ESCenter.Domain.Aggregates.Courses;
+﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.CourseRequests;
+using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
@@ -35,13 +36,10 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
             );
 
         builder.Property(r => r.Title)
-            .HasMaxLength(128)
             .IsRequired();
         builder.Property(r => r.Description)
-            .HasMaxLength(128)
             .IsRequired();
         builder.Property(r => r.Address)
-            .HasMaxLength(64)
             .IsRequired();
 
         builder.Property(o => o.SubjectId)
@@ -73,14 +71,13 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
 
         builder.HasOne<User>()
             .WithMany()
-            .HasForeignKey(nameof(Course.LearnerId))
-            .IsRequired();
+            .HasForeignKey(nameof(Course.LearnerId));
 
         builder.Property(o => o.TutorId) // TODO: Check if this is correct
             .ValueGeneratedNever()
             .HasConversion(
                 id => id!.Value,
-                value => IdentityGuid.Create(value));
+                value => TutorId.Create(value));
 
         // builder.HasOne<Tutor>()
         //     .WithMany()
@@ -156,7 +153,7 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
                 .ValueGeneratedNever()
                 .HasConversion(
                     id => id.Value,
-                    value => IdentityGuid.Create(value)
+                    value => TutorId.Create(value)
                 );
 
             ib.HasOne<Tutor>()
@@ -164,7 +161,7 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
                 .HasForeignKey(nameof(CourseRequest.TutorId))
                 .IsRequired();
 
-            ib.Property(r => r.Description).HasMaxLength(128).IsRequired();
+            ib.Property(r => r.Description).IsRequired();
         });
     }
 }

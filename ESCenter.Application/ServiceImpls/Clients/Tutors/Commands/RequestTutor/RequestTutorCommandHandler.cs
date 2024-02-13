@@ -2,6 +2,7 @@
 using ESCenter.Application.ServiceImpls.Admins.Tutors;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;
@@ -29,7 +30,7 @@ public class RequestTutorCommandHandler(
         }
 
         var tutorRequest = TutorRequest.Create(
-            IdentityGuid.Create(command.TutorRequestForCreateDto.TutorId),
+            TutorId.Create(command.TutorRequestForCreateDto.TutorId),
             IdentityGuid.Create(command.TutorRequestForCreateDto.LearnerId),
             command.TutorRequestForCreateDto.RequestMessage);
 

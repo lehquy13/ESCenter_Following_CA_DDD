@@ -1,12 +1,11 @@
 ﻿using ESCenter.Application.Contracts.Courses.Dtos;
 using ESCenter.Application.ServiceImpls.Admins.Courses;
-using ESCenter.Domain.Aggregates.CourseRequests;
-using ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -19,6 +18,7 @@ public class GetCourseRequestDetailQueryHandler(
     ICourseRepository courseRepository,
     ISubjectRepository subjectRepository,
     IUserRepository userRepository,
+    ITutorRepository tutorRepository,
     IIdentityRepository identityRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IUnitOfWork unitOfWork,
@@ -34,7 +34,8 @@ public class GetCourseRequestDetailQueryHandler(
             var courseRequestQueryable =
                 from courseFromDb in courseRepository.GetAll()
                 join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-                join tutorFromDb in userRepository.GetAll() on courseFromDb.TutorId equals tutorFromDb.Id
+                join tutorFromDb1 in tutorRepository.GetAll() on courseFromDb.TutorId equals tutorFromDb1.Id
+                join tutorFromDb in userRepository.GetAll() on tutorFromDb1.UserId equals tutorFromDb.Id
                 join identityFromDb in identityRepository.GetAll() on tutorFromDb.Id equals identityFromDb.Id
                 where courseFromDb.CourseRequests.Any(
                     x => x.Id == CourseRequestId.Create(request.CourseRequestId))

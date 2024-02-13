@@ -14,7 +14,7 @@ public class DiscoverySubject : Entity<int>
     {
     }
 
-    public static DiscoverySubject Create(DiscoveryId discoveryId, SubjectId subjectId,string subjectName)
+    public static DiscoverySubject Create(DiscoveryId discoveryId, SubjectId subjectId, string subjectName)
     {
         return new DiscoverySubject
         {

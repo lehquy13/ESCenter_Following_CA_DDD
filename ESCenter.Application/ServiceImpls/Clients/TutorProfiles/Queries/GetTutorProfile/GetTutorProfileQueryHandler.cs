@@ -1,6 +1,6 @@
 ﻿using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Queries;
@@ -18,7 +18,7 @@ public class GetTutorProfileQueryHandler(
     public override async Task<Result<TutorMinimalBasicDto>> Handle(GetTutorProfileQuery request,
         CancellationToken cancellationToken)
     {
-        var tutor = await tutorRepository.GetAsync(IdentityGuid.Create(request.TutorId), cancellationToken);
+        var tutor = await tutorRepository.GetAsync(TutorId.Create(request.TutorId), cancellationToken);
 
         if (tutor is null)
         {

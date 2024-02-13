@@ -1,4 +1,4 @@
-﻿using ESCenter.Domain.Aggregates.CourseRequests.ValueObjects;
+﻿using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;

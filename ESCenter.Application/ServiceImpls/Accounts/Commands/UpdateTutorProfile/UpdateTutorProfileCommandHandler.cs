@@ -33,7 +33,7 @@ public class UpdateTutorProfileCommandHandler(
             var tutorAsQueryable =
                 from tutorFromDb in tutorRepository.GetAll()
                 join userFromDb in userRepository.GetAll()
-                    on tutorFromDb.Id equals userFromDb.Id
+                    on tutorFromDb.UserId equals userFromDb.Id
                 select new
                 {
                     Tutor = tutorFromDb,

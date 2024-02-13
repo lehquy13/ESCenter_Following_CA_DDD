@@ -2,6 +2,7 @@
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ internal class TutorRequestConfiguration : IEntityTypeConfiguration<TutorRequest
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => IdentityGuid.Create(value)
+                value => TutorId.Create(value)
             );
 
         builder.HasOne<Tutor>()
@@ -47,7 +48,7 @@ internal class TutorRequestConfiguration : IEntityTypeConfiguration<TutorRequest
             .HasForeignKey(nameof(TutorRequest.TutorId))
             .IsRequired();
         
-        builder.Property(r => r.Message).HasMaxLength(128).IsRequired();
+        builder.Property(r => r.Message).IsRequired();
         builder.Property(r => r.RequestStatus).IsRequired();
     }
 }

@@ -1,8 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
-using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Errors;
@@ -10,10 +8,7 @@ using ESCenter.Domain.DomainServices.Interfaces;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Specifications.Identities;
 using ESCenter.Domain.Specifications.Subjects;
-using ESCenter.Domain.Specifications.Users;
-using MapsterMapper;
 using Matt.ResultObject;
-using Matt.SharedKernel.Domain;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
@@ -140,20 +135,19 @@ public class IdentityDomainServices(
             }
 
             // Check if the user is already a tutor
-            var alTutor = await tutorRepository.GetAsync(userId);
+            var alTutor = await tutorRepository.GetTutorByUserId(userId);
 
             if (alTutor is not null)
             {
                 return Result.Fail(DomainServiceErrors.AlreadyTutorError);
             }
 
-            Tutor tutor = Tutor.Create(
+            var tutor = Tutor.Create(
                 user.Id,
                 academicLevel,
                 university,
                 tutorVerificationInfoDtos,
-                false,
-                0
+                false
             );
 
             // TODO: Set user role to tutor

@@ -41,7 +41,7 @@ public class GetTutorsQueryHandler(
         {
             var tutors =
                 from tutor in tutorRepository.GetAll()
-                join user in userRepository.GetAll() on tutor.Id equals user.Id
+                join user in userRepository.GetAll() on tutor.UserId equals user.Id
                 join course in courseRepository.GetAll() on tutor.Id equals course.TutorId into
                     groupCourse
                 where tutor.IsVerified == true

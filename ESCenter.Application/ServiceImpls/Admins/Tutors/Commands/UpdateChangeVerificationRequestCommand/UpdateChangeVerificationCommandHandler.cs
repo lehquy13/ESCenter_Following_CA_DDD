@@ -1,7 +1,7 @@
 ﻿using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -18,7 +18,7 @@ public class UpdateChangeVerificationCommandHandler(
     public override async Task<Result> Handle(UpdateChangeVerificationCommand command,
         CancellationToken cancellationToken)
     {
-        var tutor = await tutorRepository.GetAsync(IdentityGuid.Create(command.TutorId), cancellationToken);
+        var tutor = await tutorRepository.GetAsync(TutorId.Create(command.TutorId), cancellationToken);
 
         if (tutor is null)
         {

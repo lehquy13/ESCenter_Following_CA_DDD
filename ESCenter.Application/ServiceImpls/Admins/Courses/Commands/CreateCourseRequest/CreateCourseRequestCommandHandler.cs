@@ -2,6 +2,7 @@
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.CourseRequests;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
@@ -31,7 +32,7 @@ public class CreateCourseRequestCommandHandler(
             }
 
             var courseRequestToCreate = CourseRequest.Create(
-                IdentityGuid.Create(command.CourseRequestForCreateDto.TutorId),
+                TutorId.Create(command.CourseRequestForCreateDto.TutorId),
                 CourseId.Create(command.CourseRequestForCreateDto.CourseId),
                 string.Empty
             );

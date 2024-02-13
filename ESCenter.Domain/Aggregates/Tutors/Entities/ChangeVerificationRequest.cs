@@ -1,5 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Tutors.Errors;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using Matt.SharedKernel.Domain.Primitives;
 
@@ -8,7 +8,7 @@ namespace ESCenter.Domain.Aggregates.Tutors.Entities;
 public class ChangeVerificationRequest : Entity<int>
 {
     private List<ChangeVerificationRequestDetail> _changeVerificationRequestDetails = new();
-    public IdentityGuid TutorId { get; private set; } = null!;
+    public TutorId TutorId { get; private set; } = null!;
 
     public RequestStatus RequestStatus { get; private set; }
 
@@ -19,7 +19,7 @@ public class ChangeVerificationRequest : Entity<int>
     {
     }
     
-    public static ChangeVerificationRequest Create(IdentityGuid tutorId, List<string> urls)
+    public static ChangeVerificationRequest Create(TutorId tutorId, List<string> urls)
     {
         if (urls.Count < 1)
         {

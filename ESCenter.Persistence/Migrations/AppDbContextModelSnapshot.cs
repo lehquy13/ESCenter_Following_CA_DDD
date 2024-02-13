@@ -17,7 +17,7 @@ namespace ESCenter.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -33,8 +33,7 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -54,8 +53,7 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GenderRequirement")
                         .HasColumnType("int");
@@ -73,7 +71,7 @@ namespace ESCenter.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("LearnerId")
+                    b.Property<Guid?>("LearnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LearnerName")
@@ -102,8 +100,7 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("TutorId")
                         .HasColumnType("uniqueidentifier");
@@ -120,15 +117,15 @@ namespace ESCenter.Persistence.Migrations
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Discoveries.Discovery", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -136,16 +133,17 @@ namespace ESCenter.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubjectId");
-
                     b.ToTable("Discovery", (string)null);
                 });
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.DiscoveryUsers.DiscoveryUser", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DiscoveryId")
                         .HasColumnType("int")
@@ -189,8 +187,7 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("int");
@@ -207,8 +204,11 @@ namespace ESCenter.Persistence.Migrations
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Subjects.Subject", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -224,8 +224,7 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -238,8 +237,7 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -260,11 +258,13 @@ namespace ESCenter.Persistence.Migrations
                     b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TutorId")
+                    b.Property<Guid>("SubscriberId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("TutorId");
+                        .HasColumnName("SubscriberId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SubscriberId");
 
                     b.ToTable("Subscriber", (string)null);
                 });
@@ -293,8 +293,7 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RequestStatus")
                         .HasColumnType("int");
@@ -343,7 +342,14 @@ namespace ESCenter.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Tutor", (string)null);
                 });
@@ -351,8 +357,11 @@ namespace ESCenter.Persistence.Migrations
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Users.Identities.IdentityRole", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -374,8 +383,7 @@ namespace ESCenter.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -385,32 +393,27 @@ namespace ESCenter.Persistence.Migrations
                         .HasColumnName("IdentityRoleId");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("varbinary(128)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -450,16 +453,14 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
@@ -476,12 +477,10 @@ namespace ESCenter.Persistence.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -496,9 +495,7 @@ namespace ESCenter.Persistence.Migrations
                 {
                     b.HasOne("ESCenter.Domain.Aggregates.Users.User", null)
                         .WithMany()
-                        .HasForeignKey("LearnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LearnerId");
 
                     b.HasOne("ESCenter.Domain.Aggregates.Subjects.Subject", null)
                         .WithMany()
@@ -571,8 +568,7 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.Property<string>("Description")
                                 .IsRequired()
-                                .HasMaxLength(128)
-                                .HasColumnType("nvarchar(128)");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<DateTime?>("LastModificationTime")
                                 .HasColumnType("datetime2");
@@ -647,12 +643,6 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Discoveries.Discovery", b =>
                 {
-                    b.HasOne("ESCenter.Domain.Aggregates.Subjects.Subject", null)
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsMany("ESCenter.Domain.Aggregates.Discoveries.Entities.DiscoverySubject", "DiscoverySubjects", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -676,10 +666,18 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasIndex("DiscoveryId");
 
+                            b1.HasIndex("SubjectId");
+
                             b1.ToTable("DiscoverySubject", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("DiscoveryId");
+
+                            b1.HasOne("ESCenter.Domain.Aggregates.Subjects.Subject", null)
+                                .WithMany()
+                                .HasForeignKey("SubjectId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
                         });
 
                     b.Navigation("DiscoverySubjects");
@@ -696,6 +694,15 @@ namespace ESCenter.Persistence.Migrations
                     b.HasOne("ESCenter.Domain.Aggregates.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ESCenter.Domain.Aggregates.Subscribers.Subscriber", b =>
+                {
+                    b.HasOne("ESCenter.Domain.Aggregates.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("SubscriberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -718,8 +725,8 @@ namespace ESCenter.Persistence.Migrations
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Tutors.Tutor", b =>
                 {
                     b.HasOne("ESCenter.Domain.Aggregates.Users.User", null)
-                        .WithMany()
-                        .HasForeignKey("Id")
+                        .WithOne()
+                        .HasForeignKey("ESCenter.Domain.Aggregates.Tutors.Tutor", "UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -787,8 +794,7 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.Property<string>("SubjectName")
                                 .IsRequired()
-                                .HasMaxLength(32)
-                                .HasColumnType("nvarchar(32)");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<Guid>("TutorId")
                                 .HasColumnType("uniqueidentifier");
