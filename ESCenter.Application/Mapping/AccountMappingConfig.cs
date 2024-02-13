@@ -1,5 +1,7 @@
-﻿using ESCenter.Application.Contracts.Users.Learners;
+﻿using ESCenter.Application.Contracts.Authentications;
+using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.Identities;
 using Mapster;
 
 namespace ESCenter.Application.Mapping;
@@ -19,5 +21,11 @@ public class AccountMappingConfig : IRegister
             //.Map(des => des.Email, src => src.Email) 
             //.Map(des => des.PhoneNumber, src => src.PhoneNumber)
             .IgnoreNonMapped(true);
+
+        config.NewConfig<(User, IdentityUser, string), UserLoginDto>()
+            .Map(des => des, src => src.Item1.GetFullName())
+            .Map(des => des.Image, src => src.Item1.Avatar)
+            .Map(des => des.Email, src => src.Item1.Email)
+            .Map(des => des.Role, src => src.Item3);
     }
 }

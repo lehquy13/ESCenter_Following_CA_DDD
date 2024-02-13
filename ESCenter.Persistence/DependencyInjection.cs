@@ -1,8 +1,4 @@
-﻿using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Persistence.Entity_Framework_Core;
-using ESCenter.Persistence.Persistence.Repositories;
-using Matt.SharedKernel.Application.Contracts.Interfaces;
-using Matt.SharedKernel.Domain.Interfaces;
+﻿using ESCenter.Persistence.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

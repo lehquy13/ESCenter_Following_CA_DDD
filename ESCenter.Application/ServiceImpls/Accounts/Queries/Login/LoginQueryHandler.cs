@@ -1,10 +1,14 @@
 ﻿using ESCenter.Application.Contracts.Authentications;
 using ESCenter.Application.Interfaces.Authentications;
+using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;
 using Matt.ResultObject;
+using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
+using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
 namespace ESCenter.Application.ServiceImpls.Accounts.Queries.Login;
 
@@ -13,19 +17,39 @@ public class LoginQueryHandler(
     IAppLogger<LoginQueryHandler> logger,
     IMapper mapper,
     IIdentityRepository identityRepository,
+    IReadOnlyRepository<IdentityRole, IdentityRoleId> identityRoleRepository,
+    IUserRepository userRepository,
+    IAsyncQueryableExecutor asyncQueryableExecutor,
     IJwtTokenGenerator jwtTokenGenerator
 )
     : QueryHandlerBase<LoginQuery, AuthenticationResult>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<AuthenticationResult>> Handle(LoginQuery request,
+    public override async Task<Result<AuthenticationResult>> Handle(
+        LoginQuery request,
         CancellationToken cancellationToken)
     {
         try
         {
-            var identityUser = await identityRepository
-                .FindByEmailAsync(request.Email, cancellationToken);
-
-            if (identityUser is null || identityUser.ValidatePassword(request.Password) is false)
+            var identityUserQ =
+                from identity in identityRepository.GetAll()
+                join user in userRepository.GetAll() on identity.Id equals user.Id
+                join role in identityRoleRepository.GetAll() on identity.IdentityRoleId equals role.Id
+                where identity.Email == request.Email
+                select new
+                {
+                    User = user,
+                    Identity = identity,
+                    Role = role.Name
+                };
+            
+            var identityUser = await asyncQueryableExecutor
+                .FirstOrDefaultAsync(
+                    identityUserQ, 
+                    false,
+                    cancellationToken);
+                
+            if (identityUser is null || 
+                identityUser.Identity.ValidatePassword(request.Password) is false)
             {
                 return Result.Fail(AuthenticationErrorMessages.LoginFailError);
             }

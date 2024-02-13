@@ -18,7 +18,7 @@ internal class JwtTokenGenerator(IOptions<JwtSettings> options) : IJwtTokenGener
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtSettings.Secret)
             ),
-            SecurityAlgorithms.HmacSha512Signature
+            SecurityAlgorithms.HmacSha256
         );
         var claims = new[]
         {

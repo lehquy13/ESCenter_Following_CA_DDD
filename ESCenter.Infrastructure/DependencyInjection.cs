@@ -3,7 +3,6 @@ using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Application.Interfaces.Emails;
 using ESCenter.Domain.Shared.Courses;
-using ESCenter.Infrastructure.ServiceImpls;
 using ESCenter.Infrastructure.ServiceImpls.AppLogger;
 using ESCenter.Infrastructure.ServiceImpls.Authentication;
 using ESCenter.Infrastructure.ServiceImpls.Cloudinary;
@@ -116,11 +115,11 @@ namespace ESCenter.Infrastructure
             {
                 options.AddPolicy("RequireAdministratorRole", policy =>
                 {
-                    policy.RequireRole(UserRole.Admin.ToString());
+                    policy.RequireRole("Admin");
                 });
                 options.AddPolicy("RequireTutorRole", policy =>
                 {
-                    policy.RequireRole(UserRole.Tutor.ToString());
+                    policy.RequireRole("Tutor");
                 });
  
             });

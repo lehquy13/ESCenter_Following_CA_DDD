@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ESCenter.Persistence.Persistence.Repositories;
 
 internal class IdentityRepository(
-    AppDbContext appDbContext, 
+    AppDbContext appDbContext,
     IAppLogger<IdentityRepository> logger)
     : RepositoryImpl<IdentityUser, IdentityGuid>(appDbContext, logger), IIdentityRepository
 {
@@ -43,14 +43,18 @@ internal class IdentityRepository(
         }
     }
 
-    public async Task<IdentityUser?> FindByEmailAsync(string normalizedEmail,
+    public async Task<IdentityUser?> FindByEmailAsync(
+        string normalizedEmail,
         CancellationToken cancellationToken = default)
     {
         try
         {
             return await AppDbContext.IdentityUsers
                 .Include(x => x.IdentityRole)
-                .FirstOrDefaultAsync(x => x.Email != null && x.Email.ToUpper() == normalizedEmail, cancellationToken);
+                .FirstOrDefaultAsync(
+                    x =>
+                        x.Email != null &&
+                        x.Email.Equals(normalizedEmail), cancellationToken);
         }
         catch (Exception ex)
         {
