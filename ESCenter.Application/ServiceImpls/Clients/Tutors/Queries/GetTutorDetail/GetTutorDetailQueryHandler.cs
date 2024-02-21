@@ -21,9 +21,9 @@ public class GetTutorDetailQueryHandler(
     IAppLogger<GetTutorDetailQueryHandler> logger,
     IMapper mapper,
     IUnitOfWork unitOfWork)
-    : QueryHandlerBase<GetTutorDetailQuery, TutorForDetailDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetTutorDetailQuery, TutorDetailForClientDto>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<TutorForDetailDto>> Handle(GetTutorDetailQuery request,
+    public override async Task<Result<TutorDetailForClientDto>> Handle(GetTutorDetailQuery request,
         CancellationToken cancellationToken)
     {
         var tutorDetailAsQueryable =
@@ -46,7 +46,7 @@ public class GetTutorDetailQueryHandler(
             return Result.Fail(TutorProfileAppServiceError.NonExistTutorError);
         }
 
-        var tutorForDetailDto = Mapper.Map<TutorForDetailDto>(queryResult);
+        var tutorForDetailDto = Mapper.Map<TutorDetailForClientDto>(queryResult);
 
         return tutorForDetailDto;
     }

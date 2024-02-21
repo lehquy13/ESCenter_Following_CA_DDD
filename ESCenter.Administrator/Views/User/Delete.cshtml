@@ -1,4 +1,5 @@
-﻿@model ESCenter.Application.Contracts.Users.BasicUsers.UserForDetailDto
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ESCenter.Application.Contracts.Users.Learners.LearnerForCreateUpdateDto
 
 @{
     ViewData["Title"] = "Delete";
@@ -31,12 +32,6 @@
         </dt>
         <dd class = "col-sm-8">
             @Html.DisplayFor(model => model.BirthYear)
-        </dd>
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Address)
         </dd>
         <dt class = "col-sm-4">
             @Html.DisplayNameFor(model => model.Description)

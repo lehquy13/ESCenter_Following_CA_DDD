@@ -11,6 +11,7 @@ using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorChangeVeri
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorMajors;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorRequests;
+using ESCenter.Application.ServiceImpls.Admins.Users.Commands.CreateUpdateUserProfile;
 using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
 using ESCenter.Domain.Shared;
 using MapsterMapper;
@@ -76,7 +77,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
             );
         try
         {
-            var result = await sender.Send(new CreateUpdateLearnerProfileCommand(tutorForProfileDto));
+            var result = await sender.Send(new CreateUpdateUserProfileCommand(tutorForProfileDto));
 
             if (!result.IsSuccess)
             {
@@ -170,7 +171,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     public IActionResult Create()
     {
         PackStaticListToView();
-        return View(new TutorForDetailDto());
+        return View(new TutorUpdateDto());
     }
 
     [HttpPost("create")]
@@ -179,7 +180,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     {
         if (!ModelState.IsValid)
         {
-            var createViewModel = mapper.Map<TutorForDetailDto>(tutorCreateUpdateDto);
+            var createViewModel = mapper.Map<TutorUpdateDto>(tutorCreateUpdateDto);
             return View("Create", createViewModel);
         }
 

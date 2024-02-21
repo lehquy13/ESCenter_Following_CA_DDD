@@ -7,7 +7,6 @@ namespace ESCenter.Administrator.Controllers;
 /// A navigate controller
 /// </summary>
 [Route("[controller]")]
-[Authorize(Policy = "RequireAdministratorRole")]
 
 public class RequestGettingClassController : Controller
 {

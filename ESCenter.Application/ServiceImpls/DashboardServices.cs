@@ -3,8 +3,8 @@ using ESCenter.Application.Contracts.Notifications;
 using ESCenter.Application.Interfaces.DashBoards;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Notifications;
-using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
 using Matt.ResultObject;
@@ -17,7 +17,6 @@ namespace ESCenter.Application.ServiceImpls;
 internal class DashboardServices(
     ICourseRepository courseRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUserRepository userRepository,
     IIdentityRepository identityRepository,
     IRepository<Notification, int> notificationRepository,
     IMapper mapper,
@@ -219,26 +218,17 @@ internal class DashboardServices(
             .GroupBy(x => x.CreationTime.Day).ToList();
 
         var allUserToDay =
-            from iden in identityRepository.GetAll()
-            join user in userRepository.GetAll() on iden.Id equals user.Id
-            where user.CreationTime >= startDay && iden.IdentityRoleId.Value == IdentityRole.Learner
-            group user by user.CreationTime.Day
-            into g
-            select new
-            {
-                IdentityLearner = g
-            };
-
+            identityRepository.GetAll()
+                .Where(x => x.CreationTime >= startDay &&
+                            x.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Learner + 1))
+                .GroupBy(x => x.CreationTime.Day);
+             
         var allTutorToday =
-            from iden in identityRepository.GetAll()
-            join user in userRepository.GetAll() on iden.Id equals user.Id
-            where user.CreationTime >= startDay && iden.IdentityRoleId.Value == IdentityRole.Tutor
-            group user by user.CreationTime.Day
-            into g
-            select new
-            {
-                IdentityLearner = g
-            };
+            identityRepository.GetAll()
+                .Where(x => x.CreationTime >= startDay &&
+                            x.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Tutor + 1))
+                .GroupBy(x => x.CreationTime.Day);
+       
 
         var allLearner = await asyncQueryableExecutor.ToListAsync(allUserToDay, false);
         var allTutor = await asyncQueryableExecutor.ToListAsync(allTutorToday, false);
@@ -259,11 +249,11 @@ internal class DashboardServices(
         var studentsInWeek = dates.GroupJoin(
                 allLearner,
                 d => d,
-                c => c.IdentityLearner.Key,
+                c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.FirstOrDefault()?.IdentityLearner.Count() ?? 0
+                    classInfo = c.FirstOrDefault()?.Count() ?? 0
                 })
             .Select(x => x.classInfo)
             .ToList();
@@ -271,11 +261,11 @@ internal class DashboardServices(
         var tutorsInWeek = dates.Join(
                 allTutor,
                 d => d,
-                c => c.IdentityLearner.Key,
+                c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    classInfo = c.IdentityLearner?.Count() ?? 0
+                    classInfo = c?.Count() ?? 0
                 })
             .Select(x => x.classInfo)
             .ToList();
@@ -295,11 +285,10 @@ internal class DashboardServices(
         await Task.CompletedTask;
 
         // Create a dateListRange
-        var notiListQueryable = notificationRepository.GetAll()
-            .Where(x => x.CreationTime >= DateTime.Today);
-        
+        var notiListQueryable = notificationRepository.GetAll().Where(x => x.CreationTime >= DateTime.Today);
+
         var notiList = await asyncQueryableExecutor.ToListAsync(notiListQueryable, false);
-        
+
         var notiDtoList = Mapper.Map<List<NotificationDto>>(notiList);
         return notiDtoList;
     }

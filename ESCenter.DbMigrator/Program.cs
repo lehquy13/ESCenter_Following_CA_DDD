@@ -261,7 +261,7 @@ internal static class Program
         }
     }
 
-    private static void SeedTutorMajor(List<Tutor> tutorData, List<Subject> subjects)
+    private static void SeedTutorMajor(List<Tutor> tutorData, IReadOnlyList<Subject> subjects)
     {
         var ii = 50;
 
@@ -270,18 +270,29 @@ internal static class Program
             if (ii-- <= 0) break;
             var tmList = new List<TutorMajor>();
 
-            List<int> addedList = new();
-            for (var j = 0; j < 10; j++)
+            List<int> addedList = [];
+            var randomQuantity = new Random().Next(1, subjects.Count / 2);
+
+            for (var j = 0; j < randomQuantity; j++)
             {
                 var random = new Random().Next(0, subjects.Count - 1);
+
                 if (addedList.Contains(random))
                 {
                     j--;
                     continue;
                 }
 
-                var major = TutorMajor.Create(tutor.Id, SubjectId.Create(random + 1), subjects[random].Name);
-                tmList.Add(major);
+                tmList.Add(
+                    TutorMajor.Create(
+                        tutor.Id,
+                        SubjectId.Create(random + 1),
+                        subjects[random].Name
+                    )
+                );
+
+                // Ensure no duplicate
+                addedList.Add(random);
             }
 
             tutor.UpdateAllMajor(tmList);
@@ -374,7 +385,7 @@ internal static class Program
 
             realOnes.Add(newOne);
         }
-        
+
         // var superUser = IdentityUser.Create(
         //     "admin",
         //     "escenter@gmail.com",
@@ -387,7 +398,7 @@ internal static class Program
         //     "1q2w3E*", // Default password
         //     "0123456789",
         //     identityRoles[0].Id);
-        
+
         // realOnes.Add(superUser);
         // realOnes.Add(superUser1);
 

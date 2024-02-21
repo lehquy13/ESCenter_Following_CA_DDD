@@ -30,12 +30,12 @@ public class CreateTutorCommandHandler(
         try
         {
             //Register user as new tutor
-            var userInformation = mapper.Map<User>(command.TutorForCreateUpdateDto.UserForCreateDto);
+            var userInformation = mapper.Map<User>(command.TutorForCreateUpdateDto.LearnerForCreateUpdateDto);
             await userRepository.InsertAsync(userInformation,
                 cancellationToken);
-            var tutorInformation = mapper.Map<Tutor>(command.TutorForCreateUpdateDto.TutorForCreateUpdateDto);
+            var tutorInformation = mapper.Map<Tutor>(command.TutorForCreateUpdateDto.TutorProfileCreateDto);
 
-            var subjectIds = command.TutorForCreateUpdateDto.TutorForCreateUpdateDto.Majors.Select(SubjectId.Create);
+            var subjectIds = command.TutorForCreateUpdateDto.TutorProfileCreateDto.Majors.Select(SubjectId.Create);
             var subjects = await subjectRepository.GetListByIdsAsync(subjectIds, cancellationToken);
 
             // add new majors to tutor

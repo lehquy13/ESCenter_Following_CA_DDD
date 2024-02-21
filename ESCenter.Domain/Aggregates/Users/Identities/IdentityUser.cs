@@ -2,10 +2,11 @@
 using System.Text;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Matt.SharedKernel.Domain.Primitives;
+using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Users.Identities;
 
-public class IdentityUser : AggregateRoot<IdentityGuid>
+public class IdentityUser : FullAuditedAggregateRoot<IdentityGuid>
 {
     private IdentityUser()
     {

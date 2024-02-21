@@ -8,10 +8,10 @@
 <!-- Profile Edit Form -->
 <form asp-action="ChoosePicture" asp-controller="Profile">
 <div class="row mb-3">
-    <label asp-for="Image" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+    <label asp-for="Avatar" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
     <div class="col-md-8 col-lg-9">
-        <img src="@Model.Image" alt="Profile" id="avatar">
-        <input id="image" asp-for="Image" hidden type="text"/>
+        <img src="@Model.Avatar" alt="Profile" id="avatar">
+        <input id="image" asp-for="Avatar" hidden type="text"/>
         <div class="pt-2">
 
             <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", new {id = @Model.Id})','avatar'); return false;"/>

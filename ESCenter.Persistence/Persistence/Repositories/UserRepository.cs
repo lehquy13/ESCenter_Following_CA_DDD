@@ -43,7 +43,7 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
                     u => u.Id,
                     ur => ur.Id,
                     (u, ur) => new { u, ur })
-                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Tutor) &&
+                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Tutor+1) &&
                             o.u.IsDeleted == false)
                 .AsNoTracking()
                 .Select(x => x.u)

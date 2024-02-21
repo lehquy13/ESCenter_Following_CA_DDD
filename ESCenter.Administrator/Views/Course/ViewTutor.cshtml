@@ -1,4 +1,4 @@
-﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorForDetailDto
+﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorUpdateDto
 
 @{
     ViewData["Title"] = "Details";
@@ -11,8 +11,8 @@
 
 
 <div>
-    
-    <hr />
+
+    <hr/>
 
     <dl class="row">
         <dt class="col-sm-4" hidden>
@@ -40,10 +40,10 @@
             @Html.DisplayFor(model => model.BirthYear)
         </dd>
         <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Address)
+            Address
         </dt>
         <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Address)
+            @Model.City @Model.Country
         </dd>
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.Description)
@@ -99,7 +99,7 @@
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.IsVerified)
         </dd>
-     
+
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.LastModificationTime)
         </dt>
@@ -130,4 +130,3 @@
     <a asp-action="Edit" asp-controller="User" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-

@@ -382,6 +382,18 @@ namespace ESCenter.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeleterId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(450)");
 
@@ -391,6 +403,15 @@ namespace ESCenter.Persistence.Migrations
                     b.Property<int>("IdentityRoleId")
                         .HasColumnType("int")
                         .HasColumnName("IdentityRoleId");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifierId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(max)");
@@ -851,6 +872,12 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Users.Identities.IdentityUser", b =>
                 {
+                    b.HasOne("ESCenter.Domain.Aggregates.Users.User", null)
+                        .WithOne()
+                        .HasForeignKey("ESCenter.Domain.Aggregates.Users.Identities.IdentityUser", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ESCenter.Domain.Aggregates.Users.Identities.IdentityRole", "IdentityRole")
                         .WithMany()
                         .HasForeignKey("IdentityRoleId")

@@ -1,5 +1,5 @@
 ﻿@using ESCenter.Domain.Shared
-@model ESCenter.Application.Contracts.Users.Tutors.TutorForDetailDto
+@model ESCenter.Application.Contracts.Users.Tutors.TutorUpdateDto
 
 @{
     ViewData["Title"] = "Create";
@@ -113,11 +113,16 @@
             @* </div> *@
             <!-- ----------------------------------- -->
 
-            <div class="col-12">
-                <label asp-for="Address" class="form-label">Address</label>
-                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St">
-                <span asp-validation-for="Address" class="text-danger"></span>
+            <div class="col-6">
+                <label asp-for="City" class="form-label">City</label>
+                <input type="text" class="form-control" asp-for="City" placeholder="Sai Gon"/>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
 
+            <div class="col-6">
+                <label asp-for="Country" class="form-label">Address</label>
+                <input type="text" class="form-control" asp-for="Country" placeholder="Viet Nam"/>
+                <span asp-validation-for="Country" class="text-danger"></span>
             </div>
             <!-- address advanced set up----------------------------------- -->
 
@@ -132,9 +137,9 @@
                 </div>
             </div>
 
-          
+
             <!-- ----------------------------------- -->
-            <div class=" row" >
+            <div class=" row">
 
                 <h5 class="col-md-12">Tutor information</h5>
 
@@ -184,13 +189,13 @@
 
                         <!-- List group with Advanced Contents -->
                         <div class="list-group">
-                            @foreach (var s in Model.Subjects)
+                            @foreach (var s in Model.Majors)
                             {
                                 <input name="Subjects" value="@s" hidden="hidden"/>
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">@s</h5>
-                                    </div>
-                                    @* <p class="mb-1">@s.Description</p> *@
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">@s</h5>
+                                </div>
+                                @* <p class="mb-1">@s.Description</p> *@
                             }
                         </div><!-- End List group Advanced Content -->
 

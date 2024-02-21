@@ -82,11 +82,16 @@
 
             </div>
 
-            <div class="col-12">
-                <label asp-for="Address" class="form-label">Address</label>
-                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St">
-                <span asp-validation-for="Address" class="text-danger"></span>
+            <div class="col-6">
+                <label asp-for="City" class="form-label">City</label>
+                <input type="text" class="form-control" asp-for="City" placeholder="Sai Gon"/>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
 
+            <div class="col-6">
+                <label asp-for="Country" class="form-label">Address</label>
+                <input type="text" class="form-control" asp-for="Country" placeholder="Viet Nam"/>
+                <span asp-validation-for="Country" class="text-danger"></span>
             </div>
             <!-- address advanced set up----------------------------------- -->
 

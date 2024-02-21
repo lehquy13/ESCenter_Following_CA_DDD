@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Authorize(Policy = "RequireAdministratorRole")]
 [Route("[controller]")]
 public class SubjectController(ILogger<SubjectController> logger, ISender sender) : Controller
 {

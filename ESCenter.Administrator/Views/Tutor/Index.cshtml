@@ -10,10 +10,11 @@
         </ol>
     </nav>
 </div><!-- End Page Title -->
-<a type="button" class="btn btn-success rounded-pill" asp-action="Create" asp-controller="Tutor">Create</a>
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Tutors</h5>
+        <div class="card-title">
+            <a type="button" class="btn btn-success" asp-action="Create" asp-controller="Tutor">Create</a>
+        </div>
 
         <!-- Table with stripped rows -->
         <table id="example" class="table datatable">
@@ -48,11 +49,11 @@
                         <a asp-action="EditVerification" asp-route-id="@user.Id">Tutor Verifications</a> |
                         @if (user.NumberOfRequests == 0)
                         {
-                            <a asp-action="ViewTutorRequests" asp-route-id="@user.Id">Tutor's Requests</a> 
+                            <a asp-action="ViewTutorRequests" asp-route-id="@user.Id">Tutor's Requests</a>
                         }
                         else
                         {
-                            <a asp-action="ViewTutorRequests" asp-route-id="@user.Id">Tutor's Requests(@user.NumberOfRequests)</a> 
+                            <a asp-action="ViewTutorRequests" asp-route-id="@user.Id">Tutor's Requests(@user.NumberOfRequests)</a>
                         }
                         |
                         <a href="#" onclick="OpenGetDialog('@Url.Action("Delete", "User", new { id = user.Id })','Are you sure you want to delete this user?');">Delete</a>

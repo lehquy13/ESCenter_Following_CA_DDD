@@ -9,15 +9,12 @@ public class DashBoardViewModel
 {
     public TotalValueModel<UserForListDto> TutorTotalValueModel{ get; set; } = new();
     public TotalValueModel<UserForListDto> StudentTotalValueModel{ get; set; } = new();
-
     public TotalValueModel<CourseForListDto> ClassTotalValueModel{ get; set; } = new();
-
     public object? ChartWeekData { get; set; }
     public object? PieWeekData1 { get; set; }
     public object? PieWeekData2 { get; set; }
     public object? DatesWeekData { get; set; }
     public AreaChartViewModel AreaChartViewModel { get; set; } = new AreaChartViewModel();
-    
     public List<SubjectDto> SubjectDtos { get; set; } = new();
     public List<NotificationDto> NotificationDtos { get; set; } = new();
 }

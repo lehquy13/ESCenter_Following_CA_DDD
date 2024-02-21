@@ -1,6 +1,13 @@
-﻿namespace ESCenter.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
+using Mapster;
 
-public class  CourseForLearnerCreateDto
+namespace ESCenter.Application.Contracts.Courses.Dtos;
+
+public class CourseForLearnerCreateDto
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -20,3 +27,31 @@ public class  CourseForLearnerCreateDto
     public string SubjectName { get; set; } = string.Empty;
 }
 
+public class CourseForLearnerCreateDtoMappingConfig : IRegister
+{
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<CourseForLearnerCreateDto, Course>()
+            .ConstructUsing(x =>
+                Course.Create(
+                    x.Title,
+                    x.Description,
+                    x.LearningMode.ToEnum<LearningMode>(),
+                    x.Fee,
+                    x.Fee,
+                    "Dollar",
+                    x.GenderRequirement.ToEnum<Gender>(),
+                    x.AcademicLevelRequirement.ToEnum<AcademicLevel>(),
+                    x.LearnerGender,
+                    x.LearnerName,
+                    x.NumberOfLearner,
+                    x.ContactNumber,
+                    x.MinutePerSession,
+                    null,
+                    x.SessionPerWeek,
+                    x.Address,
+                    SubjectId.Create(x.SubjectId),
+                    IdentityGuid.Create(x.LearnerId))
+            );
+    }
+}

@@ -26,7 +26,8 @@ internal class CourseRepository(
             .AnyAsync(x => x.TutorId == tutorId && x.CourseId == classId);
     }
 
-    public Task<Course?> GetCourseByCourseRequestId(CourseRequestId courseRequestId, CancellationToken cancellationToken)
+    public Task<Course?> GetCourseByCourseRequestId(CourseRequestId courseRequestId,
+        CancellationToken cancellationToken)
     {
         return AppDbContext.Courses
             .Include(x => x.CourseRequests)

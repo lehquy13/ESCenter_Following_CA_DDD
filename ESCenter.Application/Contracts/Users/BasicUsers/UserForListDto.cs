@@ -1,6 +1,9 @@
 ﻿using ESCenter.Application.Contracts.Commons;
+using ESCenter.Domain.Aggregates.Users;
+using Mapster;
 
 namespace ESCenter.Application.Contracts.Users.BasicUsers;
+
 public class UserForListDto : BasicAuditedEntityDto<Guid>
 {
     //User information
@@ -8,14 +11,18 @@ public class UserForListDto : BasicAuditedEntityDto<Guid>
     public string LastName { get; set; } = string.Empty;
     public string Gender { get; set; } = "Male";
     public int BirthYear { get; set; } = 1960;
-    public string Address { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Image { get; set; } = string.Empty;
 
     //Account References
     public string Email { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
-
-    public string Role { get; set; } = "Learner";
 }
 
+public class UserForListDtoMappingConfig : IRegister
+{
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<User, UserForListDto>()
+            .Map(des => des.Id, src => src.Id.Value)
+            .Map(des => des, src => src);
+    }
+}

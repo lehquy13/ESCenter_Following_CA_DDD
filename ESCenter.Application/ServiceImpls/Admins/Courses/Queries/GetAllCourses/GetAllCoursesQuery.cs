@@ -3,4 +3,4 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Application.ServiceImpls.Admins.Courses.Queries.GetAllCourses;
 
-public record GetAllCoursesQuery() : IQueryRequest<IEnumerable<CourseForListDto>>;
+public record GetAllCoursesQuery() : IQueryRequest<List<CourseForListDto>>;

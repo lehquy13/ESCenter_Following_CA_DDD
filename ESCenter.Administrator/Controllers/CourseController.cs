@@ -21,7 +21,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESCenter.Administrator.Controllers;
 
 [Route("[controller]")]
-[Authorize]
 public class CourseController(
     ILogger<CourseController> logger,
     IMapper mapper,

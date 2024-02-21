@@ -1,20 +1,16 @@
-﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorForDetailDto
+﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorUpdateDto
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>
-    <span style="color:#5c7bd9" class="font-weight-bold">@Model.FirstName @Model.LastName</span>'s information
-</h1>
-<h4></h4>
-
-
-<div>
-    
-    <hr />
-
-    <dl class="row">
+<div class="card">
+    <div class="card-header">
+        <h1>
+            <span style="color:#5c7bd9" class="font-weight-bold">@Model.FirstName @Model.LastName</span>'s information
+        </h1>
+    </div>
+    <dl class="card-body row">
         <dt class="col-sm-4" hidden>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
@@ -40,10 +36,10 @@
             @Html.DisplayFor(model => model.BirthYear)
         </dd>
         <dt class="col-sm-4">
-            @Html.DisplayNameFor(model => model.Address)
+            Address
         </dt>
         <dd class="col-sm-8">
-            @Html.DisplayFor(model => model.Address)
+            @Model.City @Model.Country
         </dd>
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.Description)
@@ -99,21 +95,21 @@
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.IsVerified)
         </dd>
-       
+
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.LastModificationTime)
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.LastModificationTime)
         </dd>
-        
+
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.CreationTime)
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.CreationTime)
         </dd>
-        
+
     </dl>
 </div>
 <div>

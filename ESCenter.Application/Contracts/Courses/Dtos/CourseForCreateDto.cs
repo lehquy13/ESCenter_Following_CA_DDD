@@ -1,4 +1,11 @@
-﻿namespace ESCenter.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
+using Mapster;
+
+namespace ESCenter.Application.Contracts.Courses.Dtos;
 
 public class CourseForCreateDto
 {
@@ -20,4 +27,33 @@ public class CourseForCreateDto
     public string Address { get; set; } = string.Empty;
     public int SubjectId { get; set; }
     public string SubjectName { get; set; } = string.Empty;
+}
+
+public class CourseForCreateDtoMappingConfig : IRegister
+{
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<CourseForCreateDto, Course>()
+            .ConstructUsing(x =>
+                Course.Create(
+                    x.Title,
+                    x.Description,
+                    x.LearningMode.ToEnum<LearningMode>(),
+                    x.Fee,
+                    x.ChargeFee,
+                    "Dollar",
+                    x.GenderRequirement.ToEnum<Gender>(),
+                    x.AcademicLevelRequirement.ToEnum<AcademicLevel>(),
+                    x.LearnerGender,
+                    x.LearnerName,
+                    x.NumberOfLearner,
+                    x.ContactNumber,
+                    x.MinutePerSession,
+                    null,
+                    x.SessionPerWeek,
+                    x.Address,
+                    SubjectId.Create(x.SubjectId),
+                    x.LearnerId.HasValue ? IdentityGuid.Create(x.LearnerId.Value) : null)
+            );
+    }
 }

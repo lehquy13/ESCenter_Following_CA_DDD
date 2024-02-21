@@ -92,15 +92,6 @@
     <None Include="wwwroot\assets\vendor\bootstrap-icons\bootstrap-icons.scss" />
     <None Include="wwwroot\assets\vendor\bootstrap-icons\fonts\bootstrap-icons.woff" />
     <None Include="wwwroot\assets\vendor\bootstrap-icons\fonts\bootstrap-icons.woff2" />
-    <None Include="wwwroot\assets\vendor\boxicons\css\animations.css" />
-    <None Include="wwwroot\assets\vendor\boxicons\css\boxicons.css" />
-    <None Include="wwwroot\assets\vendor\boxicons\css\boxicons.min.css" />
-    <None Include="wwwroot\assets\vendor\boxicons\css\transformations.css" />
-    <None Include="wwwroot\assets\vendor\boxicons\fonts\boxicons.eot" />
-    <None Include="wwwroot\assets\vendor\boxicons\fonts\boxicons.svg" />
-    <None Include="wwwroot\assets\vendor\boxicons\fonts\boxicons.ttf" />
-    <None Include="wwwroot\assets\vendor\boxicons\fonts\boxicons.woff" />
-    <None Include="wwwroot\assets\vendor\boxicons\fonts\boxicons.woff2" />
     <None Include="wwwroot\assets\vendor\chart.js\chart.cjs" />
     <None Include="wwwroot\assets\vendor\chart.js\chart.cjs.map" />
     <None Include="wwwroot\assets\vendor\chart.js\chart.js" />

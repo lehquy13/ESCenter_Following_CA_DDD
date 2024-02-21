@@ -1,4 +1,7 @@
 ﻿using ESCenter.Application.Contracts.Commons;
+using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.Identities;
+using Mapster;
 
 namespace ESCenter.Application.Contracts.Users.BasicUsers;
 public class UserForDetailDto : BasicAuditedEntityDto<Guid>
@@ -18,3 +21,16 @@ public class UserForDetailDto : BasicAuditedEntityDto<Guid>
 
 }
 
+public class UserForDetailDtoMappingConfig : IRegister
+{
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<(IdentityUser, User), UserForDetailDto>()
+            .Map(des => des.Id, src => src.Item1.Id.Value)
+            .Map(des => des.Gender, src => src.Item2.Gender)
+            .Map(des => des.Role, src => src.Item1.IdentityRole.Name)
+            .Map(des => des.Email, src => src.Item1.Email)
+            .Map(des => des.PhoneNumber, src => src.Item1.PhoneNumber)
+            .Map(des => des, src => src.Item2);
+    }
+}

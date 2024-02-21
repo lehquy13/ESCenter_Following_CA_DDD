@@ -33,7 +33,6 @@ public interface IIdentityDomainServices : IDomainService
     Task<Result> ChangePasswordAsync(IdentityGuid identityId, string currentPassword, string newPassword);
 
     Task<Result> ResetPasswordAsync(string email, string newPassword, string otpCode);
-    Task<Result> SetTutorRole(IdentityUser user);
 
     Task<Result> RegisterAsTutor(
         IdentityGuid userId,

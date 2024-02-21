@@ -1,4 +1,7 @@
-﻿using Matt.SharedKernel.Application.Contracts.Primitives;
+﻿using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Users;
+using Mapster;
+using Matt.SharedKernel.Application.Contracts.Primitives;
 
 namespace ESCenter.Application.Contracts.Users.Tutors;
 
@@ -12,4 +15,15 @@ public class TutorListForClientPageDto : EntityDto<Guid>
 
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.Student.ToString();
     public string University { get; set; } = string.Empty;
+}
+
+public class TutorListForClientPageDtoMappingConfig : IRegister
+{
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<(User, Tutor), TutorListForClientPageDto>()
+            .Map(dest => dest.Id, src => src.Item2.Id.Value)
+            .Map(des => des, src => src.Item2)
+            .Map(des => des, src => src.Item1);
+    }
 }

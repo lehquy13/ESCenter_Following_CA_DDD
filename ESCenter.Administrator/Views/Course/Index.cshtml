@@ -3,11 +3,20 @@
     int i = 0;
 }
 
+<div class="pagetitle">
+    <h1>Course Management</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Course</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Class Informations</h5>
-
-        <a type="button" class="btn btn-success rounded-pill" asp-action="Create" asp-controller="Course">Create</a>
+        <div class="card-title">
+            <a type="button" class="btn btn-success" asp-action="Create" asp-controller="Course">Create</a>
+        </div>
 
 
         <!-- Table with stripped rows -->
@@ -55,5 +64,3 @@
         <!-- End Table with stripped rows -->
     </div>
 </div>
-
-

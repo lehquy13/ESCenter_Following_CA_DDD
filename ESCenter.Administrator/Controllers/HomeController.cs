@@ -19,7 +19,6 @@ using Newtonsoft.Json;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Authorize(Policy = "RequireAdministratorRole")]
 [Route("[controller]")]
 public class HomeController(
     ILogger<HomeController> logger,
@@ -30,8 +29,12 @@ public class HomeController(
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var classDtos = await sender.Send(new GetAllCoursesQuery());
-        var tutorDtos = await sender.Send(new GetAllTutorsQuery());
+        var tutorDtos = await sender.Send(
+            new GetAllTutorsQuery()
+        );
+        var classDtos = await sender.Send(
+            new GetAllCoursesQuery()
+        );
         var learner = await sender.Send(new GetLearnersQuery());
 
         if (classDtos.IsFailure || tutorDtos.IsFailure || learner.IsFailure || classDtos.Value == null ||
@@ -263,14 +266,14 @@ public class HomeController(
     public async Task<IActionResult> FilterTotalTutors(string? byTime)
     {
         logger.LogDebug("Index's running! On getting tutorDtos...");
-        var tutorDtos = await sender.Send(new GetAllTutorsQuery()); 
-                                                             
-        if (tutorDtos.IsFailure || tutorDtos.Value == null)          
-        {                                                            
-            logger.LogError("Error on getting classDtos!");          
-            return RedirectToAction("Error");                        
-        }                                                            
-        
+        var tutorDtos = await sender.Send(new GetAllTutorsQuery());
+
+        if (tutorDtos.IsFailure || tutorDtos.Value == null)
+        {
+            logger.LogError("Error on getting classDtos!");
+            return RedirectToAction("Error");
+        }
+
         logger.LogDebug("Got tutorDtos!");
         var date = GetByTime(DateTime.Now, byTime);
         var result1 = tutorDtos.Value.Where(x => x.CreationTime >= date).ToList();
@@ -294,7 +297,7 @@ public class HomeController(
         logger.LogDebug("Index's running! On getting studentDtos...");
         var studentDtos = await sender.Send(new GetLearnersQuery());
         logger.LogDebug("Got studentDtos!");
-        
+
         if (studentDtos.IsFailure || studentDtos.Value == null)
         {
             logger.LogError("Error on getting studentDtos!");

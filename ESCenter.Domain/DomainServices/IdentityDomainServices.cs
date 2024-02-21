@@ -150,9 +150,6 @@ public class IdentityDomainServices(
                 false
             );
 
-            // TODO: Set user role to tutor
-
-            // user.Role = UserRole.Tutor;
             await SetTutorRole(user);
 
             await tutorRepository.InsertAsync(tutor);
@@ -178,7 +175,7 @@ public class IdentityDomainServices(
         }
     }
 
-    public async Task<Result> SetTutorRole(IdentityUser user)
+    private async Task<Result> SetTutorRole(IdentityUser user)
     {
         try
         {

@@ -7,6 +7,8 @@ function callPostActionWithForm(formInput) {
 
     var formData = new FormData(formInput);
 
+    console.log(formInput.action);
+    
     $.ajax({
         type: "POST",
         url: formInput.action,

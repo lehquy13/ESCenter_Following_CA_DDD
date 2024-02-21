@@ -1,6 +1,5 @@
 ﻿using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;
 using Matt.ResultObject;
@@ -14,7 +13,6 @@ public class GetLearnerDetailQueryHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<GetLearnerDetailQueryHandler> logger,
     IMapper mapper,
-    IIdentityRepository identityRepository,
     IUserRepository userRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor)
     : QueryHandlerBase<GetLearnerDetail, LearnerForCreateUpdateDto>(unitOfWork, logger, mapper)
@@ -26,14 +24,9 @@ public class GetLearnerDetailQueryHandler(
     {
         var identityId = IdentityGuid.Create(request.Id);
         var learnerFromDb =
-            from identityUser in identityRepository.GetAll()
-            join user in userRepository.GetAll() on identityUser.Id equals user.Id
-            where identityUser.Id == identityId
-            select new
-            {
-                Identity = identityUser,
-                User = user
-            };
+            from user in userRepository.GetAll()
+            where user.Id == identityId
+            select user;
 
         var resultFromDb = await asyncQueryableExecutor.FirstOrDefaultAsync(learnerFromDb, false,
             cancellationToken: cancellationToken);

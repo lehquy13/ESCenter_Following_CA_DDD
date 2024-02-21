@@ -1,4 +1,4 @@
-﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorForDetailDto
+﻿@model ESCenter.Application.Contracts.Users.Tutors.TutorUpdateDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -19,206 +19,216 @@
 
 <hr/>
 <div class="card">
-<div class="card-body">
-<h5 class="card-title">Personal Information</h5>
+    <div class="card-body">
+        <h5 class="card-title">Personal Information</h5>
 
-<!-- Multi Columns Form -->
-<form class="row g-3" asp-action="EditProfile" asp-route-id="@Model.Id" asp-controller="Tutor" onsubmit="return callPostActionWithForm(this);">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <!-- Multi Columns Form -->
+        <form class="row g-3" asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" method="post" onsubmit="return callPostActionWithForm(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="col-md-6">
-        <label asp-for="FirstName" class="form-label">First Name</label>
-        <input type="text" asp-for="FirstName" class="form-control"/>
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-
-    </div>
-    <div class="col-md-6">
-        <label asp-for="LastName" class="form-label">Last Name</label>
-        <input type="text" class="form-control" asp-for="LastName"/>
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <!-- ----------------------------------- -->
-
-    <div class="col-md-4">
-        <label asp-for="Gender" class="form-label">Gender</label>
-        <select asp-for="Gender" class="form-select">
-            <option selected>@Model.Gender.ToString()</option>
-
-            @foreach (string i in genders)
-            {
-                @if (i != Model.Gender.ToString())
-                {
-                    <option> @i </option>
-                }
-            }
-        </select>
-        <span asp-validation-for="Gender" class="text-danger"></span>
-    </div>
-    <div class="col-md-4">
-        <label asp-for="Role" class="form-label">Role</label>
-        <select asp-for="Role" class="form-select">
-            <option selected>@Model.Role.ToString()</option>
-
-        </select>
-        <span asp-validation-for="Role" class="text-danger"></span>
-    </div>
-    <div class="col-md-4">
-        <label asp-for="BirthYear" class="form-label">Birth</label>
-        <input type="number" class="form-control" asp-for="BirthYear"/>
-
-        <span asp-validation-for="BirthYear" class="text-danger"></span>
-    </div>
-    <!-- disable email when confirmed -->
-    @if (Model.IsEmailConfirmed == true)
-    {
-        <div class="col-md-6">
-            <label asp-for="Email" class="form-label">Email</label>
-
-            <div class="input-group mb-3">
-
-                <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3"/>
-                <span class="input-group-text" id="basic-addon3">
-                    <i class="bi bi-check">
-                    </i>
-                </span>
+            <div class="col-md-6">
+                <label asp-for="FirstName" class="form-label">First Name</label>
+                <input type="text" asp-for="FirstName" class="form-control"/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
 
             </div>
-            <span asp-validation-for="Email" class="text-danger"></span>
-
-        </div>
-    }
-    else
-    {
-        <div class="col-md-6">
-            <label asp-for="Email" class="form-label">Email</label>
-            <input type="email" asp-for="Email" class="form-control"/>
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-    }
-
-    <div class="col-md-6">
-        <label asp-for="PhoneNumber" class="form-label">Number</label>
-        <div class="col-sm-12">
-            <input type="tel" asp-for="PhoneNumber" class="form-control"/>
-        </div>
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-
-    </div>
-    @* <div class="col-md-6" hidden> *@
-    @*     <label asp-for="Password" class="form-label">Password</label> *@
-    @*     <input type="password" asp-for="Password" class="form-control"> *@
-    @* </div> *@
-    <!-- ----------------------------------- -->
-
-    <div class="col-12">
-        <label asp-for="Address" class="form-label">Address</label>
-        <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St"/>
-        <span asp-validation-for="Address" class="text-danger"></span>
-
-    </div>
-
-
-    <div class="col-12">
-        <div class="form-floating">
-            <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
-            <label asp-for="Description" class="form-label">Description</label>
-            <span asp-validation-for="Description" class="text-danger"></span>
-
-        </div>
-    </div>
-    <input type="hidden" asp-for="Id"/>
-    <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </div>
-</form>
-<form class="row g-3" asp-action="EditTutorInformation" asp-route-id="@Model.Id" asp-controller="Tutor" onsubmit="return callPostActionWithForm(this);">
-
-    <!-- ----------------------------------- -->
-
-    <h5 class="card-title">Tutor information</h5>
-
-    <div class="col-md-4">
-        <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
-        <select asp-for="AcademicLevel" class="form-select">
-            <option selected>@Model.AcademicLevel.ToString()</option>
-
-            @foreach (var i in academics)
-            {
-                @if (i != Model.AcademicLevel)
-                {
-                    <option> @i </option>
-                }
-            }
-        </select>
-        <span asp-validation-for="AcademicLevel" class="text-danger"></span>
-    </div>
-    <div class="col-md-8">
-        <label asp-for="University" class="form-label">University</label>
-        <input type="text" class="form-control" asp-for="University"/>
-        <span asp-validation-for="University" class="text-danger"></span>
-    </div>
-    <!-- ----------------------------------- -->
-
-    <div class="col-12">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" asp-for="IsVerified"/>
-            <label class="form-check-label" asp-for="IsVerified">
-                Is tutor verified?
-            </label>
-
-        </div>
-    </div>
-    <div class="card" id="tutorMajorCard">
-        <div class="card-body">
-            <div class="card-title row">
-                <h5 class="col-11">Tutor Subjects</h5>
-                <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects", "Tutor", new { id = @Model.Id })','Add major for @Model.FirstName @Model.LastName')">
-                    <span class="bi bi-plus-circle"> </span>
-                    Add
-                </button>
-
+            <div class="col-md-6">
+                <label asp-for="LastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" asp-for="LastName"/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
+            <!-- ----------------------------------- -->
 
-            <!-- List group with Advanced Contents -->
+            <div class="col-md-4">
+                <label asp-for="Gender" class="form-label">Gender</label>
+                <select asp-for="Gender" class="form-select">
+                    <option selected>@Model.Gender.ToString()</option>
 
-            <div class="list-group">
-                @foreach (var s in Model.Subjects)
-                {
-                    <div class=" list-group-item list-group-item-action" id="@s-item">
-                        <div class="row">
-                            <input name="Subjects" value="@s" hidden="hidden"/>
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">@s</h5>
-                            </div>
-                            <button type="button" class="col-1 btn btn-danger" onclick="RemoveMajorSubject('@s')">Remove</button>
+                    @foreach (string i in genders)
+                    {
+                        @if (i != Model.Gender.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Role" class="form-label">Role</label>
+                <select asp-for="Role" class="form-select">
+                    <option selected>@Model.Role.ToString()</option>
 
-                        </div>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="BirthYear" class="form-label">Birth</label>
+                <input type="number" class="form-control" asp-for="BirthYear"/>
+
+                <span asp-validation-for="BirthYear" class="text-danger"></span>
+            </div>
+            <!-- disable email when confirmed -->
+            @if (Model.IsEmailConfirmed == true)
+            {
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+
+                    <div class="input-group mb-3">
+
+                        <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3"/>
+                        <span class="input-group-text" id="basic-addon3">
+                            <i class="bi bi-check">
+                            </i>
+                        </span>
+
                     </div>
-                }
+                    <span asp-validation-for="Email" class="text-danger"></span>
 
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input type="email" asp-for="Email" class="form-control"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            }
 
-            </div><!-- End List group Advanced Content -->
+            <div class="col-md-6">
+                <label asp-for="PhoneNumber" class="form-label">Number</label>
+                <div class="col-sm-12">
+                    <input type="tel" asp-for="PhoneNumber" class="form-control"/>
+                </div>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
+            </div>
+            @* <div class="col-md-6" hidden> *@
+            @*     <label asp-for="Password" class="form-label">Password</label> *@
+            @*     <input type="password" asp-for="Password" class="form-control"> *@
+            @* </div> *@
+            <!-- ----------------------------------- -->
+            <div class="col-6">
+                <label asp-for="City" class="form-label">City</label>
+                <input type="text" class="form-control" asp-for="City" placeholder="Sai Gon"/>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
 
-        </div>
+            <div class="col-6">
+                <label asp-for="Country" class="form-label">Address</label>
+                <input type="text" class="form-control" asp-for="Country" placeholder="Viet Nam"/>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                </div>
+            </div>
+            <input type="hidden" asp-for="Id"/>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
     </div>
- 
-
-
-    <!-- ----------------------------------- hidden info -->
-
-    <input type="hidden" asp-for="Id"/>
-    <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-         <a asp-action="EditVerification" asp-route-id="@Model.Id" class="btn btn-primary">
-                            Tutor Verifications
-                        </a>
-        <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </div>
-</form><!-- End Multi Columns Form -->
-
 </div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Tutor Information</h5>
+        <form class="row g-3" asp-action="EditTutorInformation" asp-route-id="@Model.Id" asp-controller="Tutor" onsubmit="return callPostActionWithForm(this);">
+
+            <!-- ----------------------------------- -->
+
+            <h5 class="card-title">Tutor information</h5>
+
+            <div class="col-md-4">
+                <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
+                <select asp-for="AcademicLevel" class="form-select">
+                    <option selected>@Model.AcademicLevel.ToString()</option>
+
+                    @foreach (var i in academics)
+                    {
+                        @if (i != Model.AcademicLevel)
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+            </div>
+            <div class="col-md-8">
+                <label asp-for="University" class="form-label">University</label>
+                <input type="text" class="form-control" asp-for="University"/>
+                <span asp-validation-for="University" class="text-danger"></span>
+            </div>
+            <!-- ----------------------------------- -->
+
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="IsVerified"/>
+                    <label class="form-check-label" asp-for="IsVerified">
+                        Is tutor verified?
+                    </label>
+
+                </div>
+            </div>
+            <div class="card" id="tutorMajorCard">
+                <div class="card-body">
+                    <div class="card-title row">
+                        <h5 class="col-11">Tutor Subjects</h5>
+                        <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects", "Tutor", new { id = @Model.Id })','Add major for @Model.FirstName @Model.LastName')">
+                            <span class="bi bi-plus-circle"> </span>
+                            Add
+                        </button>
+
+                    </div>
+
+                    <!-- List group with Advanced Contents -->
+
+                    <div class="list-group" style="grid-template-columns: repeat(4,1fr); display: grid">
+                        @foreach (var s in Model.Majors)
+                        {
+                            @* <div class=" list-group-item list-group-item-action" id="@s.Id-item"> *@
+                            @*     <div class="row"> *@
+                            @*         <input name="Subjects" value="@s.Id" hidden="hidden"/> *@
+                            @*         <div class="d-flex w-100 justify-content-between"> *@
+                            @*             <h5 class="mb-1">@s.Name</h5> *@
+                            @*         </div> *@
+                            @*         <button type="button" class="col-1 btn btn-danger" onclick="RemoveMajorSubject('@s.Id')">Remove</button> *@
+                            @* *@
+                            @*     </div> *@
+                            @* </div> *@
+                            <li class="list-group-item" style="border: none">
+                                <input name="Subjects" value="@s.Id" hidden="hidden"/>
+                                <input class="form-check-input" type="checkbox" checked="@s.IsSelected"/>
+                                <label class="form-check-label">@s.Name</label>
+                            </li>
+                        }
+                    </div><!-- End List group Advanced Content -->
+                </div>
+            </div>
+
+
+            <!-- ----------------------------------- hidden info -->
+
+            <input type="hidden" asp-for="Id"/>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a asp-action="EditVerification" asp-route-id="@Model.Id" class="btn btn-primary">
+                    Tutor Verifications
+                </a>
+                <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form><!-- End Multi Columns Form -->
+
+    </div>
 </div>
 
 

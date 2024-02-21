@@ -1,6 +1,7 @@
 ﻿using ESCenter.Administrator.Utilities;
 using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
+using ESCenter.Application.ServiceImpls.Admins.Users.Commands.CreateUpdateUserProfile;
 using ESCenter.Application.ServiceImpls.Admins.Users.Commands.DeleteUser;
 using ESCenter.Application.ServiceImpls.Admins.Users.Queries.GetLearnerDetail;
 using ESCenter.Application.ServiceImpls.Admins.Users.Queries.GetLearners;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Authorize(Policy = "RequireAdministratorRole")]
 [Route("[controller]")]
 public class UserController(ILogger<UserController> logger, ISender sender) : Controller
 {
@@ -53,13 +53,16 @@ public class UserController(ILogger<UserController> logger, ISender sender) : Co
 
     [HttpPost("{id}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditUser([FromRoute] Guid id, [FromBody] LearnerForCreateUpdateDto userDto)
+    public async Task<IActionResult> Edit([FromRoute] Guid id, [FromForm] LearnerForCreateUpdateDto userDto)
     {
-        if (!ModelState.IsValid) return View("Edit", userDto);
+        if (!ModelState.IsValid)
+        {
+            return View("Edit", userDto);
+        }
 
         try
         {
-            var result = await sender.Send(new CreateUpdateLearnerProfileCommand(userDto));
+            var result = await sender.Send(new CreateUpdateUserProfileCommand(userDto));
 
             if (!result.IsSuccess)
             {
@@ -98,7 +101,7 @@ public class UserController(ILogger<UserController> logger, ISender sender) : Co
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(LearnerForCreateUpdateDto userForCreateDto)
     {
-        var result = await sender.Send(new CreateUpdateLearnerProfileCommand(userForCreateDto));
+        var result = await sender.Send(new CreateUpdateUserProfileCommand(userForCreateDto));
 
         if (result.IsFailure)
         {

@@ -1,8 +1,9 @@
-﻿using Matt.SharedKernel.Application.Mediators.Queries;
+﻿using ESCenter.Application.Contracts.Courses.Dtos;
+using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorMajors;
 
-public record GetTutorMajorsQuery(Guid TutorId) : IQueryRequest<List<TutorMajorDto>>;
+public record GetTutorMajorsQuery(Guid TutorId) : IQueryRequest<List<SubjectDto>>;
 
 public class TutorMajorDto
 {

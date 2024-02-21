@@ -9,22 +9,37 @@ public static class EnumProvider
         .Where(x => x != "All" && x != "Undefined")
         .ToList();
 
-    public static List<string> Genders { get; } = Enum.GetNames(typeof(GenderEnum))
-        .AsEnumerable()
-        .Where(x => x != "None")
-        .ToList();
+    public static List<string> Genders =>
+    [
+        "Male",
+        "Female",
+        "Other"
+    ];
 
-    public static List<string> FullGendersOption { get; } = Enum.GetNames(typeof(GenderEnum))
-        .AsEnumerable()
-        .ToList();
+    public static List<string> FullGendersOption  =>
+    [
+        "Male",
+        "Female",
+        "Other",
+        "Both",
+        "None"
+        ];
 
-    public static List<string> FullAcademicLevelsOption { get; } = Enum.GetNames(typeof(AcademicLevel))
-        .ToList();
+    public static List<string> FullAcademicLevelsOption =>
+    [
+        "Student",
+        "Graduated",
+        "Lecturer",
+    ];
 
-    public static List<string> AcademicLevels { get; } = Enum.GetNames(typeof(AcademicLevel))
-        .Where(x => x != "Optional")
-        .ToList();
-
+    public static List<string> AcademicLevels =>
+    [
+        "Student",
+        "Graduated",
+        "Lecturer",
+        "Optional"
+    ];
+    
     public static List<string> LearningModes { get; } = Enum.GetNames(typeof(LearningMode))
         .ToList();
 
