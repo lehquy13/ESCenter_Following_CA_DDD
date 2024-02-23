@@ -1,0 +1,61 @@
+{
+    "firstName": "Payne",
+    "lastname": "Grimes",
+    "userName": "Payneundefined{{integer(1980, 2003)}}",
+    "gender": 1,
+    "birthYear": 1997,
+    "address": {
+        "city": "Loyalhanna",
+        "country": " Puerto Rico"
+    },
+    "description": "Aute aliquip in proident ullamco aliquip pariatur fugiat proident Lorem proident excepteur deserunt pariatur consequat. Aute reprehenderit tempor nulla velit labore voluptate pariatur amet. Est excepteur velit est laborum anim et magna culpa ex et labore velit nulla. Cupidatat qui sint labore nulla duis velit.\r\n",
+    "avatar": "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male11_g11pit.jpg",
+    "email": "irurepaynegrimes@rodeology.com",
+    "isEmailConfirmed": true,
+    "phoneNumber": "+34 (922) 518-2953",
+    "password": "1q2w3E*",
+    "role": "Tutor",
+    "isDeleted": false,
+    "deleterUserId": null,
+    "deletionTime": null,
+    "lastModificationTime": "2019-08-07T09:20:06 -07:00",
+    "lastModifierUserId": null,
+    "creationTime": "2019-08-20T09:13:01 -07:00",
+    "creatorUserId": null,
+    "academicLevel": "Lecturer",
+    "university": "Waikele University",
+    "isVerify": true,
+    "rate": 0,
+    "id": {
+        "value": "be45c931-427a-4565-9e27-336bd971e0ed"
+    },
+    "_verifications": [
+        {
+            "TutorId": {
+                "Value": "be45c931-427a-4565-9e27-336bd971e0ed"
+            },
+            "Image": "https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fpngtree-certificate-template-with-luxury-and-modern-pattern-qualification-blank-elegant-vector-png-image_3587281.jpg?alt\u003dmedia\u0026token\u003db580dbc8-cd13-47b6-8676-d021af371f65",
+            "Id": {
+                "Value": "0c490194-381f-40ee-a511-c8944553b926"
+            }
+        },
+        {
+            "TutorId": {
+                "Value": "be45c931-427a-4565-9e27-336bd971e0ef"
+            },
+            "Image": "https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fpngtree-certificate-template-with-luxury-and-modern-pattern-qualification-blank-elegant-vector-png-image_3587281.jpg?alt\u003dmedia\u0026token\u003db580dbc8-cd13-47b6-8676-d021af371f65",
+            "Id": {
+                "Value": "0c490194-381f-40ee-a511-c8944553b924"
+            }
+        },
+        {
+            "TutorId": {
+                "Value": "be45c931-427a-4565-9e27-336bd971e0ea"
+            },
+            "Image": "https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fpngtree-certificate-template-with-luxury-and-modern-pattern-qualification-blank-elegant-vector-png-image_3587281.jpg?alt\u003dmedia\u0026token\u003db580dbc8-cd13-47b6-8676-d021af371f65",
+            "Id": {
+                "Value": "0c490194-381f-40ee-a511-c8944553b925"
+            }
+        }
+    ]
+}

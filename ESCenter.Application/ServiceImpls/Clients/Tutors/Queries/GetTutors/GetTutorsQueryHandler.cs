@@ -64,9 +64,9 @@ public class GetTutorsQueryHandler(
                 tutors = tutors.Where(record => record.User.Address.Match(request.TutorParams.Address));
             }
 
-            if (request.TutorParams.Gender != null && request.TutorParams.Gender is { } g && g != GenderEnum.None)
+            if (request.TutorParams.Gender is { } g && g != GenderEnum.None)
             {
-                tutors = tutors.Where(record => record.User.Gender == g);
+                tutors = tutors.Where(record => record.User.Gender == g.ToEnum<Gender>());
             }
 
             if (request.TutorParams.BirthYear != 0)

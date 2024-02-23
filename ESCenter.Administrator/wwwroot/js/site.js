@@ -4,48 +4,39 @@
 // Write your JavaScript code.
 
 function callPostActionWithForm(formInput) {
-
-    var formData = new FormData(formInput);
+    let formData = new FormData(formInput);
 
     console.log(formInput.action);
-    
+
     $.ajax({
         type: "POST",
         url: formInput.action,
         data: formData,
         contentType: false,
         processData: false,
-        success: function (res) {
-
-            if (res.res === true) {
-                if (res.viewName === "Profile")
-                    $('#main').html(res.partialView);
-
-                $('#successAlert').removeClass("collapse");
-                $('#successAlert').removeClass("fade");
-            } else if (res.res === "deleted") {
+        success: function (response) {
+            if (response.res === true) {
+                if (response.viewName === "Profile") {
+                    $('#main').html(response.partialView);
+                }
+                alertify.success('Updated successfully');
+            } else if (response.res === "deleted") {
                 $('#verticalycentered').modal('hide');
-
                 location.reload();
-            } else if (res.res === false) {
-                if (res.viewName === "_ProfileEdit") {
-                    $('#profile-edit').html(res.partialView);
+            } else if (response.res === false) {
+                if (response.viewName === "_ProfileEdit") {
+                    $('#profile-edit').html(response.partialView);
                     $('#profile-edit-button').click();
-                } else if (res.viewName === "_ChangePassword") {
-                    $('#profile-change-password').html(res.partialView);
+                } else if (response.viewName === "_ChangePassword") {
+                    $('#profile-change-password').html(response.partialView);
                     $('#profile-change-password-button').click();
                 }
 
-
-                //$('#failAlertButton').click();
-                $('#failAlert').removeClass("collapse");
-                $('#failAlert').removeClass("fade");
-
+                alertify.error('Update failed');
             }
         },
         error: function (err) {
             console.log(err);
-            //alert(err);
         }
     })
     return false;
@@ -76,7 +67,7 @@ function ChangePassword(formInput) {
 
 }
 
-function RemoveTutor(){
+function RemoveTutor() {
     $('#tutorInfor').attr("value", '');
     $('#tutorId').attr("value", 0);
 }
@@ -150,12 +141,11 @@ function CancelRequest(url) {
         url: url,
         data: {},
         success: function (res) {
-            if(res.res === true){
+            if (res.res === true) {
                 alertify.success('Canceled successfully');
                 setTimeout('', 1000);
                 location.reload();
-            }
-            else{
+            } else {
                 alertify.error('Cancel failed');
             }
         }

@@ -30,6 +30,13 @@ internal class DiscoveryConfiguration : IEntityTypeConfiguration<Discovery>
         {
             ib.ToTable(nameof(DiscoverySubject));
             ib.HasKey(x => x.Id);
+            ib.Property(r => r.Id)
+                .HasColumnName("Id")
+                .ValueGeneratedOnAdd()
+                .HasConversion(
+                    id => id.Value,
+                    value => DiscoverySubjectId.Create(value)
+                );
             
             ib.WithOwner().HasForeignKey(nameof(DiscoverySubject.DiscoveryId));
             

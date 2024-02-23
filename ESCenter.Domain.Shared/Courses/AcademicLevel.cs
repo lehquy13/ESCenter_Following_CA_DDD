@@ -2,7 +2,7 @@
 public enum AcademicLevel
 {
     Optional,
-    Student,
+    UnderGraduated,
     Graduated,
     Lecturer
 }

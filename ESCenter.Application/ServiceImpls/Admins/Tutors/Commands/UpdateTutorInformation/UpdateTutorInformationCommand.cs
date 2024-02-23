@@ -3,4 +3,4 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateTutorInformation;
 
-public record UpdateTutorInformationCommand(TutorBasicForUpdateDto TutorBasicForUpdateDto) : ICommandRequest;
+public record UpdateTutorInformationCommand(TutorBasicUpdateDto TutorBasicUpdateDto) : ICommandRequest;

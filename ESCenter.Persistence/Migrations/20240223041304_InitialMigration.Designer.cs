@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ESCenter.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240215125539_UpdateIdentityUserToAuditable")]
-    partial class UpdateIdentityUserToAuditable
+    [Migration("20240223041304_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,8 +58,9 @@ namespace ESCenter.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GenderRequirement")
-                        .HasColumnType("int");
+                    b.Property<string>("GenderRequirement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -119,12 +120,10 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Discoveries.Discovery", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -148,8 +147,8 @@ namespace ESCenter.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DiscoveryId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("DiscoveryId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("DiscoveryId");
 
                     b.Property<Guid>("UserId")
@@ -480,15 +479,15 @@ namespace ESCenter.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -504,13 +503,16 @@ namespace ESCenter.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("User", (string)null);
                 });
@@ -627,11 +629,9 @@ namespace ESCenter.Persistence.Migrations
 
                     b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Review", "Review", b1 =>
                         {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("Id");
 
                             b1.Property<Guid>("CourseId")
                                 .HasColumnType("uniqueidentifier");
@@ -669,14 +669,13 @@ namespace ESCenter.Persistence.Migrations
                 {
                     b.OwnsMany("ESCenter.Domain.Aggregates.Discoveries.Entities.DiscoverySubject", "DiscoverySubjects", b1 =>
                         {
-                            b1.Property<int>("Id")
+                            b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("Id");
 
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<int>("DiscoveryId")
-                                .HasColumnType("int");
+                            b1.Property<Guid>("DiscoveryId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("SubjectId")
                                 .HasColumnType("int")
@@ -754,13 +753,11 @@ namespace ESCenter.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest", "ChangeVerificationRequests", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest", "ChangeVerificationRequest", b1 =>
                         {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("Id");
 
                             b1.Property<int>("RequestStatus")
                                 .HasColumnType("int");
@@ -771,7 +768,8 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasKey("Id");
 
-                            b1.HasIndex("TutorId");
+                            b1.HasIndex("TutorId")
+                                .IsUnique();
 
                             b1.ToTable("ChangeVerificationRequest", (string)null);
 
@@ -780,14 +778,12 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequestDetail", "ChangeVerificationRequestDetails", b2 =>
                                 {
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
+                                    b2.Property<Guid>("Id")
+                                        .HasColumnType("uniqueidentifier")
+                                        .HasColumnName("Id");
 
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<int>("ChangeVerificationRequestId")
-                                        .HasColumnType("int");
+                                    b2.Property<Guid>("ChangeVerificationRequestId")
+                                        .HasColumnType("uniqueidentifier");
 
                                     b2.Property<string>("ImageUrl")
                                         .IsRequired()
@@ -841,13 +837,11 @@ namespace ESCenter.Persistence.Migrations
                                 .HasForeignKey("TutorId");
                         });
 
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.TutorVerificationInfo", "TutorVerificationInfos", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.Verification", "Verifications", b1 =>
                         {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("Id");
 
                             b1.Property<string>("Image")
                                 .IsRequired()
@@ -860,27 +854,21 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasIndex("TutorId");
 
-                            b1.ToTable("TutorVerificationInfo", (string)null);
+                            b1.ToTable("Verification", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TutorId");
                         });
 
-                    b.Navigation("ChangeVerificationRequests");
+                    b.Navigation("ChangeVerificationRequest");
 
                     b.Navigation("TutorMajors");
 
-                    b.Navigation("TutorVerificationInfos");
+                    b.Navigation("Verifications");
                 });
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Users.Identities.IdentityUser", b =>
                 {
-                    b.HasOne("ESCenter.Domain.Aggregates.Users.User", null)
-                        .WithOne()
-                        .HasForeignKey("ESCenter.Domain.Aggregates.Users.Identities.IdentityUser", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ESCenter.Domain.Aggregates.Users.Identities.IdentityRole", "IdentityRole")
                         .WithMany()
                         .HasForeignKey("IdentityRoleId")

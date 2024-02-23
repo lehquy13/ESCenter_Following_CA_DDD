@@ -49,7 +49,8 @@ public class GetTutorDetailQueryHandler(
         var tutorForDetailDto = (queryResult.User, queryResult.Tutor).Adapt<TutorUpdateDto>();
         
         // filter out the subjects that the tutor is not majoring in
-        var tutorMajors = tutorForDetailDto.Majors.Select(x => x.Id);
+        var tutorMajors = tutorForDetailDto.Majors
+            .Select(x => x.Id);
         
         subjects = subjects.Where(x => tutorMajors.All(m => m != x.Id.Value)).ToList();
         tutorForDetailDto.Majors.AddRange(Mapper.Map<List<SubjectMajorDto>>(subjects));

@@ -12,7 +12,7 @@ public class TutorId : ValueObject
 
     public static TutorId Create(Guid value = default)
     {
-        return new()
+        return new TutorId
         {
             Value = value == default ? Guid.NewGuid() : value
         };

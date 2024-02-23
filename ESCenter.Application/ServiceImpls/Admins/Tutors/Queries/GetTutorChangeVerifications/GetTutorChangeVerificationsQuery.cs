@@ -3,4 +3,4 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorChangeVerifications;
 
-public record GetTutorChangeVerificationsQuery(Guid TutorId) : IQueryRequest<TutorVerificationInfoForEditDto>;
+public record GetTutorChangeVerificationsQuery(Guid TutorId) : IQueryRequest<VerificationEditDto>;

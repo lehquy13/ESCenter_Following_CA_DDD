@@ -39,7 +39,7 @@ public class GetAllTutorsQueryHandler(
                 PhoneNumber = userR.PhoneNumber,
                 University = tutorR.University,
                 IsVerified = tutorR.IsVerified,
-                NumberOfChangeRequests = tutorR.ChangeVerificationRequests.Count,
+                NumberOfChangeRequests = tutorR.ChangeVerificationRequest == null ? 0 : 1,
                 NumberOfRequests = tutorRequests.Count()
             };
 

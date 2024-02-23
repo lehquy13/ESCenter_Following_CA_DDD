@@ -2,11 +2,11 @@
 using ESCenter.Application.Contracts.Users.BasicUsers;
 using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Application.Contracts.Users.Tutors;
-using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
-using ESCenter.Application.ServiceImpls.Accounts.Commands.UpdateTutorProfile;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.ClearTutorRequests;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.CreateTutor;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateChangeVerificationRequestCommand;
+using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateTutorInformation;
+using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateTutorMajors;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorChangeVerifications;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorMajors;
@@ -120,7 +120,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditTutorInformation(
         [FromRoute] Guid id,
-        TutorBasicForUpdateDto tutorBasicForUpdateDto)
+        TutorBasicUpdateDto tutorBasicUpdateDto)
     {
         if (!ModelState.IsValid)
             return Helper.RenderRazorViewToString(
@@ -131,7 +131,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
             );
         try
         {
-            var result = await sender.Send(new UpdateTutorProfileCommand(tutorBasicForUpdateDto));
+            var result = await sender.Send(new UpdateTutorInformationCommand(tutorBasicUpdateDto));
 
             if (!result.IsSuccess)
             {
@@ -230,14 +230,24 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
         return View(result.Value);
     }
 
-    [HttpPost("{tutorId}/edit-tutor-verification-information/{changeVerificationRequestId}")]
-    public async Task<IActionResult> EditTutorVerificationInformation(
+    [HttpPost("{tutorId}/edit-tutor-verification-information")]
+    public async Task<IActionResult> ModifyChangeVerificationRequest(
         [FromRoute] Guid tutorId,
-        [FromRoute] int changeVerificationRequestId)
+        [FromForm] bool isApproved)
     {
-        var result = await sender.Send(new UpdateChangeVerificationCommand(tutorId, changeVerificationRequestId, true));
+        var result = await sender.Send(new UpdateChangeVerificationCommand(tutorId, isApproved));
 
         return !result.IsSuccess ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
+    }
+    
+    [HttpPost("{tutorId}/edit-tutor-majors")]
+    public async Task<IActionResult> EditTutorMajors(
+        [FromRoute] Guid tutorId,
+        [FromForm] List<int> majorIds)
+    {
+        var result = await sender.Send(new UpdateTutorMajorsCommand(tutorId, majorIds));
+
+        return !result.IsSuccess ? RedirectToAction("Error", "Home") : Helper.SuccessResult();
     }
 
     [HttpGet("{id}/view-tutor-request")]
@@ -246,7 +256,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
         var result = await sender.Send(new GetTutorRequestQuery(id));
 
         return result.IsSuccess
-            ? View(result.Value)
+            ? Helper.SuccessResult()
             : RedirectToAction("Error", "Home");
     }
 

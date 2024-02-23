@@ -12,6 +12,7 @@ using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.Entity_Framework_Core;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -23,10 +24,52 @@ internal static class Program
     {
         var factory = new AppDbContextFactory();
         var context = factory.CreateDbContext(args);
+
+        int choice = 0;
+        
+        Console.WriteLine("1. Delete database");
+        Console.WriteLine("2. Migrate database");
+        Console.WriteLine("3. Seed database");
+        Console.WriteLine("4. Delete then migrate then seed database");
+        Console.WriteLine("5. Cancel...");
+        
+        Console.WriteLine("Enter your choice: ");
+
+        try
+        {
+            choice = int.Parse(Console.ReadLine()!);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        
+        switch (choice)
+        {
+            case 1:
+                await context.Database.EnsureDeletedAsync();
+                return;
+            case 2:
+                await context.Database.EnsureCreatedAsync();
+                return;
+            case 3:
+            case 4:
+                await context.Database.EnsureDeletedAsync();
+                break;
+            default:
+                Console.WriteLine("Cancel");
+                return;
+        }
+
         Console.WriteLine("Checking database is created or not...");
-        await context.Database.EnsureCreatedAsync();
+        await context.Database.MigrateAsync();
         Console.WriteLine("Checked!");
 
+        await SeedData(context);
+    }
+
+    private static async Task SeedData(AppDbContext context)
+    {
         try
         {
             Console.WriteLine("Checking subject table is migrated or not...");
@@ -168,10 +211,10 @@ internal static class Program
                 #region Seed user discoveries
 
                 // TODO: seed discovery for user
-                int i = 50;
+                var i = userData.Count;
                 var duList = (from user in userData.TakeWhile(user => i-- != 0)
-                    let random = new Random().Next(0, 7)
-                    select DiscoveryUser.Create(DiscoveryId.Create(random + 1), user.Id)).ToList();
+                    let random = new Random().Next(0, 6)
+                    select DiscoveryUser.Create(discoveries[random].Id, user.Id)).ToList();
 
                 context.DiscoveryUsers.AddRange(duList);
 
@@ -213,7 +256,7 @@ internal static class Program
                 {
                     var randomNumber = new Random().Next(0, 50);
                     var user = userData[randomNumber];
-                    course.SetLearner(user.GetFullName(), user.Gender, user.PhoneNumber!);
+                    course.SetLearner(user.GetFullName(), user.Gender.ToString(), user.PhoneNumber!);
                     course.SetLearnerId(user.Id);
 
                     if (course.Status != Status.Confirmed) continue;
@@ -246,8 +289,6 @@ internal static class Program
 
                 await context.SaveChangesAsync();
                 Console.WriteLine("All done! Enjoy my website!");
-                //throw new InvalidOperationException();
-                ;
             }
             else
             {
@@ -263,7 +304,7 @@ internal static class Program
 
     private static void SeedTutorMajor(List<Tutor> tutorData, IReadOnlyList<Subject> subjects)
     {
-        var ii = 50;
+        var ii = tutorData.Count;
 
         foreach (var tutor in tutorData)
         {
@@ -406,79 +447,79 @@ internal static class Program
     }
 
 
-    private static IEnumerable<Discovery> Discoveries(IReadOnlyList<Subject> subjects)
+    private static IList<Discovery> Discoveries(IReadOnlyList<Subject> subjects)
     {
         var discovery1 = Discovery.Create("Information Technology",
             "The study of information and computational systems",
             [
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(1), subjects[0].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(2), subjects[1].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(3), subjects[2].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(4), subjects[3].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(5), subjects[4].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(6), subjects[5].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(7), subjects[6].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(8), subjects[7].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(1), SubjectId.Create(12), subjects[11].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(1), subjects[0].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(2), subjects[1].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(3), subjects[2].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(4), subjects[3].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(5), subjects[4].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(6), subjects[5].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(7), subjects[6].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(8), subjects[7].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(12), subjects[11].Name),
             ]);
         var discovery2 = Discovery.Create("Programming",
             "Basic principles and concepts of programming",
             [
-                DiscoverySubject.Create(DiscoveryId.Create(2), SubjectId.Create(2), subjects[1].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(2), SubjectId.Create(3), subjects[2].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(2), SubjectId.Create(4), subjects[3].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(2), SubjectId.Create(5), subjects[4].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(2), SubjectId.Create(6), subjects[5].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(2), SubjectId.Create(7), subjects[6].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(2), subjects[1].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(3), subjects[2].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(4), subjects[3].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(5), subjects[4].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(6), subjects[5].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(7), subjects[6].Name),
             ]);
 
         var discovery3 = Discovery.Create("Language",
             "Study of language and culture",
             [
-                DiscoverySubject.Create(DiscoveryId.Create(3), SubjectId.Create(10), subjects[9].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(3), SubjectId.Create(11), subjects[10].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(3), SubjectId.Create(12), subjects[11].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(3), SubjectId.Create(13), subjects[12].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(3), SubjectId.Create(14), subjects[13].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(3), SubjectId.Create(15), subjects[14].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(10), subjects[9].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(11), subjects[10].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(12), subjects[11].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(13), subjects[12].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(14), subjects[13].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(15), subjects[14].Name),
             ]);
 
         var discovery4 = Discovery.Create("Art",
             "Study of art and culture",
             [
-                DiscoverySubject.Create(DiscoveryId.Create(4), SubjectId.Create(16), subjects[15].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(4), SubjectId.Create(17), subjects[16].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(4), SubjectId.Create(18), subjects[17].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(4), SubjectId.Create(19), subjects[18].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(4), SubjectId.Create(20), subjects[19].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(16), subjects[15].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(17), subjects[16].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(18), subjects[17].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(19), subjects[18].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(20), subjects[19].Name),
             ]);
 
         var discovery5 = Discovery.Create("Fitness and Health",
             "Study of fitness and health",
             [
-                DiscoverySubject.Create(DiscoveryId.Create(5), SubjectId.Create(21), subjects[20].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(5), SubjectId.Create(22), subjects[21].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(5), SubjectId.Create(23), subjects[22].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(5), SubjectId.Create(24), subjects[23].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(21), subjects[20].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(22), subjects[21].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(23), subjects[22].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(24), subjects[23].Name),
             ]);
 
         var discovery6 = Discovery.Create("Science",
             "Study of science",
             [
-                DiscoverySubject.Create(DiscoveryId.Create(6), SubjectId.Create(24), subjects[23].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(6), SubjectId.Create(25), subjects[24].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(6), SubjectId.Create(26), subjects[25].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(6), SubjectId.Create(27), subjects[26].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(6), SubjectId.Create(29), subjects[28].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(24), subjects[23].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(25), subjects[24].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(26), subjects[25].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(27), subjects[26].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(29), subjects[28].Name),
             ]);
 
         var discovery7 = Discovery.Create("Social",
             "Study of social",
             [
-                DiscoverySubject.Create(DiscoveryId.Create(7), SubjectId.Create(28), subjects[27].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(7), SubjectId.Create(29), subjects[28].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(7), SubjectId.Create(30), subjects[29].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(7), SubjectId.Create(31), subjects[30].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(28), subjects[27].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(29), subjects[28].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(30), subjects[29].Name),
+                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(31), subjects[30].Name),
             ]);
 
         var discoveries = new List<Discovery>()
@@ -499,14 +540,35 @@ internal static class Program
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             var prop = base.CreateProperty(member, memberSerialization);
+            
             if (!prop.Writable)
             {
                 var property = member as PropertyInfo;
-                var hasPrivateSetter = property?.GetSetMethod(true) != null;
-                prop.Writable = hasPrivateSetter;
+                if (property != null)
+                {
+                    prop.Writable = property.GetSetMethod(true) != null;
+                    var hasPrivateSetter = property?.GetSetMethod(true) != null;
+                    prop.Writable = hasPrivateSetter;
+                }
+                else
+                {
+                    var fieldInfo = member as FieldInfo;
+                    if (fieldInfo != null)
+                    {
+                        prop.Writable = true;
+                    }
+                }
             }
-
+            
             return prop;
+        }
+        
+        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+        {
+            // Include both properties and private fields
+            return base.GetSerializableMembers(objectType)
+                .Concat(objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
+                .ToList();
         }
     }
 }

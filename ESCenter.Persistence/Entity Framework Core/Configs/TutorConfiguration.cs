@@ -17,16 +17,25 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
         builder.ToTable(nameof(Tutor));
         ConfigureTutor(builder);
         ConfigureChangeVerificationRequest(builder);
-        ConfigureTutorVerification(builder);
+        ConfigureVerification(builder);
         ConfigureTutorMajor(builder);
     }
 
-    private void ConfigureChangeVerificationRequest(EntityTypeBuilder<Tutor> builder)
+    private static void ConfigureChangeVerificationRequest(EntityTypeBuilder<Tutor> builder)
     {
-        builder.OwnsMany(o => o.ChangeVerificationRequests, ib =>
+        builder.OwnsOne(o => o.ChangeVerificationRequest, ib =>
         {
             ib.ToTable(nameof(ChangeVerificationRequest));
+            
             ib.HasKey(x => x.Id);
+            ib.Property(r => r.Id)
+                .HasColumnName(nameof(ChangeVerificationRequest.Id))
+                .ValueGeneratedNever()
+                .HasConversion(
+                    id => id.Value,
+                    value => ChangeVerificationRequestId.Create(value)
+                );
+            
             ib.Property(r => r.TutorId)
                 .HasColumnName(nameof(ChangeVerificationRequest.TutorId))
                 .ValueGeneratedNever()
@@ -40,25 +49,41 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             ib.OwnsMany(cvr => cvr.ChangeVerificationRequestDetails, cvrd =>
             {
                 cvrd.ToTable(nameof(ChangeVerificationRequestDetail));
+                
                 cvrd.HasKey(x => x.Id);
+                cvrd.Property(r => r.Id)
+                    .HasColumnName(nameof(ChangeVerificationRequestDetail.Id))
+                    .ValueGeneratedNever()
+                    .HasConversion(
+                        id => id.Value,
+                        value => ChangeVerificationRequestDetailId.Create(value)
+                    );
+                
                 cvrd.WithOwner().HasForeignKey(x => x.ChangeVerificationRequestId);
                 cvrd.Property(r => r.ImageUrl).IsRequired();
             });
         });
     }
 
-    private void ConfigureTutorVerification(EntityTypeBuilder<Tutor> builder)
+    private static void ConfigureVerification(EntityTypeBuilder<Tutor> builder)
     {
-        builder.OwnsMany(o => o.TutorVerificationInfos, ib =>
+        builder.OwnsMany(o => o.Verifications, ib =>
         {
-            ib.ToTable(nameof(TutorVerificationInfo));
+            ib.ToTable(nameof(Verification));
             ib.HasKey(x => x.Id);
+            ib.Property(r => r.Id)
+                .HasColumnName(nameof(Verification.Id))
+                .ValueGeneratedNever()
+                .HasConversion(
+                    id => id.Value,
+                    value => VerificationId.Create(value)
+                );
             ib.WithOwner().HasForeignKey(x => x.TutorId);
             ib.Property(x => x.Image).IsRequired();
         });
     }
 
-    private void ConfigureTutorMajor(EntityTypeBuilder<Tutor> builder)
+    private static void ConfigureTutorMajor(EntityTypeBuilder<Tutor> builder)
     {
         builder.OwnsMany(o => o.TutorMajors, ib =>
         {

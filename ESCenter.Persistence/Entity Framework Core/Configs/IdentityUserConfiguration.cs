@@ -21,11 +21,6 @@ internal class IdentityUserConfiguration : IEntityTypeConfiguration<IdentityUser
                 value => IdentityGuid.Create(value)
             );
 
-        // builder.HasOne(r => r.User)
-        //     .WithOne(x => x.IdentityUser)
-        //     .HasForeignKey<IdentityUser>(x => x.Id)
-        //     .IsRequired();
-        //
         builder.Property(r => r.IdentityRoleId)
             .HasColumnName(nameof(IdentityUser.IdentityRoleId))
             .ValueGeneratedNever()

@@ -3,7 +3,7 @@ using Matt.SharedKernel.Domain.Primitives;
 
 namespace ESCenter.Domain.Aggregates.Courses;
 
-public class Review : Entity<int>
+public class Review : Entity<ReviewId>
 {
     public short Rate { get; private set; }
     public string Detail { get; private set; }

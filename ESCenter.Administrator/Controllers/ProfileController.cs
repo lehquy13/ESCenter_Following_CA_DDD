@@ -2,7 +2,7 @@
 using ESCenter.Administrator.Utilities;
 using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.ChangePassword;
-using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
+using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.ServiceImpls.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.ServiceImpls.Accounts.Queries.Login;
 using ESCenter.Domain.Shared;
@@ -85,7 +85,7 @@ namespace ESCenter.Administrator.Controllers
                 );
             try
             {
-                var result = await sender.Send(new CreateUpdateLearnerProfileCommand(userDto));
+                var result = await sender.Send(new CreateUpdateBasicProfileCommand(userDto));
                 ViewBag.Updated = result;
                 Helper.ClearTempFile(webHostEnvironment.WebRootPath);
 

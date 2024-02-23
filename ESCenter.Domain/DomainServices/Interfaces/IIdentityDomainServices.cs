@@ -39,5 +39,5 @@ public interface IIdentityDomainServices : IDomainService
         AcademicLevel academicLevel,
         string university,
         List<string> majors,
-        List<string> tutorVerificationInfoDtos);
+        List<string> verificationInfoDtos);
 }

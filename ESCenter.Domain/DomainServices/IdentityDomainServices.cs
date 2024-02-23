@@ -121,7 +121,7 @@ public class IdentityDomainServices(
         AcademicLevel academicLevel,
         string university,
         List<string> majors,
-        List<string> tutorVerificationInfoDtos)
+        List<string> verificationInfoDtos)
     {
         try
         {
@@ -146,7 +146,7 @@ public class IdentityDomainServices(
                 user.Id,
                 academicLevel,
                 university,
-                tutorVerificationInfoDtos,
+                verificationInfoDtos,
                 false
             );
 

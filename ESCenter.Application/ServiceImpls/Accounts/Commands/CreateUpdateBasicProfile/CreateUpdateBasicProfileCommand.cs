@@ -2,8 +2,8 @@
 using ESCenter.Application.Contracts.Users.Learners;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
-namespace ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
+namespace ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateBasicProfile;
 
-public record CreateUpdateLearnerProfileCommand(
+public record CreateUpdateBasicProfileCommand(
     LearnerForCreateUpdateDto LearnerForCreateUpdateDto
 ) : ICommandRequest<AuthenticationResult>;

@@ -20,7 +20,7 @@ public class TutorForProfileDto : BasicAuditedEntityDto<Guid>
     public bool IsVerified { get; set; } = false;
     public short Rate { get; set; } = 0;
     public List<TutorMajorDto> Majors { get; set; } = new(); 
-    public List<TutorVerificationInfoDto> TutorVerificationInfoDtos { get; set; } = new();
+    public List<VerificationDto> VerificationDtos { get; set; } = new();
     public List<ChangeVerificationRequestDto> ChangeVerificationRequestDtos { get; set; } = new();
     public List<CourseRequestDto> CourseRequestDtos { get; set; } = new(); // TODO: Add CourseRequestDto
 }
@@ -36,8 +36,8 @@ public class TutorForProfileDtoMappingConfig : IRegister
 
         
         config.NewConfig<Tutor, TutorForProfileDto>()
-            .Map(dest => dest.ChangeVerificationRequestDtos, src => src.ChangeVerificationRequests)
-            .Map(dest => dest.TutorVerificationInfoDtos, src => src.TutorVerificationInfos)
+            .Map(dest => dest.ChangeVerificationRequestDtos, src => src.ChangeVerificationRequest)
+            .Map(dest => dest.VerificationDtos, src => src.Verifications)
             .Map(dest => dest.Majors, src => src.TutorMajors)
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest, src => src);

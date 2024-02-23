@@ -2,4 +2,4 @@
 
 namespace ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateChangeVerificationRequestCommand;
 
-public record UpdateChangeVerificationCommand(Guid TutorId, int RequestId, bool IsApproved) : ICommandRequest;
+public record UpdateChangeVerificationCommand(Guid TutorId, bool IsApproved) : ICommandRequest;

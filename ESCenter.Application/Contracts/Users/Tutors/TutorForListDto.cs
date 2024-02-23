@@ -24,7 +24,7 @@ public class TutorForListDto : BasicAuditedEntityDto<Guid>
     //Account References
     public string PhoneNumber { get; set; } = string.Empty;
 
-    public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.Student.ToString();
+    public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
     public string University { get; set; } = string.Empty;
     public short NumberOfRequests { get; set; } = 0;
     public bool IsVerified { get; set; } = false;

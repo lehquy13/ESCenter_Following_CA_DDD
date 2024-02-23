@@ -42,7 +42,7 @@ public class CourseForCreateDtoMappingConfig : IRegister
                     x.Fee,
                     x.ChargeFee,
                     "Dollar",
-                    x.GenderRequirement.ToEnum<Gender>(),
+                    x.GenderRequirement,
                     x.AcademicLevelRequirement.ToEnum<AcademicLevel>(),
                     x.LearnerGender,
                     x.LearnerName,

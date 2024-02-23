@@ -14,7 +14,7 @@ using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 
-namespace ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetLearningCourse;
+namespace ESCenter.Application.ServiceImpls.Clients.Profiles.Queries.GetLearningCourse;
 
 public class GetLearningCourseDetailQueryHandler(
     ICourseRepository courseRepository,

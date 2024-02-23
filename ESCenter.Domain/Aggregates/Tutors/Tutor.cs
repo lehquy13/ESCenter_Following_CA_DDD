@@ -2,18 +2,17 @@ using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
+using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Tutors;
 
 public class Tutor : AuditedAggregateRoot<TutorId>
 {
-    private List<TutorVerificationInfo> _tutorVerificationInfos = new();
-    private List<ChangeVerificationRequest> _changeVerificationRequests = new();
+    private List<Verification> _verifications = new();
     private List<TutorMajor> _tutorMajors = new();
 
-    //public IdentityGuid UserId { get; private set; } = null!;
-    public AcademicLevel AcademicLevel { get; private set; } = AcademicLevel.Student;
+    public AcademicLevel AcademicLevel { get; private set; } = AcademicLevel.UnderGraduated;
     public string University { get; private set; } = string.Empty;
     public bool IsVerified { get; private set; }
     public float Rate { get; private set; }
@@ -21,35 +20,14 @@ public class Tutor : AuditedAggregateRoot<TutorId>
     public IdentityGuid UserId { get; private set; } = null!;
 
     // Acceptable entity because it is an entity that belongs to the aggregate root
-    public IReadOnlyList<TutorVerificationInfo> TutorVerificationInfos => _tutorVerificationInfos.AsReadOnly();
-
-    public IReadOnlyList<ChangeVerificationRequest> ChangeVerificationRequests =>
-        _changeVerificationRequests.AsReadOnly();
-
+    public IReadOnlyList<Verification> Verifications => _verifications.AsReadOnly();
     public IReadOnlyList<TutorMajor> TutorMajors =>
         _tutorMajors.AsReadOnly();
+    public ChangeVerificationRequest? ChangeVerificationRequest { get; private set; } 
 
-    /// <summary>
-    /// Update tutor's information and change the state into being verified
-    /// </summary>
-    /// <param name="tutor"></param>
-    public void UpdateTutorInformation(Tutor tutor)
+    public void CreateChangeVerificationRequest(List<string> urls)
     {
-        AcademicLevel = tutor.AcademicLevel;
-        University = tutor.University;
-
-        //wait for being verified
-        IsVerified = false;
-    }
-
-    public void UpdateTutorVerificationInfo(List<TutorVerificationInfo> tutorVerificationInfos)
-    {
-        _tutorVerificationInfos = tutorVerificationInfos;
-    }
-
-    public void CreateChangeVerificationRequest(ChangeVerificationRequest tutorVerificationInfos)
-    {
-        _changeVerificationRequests.Add(tutorVerificationInfos);
+        ChangeVerificationRequest = ChangeVerificationRequest.Create(Id, urls);
     }
 
     public void AddTutorMajor(TutorMajor tutorMajor)
@@ -70,30 +48,20 @@ public class Tutor : AuditedAggregateRoot<TutorId>
         IdentityGuid userId,
         AcademicLevel academicLevel,
         string university,
-        List<string> verificationInfos,
+        IEnumerable<string> verificationInfos,
         bool isVerified,
         short rate = 0)
     {
         var id = TutorId.Create();
 
-        var tutorVerificationInfos = new List<TutorVerificationInfo>();
-        foreach (var i in verificationInfos)
-        {
-            var tutorVerificationInfo = TutorVerificationInfo.Create(
-                i,
-                id
-            );
-
-            tutorVerificationInfos.Add(tutorVerificationInfo);
-        }
-
+        var verifications = verificationInfos.Select(i => Verification.Create(i, id)).ToList();
 
         return new()
         {
             Id = id,
             UserId = userId,
             AcademicLevel = academicLevel,
-            _tutorVerificationInfos = tutorVerificationInfos,
+            _verifications = verifications,
             University = university,
             IsVerified = isVerified,
             Rate = rate,
@@ -118,5 +86,32 @@ public class Tutor : AuditedAggregateRoot<TutorId>
     public void SetUserId(IdentityGuid id)
     {
         UserId = id;
+    }
+
+    public Result ModifyChangeVerificationRequest(bool commandIsApproved)
+    {
+        if(ChangeVerificationRequest is null)
+        {
+            return Result.Fail("There is no change verification request");
+        }
+        
+        if (commandIsApproved is false)
+        {
+            ChangeVerificationRequest.Reject();
+        }
+        else
+        {
+            ChangeVerificationRequest.Approve();
+
+            var verificationInfos = ChangeVerificationRequest.ChangeVerificationRequestDetails
+                .Select(id => Verification.Create(id.ImageUrl, Id))
+                .ToList();
+
+            _verifications = verificationInfos;
+        }
+
+        ChangeVerificationRequest = null;
+
+        return Result.Success();
     }
 }

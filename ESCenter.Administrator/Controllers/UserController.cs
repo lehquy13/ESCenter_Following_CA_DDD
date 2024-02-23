@@ -1,6 +1,5 @@
 ﻿using ESCenter.Administrator.Utilities;
 using ESCenter.Application.Contracts.Users.Learners;
-using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
 using ESCenter.Application.ServiceImpls.Admins.Users.Commands.CreateUpdateUserProfile;
 using ESCenter.Application.ServiceImpls.Admins.Users.Commands.DeleteUser;
 using ESCenter.Application.ServiceImpls.Admins.Users.Queries.GetLearnerDetail;

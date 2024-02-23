@@ -10,5 +10,5 @@ public interface ITutorRepository : IRepository<Tutor, TutorId>
 {
     Task<List<Tutor>> GetPopularTutors();
     Task<Tutor?> GetTutorByUserId(IdentityGuid userId);
-    Task<IEnumerable<TutorMajor>> GetTutorMajors(TutorId tutorId, CancellationToken cancellationToken);
+    Task RemoveChangeVerification(ChangeVerificationRequestId id);
 }

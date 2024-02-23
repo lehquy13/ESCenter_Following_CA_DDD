@@ -25,31 +25,17 @@ public class UpdateChangeVerificationCommandHandler(
             return Result.Fail(TutorAppServiceError.NonExistTutorError);
         }
 
-        var result = tutor.ChangeVerificationRequests.FirstOrDefault(x => x.Id == command.RequestId);
-
-        if (result is null)
+        var result = tutor.ModifyChangeVerificationRequest(command.IsApproved);
+        
+        if (result.IsFailure)
         {
-            return Result.Fail(TutorAppServiceError.NonExistChangeVerificationRequest);
+            return Result.Fail(result.Error);
         }
-
-        if (command.IsApproved)
-        {
-            result.Approve();
-        }
-        else
-        {
-            result.Reject();
-        }
-
+        
         tutor.Verify(true);
 
-        var newTutorVerificationInfos = result.ChangeVerificationRequestDetails.Select(x =>
-            TutorVerificationInfo.Create(x.ImageUrl, tutor.Id)).ToList();
-
-        tutor.UpdateTutorVerificationInfo(newTutorVerificationInfos);
-
         // TODO: Check does old verification info need to be deleted?
-        //changeVerificationRequestRepository.Delete(result);
+        //await tutorRepository.RemoveChangeVerification(tutor.ChangeVerificationRequest!.Id);
 
         if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {

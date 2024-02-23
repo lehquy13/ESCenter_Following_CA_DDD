@@ -43,34 +43,16 @@ internal class TutorRepository(
             .FirstOrDefaultAsync(x => x.UserId == userId);
     }
 
-    public async Task<IEnumerable<TutorMajor>> GetTutorMajors(TutorId tutorId, CancellationToken cancellationToken)
+    public Task RemoveChangeVerification(ChangeVerificationRequestId id)
     {
-        // var subjects = await AppDbContext.Subjects
-        //     .AsNoTracking()
-        //     .GroupJoin(
-        //         AppDbContext.TutorMajors.Where(x => x.TutorId == tutorId),
-        //         subject => subject.Id,
-        //         tutorMajor => tutorMajor.SubjectId,
-        //         (subject, tutorMajors) => new { Subject = subject, TutorMajors = tutorMajors.DefaultIfEmpty() }
-        //     )
-        //     .SelectMany(
-        //         x => x.TutorMajors,
-        //         (subject, tutorMajor) => subject
-        //     )
-        //     .ToListAsync(cancellationToken);
+        var changeVerificationRequest = AppDbContext.ChangeVerificationRequests
+            .FirstOrDefault(x => x.Id == id);
 
-        
-        // var subjects = await AppDbContext.Subjects
-        //     .AsNoTracking()
-        //     .LeftJoin(AppDbContext.TutorMajors.Where(x => x.TutorId == tutorId),
-        //         subject => subject.Id,
-        //         tutorMajor => tutorMajor.SubjectId,
-        //         (subject, tutorMajor) => subject)
-        //     .ToListAsync(cancellationToken);
+        if (changeVerificationRequest is not null)
+        {
+            AppDbContext.ChangeVerificationRequests.Remove(changeVerificationRequest);
+        }
 
-        return await AppDbContext.TutorMajors
-            .AsNoTracking()
-            .Where(x => x.TutorId == tutorId)
-            .ToListAsync(cancellationToken);
+        return Task.CompletedTask;
     }
 }

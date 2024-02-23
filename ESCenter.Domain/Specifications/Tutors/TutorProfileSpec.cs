@@ -8,7 +8,7 @@ public class TutorProfileSpec : FindSpecificationBase<Tutor, IdentityGuid>
 {
     public TutorProfileSpec(IdentityGuid tutorId) : base(tutorId)
     {
-        IncludeStrings.Add(nameof(Tutor.TutorVerificationInfos));
-        IncludeStrings.Add(nameof(Tutor.ChangeVerificationRequests));
+        IncludeStrings.Add(nameof(Tutor.Verifications));
+        IncludeStrings.Add(nameof(Tutor.ChangeVerificationRequest));
     }
 }

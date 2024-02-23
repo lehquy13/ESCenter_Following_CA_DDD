@@ -16,9 +16,9 @@ public class GetVerificationsByTutorIdQueryHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetVerificationsByTutorIdQuery, TutorVerificationInfoForEditDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetVerificationsByTutorIdQuery, VerificationEditDto>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<TutorVerificationInfoForEditDto>> Handle(GetVerificationsByTutorIdQuery request,
+    public override async Task<Result<VerificationEditDto>> Handle(GetVerificationsByTutorIdQuery request,
         CancellationToken cancellationToken)
     {
         //Get tutor verification info
@@ -28,7 +28,7 @@ public class GetVerificationsByTutorIdQueryHandler(
                 .Where(x => x.Id == IdentityGuid.Create(request.TutorId))
                 .Select(x => new
                 {
-                    x.TutorVerificationInfos, x.ChangeVerificationRequests
+                    VerificationInfos = x.Verifications, ChangeVerificationRequests = x.ChangeVerificationRequest
                 });
 
         var queryResult = await asyncQueryableExecutor.FirstOrDefaultAsync(query, true, cancellationToken);
@@ -38,11 +38,11 @@ public class GetVerificationsByTutorIdQueryHandler(
             return Result.Fail(TutorAppServiceError.NonExistTutorError);
         }
 
-        var result = new TutorVerificationInfoForEditDto()
+        var result = new VerificationEditDto()
         {
             TutorId = request.TutorId,
-            TutorVerificationInfoDtos = queryResult
-                .TutorVerificationInfos
+            VerificationDtos = queryResult
+                .VerificationInfos
                 .Select(x => x.Image),
             ChangeVerificationRequestDtos =
                 Mapper.Map<List<ChangeVerificationRequestDto>>(queryResult.ChangeVerificationRequests)

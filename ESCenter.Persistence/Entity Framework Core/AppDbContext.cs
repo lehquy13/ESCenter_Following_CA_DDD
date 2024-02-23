@@ -27,7 +27,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<CourseRequest> CourseRequests { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Tutor> Tutors { get; set; } = null!;
-    public DbSet<TutorVerificationInfo> TutorVerificationInfos { get; set; } = null!;
+    public DbSet<Verification> Verifications { get; set; } = null!;
     public DbSet<TutorMajor> TutorMajors { get; set; } = null!;
     public DbSet<TutorRequest> TutorRequests { get; set; } = null!;
     public DbSet<Subscriber> Subscribers { get; set; } = null!;

@@ -12,6 +12,19 @@ namespace ESCenter.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Discovery",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Discovery", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityRole",
                 columns: table => new
                 {
@@ -30,7 +43,7 @@ namespace ESCenter.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ObjectId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     NotificationType = table.Column<int>(type: "int", nullable: false),
@@ -50,8 +63,8 @@ namespace ESCenter.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -66,35 +79,21 @@ namespace ESCenter.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Subscriber",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subscriber", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
                     BirthYear = table.Column<int>(type: "int", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -113,19 +112,26 @@ namespace ESCenter.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(128)", maxLength: 128, nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     OtpCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
                     ExpiredTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdentityRoleId = table.Column<int>(type: "int", nullable: false)
+                    IdentityRoleId = table.Column<int>(type: "int", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeleterId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -139,20 +145,25 @@ namespace ESCenter.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Discovery",
+                name: "DiscoverySubject",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubjectId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DiscoveryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubjectId = table.Column<int>(type: "int", nullable: false),
+                    SubjectName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Discovery", x => x.Id);
+                    table.PrimaryKey("PK_DiscoverySubject", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Discovery_Subject_SubjectId",
+                        name: "FK_DiscoverySubject_Discovery_DiscoveryId",
+                        column: x => x.DiscoveryId,
+                        principalTable: "Discovery",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DiscoverySubject_Subject_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subject",
                         principalColumn: "Id",
@@ -164,23 +175,23 @@ namespace ESCenter.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     LearningMode = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<float>(type: "real", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GenderRequirement = table.Column<int>(type: "int", nullable: false),
+                    GenderRequirement = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AcademicLevelRequirement = table.Column<int>(type: "int", nullable: false),
                     SessionDuration = table.Column<int>(type: "int", nullable: false),
                     SessionPerWeek = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
                     LearnerGender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LearnerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumberOfLearner = table.Column<int>(type: "int", nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LearnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LearnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -203,53 +214,7 @@ namespace ESCenter.Persistence.Migrations
                         name: "FK_Course_User_LearnerId",
                         column: x => x.LearnerId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tutor",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AcademicLevel = table.Column<int>(type: "int", nullable: false),
-                    University = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
-                    Rate = table.Column<float>(type: "real", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tutor", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tutor_User_Id",
-                        column: x => x.Id,
-                        principalTable: "User",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DiscoverySubject",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DiscoveryId = table.Column<int>(type: "int", nullable: false),
-                    SubjectId = table.Column<int>(type: "int", nullable: false),
-                    SubjectName = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DiscoverySubject", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DiscoverySubject_Discovery_DiscoveryId",
-                        column: x => x.DiscoveryId,
-                        principalTable: "Discovery",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -258,7 +223,7 @@ namespace ESCenter.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DiscoveryId = table.Column<int>(type: "int", nullable: false),
+                    DiscoveryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -279,11 +244,56 @@ namespace ESCenter.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Review",
+                name: "Subscriber",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    SubscriberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subscriber", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subscriber_User_SubscriberId",
+                        column: x => x.SubscriberId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tutor",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AcademicLevel = table.Column<int>(type: "int", nullable: false),
+                    University = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false),
+                    Rate = table.Column<float>(type: "real", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tutor", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tutor_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Review",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Rate = table.Column<short>(type: "smallint", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -303,8 +313,7 @@ namespace ESCenter.Persistence.Migrations
                 name: "ChangeVerificationRequest",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RequestStatus = table.Column<int>(type: "int", nullable: false)
                 },
@@ -326,7 +335,7 @@ namespace ESCenter.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestStatus = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -357,7 +366,7 @@ namespace ESCenter.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
-                    SubjectName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false)
+                    SubjectName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -383,7 +392,7 @@ namespace ESCenter.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LearnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestStatus = table.Column<int>(type: "int", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -408,19 +417,18 @@ namespace ESCenter.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TutorVerificationInfo",
+                name: "Verification",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TutorVerificationInfo", x => x.Id);
+                    table.PrimaryKey("PK_Verification", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TutorVerificationInfo_Tutor_TutorId",
+                        name: "FK_Verification_Tutor_TutorId",
                         column: x => x.TutorId,
                         principalTable: "Tutor",
                         principalColumn: "Id",
@@ -431,10 +439,9 @@ namespace ESCenter.Persistence.Migrations
                 name: "ChangeVerificationRequestDetail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ChangeVerificationRequestId = table.Column<int>(type: "int", nullable: false)
+                    ChangeVerificationRequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -450,7 +457,8 @@ namespace ESCenter.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ChangeVerificationRequest_TutorId",
                 table: "ChangeVerificationRequest",
-                column: "TutorId");
+                column: "TutorId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChangeVerificationRequestDetail_ChangeVerificationRequestId",
@@ -478,14 +486,14 @@ namespace ESCenter.Persistence.Migrations
                 column: "TutorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Discovery_SubjectId",
-                table: "Discovery",
-                column: "SubjectId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DiscoverySubject_DiscoveryId",
                 table: "DiscoverySubject",
                 column: "DiscoveryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiscoverySubject_SubjectId",
+                table: "DiscoverySubject",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DiscoveryUser_DiscoveryId",
@@ -516,6 +524,17 @@ namespace ESCenter.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Subscriber_SubscriberId",
+                table: "Subscriber",
+                column: "SubscriberId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tutor_UserId",
+                table: "Tutor",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TutorMajor_SubjectId",
                 table: "TutorMajor",
                 column: "SubjectId");
@@ -536,16 +555,15 @@ namespace ESCenter.Persistence.Migrations
                 column: "TutorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TutorVerificationInfo_TutorId",
-                table: "TutorVerificationInfo",
-                column: "TutorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
                 table: "User",
                 column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Verification_TutorId",
+                table: "Verification",
+                column: "TutorId");
         }
 
         /// <inheritdoc />
@@ -582,7 +600,7 @@ namespace ESCenter.Persistence.Migrations
                 name: "TutorRequest");
 
             migrationBuilder.DropTable(
-                name: "TutorVerificationInfo");
+                name: "Verification");
 
             migrationBuilder.DropTable(
                 name: "ChangeVerificationRequest");

@@ -23,7 +23,7 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
         ConfigureCourseRequest(builder);
     }
 
-    private void ConfigureCourse(EntityTypeBuilder<Course> builder)
+    private static void ConfigureCourse(EntityTypeBuilder<Course> builder)
     {
         builder.ToTable(nameof(Course));
         builder.HasKey(r => r.Id);
@@ -120,19 +120,26 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
             });
     }
 
-    private void ConfigureReview(EntityTypeBuilder<Course> builder)
+    private static void ConfigureReview(EntityTypeBuilder<Course> builder)
     {
         builder.OwnsOne(o => o.Review, ib =>
         {
             ib.ToTable(nameof(Review));
             ib.HasKey(x => x.Id);
+            ib.Property(r => r.Id)
+                .HasColumnName("Id")
+                .ValueGeneratedNever()
+                .HasConversion(
+                    id => id.Value,
+                    value => ReviewId.Create(value)
+                );
             ib.WithOwner().HasForeignKey(nameof(Review.CourseId));
             ib.Property(r => r.Rate).IsRequired();
             ib.Property(r => r.Detail).IsRequired();
         });
     }
 
-    private void ConfigureCourseRequest(EntityTypeBuilder<Course> builder)
+    private static void ConfigureCourseRequest(EntityTypeBuilder<Course> builder)
     {
         builder.OwnsMany(o => o.CourseRequests, ib =>
         {

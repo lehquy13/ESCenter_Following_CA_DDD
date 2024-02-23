@@ -2,16 +2,15 @@
 using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.ChangeAvatar;
-using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
-using ESCenter.Application.ServiceImpls.Accounts.Commands.UpdateTutorProfile;
+using ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.ServiceImpls.Accounts.Queries.GetTutorProfile;
 using ESCenter.Application.ServiceImpls.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.ServiceImpls.Clients.Courses.Commands.ReviewCourse;
 using ESCenter.Application.ServiceImpls.Clients.Profiles.Commands.AddOrResetDiscovery;
+using ESCenter.Application.ServiceImpls.Clients.Profiles.Queries.GetLearningCourse;
 using ESCenter.Application.ServiceImpls.Clients.Profiles.Queries.GetLearningCourses;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetCourseRequests;
-using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetLearningCourse;
 using ESCenter.Host;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -58,16 +57,16 @@ public class ProfileController(
     public async Task<IActionResult> Edit(
         [FromBody] LearnerForCreateUpdateDto learnerForCreateUpdateDto)
     {
-        var result = await mediator.Send(new CreateUpdateLearnerProfileCommand(learnerForCreateUpdateDto));
+        var result = await mediator.Send(new CreateUpdateBasicProfileCommand(learnerForCreateUpdateDto));
         return Ok(result);
     }
 
     [Authorize]
     [HttpPut("tutor-information/edit")]
     public async Task<IActionResult> EditTutorInformation(
-        [FromBody] TutorBasicForUpdateDto tutorBasicForUpdateDto)
+        [FromBody] TutorBasicUpdateDto tutorBasicUpdateDto)
     {
-        var result = await mediator.Send(new UpdateTutorProfileCommand(tutorBasicForUpdateDto));
+        var result = await mediator.Send(new UpdateTutorProfileCommand(tutorBasicUpdateDto));
         return Ok(result);
     }
 

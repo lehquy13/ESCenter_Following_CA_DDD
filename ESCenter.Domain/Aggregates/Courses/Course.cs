@@ -17,7 +17,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public LearningMode LearningMode { get; private set; } = LearningMode.Offline;
     public Fee SectionFee { get; private set; } = Fee.Create(0, Currency.USD);
     public Fee ChargeFee { get; private set; } = Fee.Create(0, Currency.USD);
-    public Gender GenderRequirement { get; private set; } = Gender.None;
+    public string GenderRequirement { get; private set; } = Gender.None.ToString();
     public AcademicLevel AcademicLevelRequirement { get; private set; } = AcademicLevel.Optional;
     public SessionDuration SessionDuration { get; private set; } = SessionDuration.Create();
     public SessionPerWeek SessionPerWeek { get; private set; } = SessionPerWeek.Create(1);
@@ -46,7 +46,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         float sectionFee,
         float chargeFee,
         string? currency,
-        Gender genderRequirement,
+        string genderRequirement,
         AcademicLevel academicLevelRequirement,
         string learnerGender,
         string learnerName,

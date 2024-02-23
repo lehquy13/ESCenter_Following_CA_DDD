@@ -26,12 +26,6 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         //'The relationship from 'User' to 'IdentityUser' with foreign key properties {'Id' : IdentityGuid} cannot target the primary key {'Id' : string} because it is not compatible.
         // Configure a principal key or a set of foreign key properties with compatible types for this relationship.' was thrown while attempting to create an instance.
 
-        builder
-            .HasOne<IdentityUser>()
-            .WithOne()
-            .HasForeignKey<IdentityUser>(nameof(User.Id)) 
-            .IsRequired();
-
         builder.Property(r => r.FirstName)
             .IsRequired();
 
@@ -53,6 +47,9 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.Property(r => r.Description)
+            .IsRequired();
+        
+        builder.Property(r => r.Role)
             .IsRequired();
 
         builder.OwnsOne(user => user.Address,

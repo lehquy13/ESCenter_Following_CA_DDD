@@ -84,6 +84,15 @@ public static class Helper
 
         return string.Empty;
     }
+    
+    public static JsonResult SuccessResult(string message = "")
+    {
+        return new JsonResult(new
+        {
+            res = true,
+            message
+        });
+    }
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]

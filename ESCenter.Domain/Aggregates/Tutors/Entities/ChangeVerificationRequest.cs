@@ -5,7 +5,7 @@ using Matt.SharedKernel.Domain.Primitives;
 
 namespace ESCenter.Domain.Aggregates.Tutors.Entities;
 
-public class ChangeVerificationRequest : Entity<int>
+public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId>
 {
     private List<ChangeVerificationRequestDetail> _changeVerificationRequestDetails = new();
     public TutorId TutorId { get; private set; } = null!;
@@ -31,7 +31,7 @@ public class ChangeVerificationRequest : Entity<int>
             TutorId = tutorId,
             RequestStatus = RequestStatus.Pending,
             _changeVerificationRequestDetails =
-                urls.Select(url => ChangeVerificationRequestDetail.Create(url)).ToList()
+                urls.Select(ChangeVerificationRequestDetail.Create).ToList()
         };
     }
 

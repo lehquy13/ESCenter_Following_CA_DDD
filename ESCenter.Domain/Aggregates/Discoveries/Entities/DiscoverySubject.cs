@@ -4,7 +4,7 @@ using Matt.SharedKernel.Domain.Primitives;
 
 namespace ESCenter.Domain.Aggregates.Discoveries.Entities;
 
-public class DiscoverySubject : Entity<int>
+public class DiscoverySubject : Entity<DiscoverySubjectId>
 {
     public DiscoveryId DiscoveryId { get; private set; } = null!;
     public SubjectId SubjectId { get; private set; } = null!;

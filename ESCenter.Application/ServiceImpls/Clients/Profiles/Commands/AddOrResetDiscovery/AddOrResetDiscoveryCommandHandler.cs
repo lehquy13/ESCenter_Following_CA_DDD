@@ -39,7 +39,7 @@ public class AddOrResetDiscoveryCommandHandler(
 
         // select the discoveries that are already in the user's discovery list
         var discoveriesInUserDiscoveryList = userDiscovery
-            .Where(discovery => request.DiscoveryIds.Contains(discovery.Id.Value))
+            .Where(discovery => request.DiscoveryIds.Contains(discovery.DiscoveryId.Value))
             .ToList();
 
         // update to db

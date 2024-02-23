@@ -18,10 +18,10 @@ public class GetTutorChangeVerificationsQueryHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetTutorChangeVerificationsQuery, TutorVerificationInfoForEditDto>(unitOfWork, logger,
+    : QueryHandlerBase<GetTutorChangeVerificationsQuery, VerificationEditDto>(unitOfWork, logger,
         mapper)
 {
-    public override async Task<Result<TutorVerificationInfoForEditDto>> Handle(
+    public override async Task<Result<VerificationEditDto>> Handle(
         GetTutorChangeVerificationsQuery request, CancellationToken cancellationToken)
     {
         var tutorQ =
@@ -32,8 +32,8 @@ public class GetTutorChangeVerificationsQueryHandler(
             {
                 Id = userR.Id.Value,
                 Name = userR.FirstName + " " + userR.LastName,
-                ChangeVerificationRequestDto = tutorR.ChangeVerificationRequests,
-                Currents = tutorR.TutorVerificationInfos.Select(x => x.Image)
+                ChangeVerificationRequestDto = tutorR.ChangeVerificationRequest,
+                Currents = tutorR.Verifications.Select(x => x.Image)
             };
 
         var tutor = await asyncQueryableExecutor.FirstOrDefaultAsync(tutorQ, false, cancellationToken);
@@ -46,10 +46,10 @@ public class GetTutorChangeVerificationsQueryHandler(
         var changeVerificationRequestDtos =
             mapper.Map<List<ChangeVerificationRequestDto>>(tutor.ChangeVerificationRequestDto);
 
-        return new TutorVerificationInfoForEditDto
+        return new VerificationEditDto
         {
             ChangeVerificationRequestDtos = changeVerificationRequestDtos,
-            TutorVerificationInfoDtos = tutor.Currents,
+            VerificationDtos = tutor.Currents,
             TutorName = tutor.Name,
             TutorId = tutor.Id
         };

@@ -12,7 +12,7 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateLearnerProfile;
+namespace ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateBasicProfile;
 
 public class CreateUpdateLearnerProfileCommandHandler(
     IUnitOfWork unitOfWork,
@@ -21,12 +21,12 @@ public class CreateUpdateLearnerProfileCommandHandler(
     IJwtTokenGenerator jwtTokenGenerator,
     IUserRepository userRepository,
     IPublisher publisher)
-    : CommandHandlerBase<CreateUpdateLearnerProfileCommand,
+    : CommandHandlerBase<CreateUpdateBasicProfileCommand,
         AuthenticationResult>(unitOfWork, logger)
 {
     private IMapper Mapper { get; } = mapper;
 
-    public override async Task<Result<AuthenticationResult>> Handle(CreateUpdateLearnerProfileCommand command,
+    public override async Task<Result<AuthenticationResult>> Handle(CreateUpdateBasicProfileCommand command,
         CancellationToken cancellationToken)
     {
         try

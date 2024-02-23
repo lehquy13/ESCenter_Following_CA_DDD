@@ -4,17 +4,18 @@ namespace ESCenter.Domain.Aggregates.Discoveries.ValueObjects;
 
 public class DiscoveryId : ValueObject
 {
-    public int Value { get; private init; }
-
+    public Guid Value { get; private set; }
+    
     private DiscoveryId()
     {
     }
-
-    public static DiscoveryId Create(int? value)
+    
+    public static DiscoveryId Create(Guid value = default)
     {
-        return new DiscoveryId { Value = value ?? 0 };
+        return new DiscoveryId { Value = value == default ? Guid.NewGuid() : value };
     }
 
+    
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
