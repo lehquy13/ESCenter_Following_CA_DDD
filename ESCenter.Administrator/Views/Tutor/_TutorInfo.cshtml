@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ESCenter.Domain.Shared
+@using ESCenter.Application.Contracts.Courses.Dtos
+@model ESCenter.Application.Contracts.Users.Tutors.TutorProfileCreateDto
+
+@{
+    List<string> academics = EnumProvider.AcademicLevels;
+    List<SubjectDto> majors = ViewBag.Majors;
+}
+
+
+<h5 class="card-title">Personal Information</h5>
+
+<!-- Multi Columns Form -->
+<div class="row">
+
+    <h5 class="col-md-12">Tutor information</h5>
+
+    <div class="col-md-4">
+        <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
+        <select asp-for="AcademicLevel" class="form-select">
+            <option selected>@Model.AcademicLevel.ToString()</option>
+
+            @foreach (string i in academics)
+            {
+                @if (i != Model.AcademicLevel.ToString())
+                {
+                    <option> @i </option>
+                }
+            }
+        </select>
+        <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+    </div>
+    <div class="col-md-8">
+        <label asp-for="University" class="form-label">University</label>
+        <input type="text" class="form-control" value="" asp-for="University">
+        <span asp-validation-for="University" class="text-danger"></span>
+    </div>
+    <!-- ----------------------------------- -->
+
+    <div class="col-md-12">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" asp-for="IsVerified">
+            <label class="form-label" asp-for="IsVerified">
+                Is tutor verified?
+            </label>
+
+        </div>
+
+    </div>
+
+    <div class="list-group" style="grid-template-columns: repeat(4,1fr); display: grid">
+        @foreach (var s in majors)
+        {
+            <li class="list-group-item" style="border: none">
+                <input class="form-check-input" name="majorIds" value="@s.Id" type="checkbox"/>
+                <label class="form-check-label">@s.Name</label>
+            </li>
+        }
+    </div><!-- End List group Advanced Content -->
+</div>

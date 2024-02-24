@@ -27,14 +27,14 @@ public static class EnumProvider
 
     public static List<string> FullAcademicLevelsOption =>
     [
-        "Student",
+        "UnderGraduated",
         "Graduated",
         "Lecturer",
     ];
 
     public static List<string> AcademicLevels =>
     [
-        "Student",
+        "UnderGraduated",
         "Graduated",
         "Lecturer",
         "Optional"

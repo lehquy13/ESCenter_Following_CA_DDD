@@ -69,7 +69,7 @@
 
             <div class="col-md-4">
                 <label class="form-label">Learner</label>
-                <input type="text" hidden="hidden" id="studentId" asp-for="LearnerId" class="form-control"/>
+                <input type="text" hidden="hidden" id="LearnerId" asp-for="LearnerId" class="form-control"/>
                 <input type="text" class="form-control" asp-for="LearnerName"/>
                 <span asp-validation-for="LearnerName" class="text-danger"></span>
             </div>
@@ -197,9 +197,9 @@
                 </div>
             </div>
             <!-- ----------------------------------- -->
-            <!-- student infor -->
+            <!-- Learner infor -->
             <div class="col-md-3">
-                <label asp-for="LearnerGender" class="form-label">Student's Gender</label>
+                <label asp-for="LearnerGender" class="form-label">Learner's Gender</label>
                 <select asp-for="LearnerGender" class="form-select">
                     <option selected>@Model.LearnerGender.ToString()</option>
 
@@ -214,7 +214,7 @@
                 <span asp-validation-for="LearnerGender" class="text-danger"></span>
             </div>
             <div class="col-md-3">
-                <label asp-for="NumberOfLearner" class="form-label">Number Of Student</label>
+                <label asp-for="NumberOfLearner" class="form-label">Number Of Learner</label>
                 <input type="number" class="form-control" asp-for="NumberOfLearner"/>
                 <span asp-validation-for="NumberOfLearner" class="text-danger"></span>
 

@@ -1,0 +1,116 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ESCenter.Domain.Shared
+@using ESCenter.Domain.Shared.Courses
+@model ESCenter.Application.Contracts.Users.Learners.LearnerForCreateUpdateDto
+
+@{
+    List<string> roles = EnumProvider.Roles;
+    List<string> genders = EnumProvider.Genders;
+    List<string> academics = EnumProvider.AcademicLevels;
+    Layout = "_ScriptLayout";
+}
+
+<h5 class="card-title">Personal Information</h5>
+<div class="row g-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="col-md-6">
+        <label asp-for="FirstName" class="form-label">First Name</label>
+        <input type="text" asp-for="FirstName" class="form-control">
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="LastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" asp-for="LastName">
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <!-- ----------------------------------- -->
+
+    <div class="col-md-4">
+        <label asp-for="Gender" class="form-label">Gender</label>
+        <select asp-for="Gender" class="form-select">
+            <option selected>@Model.Gender</option>
+
+            @foreach (var i in genders.Where(i => i != Gender.None.ToString() && i != Gender.Both.ToString()))
+            {
+                <option> @i </option>
+            }
+        </select>
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Role" class="form-label">Role</label>
+        <select asp-for="Role" class="form-select">
+            <option selected>@UserRole.Tutor</option>
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="BirthYear" class="form-label">Birth</label>
+        <input type="number" class="form-control" asp-for="BirthYear">
+
+        <span asp-validation-for="BirthYear" class="text-danger"></span>
+    </div>
+
+    <!-- disable email when confirmed -->
+
+    @if (Model.IsEmailConfirmed == true)
+    {
+        <div class="col-md-6">
+            <label asp-for="Email" class="form-label">Email</label>
+
+            <div class="input-group mb-3">
+
+                <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3">
+                <span class="input-group-text" id="basic-addon3">
+                    <i class="bi bi-check">
+                    </i>
+                </span>
+
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+
+        </div>
+    }
+    else
+    {
+        <div class="col-md-6">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input type="email" asp-for="Email" class="form-control">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    }
+
+    <div class="col-md-6">
+        <label asp-for="PhoneNumber" class="form-label">Number</label>
+        <div class="col-sm-12">
+            <input type="number" asp-for="PhoneNumber" class="form-control">
+        </div>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+    </div>
+
+    <div class="col-6">
+        <label asp-for="City" class="form-label">City</label>
+        <input type="text" class="form-control" asp-for="City" placeholder="Sai Gon"/>
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+
+    <div class="col-6">
+        <label asp-for="Country" class="form-label">Country</label>
+        <input type="text" class="form-control" asp-for="Country" placeholder="Viet Nam"/>
+        <span asp-validation-for="Country" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea class="form-control" placeholder="Description" asp-for="Description" style="height: 100px;"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+</div>

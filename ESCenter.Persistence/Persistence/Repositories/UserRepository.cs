@@ -1,6 +1,7 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.Entity_Framework_Core;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +17,10 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
         try
         {
             var users = await AppDbContext.Users
-                .Join(AppDbContext.IdentityUsers,
-                    u => u.Id,
-                    ur => ur.Id,
-                    (u, ur) => new { u, ur })
-                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Learner) &&
-                            o.u.IsDeleted == false)
                 .AsNoTracking()
-                .Select(x => x.u)
+                .Where(o => o.Role == UserRole.Learner &&
+                            o.IsDeleted == false)
+                .OrderByDescending(x => x.CreationTime)
                 .ToListAsync();
 
             return users;

@@ -2,6 +2,7 @@
 using ESCenter.Application.Contracts.Users.BasicUsers;
 using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Application.Contracts.Users.Tutors;
+using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.ClearTutorRequests;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.CreateTutor;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateChangeVerificationRequestCommand;
@@ -170,21 +171,27 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     [HttpGet("create")]
     public IActionResult Create()
     {
-        PackStaticListToView();
-        return View(new TutorUpdateDto());
+        ViewData["Majors"] = sender.Send(new GetSubjectsQuery()).Result.Value;
+        return View(new TutorCreateDto());
     }
 
     [HttpPost("create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(TutorCreateUpdateDto tutorCreateUpdateDto)
+    public async Task<IActionResult> Create(TutorProfileCreateDto tutorProfileCreateDto, LearnerForCreateUpdateDto learnerForCreateUpdateDto)
     {
+        var tutorCreateDto = new TutorCreateDto
+        {
+            LearnerForCreateUpdateDto = learnerForCreateUpdateDto,
+            TutorProfileCreateDto = tutorProfileCreateDto
+        };
+        
         if (!ModelState.IsValid)
         {
-            var createViewModel = mapper.Map<TutorUpdateDto>(tutorCreateUpdateDto);
-            return View("Create", createViewModel);
+            var createViewModel = mapper.Map<TutorUpdateDto>(tutorCreateDto);
+            return View("Create", new TutorCreateDto());
         }
 
-        var result = await sender.Send(new CreateTutorCommand(tutorCreateUpdateDto));
+        var result = await sender.Send(new CreateTutorCommand(tutorCreateDto));
 
         if (!result.IsSuccess)
         {
@@ -239,7 +246,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
 
         return !result.IsSuccess ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
     }
-    
+
     [HttpPost("{tutorId}/edit-tutor-majors")]
     public async Task<IActionResult> EditTutorMajors(
         [FromRoute] Guid tutorId,

@@ -69,9 +69,14 @@
 
                 <span asp-validation-for="BirthYear" class="text-danger"></span>
             </div>
-            <!-- disable email when confirmed -->
 
-            <input type="email" asp-for="Email" value="false" hidden="hidden" class="form-control">
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label">Email</label>
+                <div class="col-sm-12">
+                    <input type="email" asp-for="Email" class="form-control">
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
 
             <div class="col-md-6">
                 <label asp-for="PhoneNumber" class="form-label">Number</label>
@@ -89,7 +94,7 @@
             </div>
 
             <div class="col-6">
-                <label asp-for="Country" class="form-label">Address</label>
+                <label asp-for="Country" class="form-label">Country</label>
                 <input type="text" class="form-control" asp-for="Country" placeholder="Viet Nam"/>
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>

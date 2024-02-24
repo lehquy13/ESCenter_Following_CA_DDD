@@ -7,13 +7,19 @@ using Matt.SharedKernel.Application.Contracts.Primitives;
 
 namespace ESCenter.Application.Contracts.Users.Tutors;
 
-public class TutorCreateUpdateDto : EntityDto<Guid>
+public class TutorCreateDto : EntityDto<Guid>
 {
-    public LearnerForCreateUpdateDto LearnerForCreateUpdateDto { get; set; } = null!;
-    public TutorProfileCreateDto TutorProfileCreateDto { get; set; } = null!;
+    public LearnerForCreateUpdateDto LearnerForCreateUpdateDto { get; set; } = new();
+    public TutorProfileCreateDto TutorProfileCreateDto { get; set; } = new();
 }
 
-public record TutorProfileCreateDto(string AcademicLevel, string University, List<int> Majors);
+public class TutorProfileCreateDto
+{
+    public string AcademicLevel { get; set; } = string.Empty;
+    public string University { get; set; } = string.Empty;
+    public List<int> MajorIds { get; set; } = new();
+    public bool IsVerified { get; set; } 
+}
 
 public class TutorCreateUpdateDtoMappingConfig : IRegister
 {
@@ -23,4 +29,4 @@ public class TutorCreateUpdateDtoMappingConfig : IRegister
             .Map(dest => dest.AcademicLevel, src => src.AcademicLevel.ToEnum<AcademicLevel>())
             .Map(dest => dest.University, src => src.University);
     }
-} 
+}

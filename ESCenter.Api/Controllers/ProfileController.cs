@@ -9,6 +9,7 @@ using ESCenter.Application.ServiceImpls.Clients.Courses.Commands.ReviewCourse;
 using ESCenter.Application.ServiceImpls.Clients.Profiles.Commands.AddOrResetDiscovery;
 using ESCenter.Application.ServiceImpls.Clients.Profiles.Queries.GetLearningCourse;
 using ESCenter.Application.ServiceImpls.Clients.Profiles.Queries.GetLearningCourses;
+using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Commands.UpdateTutorProfile;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Application.ServiceImpls.Clients.TutorProfiles.Queries.GetCourseRequests;
 using ESCenter.Host;
@@ -64,9 +65,9 @@ public class ProfileController(
     [Authorize]
     [HttpPut("tutor-information/edit")]
     public async Task<IActionResult> EditTutorInformation(
-        [FromBody] TutorBasicUpdateDto tutorBasicUpdateDto)
+        [FromBody] TutorBasicUpdateForClientDto tutorBasicUpdateDto)
     {
-        var result = await mediator.Send(new UpdateTutorProfileCommand(tutorBasicUpdateDto));
+        var result = await mediator.Send(new UpdateTutorInformationCommand(tutorBasicUpdateDto));
         return Ok(result);
     }
 

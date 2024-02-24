@@ -11,7 +11,7 @@ internal class SubjectRepository(
     IAppLogger<SubjectRepository> appLogger)
     : RepositoryImpl<Subject, SubjectId>(appDbContext, appLogger), ISubjectRepository
 {
-    public Task<List<Subject>> GetListByIdsAsync(IEnumerable<SubjectId> subjectIds, CancellationToken cancellationToken)
+    public Task<List<Subject>> GetListByIdsAsync(IEnumerable<SubjectId> subjectIds, CancellationToken cancellationToken = default)
     {
         return AppDbContext.Subjects
             .Where(s => subjectIds.Contains(s.Id))

@@ -1,6 +1,8 @@
 ﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
 using Mapster;
 
 namespace ESCenter.Application.Contracts.Users.Learners;
@@ -30,22 +32,7 @@ public class LearnerForCreateUpdateDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<LearnerForCreateUpdateDto, User>()
-            .Map(dest => dest.Id,
-                src => src.Id == Guid.Empty
-                    ? IdentityGuid.Create(Guid.Empty)
-                    : IdentityGuid.Create(src.Id))
-            .Map(des => des.Gender, src => src.Gender)
-            .Map(des => des.FirstName, src => src.FirstName)
-            .Map(des => des.LastName, src => src.LastName)
-            .Map(des => des.BirthYear, src => src.BirthYear)
-
-            .Map(des => des.Address.City, src => src.City)
-            .Map(des => des.Address.Country, src => src.Country)
-            .Map(des => des.Description, src => src.Description)
-            .Map(des => des.Email, src => src.Email)
-            .Map(des => des.PhoneNumber, src => src.PhoneNumber)
-            .IgnoreNonMapped(true);
+        config.NewConfig<LearnerForCreateUpdateDto, User>();
 
         config.NewConfig<User, LearnerForCreateUpdateDto>()
             .Map(dest => dest.Id, src => src.Id.Value)

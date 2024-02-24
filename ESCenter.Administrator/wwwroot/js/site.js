@@ -2,6 +2,19 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$(function () {
+    $(document).bind('ajaxStart', function () {
+        $('#preloader').css('display', 'block');
+    }).bind('ajaxStop', function () {
+        $('#preloader').css('display', 'none');
+    });
+});
+
+$("#myForm").submit(function (event) {
+    if ($("#myForm").valid()){
+        DisplayLoading();
+    }
+});
 
 function callPostActionWithForm(formInput) {
     let formData = new FormData(formInput);
@@ -21,7 +34,7 @@ function callPostActionWithForm(formInput) {
                 }
                 alertify.success('Updated successfully');
             } else if (response.res === "deleted") {
-                $('#verticalycentered').modal('hide');
+                $('#verticalCentered').modal('hide');
                 location.reload();
             } else if (response.res === false) {
                 if (response.viewName === "_ProfileEdit") {
@@ -90,10 +103,10 @@ function OpenGetDialog(url, title) {
 }
 
 function OpenConfirmDialog(url, title) {
-    $('#verticalycentered .modal-title').html(title);
+    $('#verticalCentered .modal-title').html(title);
 
     $('#confirmDialogForm').attr('action', url);
-    $('#verticalycentered').modal('show')
+    $('#verticalCentered').modal('show')
 
 }
 

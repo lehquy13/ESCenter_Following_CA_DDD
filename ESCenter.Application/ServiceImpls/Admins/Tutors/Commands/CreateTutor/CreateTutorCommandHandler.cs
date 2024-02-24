@@ -1,11 +1,9 @@
 ﻿using ESCenter.Application.EventHandlers;
-using ESCenter.Domain.Aggregates.Subjects;
-using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
-using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Tutors.Entities;
-using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.DomainServices.Interfaces;
+using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
-using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -17,10 +15,8 @@ namespace ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.CreateTutor;
 public class CreateTutorCommandHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
-    ITutorRepository tutorRepository,
-    IUserRepository userRepository,
-    ISubjectRepository subjectRepository,
-    IMapper mapper,
+    IUserDomainService userDomainService,
+    ITutorDomainService tutorDomainService,
     IPublisher publisher)
     : CommandHandlerBase<CreateTutorCommand>(unitOfWork,
         logger)
@@ -30,33 +26,37 @@ public class CreateTutorCommandHandler(
         try
         {
             //Register user as new tutor
-            var userInformation = mapper.Map<User>(command.TutorForCreateUpdateDto.LearnerForCreateUpdateDto);
-            await userRepository.InsertAsync(userInformation,
-                cancellationToken);
-            var tutorInformation = mapper.Map<Tutor>(command.TutorForCreateUpdateDto.TutorProfileCreateDto);
+            var userInformation = await userDomainService.CreateAsync(
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.FirstName,
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.LastName,
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.Gender.ToEnum<Gender>(),
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.BirthYear,
+                Address.Create(
+                    command.TutorForCreateDto.LearnerForCreateUpdateDto.City,
+                    command.TutorForCreateDto.LearnerForCreateUpdateDto.Country),
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.Description,
+                string.Empty,
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.Email,
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.PhoneNumber,
+                UserRole.Tutor);
 
-            var subjectIds = command.TutorForCreateUpdateDto.TutorProfileCreateDto.Majors.Select(SubjectId.Create);
-            var subjects = await subjectRepository.GetListByIdsAsync(subjectIds, cancellationToken);
-
-            // add new majors to tutor
-            var tutorMajors =
-                subjects
-                    .Select(x => TutorMajor.Create(tutorInformation.Id, x.Id, x.Name))
-                    .ToList();
-
-            tutorInformation.UpdateAllMajor(tutorMajors);
-
-            await tutorRepository.InsertAsync(tutorInformation, cancellationToken);
+            var tutorInformation = await tutorDomainService.CreateTutorWithEmptyVerificationAsync(
+                userInformation.Id,
+                command.TutorForCreateDto.TutorProfileCreateDto.AcademicLevel.ToEnum<AcademicLevel>(),
+                command.TutorForCreateDto.TutorProfileCreateDto.University,
+                command.TutorForCreateDto.TutorProfileCreateDto.MajorIds,
+                command.TutorForCreateDto.TutorProfileCreateDto.IsVerified);
 
             if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {
                 return Result.Fail(TutorAppServiceError.FailToCreateTutorWhileSavingChanges);
             }
 
-            var message = $"New tutor: {userInformation.GetFullName()}  at {DateTime.Now.ToLongDateString()}";
+            var message = $"New tutor: {tutorInformation.Id.Value} at {DateTime.Now.ToLongDateString()}";
             await publisher.Publish(
                 new NewObjectCreatedEvent(userInformation.Id.Value.ToString(), message, NotificationEnum.Tutor),
                 cancellationToken);
+
             return Result.Success();
         }
         catch (Exception ex)

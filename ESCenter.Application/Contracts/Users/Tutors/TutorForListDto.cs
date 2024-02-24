@@ -18,7 +18,7 @@ public class TutorForListDto : BasicAuditedEntityDto<Guid>
     //public string WardId { get; set; } = "00001";
     public string Description { get; set; } = string.Empty;
 
-    public string Image { get; set; } =
+    public string Avatar { get; set; } =
         @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
 
     //Account References
