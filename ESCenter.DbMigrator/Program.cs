@@ -13,10 +13,31 @@ using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace ESCenter.DBMigrator;
+
+
+//using to support adding migration
+public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+{
+    public AppDbContext CreateDbContext(string[] args)
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseSqlServer(
+            // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_4; Trusted_Connection=True;MultipleActiveResultSets=true"
+            // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_3; Trusted_Connection=True;MultipleActiveResultSets=true"
+            // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
+            //"workstation id=es_mssql.mssql.somee.com;packet size=4096;user id=lehquy13_SQLLogin_1;pwd=5kf5v3wgao;data source=es_mssql.mssql.somee.com;persist security info=False;initial catalog=es_mssql;TrustServerCertificate=True"
+            "workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_3;pwd=84cjobbnby;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart;TrustServerCertificate=True"
+            // "workstation id=CED_Database.mssql.somee.com;packet size=4096;user id=Matty_SQLLogin_1;pwd=rg12f5urma;data source=CED_Database.mssql.somee.com;persist security info=False;initial catalog=CED_Database; TrustServerCertificate=True;"
+        );
+
+        return new AppDbContext(optionsBuilder.Options);
+    }
+}
 
 internal static class Program
 {
@@ -26,13 +47,13 @@ internal static class Program
         var context = factory.CreateDbContext(args);
 
         int choice = 0;
-        
+
         Console.WriteLine("1. Delete database");
         Console.WriteLine("2. Migrate database");
         Console.WriteLine("3. Seed database");
         Console.WriteLine("4. Delete then migrate then seed database");
-        Console.WriteLine("5. Cancel...");
-        
+        Console.WriteLine("6. Cancel...");
+
         Console.WriteLine("Enter your choice: ");
 
         try
@@ -43,29 +64,28 @@ internal static class Program
         {
             Console.WriteLine(e);
         }
-        
+
         switch (choice)
         {
             case 1:
                 await context.Database.EnsureDeletedAsync();
                 return;
             case 2:
-                await context.Database.EnsureCreatedAsync();
+                await context.Database.MigrateAsync();
+                await SeedData(context);
                 return;
             case 3:
+                await SeedData(context);
+                return;
             case 4:
                 await context.Database.EnsureDeletedAsync();
-                break;
+                await context.Database.MigrateAsync();
+                await SeedData(context);
+                return;
             default:
                 Console.WriteLine("Cancel");
                 return;
         }
-
-        Console.WriteLine("Checking database is created or not...");
-        await context.Database.MigrateAsync();
-        Console.WriteLine("Checked!");
-
-        await SeedData(context);
     }
 
     private static async Task SeedData(AppDbContext context)
@@ -77,6 +97,8 @@ internal static class Program
             // Look for any subjects.
             if (!context.Subjects.Any())
             {
+                Console.WriteLine("No subjects found. Seeding subjects...");
+                
                 var somethingCalledMagic = new JsonSerializerSettings
                 {
                     ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
@@ -540,7 +562,7 @@ internal static class Program
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             var prop = base.CreateProperty(member, memberSerialization);
-            
+
             if (!prop.Writable)
             {
                 var property = member as PropertyInfo;
@@ -559,10 +581,10 @@ internal static class Program
                     }
                 }
             }
-            
+
             return prop;
         }
-        
+
         protected override List<MemberInfo> GetSerializableMembers(Type objectType)
         {
             // Include both properties and private fields

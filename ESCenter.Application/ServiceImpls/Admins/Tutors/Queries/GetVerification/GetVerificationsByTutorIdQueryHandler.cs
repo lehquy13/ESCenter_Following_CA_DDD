@@ -33,7 +33,7 @@ public class GetVerificationsByTutorIdQueryHandler(
 
         var queryResult = await asyncQueryableExecutor.FirstOrDefaultAsync(query, true, cancellationToken);
 
-        if (queryResult is null)
+        if (queryResult is null || queryResult.ChangeVerificationRequests is null)
         {
             return Result.Fail(TutorAppServiceError.NonExistTutorError);
         }

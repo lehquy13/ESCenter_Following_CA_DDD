@@ -24,7 +24,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Full Name</th>
                 <th scope="col">University</th>
-                <th scope="col">Is Verified</th>
+                <th scope="col">IsVerified</th>
                 <th scope="col">Phone Number</th>
                 <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
             </tr>
@@ -46,7 +46,6 @@
                     <td>
                         <a asp-action="Edit" asp-route-id="@user.Id">Edit</a>|
                         <a asp-action="Detail" asp-route-id="@user.Id">Details</a> |
-                        <a asp-action="EditVerification" asp-route-id="@user.Id">Tutor Verifications</a> |
                         @if (user.NumberOfRequests == 0)
                         {
                             <a asp-action="ViewTutorRequests" asp-route-id="@user.Id">Tutor's Requests</a>

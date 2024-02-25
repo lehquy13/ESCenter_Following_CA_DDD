@@ -12,7 +12,6 @@ namespace ESCenter.Application.Contracts.Users.Tutors;
 
 public class TutorUpdateDto : LearnerForCreateUpdateDto
 {
-    public string Role { get; init; } = "Tutor";
     public string AcademicLevel { get; init; } = "Student";
     public string University { get; init; } = string.Empty;
     public bool IsVerified { get; init; } = false;

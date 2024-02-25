@@ -13,8 +13,6 @@ namespace ESCenter.Administrator.Controllers;
 public class AuthenticationController(ILogger<AuthenticationController> logger, ISender sender)
     : Controller
 {
-    private readonly ILogger<AuthenticationController> _logger = logger;
-
     [Route("")]
     public async Task<IActionResult> Index(string? returnUrl)
     {

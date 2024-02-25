@@ -8,7 +8,7 @@ namespace ESCenter.Application.Contracts.Notifications;
 public class NotificationDto : BasicAuditedEntityDto<int>
 {
     public string Message { get; set; } = string.Empty;
-    public object ObjectId { get; set; }
+    public object ObjectId { get; set; } = null!;
     public string DetailPath { get; set; } = string.Empty;
     public bool IsRead { get; set; }
     public string NotificationType { get; set; } = NotificationEnum.Unknown.ToString();

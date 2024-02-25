@@ -92,22 +92,8 @@ public class SubjectController(ILogger<SubjectController> logger, ISender sender
         return Helper.RenderRazorViewToString(this, "Create", subjectDto);
     }
 
-    [HttpGet("delete")]
+    [HttpGet("{id}/delete-confirm")]
     public async Task<IActionResult> Delete(int id)
-    {
-        var result = await sender.Send(new GetSubjectQuery(id));
-
-        if (result.IsFailure)
-        {
-            return RedirectToAction("Error", "Home");
-        }
-
-        // Return the delete view using modal / pop-up
-        return Helper.RenderRazorViewToString(this, "Delete", result.Value);
-    }
-
-    [HttpPost("delete-confirm")]
-    public async Task<IActionResult> DeleteConfirm(int id)
     {
         var result = await sender.Send(new DeleteSubjectCommand(id));
 

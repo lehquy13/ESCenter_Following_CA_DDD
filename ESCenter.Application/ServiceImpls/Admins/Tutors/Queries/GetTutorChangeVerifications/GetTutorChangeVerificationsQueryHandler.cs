@@ -16,17 +16,16 @@ public class GetTutorChangeVerificationsQueryHandler(
     IUserRepository userRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IUnitOfWork unitOfWork,
-    IAppLogger<RequestHandlerBase> logger,
+    IAppLogger<GetTutorChangeVerificationsQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetTutorChangeVerificationsQuery, VerificationEditDto>(unitOfWork, logger,
-        mapper)
+    : QueryHandlerBase<GetTutorChangeVerificationsQuery, VerificationEditDto>(unitOfWork, logger, mapper)
 {
     public override async Task<Result<VerificationEditDto>> Handle(
         GetTutorChangeVerificationsQuery request, CancellationToken cancellationToken)
     {
         var tutorQ =
             from tutorR in tutorRepository.GetAll()
-            join userR in userRepository.GetAll() on tutorR.UserId equals userR.Id 
+            join userR in userRepository.GetAll() on tutorR.UserId equals userR.Id
             where tutorR.Id == TutorId.Create(request.TutorId)
             select new
             {
@@ -44,7 +43,7 @@ public class GetTutorChangeVerificationsQueryHandler(
         }
 
         var changeVerificationRequestDtos =
-            mapper.Map<List<ChangeVerificationRequestDto>>(tutor.ChangeVerificationRequestDto);
+            Mapper.Map<List<ChangeVerificationRequestDto>>(tutor.ChangeVerificationRequestDto);
 
         return new VerificationEditDto
         {
