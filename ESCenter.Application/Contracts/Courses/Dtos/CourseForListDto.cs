@@ -39,7 +39,7 @@ public class CourseForListDtoMappingConfig : IRegister
             .Map(dest => dest.Status, src => src.Item1.Status.ToString())
             .Map(dest => dest.Fee, src => src.Item1.SectionFee.Amount)
             .Map(dest => dest.ChargeFee, src => src.Item1.ChargeFee.Amount)
-            .Map(dest => dest.GenderRequirement, src => src.Item1.GenderRequirement.ToString())
+            .Map(dest => dest.GenderRequirement, src => src.Item1.GenderRequirement)
             .Map(dest => dest.AcademicLevelRequirement, src => src.Item1.AcademicLevelRequirement.ToString())
             .Map(dest => dest.SessionDuration, src => src.Item1.SessionDuration.Value)
             .Map(dest => dest.SessionPerWeek, src => src.Item1.SessionPerWeek.Value)

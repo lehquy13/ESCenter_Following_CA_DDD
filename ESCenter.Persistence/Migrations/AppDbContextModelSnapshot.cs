@@ -55,9 +55,8 @@ namespace ESCenter.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GenderRequirement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("GenderRequirement")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -68,9 +67,8 @@ namespace ESCenter.Persistence.Migrations
                     b.Property<string>("LastModifierId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LearnerGender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("LearnerGender")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("LearnerId")
                         .HasColumnType("uniqueidentifier");
@@ -111,6 +109,8 @@ namespace ESCenter.Persistence.Migrations
                     b.HasIndex("LearnerId");
 
                     b.HasIndex("SubjectId");
+
+                    b.HasIndex("TutorId");
 
                     b.ToTable("Course", (string)null);
                 });
@@ -526,15 +526,19 @@ namespace ESCenter.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "ChargeFee", b1 =>
+                    b.HasOne("ESCenter.Domain.Aggregates.Tutors.Tutor", null)
+                        .WithMany()
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Course.ChargeFee#ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "ChargeFee", b1 =>
                         {
                             b1.Property<Guid>("CourseId")
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<float>("Amount")
-                                .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("real")
-                                .HasColumnName("Amount");
+                                .HasColumnName("ChargeFee");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
@@ -544,37 +548,13 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasKey("CourseId");
 
-                            b1.ToTable("Course");
+                            b1.ToTable("Course", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CourseId");
                         });
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "SectionFee", b1 =>
-                        {
-                            b1.Property<Guid>("CourseId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<float>("Amount")
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("real")
-                                .HasColumnName("Amount");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("Currency");
-
-                            b1.HasKey("CourseId");
-
-                            b1.ToTable("Course");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CourseId");
-                        });
-
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Courses.CourseRequests.CourseRequest", "CourseRequests", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Courses.Course.CourseRequests#ESCenter.Domain.Aggregates.Courses.Entities.CourseRequest", "CourseRequests", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -624,7 +604,7 @@ namespace ESCenter.Persistence.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Review", "Review", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Course.Review#ESCenter.Domain.Aggregates.Courses.Entities.Review", "Review", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -651,6 +631,29 @@ namespace ESCenter.Persistence.Migrations
                                 .HasForeignKey("CourseId");
                         });
 
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Course.SectionFee#ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "SectionFee", b1 =>
+                        {
+                            b1.Property<Guid>("CourseId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<float>("Amount")
+                                .HasColumnType("real")
+                                .HasColumnName("SectionFee");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Currency");
+
+                            b1.HasKey("CourseId");
+
+                            b1.ToTable("Course", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("CourseId");
+                        });
+
                     b.Navigation("ChargeFee")
                         .IsRequired();
 
@@ -664,7 +667,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Discoveries.Discovery", b =>
                 {
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Discoveries.Entities.DiscoverySubject", "DiscoverySubjects", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Discoveries.Discovery.DiscoverySubjects#ESCenter.Domain.Aggregates.Discoveries.Entities.DiscoverySubject", "DiscoverySubjects", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
@@ -750,7 +753,7 @@ namespace ESCenter.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest", "ChangeVerificationRequest", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Tutors.Tutor.ChangeVerificationRequest#ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest", "ChangeVerificationRequest", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -773,7 +776,7 @@ namespace ESCenter.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("TutorId");
 
-                            b1.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequestDetail", "ChangeVerificationRequestDetails", b2 =>
+                            b1.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Tutor.ChangeVerificationRequest#ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest.ChangeVerificationRequestDetails#ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequestDetail", "ChangeVerificationRequestDetails", b2 =>
                                 {
                                     b2.Property<Guid>("Id")
                                         .HasColumnType("uniqueidentifier")
@@ -799,7 +802,7 @@ namespace ESCenter.Persistence.Migrations
                             b1.Navigation("ChangeVerificationRequestDetails");
                         });
 
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.TutorMajor", "TutorMajors", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Tutor.TutorMajors#ESCenter.Domain.Aggregates.Tutors.Entities.TutorMajor", "TutorMajors", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -834,7 +837,7 @@ namespace ESCenter.Persistence.Migrations
                                 .HasForeignKey("TutorId");
                         });
 
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.Verification", "Verifications", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Tutor.Verifications#ESCenter.Domain.Aggregates.Tutors.Entities.Verification", "Verifications", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -872,7 +875,7 @@ namespace ESCenter.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Users.ValueObjects.OtpCode", "OtpCode", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Users.Identities.IdentityUser.OtpCode#ESCenter.Domain.Aggregates.Users.ValueObjects.OtpCode", "OtpCode", b1 =>
                         {
                             b1.Property<Guid>("IdentityUserId")
                                 .HasColumnType("uniqueidentifier");
@@ -889,7 +892,7 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasKey("IdentityUserId");
 
-                            b1.ToTable("IdentityUser");
+                            b1.ToTable("IdentityUser", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("IdentityUserId");
@@ -903,7 +906,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Users.User", b =>
                 {
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Users.ValueObjects.Address", "Address", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Users.User.Address#ESCenter.Domain.Aggregates.Users.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
@@ -920,7 +923,7 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("User");
+                            b1.ToTable("User", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

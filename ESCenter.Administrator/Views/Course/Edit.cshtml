@@ -12,6 +12,11 @@
     var subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
 }
 <h1>Edit</h1>
+<nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">/Course/@Model.Id</li>
+    </ol>
+</nav>
 
 <div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
     <i class="bi bi-check-circle me-1"></i>
@@ -19,16 +24,14 @@
     <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
 </div>
 
-<h4>@Model.Title</h4>
-
 <hr/>
 <div class="card">
 
     <div class="card-body">
-        <h5 class="card-title">About class' information</h5>
+        <h5 class="card-title">@Model.Title</h5>
 
         <!-- Multi Columns Form -->
-        <form class="row g-3" asp-action="EditCourse" asp-controller="Course" onsubmit="return callPostActionWithForm(this);">
+        <form class="row g-3" asp-action="EditCourse" asp-route-id="@Model.Id" asp-controller="Course" onsubmit="return callPostActionWithForm(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="col-md-12">
@@ -74,15 +77,49 @@
                 <span asp-validation-for="LearnerName" class="text-danger"></span>
             </div>
 
+            <!-- Learner infor -->
+            <div class="col-md-3">
+                <label asp-for="LearnerGender" class="form-label">Learner's Gender</label>
+                <select asp-for="LearnerGender" class="form-select">
+                    <option selected>@Model.LearnerGender</option>
+
+                    @foreach (string i in genders)
+                    {
+                        @if (i != Model.LearnerGender)
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="LearnerGender" class="text-danger"></span>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="NumberOfLearner" class="form-label">Number Of Learner</label>
+                <input type="number" class="form-control" asp-for="NumberOfLearner"/>
+                <span asp-validation-for="NumberOfLearner" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-3">
+                <label asp-for="SessionDuration" class="form-label">Minute/Session</label>
+                <input type="number" class="form-control" asp-for="SessionDuration">
+                <span asp-validation-for="SessionDuration" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-3">
+                <label asp-for="SessionPerWeek" class="form-label">Session/Week</label>
+                <input type="number" class="form-control" asp-for="SessionPerWeek"/>
+                <span asp-validation-for="SessionPerWeek" class="text-danger"></span>
+
+            </div>
 
             <div class="col-md-3">
                 <label asp-for="GenderRequirement" class="form-label">Gender Requirement</label>
                 <select asp-for="GenderRequirement" class="form-select">
-                    <option selected>@Model.GenderRequirement.ToString()</option>
+                    <option selected>@Model.GenderRequirement</option>
 
                     @foreach (string i in genders)
                     {
-                        @if (i != Model.GenderRequirement.ToString())
+                        @if (i != Model.GenderRequirement)
                         {
                             <option> @i </option>
                         }
@@ -93,11 +130,11 @@
             <div class="col-md-3">
                 <label asp-for="LearningMode" class="form-label">Learning Mode</label>
                 <select asp-for="LearningMode" class="form-select">
-                    <option selected>@Model.LearningMode.ToString()</option>
+                    <option selected>@Model.LearningMode</option>
 
                     @foreach (string i in learningModes)
                     {
-                        @if (i != Model.LearningMode.ToString())
+                        @if (i != Model.LearningMode)
                         {
                             <option> @i </option>
                         }
@@ -108,11 +145,11 @@
             <div class="col-md-3">
                 <label asp-for="AcademicLevelRequirement" class="form-label">Academic level requirement</label>
                 <select asp-for="AcademicLevelRequirement" class="form-select">
-                    <option selected>@Model.AcademicLevelRequirement.ToString()</option>
+                    <option selected>@Model.AcademicLevelRequirement</option>
 
                     @foreach (string i in academics)
                     {
-                        @if (i != Model.AcademicLevelRequirement.ToString())
+                        @if (i != Model.AcademicLevelRequirement)
                         {
                             <option> @i </option>
                         }
@@ -140,20 +177,20 @@
 
 
             <div class="col-md-3">
-                <label asp-for="Fee" class="form-label">Fee</label>
-                <input type="number" class="form-control" asp-for="Fee" placeholder="0.99"/>
-                <span asp-validation-for="Fee" class="text-danger"></span>
-
+                <label asp-for="SectionFee" class="form-label">Fee</label>
+                <input type="number" class="form-control" asp-for="SectionFee" placeholder="0.99"/>
+                <span asp-validation-for="SectionFee" class="text-danger"></span>
             </div>
+            
             <div class="col-md-3">
                 <label asp-for="ChargeFee" class="form-label">Charge Fee</label>
                 <input type="number" class="form-control" asp-for="ChargeFee" placeholder="0.99"/>
                 <span asp-validation-for="ChargeFee" class="text-danger"></span>
-
             </div>
+            
             <div class="col-md-3">
                 <label class="form-label">Tutor</label>
-                <input type="text" hidden="hidden" id="tutorId" asp-for="TutorId" class="form-control"/>
+                <input type="text" hidden="hidden" id="tutorId" name="tutorId" asp-for="TutorId" class="form-control"/>
                 <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly"/>
                 <span asp-validation-for="TutorId" class="text-danger"></span>
             </div>
@@ -163,18 +200,17 @@
                 <label class="form-label">Action</label>
 
                 <div class="row">
-
-                    <button type="button" class="col-6 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "Course")','Pick tutor')">
+                    <button type="button" class="col-4 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "Course")','Pick tutor')">
                         Pick Tutor
                     </button>
 
-                    <button type="button" class="col-6  btn btn-outline-secondary"
+                    <button type="button" class="col-4 btn btn-outline-secondary"
                             onclick="OpenGetDialog('@Url.Action("ViewTutor", "Course", new { id = @Model.TutorId })','Tutor information')">
                         View Tutor
                     </button>
-                    <button type="button" class="col-6  btn btn-outline-secondary"
+                    <button type="button" class="col-4  btn btn-outline-secondary"
                             onclick="RemoveTutor()">
-                        Remove Tutor
+                        Remove
                     </button>
                 </div>
             </div>
@@ -197,40 +233,7 @@
                 </div>
             </div>
             <!-- ----------------------------------- -->
-            <!-- Learner infor -->
-            <div class="col-md-3">
-                <label asp-for="LearnerGender" class="form-label">Learner's Gender</label>
-                <select asp-for="LearnerGender" class="form-select">
-                    <option selected>@Model.LearnerGender.ToString()</option>
 
-                    @foreach (string i in genders)
-                    {
-                        @if (i != Model.LearnerGender.ToString())
-                        {
-                            <option> @i </option>
-                        }
-                    }
-                </select>
-                <span asp-validation-for="LearnerGender" class="text-danger"></span>
-            </div>
-            <div class="col-md-3">
-                <label asp-for="NumberOfLearner" class="form-label">Number Of Learner</label>
-                <input type="number" class="form-control" asp-for="NumberOfLearner"/>
-                <span asp-validation-for="NumberOfLearner" class="text-danger"></span>
-
-            </div>
-            <div class="col-md-3">
-                <label asp-for="MinutePerSession" class="form-label">Minute/Session</label>
-                <input type="number" class="form-control" asp-for="MinutePerSession">
-                <span asp-validation-for="MinutePerSession" class="text-danger"></span>
-
-            </div>
-            <div class="col-md-3">
-                <label asp-for="SessionPerWeek" class="form-label">Session/Week</label>
-                <input type="number" class="form-control" asp-for="SessionPerWeek"/>
-                <span asp-validation-for="SessionPerWeek" class="text-danger"></span>
-
-            </div>
             <!-- address advanced set up----------------------------------- -->
 
             <div class="col-12">

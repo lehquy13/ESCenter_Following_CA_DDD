@@ -20,13 +20,14 @@ internal class JwtTokenGenerator(IOptions<JwtSettings> options) : IJwtTokenGener
             ),
             SecurityAlgorithms.HmacSha256
         );
-        var claims = new[]
+        var claims = new Claim[]
         {
-            new Claim(JwtRegisteredClaimNames.UniqueName, userLoginDto.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Sub, userLoginDto.FullName),
-            new Claim(JwtRegisteredClaimNames.Email, userLoginDto.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Role, userLoginDto.Role)
+            new(ClaimTypes.Sid, Guid.NewGuid().ToString()),
+            new(ClaimTypes.NameIdentifier, userLoginDto.Id.ToString()),
+            new(ClaimTypes.Name, userLoginDto.FullName),
+            new(ClaimTypes.Email, userLoginDto.Email),
+            new(ClaimTypes.Role, userLoginDto.Role),
+            //new(ClaimTypes.Actor, userLoginDto.TenantId.ToString())
         };
 
         var securityToken = new JwtSecurityToken(

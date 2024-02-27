@@ -1,4 +1,4 @@
-﻿using ESCenter.Domain.Aggregates.Courses.CourseRequests;
+﻿using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -17,14 +17,14 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public LearningMode LearningMode { get; private set; } = LearningMode.Offline;
     public Fee SectionFee { get; private set; } = Fee.Create(0, Currency.USD);
     public Fee ChargeFee { get; private set; } = Fee.Create(0, Currency.USD);
-    public string GenderRequirement { get; private set; } = Gender.None.ToString();
+    public Gender GenderRequirement { get; private set; } = Gender.None;
     public AcademicLevel AcademicLevelRequirement { get; private set; } = AcademicLevel.Optional;
     public SessionDuration SessionDuration { get; private set; } = SessionDuration.Create();
     public SessionPerWeek SessionPerWeek { get; private set; } = SessionPerWeek.Create(1);
     public string Address { get; private set; } = string.Empty; // TODO: Change this one to Address Value Object
     public SubjectId SubjectId { get; private set; } = null!;
 
-    public string LearnerGender { get; private set; } = Gender.Male.ToString();
+    public Gender LearnerGender { get; private set; } = Gender.Male;
     public string LearnerName { get; private set; } = string.Empty;
     public int NumberOfLearner { get; private set; } = 1;
     public string ContactNumber { get; private set; } = string.Empty;
@@ -46,9 +46,9 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         float sectionFee,
         float chargeFee,
         string? currency,
-        string genderRequirement,
+        Gender genderRequirement,
         AcademicLevel academicLevelRequirement,
-        string learnerGender,
+        Gender learnerGender,
         string learnerName,
         int numberOfLearner,
         string contactNumber,
@@ -79,7 +79,6 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
             SubjectId = subjectId,
             LearnerId = learnerId
         };
-
     }
 
     public void ReviewCourse(short rate, string detail)
@@ -92,7 +91,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         Review = Review.Create(rate, detail, Id);
     }
 
-    public void SetLearner(string learnerName, string learnerGender, string contactNumber)
+    public void SetLearner(string learnerName, Gender learnerGender, string contactNumber)
     {
         LearnerName = learnerName;
         LearnerGender = learnerGender;
@@ -128,8 +127,51 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     {
         LearnerId = learnerId;
     }
-    public void SetTutorId(TutorId tutorId)
+
+    public void AssignTutor(TutorId tutorId)
     {
         TutorId = tutorId;
+        Status = Status.Confirmed;
+    }
+
+    public void UpdateCourse(string title,
+        string description,
+        LearningMode learningMode,
+        float sectionFee,
+        float chargeFee,
+        Gender genderRequirement,
+        AcademicLevel academicLevelRequirement,
+        Gender learnerGender,
+        string learnerName,
+        int numberOfLearner,
+        string contactNumber,
+        int sectionDuration,
+        int sectionPerWeek,
+        string address,
+        Status status,
+        SubjectId subjectId)
+    {
+        Title = title;
+        Description = description;
+        LearningMode = learningMode;
+        SectionFee = Fee.Create(sectionFee, Currency.USD);
+        ChargeFee = Fee.Create(chargeFee, Currency.USD);
+        GenderRequirement = genderRequirement;
+        AcademicLevelRequirement = academicLevelRequirement;
+        LearnerGender = learnerGender;
+        LearnerName = learnerName;
+        NumberOfLearner = numberOfLearner;
+        ContactNumber = contactNumber;
+        SessionDuration = SessionDuration.Create(sectionDuration);
+        SessionPerWeek = SessionPerWeek.Create(sectionPerWeek);
+        Address = address;
+        SubjectId = subjectId;
+        Status = status;
+    }
+
+    public void UnAssignTutor()
+    {
+        TutorId = null;
+        Status = Status.OnVerifying;
     }
 }

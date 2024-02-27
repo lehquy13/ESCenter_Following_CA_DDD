@@ -1,5 +1,5 @@
 ﻿using ESCenter.Application.Contracts.Commons;
-using ESCenter.Domain.Aggregates.Courses.CourseRequests;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Shared.Courses;
 using Mapster;
 

@@ -183,11 +183,11 @@
   {
     firstName: '{{firstName(["female"])}}',
     lastname:'{{surname()}}',
-    userName: function (tags) {
-              return this.firstName + this.lastName + this.birthYear;
-    },
     gender: 2,
     birthYear:'{{integer(1980, 2003)}}',
+    userName: function (tags) {
+                  return this.firstName + this.lastName + this.birthYear;
+        },
     address: {
       city: '{{city()}}',
       country: ' {{state()}}'
@@ -253,11 +253,11 @@
   {
     firstName: '{{firstName(["male"])}}',
     lastname:'{{surname()}}',
-    userName: function (tags) {
-              return this.firstName + this.lastName + this.birthYear;
-    },
     gender: 1,
     birthYear:'{{integer(1980, 2003)}}',
+    userName: function (tags) {
+                  return this.firstName + this.lastName + this.birthYear;
+        },
     address: {
       city: '{{city()}}',
       country: ' {{state()}}'

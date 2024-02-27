@@ -10,17 +10,8 @@ $(function () {
     });
 });
 
-$("#myForm").submit(function (event) {
-    if ($("#myForm").valid()){
-        DisplayLoading();
-    }
-});
-
 function callPostActionWithForm(formInput) {
     let formData = new FormData(formInput);
-
-    console.log(formInput.action);
-
     $.ajax({
         type: "POST",
         url: formInput.action,
@@ -33,7 +24,7 @@ function callPostActionWithForm(formInput) {
                     $('#main').html(response.partialView);
                 }
                 alertify.success('Updated successfully');
-            } else if (response.res === "deleted") {
+            } else if (response.res === "deleted" || response.res === "updated") {
                 $('#verticalCentered').modal('hide');
                 location.reload();
             } else if (response.res === false) {
@@ -52,32 +43,8 @@ function callPostActionWithForm(formInput) {
             console.log(err);
         }
     })
+
     return false;
-
-}
-
-function ChangePassword(formInput) {
-
-    var formData = new FormData(formInput);
-
-    $.ajax({
-        type: "POST",
-        url: formInput.action,
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-            if (res === true)
-                $('#successUpdatePasswordAlert').click();
-
-        },
-        error: function (err) {
-            console.log(err);
-            //alert(err);
-        }
-    })
-    return false;
-
 }
 
 function RemoveTutor() {
@@ -137,7 +104,7 @@ function LoadImage(url, id) {
 }
 
 function ChooseTutor(id, name, phone) {
-    $('#largeModal').modal('hide');
+    $('#largeModal').hide();
 
     $('#largeModal .modal-body').html("");
     $(document.body).removeClass('modal-open');
@@ -181,37 +148,6 @@ function AddMajorSubject(id, name, des) {
 
                                     </div>
                                 </div>`);
-
-
-}
-
-function RemoveMajorSubject(id) {
-    $("#" + id + "-item").remove();
-}
-
-function RemoveTutorVerification(url, id) {
-    var formData = new FormData();
-    formData.append('id', id);
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-
-            if (res.res === true) {
-                $("#" + id + "-verification").remove();
-            }
-            console.log(res);
-
-        },
-        error: function (err) {
-            console.log(err);
-            //alert(err);
-        }
-    })
-    return false;
 
 
 }

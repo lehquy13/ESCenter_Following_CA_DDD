@@ -37,7 +37,7 @@ public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId>
 
     public void Approve()
     {
-        RequestStatus = RequestStatus.Success;
+        RequestStatus = RequestStatus.Approved;
     }
     
     public void Reject()

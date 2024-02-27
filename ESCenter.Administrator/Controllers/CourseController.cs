@@ -11,7 +11,6 @@ using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetAllTutors;
 using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
 using ESCenter.Application.ServiceImpls.Admins.Users.Queries.GetLearners;
-using ESCenter.Application.ServiceImpls.Clients.Courses.Queries.GetCourses;
 using ESCenter.Domain.Shared;
 using MapsterMapper;
 using MediatR;
@@ -40,7 +39,7 @@ public class CourseController(
         ViewData["Subjects"] = subjects.Value;
     }
 
-    private async Task PackStudentAndTuTorList()
+    private async Task PackStudentAndTutorList()
     {
         var tutorDtos = await sender.Send(new GetAllTutorsQuery());
         var studentDtos = await sender.Send(new GetLearnersQuery());
@@ -67,11 +66,11 @@ public class CourseController(
         return RedirectToAction("Error", "Home");
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> Edit(Guid id)
     {
         await PackStaticListToView();
-        await PackStudentAndTuTorList();
+        await PackStudentAndTutorList();
 
         var result = await sender.Send(new GetCourseDetailQuery(id));
         ViewBag.Action = "Edit";
@@ -84,29 +83,21 @@ public class CourseController(
         return RedirectToAction("Error", "Home");
     }
 
-    [HttpPost("{id}")]
+    [HttpPost("{id:guid}")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditCourse(CourseForDetailDto classDto)
+    public async Task<IActionResult> EditCourse(Guid id, CourseUpdateDto classDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return View("Edit", classDto);
-        }
-
-        // TODO: Check does it map correctly
-        var courseUpdateDto = mapper.Map<CourseUpdateDto>(classDto);
-
-        var result = await sender.Send(new UpdateCourseCommand(courseUpdateDto));
+        var result = await sender.Send(new UpdateCourseCommand(classDto));
 
         if (!result.IsSuccess)
         {
-            return View("Edit", classDto);
+            return Helper.FailResult();
         }
 
         await PackStaticListToView();
-        await PackStudentAndTuTorList();
+        await PackStudentAndTutorList();
 
-        return Helper.RenderRazorViewToString(this, "Edit", classDto);
+        return Helper.SuccessResult();
     }
 
     [HttpGet("create")]
@@ -132,7 +123,7 @@ public class CourseController(
         return RedirectToAction("Index");
     }
 
-    [HttpGet("{id}/delete")]
+    [HttpGet("{id:guid}/delete")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await sender.Send(new GetCourseDetailQuery(id));
@@ -146,7 +137,7 @@ public class CourseController(
             Helper.RenderRazorViewToString(this, "Delete", result.Value);
     }
 
-    [HttpPost("{id}/delete-confirm")]
+    [HttpPost("{id:guid}/delete-confirm")]
     public async Task<IActionResult> DeleteConfirm(Guid id)
     {
         var result = await sender.Send(new DeleteCourseCommand(id));
@@ -179,13 +170,13 @@ public class CourseController(
         var result = await sender.Send(new GetAllTutorsQuery());
         if (result.IsSuccess)
         {
-            return Helper.RenderRazorViewToString(this, "PickTutor", result.Value);
+            return Helper.RenderRazorViewToString(this, "_PickTutor", result.Value);
         }
 
         return BadRequest();
     }
 
-    [HttpGet("view-tutor/{id}")]
+    [HttpGet("view-tutor/{id:guid}")]
     public async Task<IActionResult> ViewTutor(Guid id)
     {
         var result = await sender.Send(new GetTutorDetailQuery(id));
@@ -204,7 +195,7 @@ public class CourseController(
         return Json(new { tutorId = tutorId });
     }
 
-    [HttpPost("{courseId}/cancel-request/{requestId}")]
+    [HttpPost("{courseId:guid}/cancel-request/{requestId:guid}")]
     public async Task<IActionResult> CancelRequest(Guid courseId, Guid requestId)
     {
         var result = await sender.Send(new CancelCourseRequestCommand(requestId));

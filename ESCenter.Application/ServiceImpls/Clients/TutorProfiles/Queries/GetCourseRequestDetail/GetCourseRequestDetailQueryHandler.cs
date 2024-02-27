@@ -1,7 +1,7 @@
 ﻿using ESCenter.Application.Contracts.Courses.Dtos;
 using ESCenter.Application.ServiceImpls.Admins.Courses;
 using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
+using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;

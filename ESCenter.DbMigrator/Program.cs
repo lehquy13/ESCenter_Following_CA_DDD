@@ -13,31 +13,10 @@ using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.Entity_Framework_Core;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace ESCenter.DBMigrator;
-
-
-//using to support adding migration
-public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
-{
-    public AppDbContext CreateDbContext(string[] args)
-    {
-        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-        optionsBuilder.UseSqlServer(
-            // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_4; Trusted_Connection=True;MultipleActiveResultSets=true"
-            // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_3; Trusted_Connection=True;MultipleActiveResultSets=true"
-            // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
-            //"workstation id=es_mssql.mssql.somee.com;packet size=4096;user id=lehquy13_SQLLogin_1;pwd=5kf5v3wgao;data source=es_mssql.mssql.somee.com;persist security info=False;initial catalog=es_mssql;TrustServerCertificate=True"
-            "workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_3;pwd=84cjobbnby;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart;TrustServerCertificate=True"
-            // "workstation id=CED_Database.mssql.somee.com;packet size=4096;user id=Matty_SQLLogin_1;pwd=rg12f5urma;data source=CED_Database.mssql.somee.com;persist security info=False;initial catalog=CED_Database; TrustServerCertificate=True;"
-        );
-
-        return new AppDbContext(optionsBuilder.Options);
-    }
-}
 
 internal static class Program
 {
@@ -278,13 +257,13 @@ internal static class Program
                 {
                     var randomNumber = new Random().Next(0, 50);
                     var user = userData[randomNumber];
-                    course.SetLearner(user.GetFullName(), user.Gender.ToString(), user.PhoneNumber!);
+                    course.SetLearner(user.GetFullName(), user.Gender, user.PhoneNumber!);
                     course.SetLearnerId(user.Id);
 
                     if (course.Status != Status.Confirmed) continue;
                     var randomTutor = new Random().Next(0, 50);
                     var tutor = tutorData[randomTutor];
-                    course.SetTutorId(tutor.Id);
+                    course.AssignTutor(tutor.Id);
                 }
 
                 courseData.AddRange(random100Courses);
@@ -388,7 +367,6 @@ internal static class Program
 
         // Update password
 
-        identityUsers = HandlePassword(identityUser1, identityUser2, identityRoles);
 
         userData.AddRange(userData1);
         userData = userData.OrderBy(x => x.CreationTime).ToList();
@@ -396,12 +374,16 @@ internal static class Program
         // Tutor
         file = File.ReadAllText(Path.GetFullPath("../../../200_random_tutor.json"));
         var tutorUSerData = JsonConvert.DeserializeObject<List<User>>(file, somethingCalledMagic);
-        if (tutorUSerData == null)
+        var identityUser3 = JsonConvert.DeserializeObject<List<IdentityUser>>(file, somethingCalledMagic)!;
+
+        if (tutorUSerData == null || identityUser3 == null)
         {
             throw new InvalidOperationException();
         }
 
         userData.AddRange(tutorUSerData);
+        
+        identityUsers = HandlePassword(identityUser1, identityUser2, identityUser3,identityRoles);
 
         tutorData = JsonConvert.DeserializeObject<List<Tutor>>(file, somethingCalledMagic)!;
         if (tutorData == null)
@@ -418,12 +400,41 @@ internal static class Program
         tutorData = tutorData.OrderBy(x => x.CreationTime).ToList();
     }
 
-    private static List<IdentityUser> HandlePassword(List<IdentityUser> identityUser1, List<IdentityUser> identityUser2,
+    private static List<IdentityUser> HandlePassword(
+        List<IdentityUser> identityUsers1, 
+        List<IdentityUser> identityUsers2,
+        List<IdentityUser> tutorIdentityUsers3,
         List<IdentityRole> identityRoles)
     {
         var realOnes = new List<IdentityUser>();
 
-        foreach (var identityUser in identityUser1)
+        foreach (var identityUser in identityUsers1)
+        {
+            var newOne = IdentityUser.Create(
+                identityUser.UserName,
+                identityUser.Email,
+                "1q2w3E*", // Default password
+                identityUser.PhoneNumber,
+                identityUser.Id,
+                identityRoles.Last().Id);
+
+            realOnes.Add(newOne);
+        }
+
+        foreach (var identityUser in identityUsers2)
+        {
+            var newOne = IdentityUser.Create(
+                identityUser.UserName,
+                identityUser.Email,
+                "1q2w3E*", // Default password
+                identityUser.PhoneNumber,
+                identityUser.Id,
+                identityRoles.Last().Id);
+
+            realOnes.Add(newOne);
+        }
+        
+        foreach (var identityUser in tutorIdentityUsers3)
         {
             var newOne = IdentityUser.Create(
                 identityUser.UserName,
@@ -432,19 +443,6 @@ internal static class Program
                 identityUser.PhoneNumber,
                 identityUser.Id,
                 identityRoles[1].Id);
-
-            realOnes.Add(newOne);
-        }
-
-        foreach (var identityUser in identityUser2)
-        {
-            var newOne = IdentityUser.Create(
-                identityUser.UserName,
-                identityUser.Email,
-                "1q2w3E*", // Default password
-                identityUser.PhoneNumber,
-                identityUser.Id,
-                identityRoles[2].Id);
 
             realOnes.Add(newOne);
         }

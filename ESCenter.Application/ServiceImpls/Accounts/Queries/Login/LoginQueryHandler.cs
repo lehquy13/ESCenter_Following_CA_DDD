@@ -3,9 +3,9 @@ using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.DomainServices.Interfaces;
 using MapsterMapper;
 using Matt.ResultObject;
-using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
@@ -16,10 +16,8 @@ public class LoginQueryHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<LoginQueryHandler> logger,
     IMapper mapper,
-    IIdentityRepository identityRepository,
-    IReadOnlyRepository<IdentityRole, IdentityRoleId> identityRoleRepository,
     IUserRepository userRepository,
-    IAsyncQueryableExecutor asyncQueryableExecutor,
+    IIdentityDomainServices identityDomainServices,
     IJwtTokenGenerator jwtTokenGenerator
 )
     : QueryHandlerBase<LoginQuery, AuthenticationResult>(unitOfWork, logger, mapper)
@@ -30,34 +28,22 @@ public class LoginQueryHandler(
     {
         try
         {
-            var identityUserQ =
-                from identity in identityRepository.GetAll()
-                join user in userRepository.GetAll() on identity.Id equals user.Id
-                join role in identityRoleRepository.GetAll() on identity.IdentityRoleId equals role.Id
-                where identity.Email == request.Email
-                select new
-                {
-                    User = user,
-                    Identity = identity,
-                    Role = role.Name
-                };
-            
-            var identityUser = await asyncQueryableExecutor
-                .FirstOrDefaultAsync(
-                    identityUserQ, 
-                    false,
-                    cancellationToken);
-                
-            if (identityUser is null || 
-                identityUser.Identity.ValidatePassword(request.Password) is false)
+            var identityUserQ = await identityDomainServices.SignInAsync(request.Email, request.Password);
+
+            if (identityUserQ is null)
             {
                 return Result.Fail(AuthenticationErrorMessages.LoginFailError);
             }
 
-            // This query includes verification information, major information, requests getting class
+            var user = await userRepository.GetAsync(identityUserQ.Id, cancellationToken);
+
+            if (user is null)
+            {
+                return Result.Fail(AuthenticationErrorMessages.LoginFailError);
+            }
 
             //3. Generate token
-            var userLoginDto = Mapper.Map<UserLoginDto>(identityUser);
+            var userLoginDto = Mapper.Map<UserLoginDto>(user);
             var loginToken = jwtTokenGenerator.GenerateToken(userLoginDto);
 
             return new AuthenticationResult()

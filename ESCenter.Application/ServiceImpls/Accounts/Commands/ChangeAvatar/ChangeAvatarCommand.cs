@@ -2,4 +2,4 @@
 
 namespace ESCenter.Application.ServiceImpls.Accounts.Commands.ChangeAvatar;
 
-public record ChangeAvatarCommand(Guid UserId, string Url) : ICommandRequest;
+public record ChangeAvatarCommand(string Url) : ICommandRequest;

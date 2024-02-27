@@ -1,6 +1,6 @@
 ﻿using ESCenter.Application.EventHandlers;
 using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.CourseRequests;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;

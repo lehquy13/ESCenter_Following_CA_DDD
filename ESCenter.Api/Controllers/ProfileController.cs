@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.Contracts.Courses.Dtos;
+using ESCenter.Application.Contracts.Profiles;
 using ESCenter.Application.Contracts.Users.Learners;
 using ESCenter.Application.Contracts.Users.Tutors;
 using ESCenter.Application.ServiceImpls.Accounts.Commands.ChangeAvatar;
@@ -56,7 +57,7 @@ public class ProfileController(
 
     [HttpPut("edit")]
     public async Task<IActionResult> Edit(
-        [FromBody] LearnerForCreateUpdateDto learnerForCreateUpdateDto)
+        [FromBody] UserProfileCreateUpdateDto learnerForCreateUpdateDto)
     {
         var result = await mediator.Send(new CreateUpdateBasicProfileCommand(learnerForCreateUpdateDto));
         return Ok(result);
@@ -115,7 +116,7 @@ public class ProfileController(
 
     [HttpGet]
     [Route("{userId}/get-discovery")]
-    public async Task<IActionResult> GetDiscovery(int userId)
+    public async Task<IActionResult> GetDiscovery(Guid userId)
     {
         await Task.CompletedTask;
         //var result = await mediator.Send(new (userId));

@@ -1,33 +1,29 @@
-﻿
-@model ESCenter.Application.Contracts.Users.Learners.LearnerForProfileDto
+﻿@using ESCenter.Domain.Shared
+@model ESCenter.Application.Contracts.Profiles.UserProfileDto
 @{
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
-    //AddressDto addressDto = ViewData["Addresses"] as AddressDto ?? new AddressDto(new List<CityDto>());
-
+    var genders = EnumProvider.Genders;
 }
-<!-- Profile Edit Form -->
-<form asp-action="ChoosePicture" asp-controller="Profile">
-<div class="row mb-3">
-    <label asp-for="Avatar" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-    <div class="col-md-8 col-lg-9">
-        <img src="@Model.Avatar" alt="Profile" id="avatar">
-        <input id="image" asp-for="Avatar" hidden type="text"/>
-        <div class="pt-2">
 
-            <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", new {id = @Model.Id})','avatar'); return false;"/>
-            <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
-                <i class="bi bi-upload"></i>
-            </a>
-
-            <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image">
-                <i class="bi bi-trash"></i>
-            </a>
-        </div>
-    </div>
-</div>
-</form>
 <form asp-action="Edit" asp-controller="Profile" onsubmit="return callPostActionWithForm(this);">
     
+     <div class="row mb-3">
+            <label asp-for="Avatar" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+            <div class="col-md-8 col-lg-9">
+                <img src="@Model.Avatar" alt="Profile" id="avatar">
+                <input id="image" asp-for="Avatar" hidden type="text"/>
+                <div class="pt-2">
+    
+                    <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChangeAvatar", "Profile", new { id = @Model.Id })','avatar'); return false;"/>
+                    <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
+                        <i class="bi bi-upload"></i>
+                    </a>
+    
+                    <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
 
     <div class="row mb-3">
         <label asp-for="FirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
@@ -59,11 +55,11 @@
         <label for="about" class="col-md-4 col-lg-3 col-form-label">Gender</label>
         <div class="col-md-8 col-lg-9">
             <select asp-for="Gender" class="form-select">
-                <option selected>@Model.Gender.ToString()</option>
+                <option selected>@Model.Gender</option>
 
-                @foreach (string i in genders)
+                @foreach (var i in genders)
                 {
-                    @if (i != Model.Gender.ToString())
+                    @if (i != Model.Gender)
                     {
                         <option> @i </option>
                     }
@@ -85,12 +81,6 @@
 
     </div>
 
-    <div class="row mb-3">
-        <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
-        <div class="col-md-8 col-lg-9">
-            <input readonly name="company" type="text" class="form-control" id="company" value="Educational Development And Consulting Center - CED ">
-        </div>
-    </div>
 
     <div class="row mb-3">
         <label asp-for="Role" class="col-md-4 col-lg-3 col-form-label">Role</label>
@@ -103,10 +93,19 @@
     </div>
 
     <div class="row mb-3">
-        <label asp-for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+        <label asp-for="City" class="col-md-4 col-lg-3 col-form-label">City</label>
         <div class="col-md-8 col-lg-9">
-            <input asp-for="Address" readonly type="text" class="form-control" id="Address">
-            <span asp-validation-for="Address" class="text-danger"></span>
+            <input asp-for="City" readonly type="text" class="form-control" id="City">
+            <span asp-validation-for="City" class="text-danger"></span>
+
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label asp-for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+        <div class="col-md-8 col-lg-9">
+            <input asp-for="Country" readonly type="text" class="form-control" id="Country">
+            <span asp-validation-for="Country" class="text-danger"></span>
 
         </div>
     </div>
@@ -131,33 +130,11 @@
     </div>
 
     <div class="row mb-3">
-        <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
+        <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
         <div class="col-md-8 col-lg-9">
-            <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
+            <input readonly name="company" type="text" class="form-control" id="company" value="Educational Development And Consulting Center - CED ">
         </div>
     </div>
-
-    <div class="row mb-3">
-        <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-        <div class="col-md-8 col-lg-9">
-            <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-        <div class="col-md-8 col-lg-9">
-            <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-        <div class="col-md-8 col-lg-9">
-            <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
-        </div>
-    </div>
-    
     <input type="hidden" asp-for="Id"/>
 
     <div class="text-center">

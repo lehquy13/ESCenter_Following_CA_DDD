@@ -18,7 +18,7 @@ public class CourseForCreateDto
     public string GenderRequirement { get; set; } = "None";
     public string AcademicLevelRequirement { get; set; } = "Optional";
     public string LearnerGender { get; set; } = "Male";
-    public string LearnerName { get; set; } = "Male";
+    public string LearnerName { get; set; } = "";
     public int NumberOfLearner { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
     public Guid? LearnerId { get; set; }
@@ -34,7 +34,7 @@ public class CourseForCreateDtoMappingConfig : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<CourseForCreateDto, Course>()
-            .ConstructUsing(x =>
+            .MapWith(x =>
                 Course.Create(
                     x.Title,
                     x.Description,
@@ -42,9 +42,9 @@ public class CourseForCreateDtoMappingConfig : IRegister
                     x.Fee,
                     x.ChargeFee,
                     "Dollar",
-                    x.GenderRequirement,
+                    x.GenderRequirement.ToEnum<Gender>(),
                     x.AcademicLevelRequirement.ToEnum<AcademicLevel>(),
-                    x.LearnerGender,
+                    x.LearnerGender.ToEnum<Gender>(),
                     x.LearnerName,
                     x.NumberOfLearner,
                     x.ContactNumber,

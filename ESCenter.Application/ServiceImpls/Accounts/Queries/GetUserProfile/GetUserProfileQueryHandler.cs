@@ -1,4 +1,6 @@
-﻿using ESCenter.Application.Contracts.Users.Learners;
+﻿using ESCenter.Application.Contracts.Profiles;
+using ESCenter.Application.Contracts.Users.Learners;
+using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -15,12 +17,12 @@ public class GetUserProfileQueryHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper,
-    IIdentityRepository identityDomainServices,
+    IUserRepository userRepository,
     ICurrentUserService currentUserService
 )
-    : QueryHandlerBase<GetUserProfileQuery, LearnerForProfileDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetUserProfileQuery, UserProfileDto>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<LearnerForProfileDto>> Handle(
+    public override async Task<Result<UserProfileDto>> Handle(
         GetUserProfileQuery request,
         CancellationToken cancellationToken)
     {
@@ -32,14 +34,16 @@ public class GetUserProfileQueryHandler(
                 return Result.Fail(AccountServiceError.UnauthorizedError);
             }
 
-            var userProfileAsync = await identityDomainServices
-                .GetUserProfileAsync(IdentityGuid.Create(new Guid(currentUserService.CurrentUserId)));
+            var userProfileAsync =
+                await userRepository.GetAsync(
+                    IdentityGuid.Create(new Guid(currentUserService.CurrentUserId)), cancellationToken);
+            
             if (userProfileAsync is null)
             {
                 return Result.Fail(UserError.NonExistUserError);
             }
 
-            return Mapper.Map<LearnerForProfileDto>(userProfileAsync);
+            return Mapper.Map<UserProfileDto>(userProfileAsync);
         }
         catch (Exception ex)
         {

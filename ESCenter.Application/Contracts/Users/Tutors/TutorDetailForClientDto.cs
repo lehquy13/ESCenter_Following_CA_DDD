@@ -1,9 +1,10 @@
 ﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Application.Contracts.Courses.Dtos;
 using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Users;
 using Mapster;
+using Tutor = ESCenter.Domain.Aggregates.Tutors.Tutor;
 
 namespace ESCenter.Application.Contracts.Users.Tutors;
 

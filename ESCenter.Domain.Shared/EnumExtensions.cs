@@ -5,7 +5,6 @@ namespace ESCenter.Domain.Shared;
 public static class EnumProvider
 {
     public static List<string> Roles { get; } = Enum.GetNames(typeof(UserRole))
-        .AsEnumerable()
         .Where(x => x != "All" && x != "Undefined")
         .ToList();
 

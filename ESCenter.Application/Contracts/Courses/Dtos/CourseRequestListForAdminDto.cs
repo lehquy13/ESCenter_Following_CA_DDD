@@ -4,15 +4,17 @@ using Mapster;
 
 namespace ESCenter.Application.Contracts.Courses.Dtos;
 
-public class CourseRequestForListDto : BasicAuditedEntityDto<Guid>
+public class CourseRequestListForAdminDto : BasicAuditedEntityDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public Guid CourseId { get; set; }
-    public string SubjectName { get; set; } = string.Empty;
+    public string TutorName { get; set; } = string.Empty;
+    public string TutorPhone { get; set; } = string.Empty;
+    public string TutorEmail { get; set; } = string.Empty;
     public string RequestStatus { get; set; } = "Verifying";
 }
 
-public class CourseRequestForListDtoMappingConfig : IRegister
+public class CourseRequestListForAdminDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

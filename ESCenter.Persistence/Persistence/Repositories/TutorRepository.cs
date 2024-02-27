@@ -24,7 +24,7 @@ internal class TutorRepository(
         );
         var result = AppDbContext.CourseRequests
             .AsNoTracking()
-            .Where(x => x.RequestStatus == RequestStatus.Success)
+            .Where(x => x.RequestStatus == RequestStatus.Approved)
             .Where(x => x.CreationTime > thisMonth)
             .GroupBy(x => x.TutorId)
             .OrderByDescending(x => x.Count())

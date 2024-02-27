@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Contracts\"/>
         <Folder Include="ServiceImpls\Clients\TutorProfiles\Commands\" />
     </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Users;
+﻿using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
+using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
@@ -40,13 +41,32 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
                     u => u.Id,
                     ur => ur.Id,
                     (u, ur) => new { u, ur })
-                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Tutor+1) &&
+                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Tutor + 1) &&
                             o.u.IsDeleted == false)
                 .AsNoTracking()
                 .Select(x => x.u)
                 .ToListAsync();
 
             return users;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task<User?> GetTutor(TutorId tutorId)
+    {
+        try
+        {
+            var tutor = await AppDbContext.Users
+                .Join(AppDbContext.Tutors,
+                    user => user.Id,
+                    tutor => tutor.UserId,
+                    (user, tutor) => user)
+                .FirstOrDefaultAsync();
+
+            return tutor;
         }
         catch (Exception ex)
         {

@@ -92,6 +92,24 @@ public static class Helper
             res = true,
             message
         });
+    } 
+    
+    public static JsonResult FailResult(string message = "")
+    {
+        return new JsonResult(new
+        {
+            res = false,
+            message
+        });
+    }
+    
+    public static JsonResult UpdatedResult(string message = "")
+    {
+        return new JsonResult(new
+        {
+            res = "updated",
+            message
+        });
     }
 }
 

@@ -6,9 +6,9 @@ namespace ESCenter.Application.Contracts.Authentications;
 
 public class UserLoginDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string FullName { get; set; } = string.Empty;
-    public string Image { get; set; } = string.Empty;
+    public string Avatar { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Role { get; set; } = "User";
 }
@@ -17,12 +17,11 @@ public class UserLoginDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(User, IdentityUser, string), UserLoginDto>()
-            .Map(des => des, src => src.Item1.GetFullName())
-            .Map(des => des.Image, src => src.Item1.Avatar)
-            .Map(des => des.Email, src => src.Item1.Email)
-            .Map(des => des.Role, src => src.Item3);
-        
-        
+        config.NewConfig<User, UserLoginDto>()
+            .Map(des => des.Id, src => src.Id.Value)
+            .Map(des => des, src => src.GetFullName())
+            .Map(des => des.Avatar, src => src.Avatar)
+            .Map(des => des.Email, src => src.Email)
+            .Map(des => des.Role, src => src.Role.ToString());
     }
 }

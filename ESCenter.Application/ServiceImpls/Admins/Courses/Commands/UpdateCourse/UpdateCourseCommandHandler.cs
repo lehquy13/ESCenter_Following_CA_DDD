@@ -1,6 +1,9 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
-using MapsterMapper;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
+using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -9,7 +12,6 @@ namespace ESCenter.Application.ServiceImpls.Admins.Courses.Commands.UpdateCourse
 
 public class UpdateCourseCommandHandler(
     ICourseRepository courseRepository,
-    IMapper mapper,
     IUnitOfWork unitOfWork,
     IAppLogger<UpdateCourseCommandHandler> logger)
     : CommandHandlerBase<UpdateCourseCommand>(unitOfWork, logger)
@@ -26,22 +28,48 @@ public class UpdateCourseCommandHandler(
                 return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
             }
 
-            mapper.Map(command.CourseUpdateDto, course);
+            course.UpdateCourse(
+                command.CourseUpdateDto.Title,
+                command.CourseUpdateDto.Description,
+                command.CourseUpdateDto.LearningMode.ToEnum<LearningMode>(),
+                command.CourseUpdateDto.SectionFee,
+                command.CourseUpdateDto.ChargeFee,
+                command.CourseUpdateDto.GenderRequirement.ToEnum<Gender>(),
+                command.CourseUpdateDto.AcademicLevelRequirement.ToEnum<AcademicLevel>(),
+                command.CourseUpdateDto.LearnerGender.ToEnum<Gender>(),
+                command.CourseUpdateDto.LearnerName,
+                command.CourseUpdateDto.NumberOfLearner,
+                command.CourseUpdateDto.ContactNumber,
+                command.CourseUpdateDto.SessionDuration,
+                command.CourseUpdateDto.SessionPerWeek,
+                command.CourseUpdateDto.Address,
+                command.CourseUpdateDto.Status.ToEnum<Status>(),
+                SubjectId.Create(command.CourseUpdateDto.SubjectId));
 
-            if (command.CourseUpdateDto.TutorId != Guid.Empty)
+            if (command.CourseUpdateDto.TutorId != Guid.Empty && command.CourseUpdateDto.TutorId != course.TutorId?.Value)
             {
+                var tutorId = TutorId.Create(command.CourseUpdateDto.TutorId);
+                
+                course.AssignTutor(tutorId);
+                
                 foreach (var courseRequest in course.CourseRequests)
                 {
-                    courseRequest.Cancel();
+                    if (courseRequest.TutorId == tutorId)
+                    {
+                        courseRequest.Approved();
+                    }
+                    else
+                    {
+                        courseRequest.Cancel();
+                    }
                 }
             }
-
-            if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+            else if (command.CourseUpdateDto.TutorId == Guid.Empty && course.TutorId is not null)
             {
-                return Result.Fail(CourseAppServiceErrors.UpdateCourseFailedWhileSavingChanges);
+                course.UnAssignTutor();
             }
 
-            return Result.Success();
+            return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0 ? Result.Fail(CourseAppServiceErrors.UpdateCourseFailedWhileSavingChanges) : Result.Success();
 
             // Clear cache
             // var defaultRequest = new GetAllClassInformationsQuery();

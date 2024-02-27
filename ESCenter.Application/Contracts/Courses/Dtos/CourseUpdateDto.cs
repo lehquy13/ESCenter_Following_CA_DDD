@@ -18,7 +18,7 @@ public class CourseUpdateDto
     public string Status { get; set; } = "OnVerifying";
     public string LearningMode { get; set; } = "Offline";
 
-    public float Fee { get; set; } = 0;
+    public float SectionFee { get; set; } = 0;
     public float ChargeFee { get; set; } = 0;
 
     //Tutor related information
@@ -32,7 +32,7 @@ public class CourseUpdateDto
     public string ContactNumber { get; set; } = string.Empty;
 
     // Time related information
-    public int MinutePerSession { get; set; } = 90;
+    public int SessionDuration { get; set; } = 90;
     public int SessionPerWeek { get; set; } = 2;
 
     // Address related information
@@ -57,10 +57,11 @@ public class CourseUpdateDtoMappingConfig : IRegister
             .Map(dest => dest.LearningMode, src => src.LearningMode.ToEnum<LearningMode>())
             .Map(dest => dest.GenderRequirement, src => src.GenderRequirement.ToEnum<Gender>())
             .Map(dest => dest.AcademicLevelRequirement, src => src.AcademicLevelRequirement.ToEnum<AcademicLevel>())
-            .Map(dest => dest.SectionFee, src => Fee.Create(src.Fee, Currency.USD))
+            .Map(dest => dest.SectionFee, src => Fee.Create(src.SectionFee, Currency.USD))
             .Map(dest => dest.ChargeFee, src => Fee.Create(src.ChargeFee, Currency.USD))
-            .Map(dest => dest.SessionDuration, src => SessionDuration.Create(src.MinutePerSession, null))
+            .Map(dest => dest.SessionDuration, src => SessionDuration.Create(src.SessionDuration, null))
             .Map(dest => dest.SessionPerWeek, src => SessionPerWeek.Create(src.SessionPerWeek))
+            .Map(dest => dest.NumberOfLearner, src => src.NumberOfLearner)
             .Map(dest => dest.SubjectId, src => SubjectId.Create(src.SubjectId))
             .Map(dest => dest.TutorId, src => src.TutorId != Guid.Empty ? IdentityGuid.Create(src.TutorId) : null)
             .Map(dest => dest.Status, src => src.TutorId == Guid.Empty ? src.Status.ToEnum<Status>() : Status.Confirmed)

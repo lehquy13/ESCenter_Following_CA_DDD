@@ -1,13 +1,10 @@
 ﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Domain.Shared;
-using ESCenter.Domain.Shared.Courses;
 using Mapster;
 
-namespace ESCenter.Application.Contracts.Users.Learners;
+namespace ESCenter.Application.Contracts.Profiles;
 
-public class LearnerForCreateUpdateDto : BasicAuditedEntityDto<Guid>
+public class UserProfileCreateUpdateDto : BasicAuditedEntityDto<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -15,7 +12,7 @@ public class LearnerForCreateUpdateDto : BasicAuditedEntityDto<Guid>
     public int BirthYear { get; set; } = 1960;
 
     public string Avatar { get; set; } =
-        @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
+        "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
 
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
@@ -32,9 +29,9 @@ public class LearnerForCreateUpdateDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<LearnerForCreateUpdateDto, User>();
+        config.NewConfig<UserProfileCreateUpdateDto, User>();
 
-        config.NewConfig<User, LearnerForCreateUpdateDto>()
+        config.NewConfig<User, UserProfileCreateUpdateDto>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(des => des.Gender, src => src.Gender)
             .Map(des => des.FirstName, src => src.FirstName)
@@ -44,7 +41,6 @@ public class LearnerForCreateUpdateDtoMappingConfig : IRegister
             .Map(des => des.Country, src => src.Address.Country)
             .Map(des => des.Description, src => src.Description)
             .Map(des => des.Email, src => src.Email)
-            .Map(des => des.Role, src => src.Role.ToString())
             .Map(des => des.PhoneNumber, src => src.PhoneNumber)
             .IgnoreNonMapped(true);
     }

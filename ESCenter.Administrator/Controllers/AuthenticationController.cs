@@ -53,7 +53,7 @@ public class AuthenticationController(ILogger<AuthenticationController> logger, 
         //store token into session
         HttpContext.Session.SetString("access_token", loginResult.Value.Token);
         HttpContext.Session.SetString("name", loginResult.Value.User.FullName);
-        HttpContext.Session.SetString("image", loginResult.Value.User.Image);
+        HttpContext.Session.SetString("image", loginResult.Value.User.Avatar);
 
         if (TempData["ReturnUrl"] is not string returnUrl)
         {

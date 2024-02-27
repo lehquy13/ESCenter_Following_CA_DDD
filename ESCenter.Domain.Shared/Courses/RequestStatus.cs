@@ -1,7 +1,7 @@
 ﻿namespace ESCenter.Domain.Shared.Courses;
 public enum RequestStatus
 {
-    Success,
+    Approved,
     Pending,
     Canceled,
 }

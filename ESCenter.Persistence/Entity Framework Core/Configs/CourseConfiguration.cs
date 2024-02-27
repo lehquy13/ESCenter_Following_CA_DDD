@@ -1,6 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.CourseRequests;
-using ESCenter.Domain.Aggregates.Courses.CourseRequests.ValueObjects;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
@@ -42,12 +41,14 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.Property(r => r.Address)
             .IsRequired();
 
-        builder.Property(o => o.SubjectId)
+        builder.Property(r => r.SubjectId)
+            .HasColumnName(nameof(Course.SubjectId))
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => SubjectId.Create(value));
-        
+                value => SubjectId.Create(value)
+            );
+
         builder.HasOne<Subject>()
             .WithMany()
             .HasForeignKey(nameof(Course.SubjectId))
@@ -79,11 +80,11 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
                 id => id!.Value,
                 value => TutorId.Create(value));
 
-        // builder.HasOne<Tutor>()
-        //     .WithMany()
-        //     .HasForeignKey(nameof(Course.TutorId))
-        //     .IsRequired()
-        //     .OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne<Tutor>()
+            .WithMany()
+            .HasForeignKey(nameof(Course.TutorId))
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(r => r.SessionDuration)
             .HasColumnName(nameof(Course.SessionDuration))
@@ -104,18 +105,18 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.OwnsOne(course => course.ChargeFee,
             navigationBuilder =>
             {
-                navigationBuilder.Property(address => address.Amount)
-                    .HasColumnName(nameof(Course.ChargeFee.Amount));
-                navigationBuilder.Property(address => address.Currency)
+                navigationBuilder.Property(chargeFee => chargeFee.Amount)
+                    .HasColumnName("ChargeFee");
+                navigationBuilder.Property(chargeFee => chargeFee.Currency)
                     .HasColumnName(nameof(Course.ChargeFee.Currency));
             });
 
         builder.OwnsOne(course => course.SectionFee,
             navigationBuilder =>
             {
-                navigationBuilder.Property(address => address.Amount)
-                    .HasColumnName(nameof(Course.SectionFee.Amount));
-                navigationBuilder.Property(address => address.Currency)
+                navigationBuilder.Property(sectionFee => sectionFee.Amount)
+                    .HasColumnName("SectionFee");
+                navigationBuilder.Property(sectionFee => sectionFee.Currency)
                     .HasColumnName(nameof(Course.SectionFee.Currency));
             });
     }
@@ -162,13 +163,49 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
                     id => id.Value,
                     value => TutorId.Create(value)
                 );
-
+            
             ib.HasOne<Tutor>()
                 .WithMany()
                 .HasForeignKey(nameof(CourseRequest.TutorId))
                 .IsRequired();
 
+            // ib.OwnsOne(cr => cr.TutorCourseRequest, ibb =>
+            // {
+            //     ibb.ToTable(nameof(Tutor));
+            //     ibb.HasKey(x => x.Id);
+            //     ibb.Property(r => r.Id)
+            //         .HasColumnName(nameof(TutorCourseRequest.Id))
+            //         .ValueGeneratedNever()
+            //         .HasConversion(
+            //             id => id.Value,
+            //             value => TutorId.Create(value)
+            //         );
+            //
+            //     ibb.WithOwner().HasForeignKey(nameof(TutorCourseRequest.CourseRequestId));
+            //
+            //     ibb.OwnsOne(cr => cr.TutorUserInfo, ibbb =>
+            //     {
+            //         
+            //         ibbb.ToTable(nameof(User));
+            //         ibbb.HasKey(x => x.Id);
+            //         ibbb.Property(r => r.Id)
+            //             .HasColumnName(nameof(TutorUserInfo.Id))
+            //             .ValueGeneratedNever()
+            //             .HasConversion(
+            //                 id => id.Value,
+            //                 value => IdentityGuid.Create(value)
+            //             );
+            //         ibbb.WithOwner().HasForeignKey(nameof(TutorUserInfo.TutorId));
+            //     });
+            // });
+
             ib.Property(r => r.Description).IsRequired();
         });
     }
+
+    private static void ConfigureTutorCourseRequest(EntityTypeBuilder<Course> builder)
+    {
+        
+    }
+
 }

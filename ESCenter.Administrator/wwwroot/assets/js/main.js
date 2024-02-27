@@ -296,7 +296,6 @@
       }, false)
     })
 
-    console.log("Hello form other side");
   /**
    * Initiate Datatables
    */

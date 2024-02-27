@@ -14,7 +14,7 @@ using MediatR;
 
 namespace ESCenter.Application.ServiceImpls.Accounts.Commands.CreateUpdateBasicProfile;
 
-public class CreateUpdateLearnerProfileCommandHandler(
+public class CreateUpdateUserProfileCommandHandler( // Change name to Update only
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper,
@@ -32,13 +32,13 @@ public class CreateUpdateLearnerProfileCommandHandler(
         try
         {
             var user = await userRepository.GetAsync(
-                IdentityGuid.Create(command.LearnerForCreateUpdateDto.Id), cancellationToken);
+                IdentityGuid.Create(command.UserProfileCreateUpdateDto.Id), cancellationToken);
 
             // Check if the user existed
             if (user is not null)
             {
                 // Update user
-                Mapper.Map(command.LearnerForCreateUpdateDto, user);
+                Mapper.Map(command.UserProfileCreateUpdateDto, user);
 
                 if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
                 {
@@ -57,7 +57,7 @@ public class CreateUpdateLearnerProfileCommandHandler(
             }
 
             //Create new user
-            user = Mapper.Map<User>(command.LearnerForCreateUpdateDto);
+            user = Mapper.Map<User>(command.UserProfileCreateUpdateDto);
 
             await userRepository.InsertAsync(user, cancellationToken);
             
@@ -83,7 +83,7 @@ public class CreateUpdateLearnerProfileCommandHandler(
         }
         catch (Exception ex)
         {
-            return Result.Fail(UserError.FailTCreateOrUpdateUserError(command.LearnerForCreateUpdateDto.Email, ex.Message));
+            return Result.Fail(UserError.FailTCreateOrUpdateUserError(command.UserProfileCreateUpdateDto.Email, ex.Message));
         }
     }
 }

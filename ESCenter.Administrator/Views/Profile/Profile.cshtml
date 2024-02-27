@@ -24,15 +24,10 @@
             <div class="card">
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                    <img src="@Model.LearnerForProfileDto.Avatar" alt="Profile" class="rounded-circle">
-                    <h2>@Model.LearnerForProfileDto.FirstName @Model.LearnerForProfileDto.LastName</h2>
-                    <h3>@Model.LearnerForProfileDto.Role</h3>
-                    <div class="social-links mt-2">
-                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-                    </div>
+                    <img src="@Model.UserProfileDto.Avatar" alt="Profile" class="rounded-circle">
+                    <h2>@Model.UserProfileDto.FirstName @Model.UserProfileDto.LastName</h2>
+                    <h3>@Model.UserProfileDto.Role</h3>
+                    
                 </div>
             </div>
 
@@ -65,14 +60,14 @@
                     <div class="tab-content pt-2">
 
                         <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                            <partial name="_ProfileOverview" model="@Model.LearnerForProfileDto" />
+                            <partial name="_ProfileOverview" model="@Model.UserProfileDto" />
                         </div>
 
                         <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                             <!-- Profile Edit Form -->
                             
-                            <partial name="_ProfileEdit" model="@Model.LearnerForProfileDto" view-data="ViewData"/>
+                            <partial name="_ProfileEdit" model="@Model.UserProfileDto" view-data="ViewData"/>
                             <!-- End Profile Edit Form -->
 
                         </div>

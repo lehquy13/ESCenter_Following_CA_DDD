@@ -1,5 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.CourseRequests;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Discoveries;
 using ESCenter.Domain.Aggregates.Discoveries.Entities;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;
@@ -45,5 +45,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+    }
+}
+
+
+//using to support adding migration
+public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+{
+    public AppDbContext CreateDbContext(string[] args)
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseSqlServer(
+            "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_4; Trusted_Connection=True;MultipleActiveResultSets=true"
+            // "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
+            // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_3; Trusted_Connection=True;MultipleActiveResultSets=true"
+            // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
+            //"workstation id=es_mssql.mssql.somee.com;packet size=4096;user id=lehquy13_SQLLogin_1;pwd=5kf5v3wgao;data source=es_mssql.mssql.somee.com;persist security info=False;initial catalog=es_mssql;TrustServerCertificate=True"
+            // "workstation id=edusmart.mssql.somee.com;packet size=4096;user id=EduSmart_SQLLogin_3;pwd=84cjobbnby;data source=edusmart.mssql.somee.com;persist security info=False;initial catalog=edusmart;TrustServerCertificate=True"
+            // "workstation id=CED_Database.mssql.somee.com;packet size=4096;user id=Matty_SQLLogin_1;pwd=rg12f5urma;data source=CED_Database.mssql.somee.com;persist security info=False;initial catalog=CED_Database; TrustServerCertificate=True;"
+        );
+
+        return new AppDbContext(optionsBuilder.Options);
     }
 }

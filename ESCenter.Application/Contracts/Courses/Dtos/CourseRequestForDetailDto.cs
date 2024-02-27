@@ -1,5 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.CourseRequests;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Identities;
@@ -10,9 +10,7 @@ namespace ESCenter.Application.Contracts.Courses.Dtos;
 public class CourseRequestForDetailDto
 {
     public Guid Id { get; set; }
-    public DateTime CreationTime { get; set; } = DateTime.Now;
-    public bool IsDeleted { get; set; }
-    public DateTime? LastModificationTime { get; set; }
+
     public string TutorName { get; set; } = string.Empty;
     public string TutorPhone { get; set; } = string.Empty;
     public string TutorEmail { get; set; } = string.Empty;
