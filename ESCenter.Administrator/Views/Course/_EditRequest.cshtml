@@ -1,52 +1,18 @@
-@using ESCenter.Domain.Shared.Courses
-@model ESCenter.Application.Contracts.Courses.Dtos.CourseRequestForDetailDto
-@{
-}
-<form asp-action="CancelRequest" asp-controller="Course" >
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ESCenter.Admin.Application.Contracts.Courses.Dtos.CourseRequestCancelDto
+
+<form asp-action="CancelRequest" asp-controller="Course" asp-route-courseId="@Model.CourseId" asp-route-requestId="@Model.CourseRequestId" onsubmit="return callPostActionWithForm(this)">
     <div class="card">
-    
         <div class="card-body">
-            <h5 class="card-title">Request's detail</h5>
-                <input type="text" asp-for="TutorId" class="form-control" readonly="" hidden/>
-                <input type="text" asp-for="Id" class="form-control" readonly="" hidden/>
-                <input type="text" asp-for="CourseId" class="form-control" readonly="" hidden/>
-            
-            <div class="col-md-6">
-                <label asp-for="TutorName" class="form-label">Tutor Name</label>
-                <input type="text" asp-for="TutorName" class="form-control" readonly=""/>
-                <span asp-validation-for="TutorName" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="RequestStatus" class="form-label">Subject Name</label>
-                <select asp-for="RequestStatus" class="form-select">
-                    
-                            <option value="@RequestStatus.Canceled">
-                                @RequestStatus.Canceled.ToString()
-                            </option>
-                       
-                </select>
-                <span asp-validation-for="RequestStatus" class="text-danger"></span>
-            </div>
-           
-            <div class="col-md-6">
-                <label asp-for="TutorPhone" class="form-label">Tutor PhoneNumber</label>
-                <input type="text" asp-for="TutorPhone" class="form-control" readonly=""/>
-                <span asp-validation-for="TutorPhone" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="TutorEmail" class="form-label">Tutor Email</label>
-                <input type="email" asp-for="TutorEmail" class="form-control" readonly=""/>
-                <span asp-validation-for="TutorEmail" class="text-danger"></span>
-            </div> 
+            <h5 class="card-title">Cancellation's detail</h5>
+            <input asp-for="CourseRequestId" type="hidden"/>
+            <input asp-for="CourseId" type="hidden"/>
             <div class="col-md-12">
                 <label asp-for="Description" class="form-label">Description</label>
-                <textarea asp-for="Description" class="form-control">
-    
-                </textarea>
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <button class="btn btn-success" type="submit">Cancel the request</button>
         </div>
     </div>
-    
 </form>

@@ -1,7 +1,7 @@
-using ESCenter.Application.ServiceImpls.Accounts.Commands.ChangePassword;
-using ESCenter.Application.ServiceImpls.Accounts.Commands.Register;
-using ESCenter.Application.ServiceImpls.Accounts.Queries.Login;
 using ESCenter.Host;
+using ESCenter.Mobile.Application.ServiceImpls.Accounts.Commands.ChangePassword;
+using ESCenter.Mobile.Application.ServiceImpls.Accounts.Commands.Register;
+using ESCenter.Mobile.Application.ServiceImpls.Accounts.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

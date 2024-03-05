@@ -1,6 +1,5 @@
-﻿@using ESCenter.Application.Contracts.Courses.Dtos
-@using ESCenter.Application.Contracts
-@model ESCenter.Application.Contracts.Courses.Dtos.CourseForDetailDto
+﻿@using ESCenter.Admin.Application.Contracts.Courses.Dtos
+@model ESCenter.Admin.Application.Contracts.Courses.Dtos.CourseForDetailDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -181,13 +180,13 @@
                 <input type="number" class="form-control" asp-for="SectionFee" placeholder="0.99"/>
                 <span asp-validation-for="SectionFee" class="text-danger"></span>
             </div>
-            
+
             <div class="col-md-3">
                 <label asp-for="ChargeFee" class="form-label">Charge Fee</label>
                 <input type="number" class="form-control" asp-for="ChargeFee" placeholder="0.99"/>
                 <span asp-validation-for="ChargeFee" class="text-danger"></span>
             </div>
-            
+
             <div class="col-md-3">
                 <label class="form-label">Tutor</label>
                 <input type="text" hidden="hidden" id="tutorId" name="tutorId" asp-for="TutorId" class="form-control"/>
@@ -276,7 +275,7 @@
             </thead>
             <tbody>
 
-            @foreach (var requestGettingClassMinimalDto in Model.CourseRequestForDetailDtos)
+            @foreach (var requestGettingClassMinimalDto in Model.CourseRequestListForAdminDtos)
             {
                 <tr>
 
@@ -295,11 +294,12 @@
 
                     <td>
                         <button type="button" class="btn btn-primary"
-                                onclick="ChooseTutor('@requestGettingClassMinimalDto.TutorId','@requestGettingClassMinimalDto.TutorName', '@requestGettingClassMinimalDto.TutorPhone');">
+                                onclick="ApproveTutor('@requestGettingClassMinimalDto.TutorId','@requestGettingClassMinimalDto.TutorName', '@requestGettingClassMinimalDto.TutorPhone');">
                             Accept
                         </button>
+
                         <button type="button" class="btn btn-danger"
-                                onclick="CancelRequest('@Url.Action("CancelRequest", "Course", new { id = requestGettingClassMinimalDto.Id })')">
+                                onclick="OpenGetDialog('@Url.Action("OpenCancelRequestDialog", "Course", new { courseId = Model.Id, requestId = requestGettingClassMinimalDto.Id })','CancelRequest') ">
                             Cancel
                         </button>
                     </td>

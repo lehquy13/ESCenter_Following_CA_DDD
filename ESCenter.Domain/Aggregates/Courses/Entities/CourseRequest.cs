@@ -30,9 +30,10 @@ public class CourseRequest : AuditedEntity<CourseRequestId>
         };
     }
 
-    public void Cancel()
+    public void Cancel(string description = "The course is unavailable now.")
     {
         RequestStatus = RequestStatus.Canceled;
+        Description = description;
     }
 
     public void Approved()

@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESCenter.Host\ESCenter.Host.csproj" />
+    <ProjectReference Include="..\ESCenter.Mobile.Host\ESCenter.Mobile.Host.csproj" />
   </ItemGroup>
 
 </Project>

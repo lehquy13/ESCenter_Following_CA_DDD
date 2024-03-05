@@ -1,7 +1,8 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model ESCenter.Application.ServiceImpls.Accounts.Queries.Login.LoginQuery
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ESCenter.Admin.Application.ServiceImpls.Accounts.Queries.Login.LoginQuery
 @{
     Layout = "_Layout1";
     bool isFail = ViewBag.isFail ?? false;

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESCenter.Host\ESCenter.Host.csproj" />
+    <ProjectReference Include="..\ESCenter.Admin.Host\ESCenter.Admin.Host.csproj" />
   </ItemGroup>
 
   <ItemGroup>

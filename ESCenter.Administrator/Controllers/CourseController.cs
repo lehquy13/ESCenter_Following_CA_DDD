@@ -1,20 +1,21 @@
 ﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Application.Contracts.Courses.Dtos;
-using ESCenter.Application.Contracts.Courses.Params;
-using ESCenter.Application.ServiceImpls.Admins.Courses.Commands.CancelCourseRequest;
-using ESCenter.Application.ServiceImpls.Admins.Courses.Commands.CreateCourse;
-using ESCenter.Application.ServiceImpls.Admins.Courses.Commands.DeleteCourse;
-using ESCenter.Application.ServiceImpls.Admins.Courses.Commands.UpdateCourse;
-using ESCenter.Application.ServiceImpls.Admins.Courses.Queries.GetAllCourses;
-using ESCenter.Application.ServiceImpls.Admins.Courses.Queries.GetCourseDetail;
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetAllTutors;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
-using ESCenter.Application.ServiceImpls.Admins.Users.Queries.GetLearners;
+using ESCenter.Admin.Application.Contracts.Courses.Dtos;
+using ESCenter.Admin.Application.Contracts.Courses.Params;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Commands.CancelCourseRequest;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Commands.CreateCourse;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Commands.DeleteCourse;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Commands.UpdateCourse;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Queries.GetAllCourses;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Queries.GetCourseDetail;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Queries.GetCourseRequest;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetAllTutors;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Users.Queries.GetLearners;
 using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
@@ -52,12 +53,8 @@ public class CourseController(
     public async Task<IActionResult> Index(string? type)
     {
         //var query = new GetObjectQuery<List<ClassInformationDto>>();
-        var query = new CourseParams()
-        {
-            Filter = type ?? ""
-        };
-
-        var courses = await sender.Send(new GetAllCoursesQuery());
+        var status = type?.ToEnum<Status>() ?? Status.None;
+        var courses = await sender.Send(new GetAllCoursesQuery(status));
         if (courses is { IsSuccess: true, Value: not null })
         {
             return View(courses.Value);
@@ -97,7 +94,7 @@ public class CourseController(
         await PackStaticListToView();
         await PackStudentAndTutorList();
 
-        return Helper.SuccessResult();
+        return Helper.UpdatedResult();
     }
 
     [HttpGet("create")]
@@ -195,19 +192,35 @@ public class CourseController(
         return Json(new { tutorId = tutorId });
     }
 
-    [HttpPost("{courseId:guid}/cancel-request/{requestId:guid}")]
-    public async Task<IActionResult> CancelRequest(Guid courseId, Guid requestId)
+    [HttpPost("{courseId}/cancel-request/{requestId}")]
+    public async Task<IActionResult> CancelRequest(
+        Guid courseId, Guid requestId,
+        CourseRequestCancelDto courseRequestCancelDto)
     {
-        var result = await sender.Send(new CancelCourseRequestCommand(requestId));
+        var result = await sender.Send(new CancelCourseRequestCommand(courseRequestCancelDto));
 
         if (!result.IsSuccess)
         {
             return BadRequest();
         }
 
-        return Json(new
+        return Helper.UpdatedUsingModalResult();
+    }
+
+    [HttpGet("{courseId:guid}/cancel-request/{requestId:guid}")]
+    public async Task<IActionResult> OpenCancelRequestDialog(Guid courseId, Guid requestId)
+    {
+        var result = await sender.Send(new GetCourseRequestQuery(requestId));
+
+        if (!result.IsSuccess)
         {
-            res = true
-        });
+            return BadRequest();
+        }
+
+        return Helper.RenderRazorViewToString(
+            this,
+            "_EditRequest",
+            result.Value
+        );
     }
 }

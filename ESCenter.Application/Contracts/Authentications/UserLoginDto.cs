@@ -1,5 +1,4 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using Mapster;
 
 namespace ESCenter.Application.Contracts.Authentications;

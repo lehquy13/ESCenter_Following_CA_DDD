@@ -1,6 +1,6 @@
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubject;
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
 using ESCenter.Host;
+using ESCenter.Mobile.Application.ServiceImpls.Subjects.Queries.GetSubject;
+using ESCenter.Mobile.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

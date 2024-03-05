@@ -1,0 +1,31 @@
+﻿using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
+using MapsterMapper;
+using Matt.ResultObject;
+using Matt.SharedKernel.Application.Mediators.Queries;
+using Matt.SharedKernel.Domain.Interfaces;
+
+namespace ESCenter.Mobile.Application.ServiceImpls.Subjects.Queries.GetSubject;
+
+public class GetSubjectQueryHandler(
+    ISubjectRepository subjectRepository,
+    IUnitOfWork unitOfWork,
+    IAppLogger<GetSubjectQueryHandler> logger,
+    IMapper mapper)
+    : QueryHandlerBase<GetSubjectQuery, SubjectDto>(unitOfWork, logger, mapper)
+{
+    public override async Task<Result<SubjectDto>> Handle(GetSubjectQuery request,
+        CancellationToken cancellationToken)
+    {
+        var subjects = await subjectRepository.GetAsync(SubjectId.Create(request.Id), cancellationToken);
+
+        if (subjects is null)
+        {
+            return Result.Fail(SubjectAppServiceError.NonExistSubjectError);
+        }
+
+        var subjectDtos = Mapper.Map<SubjectDto>(subjects);
+        return subjectDtos;
+    }
+}

@@ -40,10 +40,10 @@ public class IdentityDomainServices(
         string password,
         string phoneNumber)
     {
-        var roles = await identityRoleRepository
-            .GetListAsync();
+        var role = await identityRoleRepository
+            .GetAsync(IdentityRoleId.Create(IdentityRole.Learner));
 
-        if (roles.Count <= 0)
+        if (role is null)
         {
             return Result.Fail(DomainServiceErrors.RoleNotFoundDomainError);
         }
@@ -61,7 +61,7 @@ public class IdentityDomainServices(
             email,
             password,
             phoneNumber,
-            roles.First().Id
+            role.Id
         );
 
         await identityRepository.InsertAsync(identityUser);

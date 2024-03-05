@@ -1,4 +1,4 @@
-using ESCenter.Host;
+using ESCenter.Admin.Host;
 
 var builder = WebApplication.CreateBuilder(args);
 {

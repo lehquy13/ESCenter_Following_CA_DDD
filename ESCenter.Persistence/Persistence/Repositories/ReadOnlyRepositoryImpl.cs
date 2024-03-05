@@ -11,13 +11,13 @@ namespace ESCenter.Persistence.Persistence.Repositories;
 
 internal class ReadOnlyRepositoryImpl<TEntity, TId>(
     AppDbContext appDbContext,
-    IAppLogger<RepositoryImpl<TEntity, TId>> logger)
+    IAppLogger<ReadOnlyRepositoryImpl<TEntity, TId>> logger)
     : IReadOnlyRepository<TEntity, TId>, IOpenGenericService<IReadOnlyRepository<TEntity, TId>>
-    where TEntity : Entity<TId>, IAggregateRoot<TId>
+    where TEntity : Entity<TId>, IEntity<TId>
     where TId : notnull
 {
     protected readonly AppDbContext AppDbContext = appDbContext;
-    protected readonly IAppLogger<RepositoryImpl<TEntity, TId>> Logger = logger;
+    protected readonly IAppLogger<ReadOnlyRepositoryImpl<TEntity, TId>> Logger = logger;
     protected readonly string ErrorMessage = "{Message} with exception: {Ex}";
 
     public async Task<List<TEntity>> GetListAsync(IPaginatedGetListSpecification<TEntity> spec,

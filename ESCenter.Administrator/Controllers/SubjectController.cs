@@ -1,9 +1,9 @@
 ﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Application.Contracts.Courses.Dtos;
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Commands.DeleteSubject;
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Commands.UpsertSubject;
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubject;
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
+using ESCenter.Admin.Application.Contracts.Courses.Dtos;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Commands.DeleteSubject;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Commands.UpsertSubject;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Queries.GetSubject;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

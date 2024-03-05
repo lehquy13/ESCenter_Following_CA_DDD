@@ -8,11 +8,11 @@
 
     <ItemGroup>
         <ProjectReference Include="..\ESCenter.Domain.Shared\ESCenter.Domain.Shared.csproj"/>
-        <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj" PrivateAssets="compile"/>
+        <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="ServiceImpls\Clients\TutorProfiles\Commands\" />
+        <Folder Include="Contracts\" />
     </ItemGroup>
 
 </Project>

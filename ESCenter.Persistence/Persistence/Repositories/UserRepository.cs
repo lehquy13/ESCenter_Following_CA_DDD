@@ -32,19 +32,38 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
         }
     }
 
+    public async Task<List<User>> GetTutorsByIds(IEnumerable<TutorId> tutorIds)
+    {
+        try
+        {
+            var users = await AppDbContext.Users
+                .AsNoTracking()
+                .Join(AppDbContext.Tutors,
+                    user => user.Id,
+                    tutor => tutor.UserId,
+                    (user, tutor) => new { user, tutor })
+                .Where(o => o.user.Role == UserRole.Tutor
+                            && tutorIds.Contains(o.tutor.Id)
+                            && o.user.IsDeleted == false)
+                .Select(x => x.user)
+                .ToListAsync();
+
+            return users;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
     public async Task<List<User>> GetTutors()
     {
         try
         {
             var users = await AppDbContext.Users
-                .Join(AppDbContext.IdentityUsers,
-                    u => u.Id,
-                    ur => ur.Id,
-                    (u, ur) => new { u, ur })
-                .Where(o => o.ur.IdentityRoleId == IdentityRoleId.Create(IdentityRole.Tutor + 1) &&
-                            o.u.IsDeleted == false)
+                .Where(o => o.Role == UserRole.Tutor &&
+                            o.IsDeleted == false)
                 .AsNoTracking()
-                .Select(x => x.u)
                 .ToListAsync();
 
             return users;

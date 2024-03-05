@@ -25,8 +25,12 @@ function callPostActionWithForm(formInput) {
                 }
                 alertify.success('Updated successfully');
             } else if (response.res === "deleted" || response.res === "updated") {
-                $('#verticalCentered').modal('hide');
+                //$('#verticalCentered').modal('hide');
+                alertify.success(response.res + ' successfully');
                 location.reload();
+            } else if (response.res === "modalUpdated") {
+                $('#largeModal').modal('hide');
+                alertify.success('updated successfully');
             } else if (response.res === false) {
                 if (response.viewName === "_ProfileEdit") {
                     $('#profile-edit').html(response.partialView);
@@ -53,7 +57,6 @@ function RemoveTutor() {
 }
 
 function OpenGetDialog(url, title) {
-
     $.ajax({
         type: "GET",
         url: url,
@@ -62,9 +65,7 @@ function OpenGetDialog(url, title) {
             $('#largeModal .modal-title').html(title);
             $('#largeModal .modal-body').html(res.partialView);
 
-            $('#modalTriggerButton').click();
-
-
+            $('#largeModal').modal('show')
         }
     })
 }
@@ -103,7 +104,7 @@ function LoadImage(url, id) {
     return false;
 }
 
-function ChooseTutor(id, name, phone) {
+function ApproveTutor(id, name, phone) {
     $('#largeModal').hide();
 
     $('#largeModal .modal-body').html("");
@@ -115,9 +116,8 @@ function ChooseTutor(id, name, phone) {
 }
 
 function CancelRequest(url) {
-
     $.ajax({
-        type: "Post",
+        type: "GET",
         url: url,
         data: {},
         success: function (res) {

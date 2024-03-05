@@ -8,5 +8,6 @@ public enum Status
     OnConfirming = 3,
     Available = 4,
     OnPurchasing = 5,
-    OnVerifying = 6
+    OnVerifying = 6,
+    None = 7
 }

@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Http;
+@using ESCenter.Domain.Shared.Courses
 @inject IHttpContextAccessor HttpContextAccessor
 @{
-    var image = HttpContextAccessor.HttpContext?.Session.GetString("image") ?? "default_avatar1.png";
+    var image = HttpContextAccessor.HttpContext?.Session.GetString("image") ?? "/assets/img/avatar-default.svg";
     var name = HttpContextAccessor.HttpContext?.Session.GetString("name") ?? "unknown";
-}
+} 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -141,12 +142,12 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-action="Index" asp-controller="Course" asp-route-type="Verifying">
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.OnVerifying.ToString()">
                         <i class="bi bi-circle"></i><span>Verifying</span>
                     </a>
                 </li>
                 <li>
-                    <a asp-action="Index" asp-controller="Course" asp-route-type="Purchasing">
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.OnPurchasing.ToString()">
                         <i class="bi bi-circle"></i><span>Purchasing</span>
                     </a>
                 </li>

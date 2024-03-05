@@ -21,15 +21,7 @@ public class User : FullAuditedAggregateRoot<IdentityGuid>
     {
     }
 
-    internal static User Create(IdentityGuid identityUserId)
-    {
-        return new User
-        {
-            Id = identityUserId
-        };
-    }
-
-    internal static User Create(
+    public static User Create(
         IdentityGuid identityUserId,
         string firstName,
         string lastName,

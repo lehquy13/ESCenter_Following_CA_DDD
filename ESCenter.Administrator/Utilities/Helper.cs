@@ -111,6 +111,15 @@ public static class Helper
             message
         });
     }
+    
+    public static JsonResult UpdatedUsingModalResult(string message = "")
+    {
+        return new JsonResult(new
+        {
+            res = "modalUpdated",
+            message
+        });
+    }
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]

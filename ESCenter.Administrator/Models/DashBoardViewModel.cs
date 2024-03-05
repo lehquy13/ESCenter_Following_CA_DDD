@@ -1,21 +1,18 @@
-using ESCenter.Application.Contracts.Courses.Dtos;
-using ESCenter.Application.Contracts.Notifications;
-using ESCenter.Application.Contracts.Users.BasicUsers;
-using ESCenter.Application.Contracts.Users.Tutors;
+using ESCenter.Admin.Application.Contracts.Notifications;
+using ESCenter.Admin.Application.DashBoards;
 
 namespace ESCenter.Administrator.Models;
 
 public class DashBoardViewModel
 {
-    public TotalValueModel<UserForListDto> TutorTotalValueModel{ get; set; } = new();
-    public TotalValueModel<UserForListDto> StudentTotalValueModel{ get; set; } = new();
-    public TotalValueModel<CourseForListDto> ClassTotalValueModel{ get; set; } = new();
+    public TotalValueModel<MetricObject> TutorTotalValueModel{ get; set; } = new();
+    public TotalValueModel<MetricObject> StudentTotalValueModel{ get; set; } = new();
+    public TotalValueModel<MetricObject> ClassTotalValueModel{ get; set; } = new();
     public object? ChartWeekData { get; set; }
     public object? PieWeekData1 { get; set; }
     public object? PieWeekData2 { get; set; }
     public object? DatesWeekData { get; set; }
-    public AreaChartViewModel AreaChartViewModel { get; set; } = new AreaChartViewModel();
-    public List<SubjectDto> SubjectDtos { get; set; } = new();
+    public AreaChartViewModel AreaChartViewModel { get; set; } = new();
     public List<NotificationDto> NotificationDtos { get; set; } = new();
 }
 

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ESCenter.Application;
 
-internal abstract class BaseAppService<T> where T : BaseAppService<T>
+public abstract class BaseAppService<T> where T : BaseAppService<T>
 {
     protected readonly IMapper Mapper;
 
@@ -22,7 +22,7 @@ internal abstract class BaseAppService<T> where T : BaseAppService<T>
     }
 }
 
-internal abstract class BaseCommandAppService<T> : BaseAppService<T>
+public abstract class BaseCommandAppService<T> : BaseAppService<T>
     where T : BaseCommandAppService<T>
 {
     //protected readonly IAppCache _cache;

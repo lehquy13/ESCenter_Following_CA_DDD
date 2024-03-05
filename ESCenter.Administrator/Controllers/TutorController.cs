@@ -1,25 +1,22 @@
 ﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Application.Contracts.Users.BasicUsers;
-using ESCenter.Application.Contracts.Users.Learners;
-using ESCenter.Application.Contracts.Users.Tutors;
-using ESCenter.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.ClearTutorRequests;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.CreateTutor;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateChangeVerificationRequestCommand;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateTutorInformation;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Commands.UpdateTutorMajors;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorChangeVerifications;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorMajors;
-using ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorRequests;
-using ESCenter.Application.ServiceImpls.Admins.Users.Commands.CreateUpdateUserProfile;
-using ESCenter.Application.ServiceImpls.Clients.Tutors.Queries;
+using ESCenter.Admin.Application.Contracts.Users.Learners;
+using ESCenter.Admin.Application.Contracts.Users.Tutors;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Commands.ClearTutorRequests;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Commands.CreateTutor;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Commands.UpdateChangeVerificationRequestCommand;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Commands.UpdateTutorInformation;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Commands.UpdateTutorMajors;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetAllTutorsForManagement;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorChangeVerifications;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorMajors;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorRequests;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Users.Commands.CreateUpdateUserProfile;
 using ESCenter.Domain.Shared;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using GetAllTutorsQuery =
-    ESCenter.Application.ServiceImpls.Admins.Tutors.Queries.GetAllTutorsForManagement.GetAllTutorsQuery;
 
 namespace ESCenter.Administrator.Controllers;
 
