@@ -8,6 +8,7 @@ using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Commands.UpdateCour
 using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Queries.GetAllCourses;
 using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Queries.GetCourseDetail;
 using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Queries.GetCourseRequest;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Courses.Queries.GetTodayCourses;
 using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
 using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetAllTutors;
 using ESCenter.Admin.Application.ServiceImpls.Admins.Tutors.Queries.GetTutorDetail;
@@ -58,6 +59,19 @@ public class CourseController(
         if (courses is { IsSuccess: true, Value: not null })
         {
             return View(courses.Value);
+        }
+
+        return RedirectToAction("Error", "Home");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Today()
+    {
+        //var query = new GetObjectQuery<List<ClassInformationDto>>();
+        var courses = await sender.Send(new GetTodayCoursesQuery());
+        if (courses is { IsSuccess: true, Value: not null })
+        {
+            return View("Index", courses.Value);
         }
 
         return RedirectToAction("Error", "Home");

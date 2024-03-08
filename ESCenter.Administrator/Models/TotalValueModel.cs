@@ -7,5 +7,5 @@ public class TotalValueModel<T> where  T : class
     public List<T> Models = new();
     public bool IsIncrease = false;
     public double IncreasePercentage = 0;
-    public string Time = ByTime.Today;
+    public string Time = ByTime.All;
 }

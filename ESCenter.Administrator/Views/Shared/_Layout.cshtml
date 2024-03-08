@@ -152,14 +152,14 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-action="Index" asp-controller="Course" asp-route-type="Today">
+                    <a asp-action="Today" asp-controller="Course" asp-route-type="Today">
                         <i class="bi bi-circle"></i><span>Today</span>
                     </a>
                 </li>
             </ul>
         </li><!-- End Subject Nav -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/subject">
+            <a class="nav-link collapsed" asp-action="Index" asp-controller="Subject">
                 <i class="bi bi-journal-bookmark"></i>
                 <span>Subject</span>
             </a>

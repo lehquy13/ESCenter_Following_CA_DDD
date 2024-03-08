@@ -32,7 +32,7 @@ internal class DashboardServices(
         // Create a dateListRange by the query.ByTime
         List<int> dates = [];
 
-        var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
+        var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(30));
         switch (byTime)
         {
             case ByTime.Month:
@@ -54,7 +54,7 @@ internal class DashboardServices(
                 break;
         }
 
-        startDay = DateTime.Today.Subtract(TimeSpan.FromDays(6));
+        startDay = DateTime.Today.Subtract(TimeSpan.FromDays(30));
 
         var allClassesQuery =
             courseRepository
@@ -80,6 +80,7 @@ internal class DashboardServices(
                 dates = d,
                 sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
             });
+        
         var canceledClasses = dates.GroupJoin(
             allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.Canceled)
@@ -157,23 +158,23 @@ internal class DashboardServices(
             _ => DateTime.Today
         };
 
-        var classInforsPieQuery = courseRepository.GetAll()
+        var courseDonutQuery = courseRepository.GetAll()
             .Where(x => x.IsDeleted == false && x.LastModificationTime >= startDay)
             .GroupBy(x => x.Status)
             .Select((x) => new { key = x.Key.ToString(), count = x.Count() });
 
-        var classInforsPie = await asyncQueryableExecutor.ToListAsync(classInforsPieQuery, false);
+        var courseDonut = await asyncQueryableExecutor.ToListAsync(courseDonutQuery, false);
 
-        List<int> resultInts = classInforsPie
+        List<int> resultLabels = courseDonut
             .Select(x => x.count)
             .ToList();
 
-        if (resultInts.Count <= 0)
+        if (resultLabels.Count <= 0)
         {
-            resultInts.Add(1);
+            resultLabels.Add(1);
         }
 
-        List<string> resultStrings = classInforsPie
+        List<string> resultStrings = courseDonut
             .Select(x => x.key)
             .ToList();
         if (resultStrings.Count <= 0)
@@ -181,7 +182,7 @@ internal class DashboardServices(
             resultStrings.Add("None");
         }
 
-        return new DonutChartData(resultInts, resultStrings);
+        return new DonutChartData(resultLabels, resultStrings);
     }
 
     public async Task<LineChartData> GetLineChartData(string byTime = "")
@@ -192,7 +193,7 @@ internal class DashboardServices(
         var startDay = DateTime.Today;
         switch (byTime)
         {
-            case "month":
+            case ByTime.Month:
                 startDay = startDay.Subtract(TimeSpan.FromDays(29));
 
                 for (var i = 0; i < 30; i++)
@@ -297,7 +298,8 @@ internal class DashboardServices(
         // Create a dateListRange
         var notiListQueryable = notificationRepository
             .GetAll()
-            .Where(x => x.CreationTime >= DateTime.Today);
+            .OrderBy(x => x.CreationTime)
+            .Take(5);
         var notiList = await asyncQueryableExecutor.ToListAsync(notiListQueryable, false);
         var notiDtoList = Mapper.Map<List<NotificationDto>>(notiList);
 

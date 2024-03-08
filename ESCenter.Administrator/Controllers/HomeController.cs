@@ -33,18 +33,12 @@ public class HomeController(
 
         logger.LogDebug("On getting lineChartData, donutChartData...");
         //var lineChartData = await GetLineChart(ByTime.Week);
-        var donutChartData = await dashboardServices.GetDonutChartData();
-
-        var pieWeekDataNames = JsonConvert.SerializeObject(donutChartData.Names);
-        var pieWeekDataValues = JsonConvert.SerializeObject(donutChartData.Values);
-        var areaListData = await AreaChartDataCalculate(ByTime.Week);
+        var donutChartData = await GetDonutChart(ByTime.Month);
+        var areaListData = await AreaChartDataCalculate(ByTime.Month);
+        var lineChartData = await GetLineChart(ByTime.Month);
 
         var notificationDtos = await dashboardServices.GetNotification();
-        var lineChartData = await dashboardServices.GetLineChartData(ByTime.Week);
 
-        var datesWeekData = new ChartDataType(
-            lineChartData.Dates
-        );
         return View(
             new DashBoardViewModel
             {
@@ -52,33 +46,31 @@ public class HomeController(
                 {
                     Models = learner,
                     IsIncrease = learnerCountByTime > learnerCountByLastTime,
-                    IncreasePercentage = Math.Abs(learnerCountByTime - learnerCountByLastTime) * 1.0 /
-                        learnerCountByLastTime * 100,
-                    Time = ByTime.Month
+                    IncreasePercentage = Math.Round(Math.Abs(learnerCountByTime - learnerCountByLastTime) * 1.0 /
+                        learnerCountByLastTime * 100, 2),
                 },
                 ClassTotalValueModel = new TotalValueModel<MetricObject>()
                 {
                     Models = classDtos,
                     IsIncrease = courseCountByTime > courseCountByLastTime,
                     IncreasePercentage =
-                        Math.Abs(courseCountByTime - courseCountByLastTime) * 1.0 /
-                        courseCountByLastTime * 100,
-                    Time = ByTime.Month
+                        Math.Round(Math.Abs(courseCountByTime - courseCountByLastTime) * 1.0 /
+                        courseCountByLastTime * 100, 2),
                 },
                 TutorTotalValueModel = new TotalValueModel<MetricObject>()
                 {
                     Models = tutorDtos,
                     IsIncrease = tutorCountByTime > tutorCountByLastTime,
-                    IncreasePercentage = Math.Abs(tutorCountByTime - tutorCountByLastTime) * 1.0 /
-                        tutorCountByLastTime * 100,
-                    Time = ByTime.Month
+                    IncreasePercentage = Math.Round(
+                            Math.Abs(tutorCountByTime - tutorCountByLastTime) * 1.0 /
+                        tutorCountByLastTime * 100, 2),
                 },
 
                 // Chart
-                PieWeekData1 = pieWeekDataValues,
-                PieWeekData2 = pieWeekDataNames,
-                ChartWeekData = JsonConvert.SerializeObject(lineChartData.Dates),
-                DatesWeekData = JsonConvert.SerializeObject(lineChartData.LineData),
+                DonutSeries = donutChartData.Series,
+                DonutLabels = donutChartData.Labels,
+                ChartWeekData = lineChartData.Item1,
+                Xaxis = lineChartData.Item2,
                 //Incomes Chart
                 AreaChartViewModel = new AreaChartViewModel()
                 {
@@ -95,10 +87,10 @@ public class HomeController(
 
     [HttpGet]
     [Route("filter-line-chart/{byTime?}")]
-    public async Task<IActionResult> FilterLineChart(string byTime = "")
+    public async Task<IActionResult> FilterLineChart(string byTime = ByTime.Month)
     {
         var a = await GetLineChart(byTime);
-        
+
         return Json(new
         {
             ChartWeekData = a.Item1,
@@ -106,58 +98,23 @@ public class HomeController(
         });
     }
 
-    private async Task<(string, string)> GetLineChart(string byTime)
-    {
-        logger.LogDebug("On getting lineChartData...");
-        var lineChartData = await dashboardServices.GetLineChartData(byTime);
-
-        var datesWeekData = new ChartDataType(
-            lineChartData.Dates
-        );
-        var check = JsonConvert.SerializeObject(lineChartData.LineData);
-        var check1 = JsonConvert.SerializeObject(datesWeekData);
-
-        return (check, check1);
-    }
 
     [HttpGet]
     [Route("filter-pie-chart/{byTime?}")]
     public async Task<IActionResult> FilterPieChart(string byTime = "")
     {
         logger.LogDebug("filterPieChart's running! On getting DonutChartData...");
-        var donutChartData = await dashboardServices.GetDonutChartData(byTime);
-
-        var check2 = JsonConvert.SerializeObject(donutChartData.Names);
-        var check1 = JsonConvert.SerializeObject(donutChartData.Values);
 
         return Helper.RenderRazorViewToString(this, "_PieChart",
-            new PieChartViewModel()
-            {
-                Labels = check2,
-                Series = check1,
-                ByTime = byTime
-            });
+            await GetDonutChart(byTime));
     }
 
-    private async Task<List<string>> AreaChartDataCalculate(string byTime = "")
-    {
-        logger.LogDebug("filterPieChart's running! On getting DonutChartData...");
-        var areaChartData = await dashboardServices.GetAreaChartData(byTime);
-        logger.LogDebug("Got donutChartData! Serializing and return");
-
-        var check1 = JsonConvert.SerializeObject(areaChartData.Dates);
-        var check2 = JsonConvert.SerializeObject(areaChartData.TotalRevenue.Data);
-        var check3 = JsonConvert.SerializeObject(areaChartData.Cancels.Data);
-        var check4 = JsonConvert.SerializeObject(areaChartData.Incoming.Data);
-
-        return [check1, check2, check3, check4];
-    }
 
     [HttpGet]
     [Route("filter-area-chart/{byTime?}")]
     public async Task<IActionResult> FilterAreaChart(string byTime = "")
     {
-        var listData = await AreaChartDataCalculate(byTime);
+        var listData = await AreaChartDataCalculate(ByTime.Month);
         return Helper.RenderRazorViewToString(this, "_AreaChart",
             new AreaChartViewModel()
             {
@@ -243,15 +200,15 @@ public class HomeController(
             case ByTime.Month:
                 date = date.Subtract(TimeSpan.FromDays(29));
                 break;
-            
+
             case ByTime.Week:
                 date = date.Subtract(TimeSpan.FromDays(6));
                 break;
-            
+
             case ByTime.Year:
                 date = date.Subtract(TimeSpan.FromDays(364));
                 break;
-            
+
             default:
                 if (date.Hour == 0)
                 {
@@ -261,6 +218,7 @@ public class HomeController(
                 {
                     date = date.Subtract(date.TimeOfDay);
                 }
+
                 break;
         }
 
@@ -278,5 +236,50 @@ public class HomeController(
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    private async Task<(string, string)> GetLineChart(string byTime)
+    {
+        logger.LogDebug("On getting lineChartData...");
+        var lineChartData = await dashboardServices.GetLineChartData(byTime);
+
+        var datesWeekData = new ChartDataType(
+            lineChartData.Dates
+        );
+        var check = JsonConvert.SerializeObject(lineChartData.LineData).Replace("\"Name\"", "name")
+            .Replace("\"Data\"", "data");
+        var check1 = JsonConvert.SerializeObject(datesWeekData);
+
+        return (check, check1);
+    }
+
+    private async Task<PieChartViewModel> GetDonutChart(string byTime)
+    {
+        logger.LogDebug("filterPieChart's running! On getting DonutChartData...");
+        var donutChartData = await dashboardServices.GetDonutChartData(byTime);
+
+        var check2 = JsonConvert.SerializeObject(donutChartData.Names);
+        var check1 = JsonConvert.SerializeObject(donutChartData.Values);
+
+        return new PieChartViewModel()
+        {
+            Labels = check2,
+            Series = check1,
+            ByTime = byTime
+        };
+    }
+
+    private async Task<List<string>> AreaChartDataCalculate(string byTime = "")
+    {
+        logger.LogDebug("filterPieChart's running! On getting DonutChartData...");
+        var areaChartData = await dashboardServices.GetAreaChartData(byTime);
+        logger.LogDebug("Got donutChartData! Serializing and return");
+
+        var check1 = JsonConvert.SerializeObject(areaChartData.Dates);
+        var check2 = JsonConvert.SerializeObject(areaChartData.TotalRevenue.Data);
+        var check3 = JsonConvert.SerializeObject(areaChartData.Cancels.Data);
+        var check4 = JsonConvert.SerializeObject(areaChartData.Incoming.Data);
+
+        return [check1, check2, check3, check4];
     }
 }

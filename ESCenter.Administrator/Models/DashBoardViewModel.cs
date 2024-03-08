@@ -9,9 +9,9 @@ public class DashBoardViewModel
     public TotalValueModel<MetricObject> StudentTotalValueModel{ get; set; } = new();
     public TotalValueModel<MetricObject> ClassTotalValueModel{ get; set; } = new();
     public object? ChartWeekData { get; set; }
-    public object? PieWeekData1 { get; set; }
-    public object? PieWeekData2 { get; set; }
-    public object? DatesWeekData { get; set; }
+    public object? DonutSeries { get; set; }
+    public object? DonutLabels { get; set; }
+    public object? Xaxis { get; set; }
     public AreaChartViewModel AreaChartViewModel { get; set; } = new();
     public List<NotificationDto> NotificationDtos { get; set; } = new();
 }

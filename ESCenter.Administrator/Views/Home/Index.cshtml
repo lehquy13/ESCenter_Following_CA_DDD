@@ -167,14 +167,14 @@
                 </li>
                 <li>
                     <a class="dropdown-item"
-                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = "week" })')">
+                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = ByTime.Week })')">
                         This Week
                     </a>
                 </li>
                 <li>
 
                     <a class="dropdown-item"
-                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = "month" })')">
+                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = ByTime.Month })')">
                         This Month
                     </a>
                 </li>
@@ -188,6 +188,7 @@
             <div id="reportsChart"></div>
 
             <script>
+                
                 document.addEventListener("DOMContentLoaded", () => {
                     window.reportsChartStore = new ApexCharts(document.querySelector("#reportsChart"), {
                         series: @Html.Raw(@Model.ChartWeekData),
@@ -219,7 +220,7 @@
                             curve: 'smooth',
                             width: 2
                         },
-                        xaxis: @Html.Raw(@Model.DatesWeekData),
+                        xaxis: @Html.Raw(Model.Xaxis),
                         tooltip: {
                             x: {
                                 format: 'dd/MM/yy HH:mm'
@@ -228,6 +229,7 @@
                     });
                     reportsChartStore.render();
                 });
+                            
                             </script>
             <!-- End Line Chart -->
 
@@ -330,6 +332,7 @@
 
     </div>
 </div><!-- End Recent Sales -->
+
 <!-- Top Selling -->
 <div class="col-12">
     <div class="card top-selling overflow-auto">
@@ -494,11 +497,12 @@
 
         </div>
     </div><!-- End Recent Activity -->
+    
     <!-- Area Chart -->
     <div class="card" id="areaChartCard">
 
         <div class="card-body">
-            <h5 class="card-title">Incomes for the last 7 days</h5>
+            <h5 class="card-title">Incomes for the last 30 days</h5>
 
             <div id="areaChart"></div>
 
@@ -585,7 +589,7 @@
         </div>
 
         <div class="card-body pb-0">
-            <h5 class="card-title"> Current Status <span>| Today</span></h5>
+            <h5 class="card-title"> Current Status <span>| This Month</span></h5>
 
             <!-- Pie Chart -->
             <div id="pieChart"></div>
@@ -593,7 +597,7 @@
             <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             window.pieChartStore = new ApexCharts(document.querySelector("#pieChart"), {
-                                series: @Html.Raw(Model.PieWeekData1),
+                                series: @Html.Raw(Model.DonutSeries),
                                 chart: {
                                     height: 350,
                                     type: 'pie',
@@ -601,7 +605,7 @@
                                         show: true
                                     }
                                 },
-                                labels: @Html.Raw(Model.PieWeekData2)
+                                labels: @Html.Raw(Model.DonutLabels)
                                                                   });
                             pieChartStore.render();
                         });
