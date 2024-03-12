@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Matt.SharedKernel" Version="1.0.9" />
+    <ProjectReference Include="..\Matt.SharedKernel\Matt.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

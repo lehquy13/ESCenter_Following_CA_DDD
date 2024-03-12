@@ -15,4 +15,8 @@
     <ProjectReference Include="..\ESCenter.Mobile.Host\ESCenter.Mobile.Host.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 </Project>

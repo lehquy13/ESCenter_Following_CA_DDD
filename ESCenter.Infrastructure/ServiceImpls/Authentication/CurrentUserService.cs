@@ -14,6 +14,7 @@ internal class CurrentUserService : ICurrentUserService
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
         var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
+
         if (userId != null)
         {
             CurrentUserId = userId.Value;

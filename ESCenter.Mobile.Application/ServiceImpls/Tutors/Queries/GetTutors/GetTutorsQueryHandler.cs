@@ -52,42 +52,32 @@ public class GetTutorsQueryHandler(
                     User = user,
                     Courses = groupCourse
                 };
-
+            Console.WriteLine("aaa");
             if (request.TutorParams.Academic?.ToEnum<AcademicLevel>()
                     is { } ac && ac != AcademicLevel.Optional)
-            {
                 tutors = tutors.Where(record => record.User != null && record.Tutor.AcademicLevel == ac);
-            }
 
             if (!string.IsNullOrEmpty(request.TutorParams.Address))
-            {
                 tutors = tutors.Where(record => record.User.Address.Match(request.TutorParams.Address));
-            }
 
             if (request.TutorParams.Gender is { } g && g != GenderEnum.None)
-            {
                 tutors = tutors.Where(record => record.User.Gender == g.ToEnum<Gender>());
-            }
 
             if (request.TutorParams.BirthYear != 0)
-            {
                 tutors = tutors.Where(record => record.User.BirthYear == request.TutorParams.BirthYear);
-            }
 
             if (!string.IsNullOrEmpty(request.TutorParams.SubjectName))
-            {
                 tutors = tutors.Where(record =>
                     record.Tutor.TutorMajors.Any(sub =>
                         sub.SubjectName.ToLower().Contains(request.TutorParams.SubjectName.ToLower()))
                 );
-            }
 
             tutors = tutors
                 .OrderByDescending(record => record.Courses.Count())
                 .ThenByDescending(record => record.Tutor.Rate);
 
             var totalCount = await asyncQueryableExecutor.LongCountAsync(tutors, cancellationToken);
-            
+
             if (!string.IsNullOrEmpty(currentUserService.CurrentUserId))
             {
                 var userGuid = IdentityGuid.Create(new Guid(currentUserService.CurrentUserId));
@@ -115,7 +105,8 @@ public class GetTutorsQueryHandler(
 
                 var learntSubjectQueryable =
                     from userForSearch in userRepository.GetAll()
-                    join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch.LearnerId 
+                    join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
+                        .LearnerId
                     where userForSearch.Id == userGuid
                     select new
                     {

@@ -16,20 +16,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace ESCenter.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(
-            this IServiceCollection services,
-            ConfigurationManager configuration
-        )
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+            ConfigurationManager configuration)
         {
+
+
             services.AddScoped(typeof(IAppLogger<>), typeof(AppLogger<>));
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // Authentication configuration using jwt bearer
             services.AddAuth(configuration);
             IdentityModelEventSource.ShowPII = true; //Add this line
@@ -41,7 +42,7 @@ namespace ESCenter.Infrastructure
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-            
+
             // set configuration settings to emailSettingName and turn it into Singleton
             var emailSettingNames = new EmailSettingNames();
             configuration.Bind(EmailSettingNames._SectionName, emailSettingNames);
@@ -52,7 +53,7 @@ namespace ESCenter.Infrastructure
             configuration.Bind(CloudinarySetting._SectionName, cloudinary);
             services.AddSingleton(Options.Create(cloudinary));
             services.AddScoped<ICloudinaryServices, CloudinaryServices>();
-    
+
             services.AddScoped<IEmailSender, EmailSender>();
             //configure BackgroundService
             //services.AddHostedService<InfrastructureBackgroundService>();
@@ -67,7 +68,7 @@ namespace ESCenter.Infrastructure
             // set configuration settings to jwtSettings and turn it into Singleton
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings._SectionName, jwtSettings);
-            
+
             services.AddSingleton(Options.Create(jwtSettings));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IValidator, Validator>();
@@ -89,15 +90,14 @@ namespace ESCenter.Infrastructure
                                 {
                                     context.Token = token;
                                 }
-                                
                             }
                             catch (Exception e)
                             {
                                 Console.WriteLine(e);
                             }
+
                             return Task.CompletedTask;
                         },
-                    
                     };
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
@@ -110,20 +110,13 @@ namespace ESCenter.Infrastructure
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
                     };
                 });
-            
+
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequireAdministratorRole", policy =>
-                {
-                    policy.RequireRole("Admin");
-                });
-                options.AddPolicy("RequireTutorRole", policy =>
-                {
-                    policy.RequireRole("Tutor");
-                });
- 
+                options.AddPolicy("RequireAdministratorRole", policy => { policy.RequireRole("Admin"); });
+                options.AddPolicy("RequireTutorRole", policy => { policy.RequireRole("Tutor"); });
             });
-           
+
             return services;
         }
     }

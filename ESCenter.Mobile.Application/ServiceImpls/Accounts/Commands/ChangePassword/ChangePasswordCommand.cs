@@ -4,7 +4,6 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 namespace ESCenter.Mobile.Application.ServiceImpls.Accounts.Commands.ChangePassword;
 
 public record ChangePasswordCommand(
-    Guid Id,
     string CurrentPassword,
     string NewPassword,
     string ConfirmedPassword
@@ -14,10 +13,6 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
 {
     public ChangePasswordCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage("User ID is required.");
-
         RuleFor(x => x.CurrentPassword)
             .NotEmpty()
             .MinimumLength(6)

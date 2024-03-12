@@ -4,7 +4,7 @@ using ESCenter.Infrastructure;
 using ESCenter.Persistence;
 using FluentEmail.Core;
 using Matt.AutoDI;
-using Matt.SharedKernel.DependencyInjections;
+//using Matt.SharedKernel.DependencyInjections;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +31,7 @@ public static class DependencyInjection
         services.AddCors();
 
         services
-            .AddSharedKernel(typeof(Application.DependencyInjection).Assembly)
+           // .AddSharedKernel(typeof(Application.DependencyInjection).Assembly)
             .AddPersistence(configuration)
             .AddInfrastructure(configuration)
             .AddApplication();

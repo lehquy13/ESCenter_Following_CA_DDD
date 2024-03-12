@@ -12,9 +12,9 @@ public class GetSubjectsQueryHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<GetSubjectsQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetSubjectsQuery, List<SubjectDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetSubjectAllsQuery, List<SubjectDto>>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<List<SubjectDto>>> Handle(GetSubjectsQuery request,
+    public override async Task<Result<List<SubjectDto>>> Handle(GetSubjectAllsQuery request,
         CancellationToken cancellationToken)
     {
         var subjects = await subjectRepository.GetListAsync(cancellationToken);

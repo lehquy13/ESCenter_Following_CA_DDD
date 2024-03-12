@@ -4,9 +4,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddHost(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -17,7 +15,6 @@ builder.Services.AddSwaggerGen(c =>
         Title = "CourseAPI",
         Version = "3.0",
         Description = "Course API",
-         
     });
     c.EnableAnnotations();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -45,10 +42,7 @@ builder.Services.AddSwaggerGen(c =>
             new List<string>()
         }
     });
-    
 });
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -57,6 +51,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"); });
 }
+
+//app.UseSerilogRequestLogging();
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

@@ -1,7 +1,14 @@
 ﻿using System.Reflection;
+using ESCenter.Admin.Application.Contracts.Courses.Dtos;
 using ESCenter.Admin.Application.DashBoards;
 using ESCenter.Admin.Application.ServiceImpls;
+using ESCenter.Admin.Application.ServiceImpls.Admins.Subjects.Queries.GetSubjects;
+using ESCenter.Application;
+using ESCenter.Application.Behaviors;
 using ESCenter.Application.Mapping;
+using Matt.Paginated;
+using Matt.ResultObject;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ESCenter.Admin.Application;
@@ -11,7 +18,13 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddApplicationMappings();
+        services.AddBaseApplication(typeof(DependencyInjection).Assembly);
         services.AddScoped<IDashboardServices, DashboardServices>();
+
+        services.AddScoped(
+            typeof(IPipelineBehavior<GetSubjectAllsQuery, Result<List<SubjectDto>>>),
+            typeof(CachingBehavior<GetSubjectAllsQuery, Result<List<SubjectDto>>>));
+
         return services;
     }
 

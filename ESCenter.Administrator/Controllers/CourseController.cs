@@ -37,7 +37,7 @@ public class CourseController(
         ViewData["Statuses"] = EnumProvider.Statuses;
 
 
-        var subjects = await sender.Send(new GetSubjectsQuery());
+        var subjects = await sender.Send(new GetSubjectAllsQuery());
         ViewData["Subjects"] = subjects.Value;
     }
 

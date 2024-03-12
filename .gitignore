@@ -4,6 +4,13 @@
 
 .idea
 
+## Ignore logs
+ESCenter.Api/logs
+ESCenter.Administrator/logs
+
+## Ignore every project name starting with "Matt"
+Matt*/
+
 ## Get latest from `dotnet new gitignore`
 
 # dotenv files
