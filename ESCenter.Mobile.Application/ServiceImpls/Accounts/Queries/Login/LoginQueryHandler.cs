@@ -23,35 +23,35 @@ public class LoginQueryHandler(
         LoginQuery request,
         CancellationToken cancellationToken)
     {
-        try
+        var identityUserQ = await identityDomainServices.SignInAsync(request.Email, request.Password);
+
+        if (identityUserQ is null)
         {
-            var identityUserQ = await identityDomainServices.SignInAsync(request.Email, request.Password);
-
-            if (identityUserQ is null)
-            {
-                return Result.Fail(AuthenticationErrorMessages.LoginFailError);
-            }
-
-            var user = await userRepository.GetAsync(identityUserQ.Id, cancellationToken);
-
-            if (user is null)
-            {
-                return Result.Fail(AuthenticationErrorMessages.LoginFailError);
-            }
-
-            //3. Generate token
-            var userLoginDto = Mapper.Map<UserLoginDto>(user);
-            var loginToken = jwtTokenGenerator.GenerateToken(userLoginDto);
-
-            return new AuthenticationResult()
-            {
-                User = userLoginDto,
-                Token = loginToken,
-            };
+            return Result.Fail(AuthenticationErrorMessages.LoginFailError);
         }
-        catch (Exception ex)
+
+        var user = await userRepository.GetAsync(identityUserQ.Id, cancellationToken);
+
+        if (user is null)
         {
-            return Result.Fail($"AccountServiceError.FailToGetTutorProfileWithException {ex.Message}");
+            return Result.Fail(AuthenticationErrorMessages.LoginFailError);
         }
+
+        //3. Generate token
+        var userLoginDto = new UserLoginDto
+        {
+            Id = user.Id.Value,
+            FullName = user.GetFullName(),
+            Avatar = user.Avatar,
+            Email = user.Email,
+            Role = user.Role.ToString()
+        };
+        var loginToken = jwtTokenGenerator.GenerateToken(userLoginDto);
+
+        return new AuthenticationResult()
+        {
+            User = userLoginDto,
+            Token = loginToken,
+        };
     }
 }

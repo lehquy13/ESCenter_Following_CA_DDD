@@ -55,6 +55,13 @@
     <_ContentIncludedByDefault Remove="assets\vendor\apexcharts\locales\zh-cn.json" />
     <_ContentIncludedByDefault Remove="assets\vendor\apexcharts\locales\zh-tw.json" />
     <_ContentIncludedByDefault Remove="assets\vendor\bootstrap-icons\bootstrap-icons.json" />
+    <_ContentIncludedByDefault Remove="Pages\Error.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Privacy.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Shared\_Layout.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Shared\_ValidationScriptsPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\_ViewImports.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\_ViewStart.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

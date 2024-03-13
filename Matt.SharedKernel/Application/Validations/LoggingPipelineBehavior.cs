@@ -24,8 +24,8 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(
         logger.LogInformation("Request Body:\n{RequestBody}",
             JsonSerializer.Serialize(body, new JsonSerializerOptions { WriteIndented = true }));
 
-        Stopwatch sw = Stopwatch.StartNew();
-        TResponse val = await next();
+        var sw = Stopwatch.StartNew();
+        var val = await next();
 
         logger.LogInformation(
             "Handled {RequestName} with {Response} in {Ms} ms",

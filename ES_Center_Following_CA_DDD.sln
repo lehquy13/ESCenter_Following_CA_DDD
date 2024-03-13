@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCenter.Admin.Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCenter.Admin.Host", "ESCenter.Admin.Host\ESCenter.Admin.Host.csproj", "{C868ED67-FDC2-4BB0-BD18-EFDF6F66F097}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{771EA9C2-4241-41BD-805C-0D89E41DC88D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlock", "BuildingBlock", "{771EA9C2-4241-41BD-805C-0D89E41DC88D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matt.Auditing", "Matt.Auditing\Matt.Auditing.csproj", "{BC99A17C-F567-4F8A-9A58-BB84DBA3BE83}"
 EndProject

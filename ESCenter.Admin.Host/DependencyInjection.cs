@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using ESCenter.Admin.Application;
+using ESCenter.Admin.Host.Middlewares;
 using ESCenter.Infrastructure;
 using ESCenter.Persistence;
 using FluentEmail.Core;
@@ -18,7 +19,7 @@ public static class DependencyInjection
         ConfigurationManager configuration)
     {
         IList<Assembly> assemblies = [];
-        assemblies.AddRange(Application.DependencyInjection.GetApplicationCoreAssemblies);
+        assemblies.AddRange(Admin.Application.DependencyInjection.GetApplicationCoreAssemblies);
         assemblies.AddRange(new[]
         {
             typeof(ESCenter.Infrastructure.DependencyInjection).Assembly,
@@ -31,11 +32,15 @@ public static class DependencyInjection
         services.AddCors();
 
         services
-           // .AddSharedKernel(typeof(Application.DependencyInjection).Assembly)
             .AddPersistence(configuration)
             .AddInfrastructure(configuration)
             .AddApplication();
+        services.AddProblemDetails();
 
+        services.AddExceptionHandler<BadRequestExceptionHandler>();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddExceptionHandler<NotFoundExceptionHandler>();
+        
         return services;
     }
 }
