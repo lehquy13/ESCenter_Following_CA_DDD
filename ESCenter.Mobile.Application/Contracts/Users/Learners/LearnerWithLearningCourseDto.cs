@@ -1,4 +1,4 @@
-﻿using ESCenter.Mobile.Application.Contracts.Commons;
+﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 
 namespace ESCenter.Mobile.Application.Contracts.Users.Learners;

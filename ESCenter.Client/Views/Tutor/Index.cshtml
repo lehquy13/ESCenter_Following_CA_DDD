@@ -1,0 +1,144 @@
+@using ESCenter.Domain.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Matt.Paginated.PaginatedList<ESCenter.Client.Application.Contracts.Users.Tutors.TutorListForClientPageDto>
+
+@{
+    var subject = ViewBag.SubjectSearch as string ?? "";
+
+    var currentGender = ViewBag.GenderSearch as string;
+    var currentAcademicLevel = ViewBag.AcademicLevelSearch as string;
+    var currentAddress = ViewBag.AddressSearch as string;
+    var currentBirthYear = ViewBag.BirthYearSearch;
+    var genders = EnumProvider.FullGendersOption;
+    var academicLevels = EnumProvider.FullAcademicLevelsOption;
+}
+
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs">
+    <div class="container">
+        <h2>Tutors</h2>
+                <p>
+                    Find your perfect tutor at <b>EduSmart</b>. Our highly qualified tutors provide personalized support and expert guidance to help you excel academically and reach your goals.
+                </p>
+    </div>
+</div><!-- End Breadcrumbs -->
+
+<!-- ======= Trainers Section ======= -->
+<section id="trainers" class="trainers">
+    <div class="container" data-aos="fade-up">
+        <form class="row pb-3" asp-action="Index" asp-controller="Tutor" method="get">
+            <div class="col-lg-3 col-sm-3 p-0 pe-2 d-flex align-items-stretch">
+                <input class="form-control" placeholder="Type a subject" value="@subject" type="text" name="subjectName">
+            </div>
+
+            <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+
+                <select name="gender" class="form-select">
+                    @if (currentGender is null)
+                    {
+                        <option class="form-control" selected="" value="">Gender</option>
+                    }
+                    @foreach (var i in genders)
+                    {
+                        if (i == currentGender)
+                        {
+                            <option class="form-control" selected value="@i">@i</option>
+                        }
+                        else
+                        {
+                            <option class="form-control" value="@i">@i</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+                <input class="form-control" placeholder="Birth Year" value="@((currentBirthYear != null) ? currentBirthYear : "")" type="number" min="1960" max="2010" name="birthYear">
+            </div>
+            <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+
+                <select name="academicLevel" class="form-select">
+                    @if (currentAcademicLevel is null)
+                    {
+                        <option class="form-control" selected="selected" value="">Academic Level</option>
+                    }
+                    @foreach (var i in academicLevels)
+                    {
+                        if (i == currentAcademicLevel)
+                        {
+                            <option class="form-control" selected value="@i">@i</option>
+                        }
+                        else
+                        {
+                            <option class="form-control" value="@i">@i</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
+                <input class="form-control" placeholder="Address" value="@currentAddress" type="text" name="address">
+                
+                @* <select name="address" class="form-select"> *@
+                @*     @if (currentAcademicLevel is null) *@
+                @*     { *@
+                @*         <option class="form-control" selected="selected" value="">Cities</option> *@
+                @*     } *@
+                @*     @foreach (var i in cities) *@
+                @*     { *@
+                @*         if (i == currentAddress) *@
+                @*         { *@
+                @*             <option class="form-control" selected value="@i">@i</option> *@
+                @*         } *@
+                @*         else *@
+                @*         { *@
+                @*             <option class="form-control" value="@i">@i</option> *@
+                @*         } *@
+                @*     } *@
+                @* </select> *@
+            </div>
+
+            <div class="col-lg-1 col-sm-1 p-0 d-flex">
+                <button class="form-control btn btn-primary" style="background-color:#5fcf80;" type="submit">Search</button>
+            </div>
+        </form>
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+
+            @foreach (var i in Model.Items)
+            {
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                    <div class="member">
+                        <img src="@i.Image" class="img-fluid" alt="" style="height:450px;">
+                        @* <img src="assets/img/trainers/trainer-3.jpg" class="img-fluid" alt=""> *@
+
+                        <div class="member-content">
+                            <h4><a asp-action="Detail" asp-controller="Tutor" asp-route-id="@i.Id">@i.FirstName @i.LastName</a></h4>
+                            <span>@i.AcademicLevel</span>
+                            <span>@i.University</span>
+                            <p>
+                                @i.Description
+                            </p>
+                            <div class="social">
+                                <a href="">
+                                    <i class="bi bi-twitter"></i>
+                                </a>
+                                <a href="">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                <a href="">
+                                    <i class="bi bi-instagram"></i>
+                                </a>
+                                <a href="">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+        <partial name="_Pagination" model=@Model view-data="ViewData"/>
+    </div>
+</section><!-- End Trainers Section -->

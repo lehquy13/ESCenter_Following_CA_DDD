@@ -1,7 +1,7 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
-using ESCenter.Mobile.Application.ServiceImpls.Accounts;
+using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
@@ -25,7 +25,7 @@ public class GetLearningCoursesQueryHandler(
         {
             if (string.IsNullOrEmpty(currentUserService.CurrentUserId))
             {
-                return Result.Fail(AccountServiceError.UnauthorizedError);
+                return Result.Fail(TutorProfileAppServiceError.UnauthorizedError);
             }
             
             var courses = await courseRepository

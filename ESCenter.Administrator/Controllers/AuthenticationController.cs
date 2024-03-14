@@ -1,6 +1,6 @@
-﻿using ESCenter.Admin.Application.ServiceImpls.Accounts.Commands.ForgetPassword;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Queries.Login;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Queries.ValidateToken;
+﻿using ESCenter.Application.Accounts.Commands.ForgetPassword;
+using ESCenter.Application.Accounts.Queries.Login;
+using ESCenter.Application.Accounts.Queries.ValidateToken;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

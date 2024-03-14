@@ -1,0 +1,11 @@
+@{
+    var link = Url.Content("~/assets/img/hero-bg1.jpg");
+}
+<section id="hero" class="d-flex justify-content-center align-items-center"
+         style="background-image:url('@link')">
+    <div class="container position-relative aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100">
+        @* <h1>Learning Today,<br>Leading Tomorrow</h1> *@
+        <h1>We have received your request.</h1>
+        <a asp-controller="Home" asp-action="Index" class="btn-get-started">Back To Home</a>
+    </div>
+</section>

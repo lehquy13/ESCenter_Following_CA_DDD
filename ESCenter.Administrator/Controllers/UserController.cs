@@ -1,9 +1,9 @@
 ﻿using ESCenter.Administrator.Utilities;
 using ESCenter.Admin.Application.Contracts.Users.Learners;
-using ESCenter.Admin.Application.ServiceImpls.Admins.Users.Commands.CreateUpdateUserProfile;
-using ESCenter.Admin.Application.ServiceImpls.Admins.Users.Commands.DeleteUser;
-using ESCenter.Admin.Application.ServiceImpls.Admins.Users.Queries.GetLearnerDetail;
-using ESCenter.Admin.Application.ServiceImpls.Admins.Users.Queries.GetLearners;
+using ESCenter.Admin.Application.ServiceImpls.Users.Commands.CreateUpdateUserProfile;
+using ESCenter.Admin.Application.ServiceImpls.Users.Commands.DeleteUser;
+using ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearnerDetail;
+using ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearners;
 using ESCenter.Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

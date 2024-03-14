@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Shared.Courses;
-using ESCenter.Mobile.Application.Contracts.Commons;
+﻿using ESCenter.Application.Contracts.Commons;
+using ESCenter.Domain.Shared.Courses;
 
 namespace ESCenter.Mobile.Application.Contracts.Users;
 

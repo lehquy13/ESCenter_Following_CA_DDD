@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Mobile.Application.Contracts.Commons;
+﻿using ESCenter.Application.Contracts.Commons;
+using ESCenter.Domain.Aggregates.Tutors;
 using Mapster;
 
 namespace ESCenter.Mobile.Application.Contracts.Users.Tutors;

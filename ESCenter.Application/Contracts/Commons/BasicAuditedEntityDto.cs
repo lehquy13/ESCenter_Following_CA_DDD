@@ -1,6 +1,6 @@
 using Matt.SharedKernel.Application.Contracts.Primitives;
 
-namespace ESCenter.Mobile.Application.Contracts.Commons;
+namespace ESCenter.Application.Contracts.Commons;
 
 public abstract class BasicAuditedEntityDto<TId> : EntityDto<TId>
     where TId : notnull

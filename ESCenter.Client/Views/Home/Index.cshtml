@@ -1,0 +1,156 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<CED.Contracts.Users.Tutors.TutorForDetailDto>
+<section id="hero" class="d-flex justify-content-center align-items-center">
+    <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
+        <h1>Unlock your potential,<br>Navigate your educational journey with Us</h1>
+        <h2>EduSmart is a premier center connecting you with the finest private teachers.</h2>
+        <a asp-action="Create" asp-controller="ClassInformation" class="btn-get-started">Get Started</a>
+    </div>
+</section><!-- End Hero -->
+<!-- ======= About Section ======= -->
+<section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row">
+            <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+                <img src="assets/img/about.jpg" class="img-fluid" alt="">
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+                <h3>EduSmart has experienced remarkable growth over the years.</h3>
+                <p class="fst-italic">
+                    Why you should join us:
+                </p>
+                <ul>
+                    <li><i class="bi bi-check-circle"></i>Personalized: Receive individualized attention and guidance tailored to your specific needs and learning style.</li>
+                    <li><i class="bi bi-check-circle"></i>Expertise: Access a team of experienced consultants and educators with a deep understanding of educational systems and requirements.</li>
+                    <li><i class="bi bi-check-circle"></i>Affordable: Access expert guidance and personalized support at a competitive price</li>
+                </ul>
+                <p>
+                    Take the first step towards exceptional service by contacting us now.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</section><!-- End About Section -->
+<!-- ======= Counts Section ======= -->
+<section id="counts" class="counts section-bg">
+    <div class="container">
+
+        <div class="row counters">
+
+            <div class="col-lg-3 col-6 text-center">
+                <span data-purecounter-start="0" data-purecounter-end="1232" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Students</p>
+            </div>
+
+            <div class="col-lg-3 col-6 text-center">
+                <span data-purecounter-start="0" data-purecounter-end="64" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Courses</p>
+            </div>
+
+            <div class="col-lg-3 col-6 text-center">
+                <span data-purecounter-start="0" data-purecounter-end="42" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Events</p>
+            </div>
+
+            <div class="col-lg-3 col-6 text-center">
+                <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Trainers</p>
+            </div>
+
+        </div>
+
+    </div>
+</section><!-- End Counts Section -->
+<!-- ======= Why Us Section ======= -->
+<section id="why-us" class="why-us">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row">
+            <div class="col-lg-4 d-flex align-items-stretch">
+                <div class="content">
+                    <h3>
+                        Why Choose Our Tutors?
+
+                    </h3>
+                    <p>
+                        Our tutors are highly experienced and possess in-depth knowledge of their respective subjects, ensuring comprehensive support and guidance.
+                        With a focus on one-on-one instruction, our tutors provide individualized attention, allowing for a customized learning experience that addresses your unique strengths and challenges.
+                    </p>
+                    <div class="text-center">
+                        <a href="about.html" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                <div class="icon-boxes d-flex flex-column justify-content-center">
+                    <div class="row">
+                        <div class="col-xl-4 d-flex align-items-stretch">
+                            <div class="icon-box mt-4 mt-xl-0">
+                                <i class="bx bx-receipt"></i>
+                                <h4>Reinforcement of Fundamentals</h4>
+                                <p>Strengthen your foundational knowledge and skills to create a solid academic base for future learning.</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 d-flex align-items-stretch">
+                            <div class="icon-box mt-4 mt-xl-0">
+                                <i class="bx bx-cube-alt"></i>
+                                <h4>Customized Learning Approach</h4>
+                                <p>Experience a tailored learning approach that adapts to your unique strengths, weaknesses, and learning preferences.</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 d-flex align-items-stretch">
+                            <div class="icon-box mt-4 mt-xl-0">
+                                <i class="bx bx-images"></i>
+                                <h4>Efficient Learning</h4>
+                                <p>Save time and effort by focusing on the most relevant topics and utilizing effective study techniques recommended by our experienced tutors.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End .content-->
+            </div>
+        </div>
+
+    </div>
+</section><!-- End Why Us Section -->
+
+<!-- ======= Trainers Section ======= -->
+<section id="trainers" class="trainers">
+    <div class="container" data-aos="fade-up">
+        <h3>Tutor of the Month</h3>
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+
+            @foreach (var i in Model)
+            {
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                    <div class="member">
+                        <img src="@i.Image" class="img-fluid" alt="" style="height:450px;">
+                        <div class="member-content">
+                            <h4><a asp-controller="TutorInformation" asp-action="Detail" asp-route-id="@i.Id">@i.FirstName @i.LastName</a></h4>
+                            <span>@i.University</span>
+                            <p>
+                                @i.Description
+                            </p>
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+
+
+        </div>
+
+    </div>
+</section><!-- End Trainers Section -->

@@ -1,0 +1,20 @@
+@{
+    var link = Url.Content("~/assets/img/hero-bg1.jpg");
+    var message = ViewBag.RequestedMessage;
+}
+<section id="hero" class="d-flex justify-content-center align-items-center"
+         style="background-image:url('@link')">
+    <div class="container position-relative aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100">
+        @if (message is null)
+        {
+            <h1>Something went wrong</h1>
+            <h2>Sorry for the inconvenience.</h2>
+        }
+        else
+        {
+            <h1>You have requested for the class.</h1>
+            <h1>Please wait for the center's response.</h1>
+        }
+        <a asp-controller="Home" asp-action="Index" class="btn-get-started">Back To Home</a>
+    </div>
+</section>

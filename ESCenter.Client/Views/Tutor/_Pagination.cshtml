@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Matt.Paginated.PaginatedList<ESCenter.Client.Application.Contracts.Users.Tutors.TutorListForClientPageDto>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var subject = ViewBag.SubjectSearch as string ?? "";
+
+    var addressSearch = ViewBag.AddressSearch as string;
+    var birthYearSearch = ViewBag.BirthYearSearch;
+    var genderSearch = ViewBag.GenderSearch;
+    var academicLevelSearch = ViewBag.AcademicLevelSearch;
+
+}
+
+<div class="d-flex w-100 justify-content-center gap-3 mt-3">
+    @*first page*@
+    @if ((Model.PageIndex - 1) > 1)
+    {
+        <a asp-controller="Tutor" asp-route-subjectName="@subject" asp-action="Index" asp-route-pageIndex="1" asp-route-address=@addressSearch asp-route-gender=@genderSearch
+           asp-route-academicLevel=@academicLevelSearch asp-route-birthYear=@birthYearSearch class="btn btn-default">
+            &lt;&lt;
+        </a>
+    }
+
+    <a asp-controller="Tutor" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-address=@addressSearch asp-route-gender=@genderSearch
+       asp-route-academicLevel=@academicLevelSearch asp-route-birthYear=@birthYearSearch asp-route-subjectName=@subject
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+
+    @*previous page*@
+    @if ((Model.PageIndex - 1) > 0)
+    {
+        <a asp-controller="Tutor" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex - 1)
+           asp-route-address=@addressSearch asp-route-gender=@genderSearch
+           asp-route-academicLevel=@academicLevelSearch asp-route-birthYear=@birthYearSearch
+           asp-route-subjectName="@subject" class="btn btn-default @prevDisabled">
+            @(Model.PageIndex - 1)
+        </a>
+    }
+    <a class="btn btn-default border-info">
+        @Model.PageIndex
+    </a>
+
+    @*next page*@
+    @if (Model.PageIndex + 1 <= Model.TotalPages)
+    {
+        <a asp-controller="Tutor" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex + 1)
+           asp-route-address=@addressSearch asp-route-gender=@genderSearch
+           asp-route-academicLevel=@academicLevelSearch asp-route-birthYear=@birthYearSearch
+           asp-route-subjectName="@subject" class="btn btn-default @nextDisabled">
+            @(Model.PageIndex + 1)
+        </a>
+    }
+
+    <a asp-controller="Tutor" asp-action="Index" asp-route-pageIndex=@(Model.PageIndex + 1)
+       asp-route-address=@addressSearch asp-route-gender=@genderSearch
+       asp-route-academicLevel=@academicLevelSearch asp-route-birthYear=@birthYearSearch
+       asp-route-subjectName="@subject" class="btn btn-default @nextDisabled">
+        Next
+    </a>
+
+    @*last page*@
+    @if (Model.TotalPages - (Model.PageIndex + 1) >= 1)
+    {
+        <a asp-controller="Tutor" asp-action="Index" asp-route-pageIndex=@Model.TotalPages
+           asp-route-address=@addressSearch asp-route-gender=@genderSearch
+           asp-route-academicLevel=@academicLevelSearch asp-route-birthYear=@birthYearSearch
+           asp-route-subjectName="@subject" class="btn btn-default">
+            &gt;&gt;
+        </a>
+    }
+</div>

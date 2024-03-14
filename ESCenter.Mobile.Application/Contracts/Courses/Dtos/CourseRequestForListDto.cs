@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Courses.Entities;
-using ESCenter.Mobile.Application.Contracts.Commons;
+﻿using ESCenter.Application.Contracts.Commons;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using Mapster;
 
 namespace ESCenter.Mobile.Application.Contracts.Courses.Dtos;

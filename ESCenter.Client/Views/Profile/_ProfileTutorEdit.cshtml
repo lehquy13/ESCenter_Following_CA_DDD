@@ -1,0 +1,121 @@
+﻿@using CED.Contracts.Subjects
+@using CED.Domain.Shared
+@model CED.Contracts.Users.Tutors.TutorMainInfoDto
+@{
+    //AddressDto addressDto = ViewData["Addresses"] as AddressDto ?? new AddressDto(new List<CityDto>());
+
+    List<string> genders = EnumProvider.Genders;
+    List<string> academics = EnumProvider.AcademicLevels;
+    List<SubjectDto>? subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
+
+}
+<!-- Profile Edit Form -->
+
+<form asp-action="EditTutorInformation" asp-controller="Profile" onsubmit="return callPostActionWithForm(this);">
+   
+    <input asp-for="Id" hidden/>
+    <!-- ----------------------------------- -->
+        <div class="row mb-3">
+                <label class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+            <div class="col-md-8 col-lg-9">
+                    <div id="filesInputValues">
+                
+                @foreach (var i in Model.TutorVerificationInfoDtos)
+                {
+                    <img src="@i.Image"style="max-width: 120px;" alt="Profile" id="avatar">
+                    <input id="image" asp-for="@i.Image" hidden type="text"/>
+                    
+
+                }
+                  </div>
+                @if (Model.TutorVerificationInfoDtos.Count <= 0)
+                {
+                    <div class="pt-2">
+
+                        <input type="file" id="file" name="files" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Profile", null)','file'); return false;"/>
+                       
+
+                    </div>
+
+                }
+            </div>
+                
+            </div>
+
+        <h5 class="col-md-12">Tutor information</h5>
+
+        <div class="col-md-4">
+            <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
+            <select asp-for="AcademicLevel" class="form-select">
+                <option selected>@Model.AcademicLevel.ToString()</option>
+
+                @* @foreach (string i in academics) *@
+                @* { *@
+                @*     @if (i != Model.AcademicLevel.ToString()) *@
+                @*     { *@
+                @*         <option> @i </option> *@
+                @*     } *@
+                @* } *@
+            </select>
+            <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+        </div>
+        <div class="col-md-8">
+            <label asp-for="University" class="form-label">University</label>
+            <input type="text" class="form-control" asp-for="University">
+            <span asp-validation-for="University" class="text-danger"></span>
+        </div>
+        <!-- ----------------------------------- -->
+
+        <div class="col-md-12">
+            <div class="form-check">
+                <input class="form-check-input" disabled type="checkbox" asp-for="IsVerified">
+                @if (!Model.IsVerified)
+                {
+                    <label class="form-check-label" asp-for="IsVerified">
+                        You are not verified. Contact center for more informations.
+                    </label>
+                }
+                else
+                {
+                    <label class="form-check-label" asp-for="IsVerified">
+                        You are verified.
+                    </label>
+                }
+        
+            </div>
+        
+        </div>
+
+        <div class="card mt-5" id="tutorMajorCard">
+            <div class="card-body">
+                <div class="card-title row">
+                    <h5 class="col-11">Tutor Majors</h5>
+                    <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects", "Subject", new { id = @Model.Id })','Add your major')">
+                        <span class="bi bi-plus-circle"> </span>
+                        Add
+                    </button>
+
+                </div>
+
+                <!-- List group with Advanced Contents -->
+                <div class="list-group">
+                    @foreach (var s in Model.Majors)
+                    {
+                        <input name="SubjectId" value="@s.Id" hidden="hidden"/>
+                        <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@s.Name</h5>
+                            </div>
+                            <p class="mb-1">@s.Description</p>
+                        </a>
+                    }
+
+
+                </div><!-- End List group Advanced Content -->
+
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+<!-- End Profile Edit Form -->

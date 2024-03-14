@@ -1,0 +1,91 @@
+@using System.Globalization
+@model ESCenter.Client.Application.Contracts.Users.Tutors.TutorDetailForClientDto
+@{
+    string listOfMajor = string.Join(", ", Model.TutorMajors);
+}
+
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs" data-aos="fade-in">
+    <div class="container">
+        <h2>Tutor Details</h2>
+    </div>
+</div><!-- End Breadcrumbs -->
+
+<!-- ======= Course Details Section ======= -->
+<section id="course-details" class="course-details">
+    <div class="container" data-aos="fade-up">
+
+        <div class="row">
+            <div class="col-lg-4">
+                <img src="@Model.Image" class="img-fluid" alt="">
+                <h3>@Model.FullName</h3>
+                <p>
+                    @Model.Description
+                </p>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="course-info d-flex justify-content-between align-items-center">
+                    <h5>Birth Year</h5>
+                    <p>
+                        @Model.BirthYear
+                    </p>
+                </div>
+
+                <div class="course-info d-flex justify-content-between align-items-center">
+                    <h5>Academic Level</h5>
+                    <p>@Model.AcademicLevel</p>
+                </div>
+                <div class="course-info d-flex justify-content-between align-items-center">
+                    <h5>University</h5>
+                    <p>@Model.University</p>
+                </div>
+                <div class="course-info d-flex justify-content-between align-items-center">
+                    <h5>Gender</h5>
+                    <p>@Model.Gender</p>
+                </div>
+
+                <div class="course-info d-flex justify-content-between align-items-center">
+                    <h5>Address</h5>
+                    <p>@Model.Address</p>
+                </div>
+                <div class="course-info d-flex justify-content-between align-items-center">
+                    <h5>Majors</h5>
+                    <p>@listOfMajor</p>
+                </div>
+                <div class="course-info d-flex justify-content-between align-items-center">
+                    <h5>Rate</h5>
+                    <p>@Model.Rate</p>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</section><!-- End Course Details Section -->
+<div class="container aos-init aos-animate" data-aos="fade-up">
+    <h3>Reviews</h3>
+
+    <div class="row">
+        @foreach (var i in Model.Reviews)
+        {
+            <div class="col-md-12 ">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @i.LearnerName
+                        </h5>
+                        <p class="fst-italic">@i.CreationTime.ToString(CultureInfo.CurrentCulture)</p>
+                        <p class="card-text">
+                            @i.Detail
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

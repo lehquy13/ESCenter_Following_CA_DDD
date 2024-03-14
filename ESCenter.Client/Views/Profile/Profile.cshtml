@@ -1,0 +1,184 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using CED.Domain.Shared.ClassInformationConsts
+@using System.Security.Claims
+@using CloudinaryDotNet.Actions
+@model ESCenter.Client.Models.ProfileViewModel
+@{
+    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+
+}
+@if (Model.IsPartialLoad is true)
+{
+    <div id="header">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto">
+                <a href="/">EduSmart</a>
+            </h1>
+          
+
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a asp-action="About" asp-controller="Home">About</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="ClassInformation">Classes</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="TutorInformation">Tutors</a>
+                    </li>
+                    @if (User.FindFirst(ClaimTypes.Role)?.Value != UserRole.Tutor.ToString())
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="TutorInformation">Tutor Registration</a>
+                        </li>
+                    }
+                   
+
+                    
+                    <li>
+                        <a asp-controller="Home" asp-action="Contact">Contact</a>
+                    </li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+            <a asp-action="Create" asp-controller="ClassInformation" class="get-started-btn">Get Started</a>
+        </div>
+
+
+    </div>
+    <!-- End Header -->
+}
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade collapse" role="alert" id="failAlert">
+    <i class="bi bi-x-circle me-1"></i>
+    Update Fail!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="failAlertButton" data-bs-target="#failAlert" aria-expanded="false" aria-controls="failAlert" aria-label="Close"></button>
+</div>
+<section class="profile" style="padding: 180px 0;">
+    <div class="row">
+        <div class="col-xl-4">
+
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                    @* <img src="/avatar/@Model.UserDto.Image" style="max-width: 360px;" alt="Profile" class="rounded-circle"> *@
+                    <img src="@Model.UserDto.Image" style="max-width: 360px;" alt="Profile" class="rounded-circle">
+                    <h2>@Model.UserDto.FirstName @Model.UserDto.LastName</h2>
+                    <h3>@Model.UserDto.Role</h3>
+                    <div class="social-links mt-2">
+                        <a href="#" class="twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="#" class="facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="linkedin">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" id="profile-edit-button" data-bs-target="#profile-edit">Edit Profile</button>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#learning-class">Learning Class</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" id="profile-change-password-button">Change Password</button>
+                        </li>
+
+                        @if (Model.UserDto.Role == UserRole.Tutor)
+                        {
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Teaching Class</button>
+                            </li>
+                       
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tutor-infor">Tutor Informations</button>
+                            </li>
+                        }
+                    </ul>
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                            <partial name="_ProfileOverview" model="@Model.UserDto" />
+                        </div>
+
+                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+
+                            <partial name="_ProfileEdit" model="@Model.UserDto" view-data="ViewData" />
+                            <!-- End Profile Edit Form -->
+
+                        </div>
+
+                        <div class="tab-pane fade pt-3" id="learning-class">
+                            <!-- Learning Classes -->
+                            <partial name="_AllLearningClass" model="@Model.UserDto.LearningClassInformations" />
+                            <!-- End Learning Classes -->
+
+                        </div>
+                        @if (Model.UserDto.Role == UserRole.Tutor)
+                        {
+                            <div class="tab-pane fade pt-3" id="profile-settings">
+
+                                <partial name="_AllClassRequests" model="@Model.RequestGettingClassDtos" view-data="ViewData" />
+
+
+                            </div>
+                            <div class="tab-pane fade pt-3" id="tutor-infor">
+                                <!-- Change Password Form -->
+                                <partial name="_ProfileTutorEdit" model="@Model.TutorDto" />
+                                <!-- End Change Password Form -->
+
+                            </div>
+                        }
+                       
+                        <div class="tab-pane fade pt-3" id="profile-change-password">
+                            <!-- Change Password Form -->
+                            <partial name="_ChangePassword" model="@Model.ChangePasswordRequest" />
+                            <!-- End Change Password Form -->
+
+                        </div>
+
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

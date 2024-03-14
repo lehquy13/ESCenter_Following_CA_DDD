@@ -2,7 +2,6 @@
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
-using ESCenter.Mobile.Application.ServiceImpls.Accounts;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -31,7 +30,7 @@ public class GetCourseRequestsByTutorIdQueryHandler(
         {
             if (string.IsNullOrEmpty(currentUserService.CurrentUserId))
             {
-                return Result.Fail(AccountServiceError.UnauthorizedError);
+                return Result.Fail(TutorProfileAppServiceError.UnauthorizedError);
             }
 
             var tutorId = IdentityGuid.Create(new Guid(currentUserService.CurrentUserId));

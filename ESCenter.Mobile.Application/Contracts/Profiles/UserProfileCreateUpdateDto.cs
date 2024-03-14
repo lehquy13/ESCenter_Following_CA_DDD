@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Mobile.Application.Contracts.Commons;
+﻿using ESCenter.Application.Contracts.Commons;
+using ESCenter.Domain.Aggregates.Users;
 using FluentValidation;
 using Mapster;
 

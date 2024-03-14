@@ -1,0 +1,127 @@
+﻿@using ESCenter.Domain.Shared.Courses
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ESCenter.Application.Contracts.Profiles.UserProfileDto
+
+@{
+    ViewData["Title"] = "Tutor Registration";
+}
+
+
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<section id="course-details" class="course-details">
+
+    <div class="container" data-aos="fade-up">
+        <div class="card">
+
+            <div class="card-body row">
+                <h5 class="card-title">Fill all the information for registration</h5>
+
+                <!-- Multi Columns Form -->
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="col-md-6">
+                    <label asp-for="FirstName" class="form-label">First Name</label>
+                    <input type="text" asp-for="FirstName" class="form-control" readonly>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="LastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" asp-for="LastName" readonly>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <!-- ----------------------------------- -->
+
+                <div class="col-md-4">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option selected>@Model.Gender.ToString()</option>
+
+
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Role" class="form-label">Role</label>
+                    <select asp-for="Role" class="form-select">
+                        <option selected>@UserRole.Tutor.ToString()</option>
+
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="BirthYear" class="form-label">Birth</label>
+                    <input type="number" class="form-control" asp-for="BirthYear" readonly>
+
+                    <span asp-validation-for="BirthYear" class="text-danger"></span>
+                </div>
+                <!-- disable email when confirmed -->
+                @* @if (Model.IsEmailConfirmed == true) *@
+                @if (false)
+                {
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label">Email</label>
+
+                        <div class="input-group mb-3">
+                            <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3">
+                            <span class="input-group-text" id="basic-addon3">
+                                <i class="bi bi-check">
+                                </i>
+                            </span>
+                        </div>
+
+                        <span asp-validation-for="Email" class="text-danger"></span>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input type="email" asp-for="Email" class="form-control" readonly>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label">Number</label>
+                    <div class="col-sm-12">
+                        <input type="number" asp-for="PhoneNumber" class="form-control" readonly>
+                    </div>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="City" class="form-label">City</label>
+                    <input type="text" class="form-control" asp-for="City" placeholder="HCMC" readonly>
+                    <span asp-validation-for="City" class="text-danger"></span>
+
+                </div>
+                <div class="col-12">
+                    <label asp-for="Country" class="form-label">Country</label>
+                    <input type="text" class="form-control" asp-for="Country" placeholder="1234 Main St" readonly>
+                    <span asp-validation-for="Country" class="text-danger"></span>
+
+                </div>
+                <input type="hidden" asp-for="Id" value="@Model.Id"/>
+
+                @Html.AntiForgeryToken()
+            </div>
+        </div>
+
+        <partial name="_TutorRegistrationForm" view-data="ViewData"/>
+    </div>
+</section>
+<!-- End Course Details Section -->
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

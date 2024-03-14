@@ -1,0 +1,43 @@
+﻿@using CED.Contracts.Subjects
+@model List<SubjectDto>
+@{
+    int i = 0;
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Tutors</h5>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+                <tr>
+                    <!-- a avatar comlumn will be added -->
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    i++;
+                    <tr>
+                        <th scope="row">
+                            <input hidden name="Id" value="@user.Id" />
+                            @i
+                        </th>
+                        <td>@user.Name </td>
+                        <td>@user.Description</td>
+                      
+                        <td>
+                            <button class="btn btn-success" onclick="AddMajorSubject('@user.Id','@user.Name','@user.Description');">Choose</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+    </div>
+</div>

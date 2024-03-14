@@ -1,0 +1,361 @@
+﻿@using CED.Domain.Shared.ClassInformationConsts
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
+@{
+    string? name = Context.Session.GetString("name");
+    string? image = Context.Session.GetString("image");
+    string? role = Context.Session.GetString("role");
+   
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Center Of Education And Development</title>
+
+    <!-- Favicons -->
+    <link href="~/assets/img/favicon.png" rel="icon">
+    <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="~/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+
+
+</head>
+<body>
+
+<header style="background-color: #3ac162;">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <span class="text-white">
+            <i class="bi bi-telephone-forward "></i>
+            <a href="tel:0965686172" class="text-white">0965686172</a>
+            -
+            <i class="bi bi-envelope-check mr-5"></i>
+            <a href="mailto:lehquy13@gmail.com" class="text-white">lehquy13@gmail.com</a>
+        </span>
+
+        @if (name is not null && image is not null)
+        {
+            <div class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">@name</span>
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow ">
+                    <li class="dropdown-header">
+                        <h6>@name</h6>
+                        <span>Role</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" asp-action="Profile" asp-controller="Profile">
+                            <i class="bi bi-person"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    @* <li> *@
+                    @*     <a class="dropdown-item d-flex align-items-center" href="users-profile.html"> *@
+                    @*         <i class="bi bi-gear"></i> *@
+                    @*         <span>Account Settings</span> *@
+                    @*     </a> *@
+                    @* </li> *@
+                    @* <li> *@
+                    @*     <hr class="dropdown-divider"> *@
+                    @* </li> *@
+                    @* *@
+                    @* <li> *@
+                    @*     <a class="dropdown-item d-flex align-items-center" href="pages-faq.html"> *@
+                    @*         <i class="bi bi-question-circle"></i> *@
+                    @*         <span>Need Help?</span> *@
+                    @*     </a> *@
+                    @* </li> *@
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" asp-controller="Authentication" asp-action="Logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+
+            </div>
+            <!-- End Profile Nav -->
+        }
+        else
+        {
+            <a asp-controller="Authentication" asp-action="Index" class="text-white">Sign in</a>
+        }
+    </div>
+
+</header><!-- End Header -->
+
+<main role="main" id="main" class="pb-3">
+    <div id="header">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto">
+                <a href="/">EduSmart</a>
+            </h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a asp-action="About" asp-controller="Home">About</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="ClassInformation">New Classes</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="TutorInformation">Tutors</a>
+                    </li>
+
+                    @if (User.FindFirst(ClaimTypes.Role)?.Value != UserRole.Tutor.ToString())
+                    {
+                        <li>
+                            <a asp-action="TutorRegistration" asp-controller="TutorInformation">Tutor Registration </a>
+                        </li>
+                    }
+
+
+                    <li>
+                        <a asp-controller="Home" asp-action="Contact">Contact</a>
+                    </li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+            <a asp-action="Create" asp-controller="ClassInformation" class="get-started-btn">Get Started</a>
+        </div>
+
+
+    </div>
+    <!-- End Header -->
+    @RenderBody()
+</main>
+
+<div class="modal fade" id="verticalycentered" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vertically Centered Dialog's Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure with this process?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form id="confirmDialogForm" onsubmit="return callPostActionWithForm(this);">
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div><!-- End Vertically centered Modal-->
+
+<button type="button" hidden class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#largeModal" id="modalTriggerButton">
+    Large Modal
+</button>
+
+<div class="modal fade" id="largeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Large Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+            </div>
+            @*    <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div><!-- End Large Modal-->
+<footer class="border-top footer text-muted" id="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-5 col-md-6 footer-contact">
+                    <h3>EduSmart Educational Development and Consulting Center</h3>
+                    <p>
+                        Block 6, Linh Trung Ward
+                        <br>
+                        Thu Duc District<br>
+                        Ho Chi Minh City<br><br>
+                        <strong>Phone:</strong> +84 965 686 172<br>
+                        <strong>Email:</strong> lehoangquy13@gmail.com<br>
+                    </p>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Get to know us</h4>
+                    <ul>
+                        <li>
+                            <i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="About">About us</a>
+                        </li>
+                        <li>
+                            <i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Contact">Contact us</a>
+                        </li>
+                        <li>
+                            <i class="bx bx-chevron-right"></i> <a href="#">Services</a>
+                        </li>
+                        <li>
+                            <i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a>
+                        </li>
+                        <li>
+                            <i class="bx bx-chevron-right"></i> <a asp-controller="Home" asp-action="Privacy">Privacy policy</a>
+                        </li>
+                    </ul>
+                </div>
+                @*
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li>
+                                <i class="bx bx-chevron-right"></i> <a href="#">Web Design</a>
+                            </li>
+                            <li>
+                                <i class="bx bx-chevron-right"></i> <a href="#">Web Development</a>
+                            </li>
+                            <li>
+                                <i class="bx bx-chevron-right"></i> <a href="#">Product Management</a>
+                            </li>
+                            <li>
+                                <i class="bx bx-chevron-right"></i> <a href="#">Marketing</a>
+                            </li>
+                            <li>
+                                <i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a>
+                            </li>
+                        </ul>
+                    </div>
+                    *@
+                <div class="col-lg-4 col-md-6 footer-newsletter">
+                    <h4>Join Our Newsletter</h4>
+                    <p>Stay connected and be the first to receive updates, valuable insights, and exclusive offers from us.</p>
+                    <form asp-action="Subscribe" asp-controller="Subscribe" method="get">
+                        <input type="email" name="mail"><input type="submit" value="Subscribe">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container d-md-flex py-4">
+
+        <div class="me-md-auto text-center text-md-start">
+            <div class="copyright">
+                &copy; Copyright
+                <strong>
+                    <span>EduSmart</span>
+                </strong>. All Rights Reserved
+            </div>
+
+        </div>
+        <div class="social-links text-center text-md-right pt-3 pt-md-0">
+            <a href="#" class="twitter">
+                <i class="bx bxl-twitter"></i>
+            </a>
+            <a href="#" class="facebook">
+                <i class="bx bxl-facebook"></i>
+            </a>
+            <a href="#" class="instagram">
+                <i class="bx bxl-instagram"></i>
+            </a>
+            <a href="#" class="google-plus">
+                <i class="bx bxl-skype"></i>
+            </a>
+            <a href="#" class="linkedin">
+                <i class="bx bxl-linkedin"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+    <!-- Messenger Chat plugin Code -->
+    <div id="fb-root"></div>
+
+    <!-- Your Chat plugin code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "102093292942240");
+        chatbox.setAttribute("attribution", "biz_inbox");
+    </script>
+
+    <!-- Your SDK code -->
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v17.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+
+<!-- Vendor JS Files -->
+<script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="~/assets/vendor/aos/aos.js"></script>
+@* <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> *@
+<script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="~/assets/vendor/php-email-form/validate.js"></script>
+<script src="~/simple-datatables/simple-datatables.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/assets/js/main.js"></script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,178 @@
+﻿@model CED.Contracts.ClassInformations.Dtos.ClassInformationForDetailDto
+@using CED.Contracts.Subjects
+@using CED.Domain.Shared
+@{
+    ViewData["Title"] = "Details";
+    var subjects = ViewBag.Subjects ?? new List<SubjectDto>();
+    var academicLevels = EnumProvider.AcademicLevels;
+}
+
+<div class="container" data-aos="fade-up">
+    <div class="row">
+        <div class="col-lg-12 row">
+            <h3>Requirement Description</h3>
+
+            <div class="col-lg-6 mb-4">
+                <h6>Contact</h6>
+                @* <input class="form-control" asp-for="ContactNumber" type="text" placeholder="ex: 012312****"/> *@
+                <p class="form-control">@Model.ContactNumber</p>
+
+            </div>
+
+            <div class="col-lg-6 mb-4 ">
+                <h6>Subjects</h6>
+
+                <select asp-for="SubjectId" class="form-select">
+                    <option >@Model.Subject.Name </option>
+
+                    @* @foreach (var i in subjects) *@
+                    @* { *@
+                    @*     <option value="@i.Id">@i.Name </option> *@
+                    @* } *@
+                </select>
+            </div>
+
+            <div class="col-lg-12 mb-4">
+
+                <h6>Title</h6>
+                @* <input type="text" asp-for="Title" class="form-control" placeholder="ex: Find English tutor at HCMC..."/> *@
+                <p class="form-control">@Model.Title</p>
+
+            </div>
+
+
+            <div class="col-lg-3 mb-4">
+                <h6>Total students</h6>
+                @* <input class="form-control" asp-for="NumberOfStudent" type="number" value="1"/> *@
+                <p class="form-control">@Model.NumberOfLearner</p>
+            </div>
+
+            <div class="col-lg-3 mb-4">
+                <h6>Session/Week</h6>
+                @* <input type="number" asp-for="SessionPerWeek" class="form-control" value="2"/> *@
+                <p class="form-control">@Model.SessionPerWeek</p>
+
+            </div>
+
+            <div class="col-lg-3 mb-4">
+                <h6>Minutes/Session</h6>
+                @* <input class="form-control" asp-for="MinutePerSession" type="number" value="90"/> *@
+                <p class="form-control">@Model.MinutePerSession</p>
+
+            </div>
+
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h6>Gender</h6>
+
+                <select name="gender" asp-for="LearnerGender" class="form-select">
+                    <option class="form-control">@Model.LearnerGender</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-12 mb-4">
+                <h6>Address</h6>
+                @* <input class="form-control" asp-for="Address" type="text" placeholder="ex: 123 maint st, HCMC..."/> *@
+                <p class="form-control">@Model.Address</p>
+                
+
+            </div>
+            <div class="col-lg-12 mb-4">
+                <h6>Description / Notes</h6>
+                @* <input class="form-control" asp-for="Description" type="text" placeholder="ex: ..."/> *@
+                <p class="form-control">@Model.Description</p>
+
+            </div>
+            <h3>Tutor Requirement</h3>
+
+            <div class="col-lg-4 mb-4">
+
+                <h6>Fee ($)</h6>
+                @* <p type="number" asp-for="Fee" class="form-control" placeholder="ex: 300"></p> *@
+                <p class="form-control">@Model.Fee</p>
+
+
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h6>Tutor's gender</h6>
+
+                <select name="genderRequirement" asp-for="GenderRequirement" class="form-select">
+                    <option class="form-control">@Model.GenderRequirement</option>
+                    @* @foreach (var i in genders) *@
+                    @* { *@
+                    @*     <option class="form-control" value="@i">@i</option> *@
+                    @* } *@
+                </select>
+
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h6>Academic Level</h6>
+
+                <select name="academicLevel" asp-for="AcademicLevel" class="form-select">
+                    <option class="form-control" >@Model.AcademicLevel</option>
+                    
+                    @* @foreach (var i in academicLevels) *@
+                    @* { *@
+                    @*     <option class="form-control" value="@i">@i</option> *@
+                    @* } *@
+                </select>
+                <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+
+            </div>
+            <h3>Tutor Requirement</h3>
+            
+            <div class="col-lg-12 mb-4">
+                <h6>Tutor information</h6>
+                <p class="form-control">Name: @Model.TutorName</p>
+                <p class="form-control">Email: @Model.TutorEmail</p>
+                <p class="form-control">Phone: @Model.TutorPhoneNumber</p>
+
+            </div>
+        </div>
+        @if (Model.TutorId != Guid.Empty)
+        {
+            <form class="col-lg-12" asp-action="ReviewTutor" asp-controller="TutorInformation">
+            <h6>Write your review</h6>
+            @if (Model.TutorReviewDto != "")
+            {
+                <textarea class="form-control h-75" name="Description" placeholder="Let's us know your thought">@Model.TutorReviewDto</textarea>
+
+            }
+            else
+            {
+                <textarea class="form-control h-75" name="Description" placeholder="Let's us know your thought"></textarea>
+            }
+              <input class="form-control" value="@Model.TutorEmail" hidden="" name="TutorEmail" />
+              <input class="form-control" value="@Model.TutorReviewDtoId" hidden="" name="Id" />
+              <input class="form-control" value="@Model.Id" hidden="" name="ClassId" />
+             
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Rate" id="inlineRadio1" value="1">
+                <label class="form-check-label" for="inlineRadio1">1</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="Rate" id="inlineRadio2" value="2">
+                  <label class="form-check-label" for="inlineRadio2">2</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Rate" id="inlineRadio1" value="3">
+                <label class="form-check-label" for="inlineRadio1">3</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="Rate" id="inlineRadio2" value="4">
+                  <label class="form-check-label" for="inlineRadio2">4</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" checked="checked" type="radio" name="Rate" id="inlineRadio2" value="5">
+                <label class="form-check-label" for="inlineRadio2">5</label>
+              </div>
+              <button class="btn btn-success" type="submit">Submit</button>
+        </form>
+        }
+        
+      
+
+
+    </div>
+</div>

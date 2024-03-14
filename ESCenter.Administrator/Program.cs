@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
     builder.Services.AddHost(builder.Configuration);
+    builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 }
 
 var app = builder.Build();

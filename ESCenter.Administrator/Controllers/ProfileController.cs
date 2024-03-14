@@ -1,11 +1,11 @@
 ﻿using ESCenter.Administrator.Models;
 using ESCenter.Administrator.Utilities;
-using ESCenter.Admin.Application.Contracts.Profiles;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Commands.ChangeAvatar;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Commands.ChangePassword;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Commands.CreateUpdateBasicProfile;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Queries.GetUserProfile;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Queries.Login;
+using ESCenter.Application.Accounts.Commands.ChangeAvatar;
+using ESCenter.Application.Accounts.Commands.ChangePassword;
+using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
+using ESCenter.Application.Accounts.Queries.GetUserProfile;
+using ESCenter.Application.Accounts.Queries.Login;
+using ESCenter.Application.Contracts.Profiles;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Domain.Shared;
 using MapsterMapper;

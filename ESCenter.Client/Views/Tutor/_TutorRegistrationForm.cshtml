@@ -1,0 +1,102 @@
+﻿@using ESCenter.Domain.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ESCenter.Client.Application.Contracts.Courses.Dtos
+@model ESCenter.Client.Application.Contracts.Users.Tutors.TutorBasicForRegisterCommand
+@{
+    var genders = EnumProvider.FullGendersOption;
+    var academicLevels = EnumProvider.AcademicLevels;
+    var subjects = ViewData["Subjects"] as IEnumerable<SubjectDto> ?? [];
+}
+<form asp-action="TutorRegistration" asp-controller="Tutor">
+
+    <div class="card mt-5">
+        <div class="card-body row">
+
+            <h5 class="col-md-12 mt-5">Tutor information</h5>
+            <div class="col-12">
+                <label asp-for="Description" class="form-label">Description</label>
+
+                <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-4">
+                <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
+                <select asp-for="AcademicLevel" class="form-select">
+
+                    @foreach (string i in academicLevels)
+                    {
+                        <option> @i </option>
+                    }
+                </select>
+                <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+            </div>
+            <div class="col-md-8">
+                <label asp-for="University" class="form-label">University</label>
+                <input type="text" class="form-control" value="" asp-for="University">
+                <span asp-validation-for="University" class="text-danger"></span>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="card mt-5" id="tutorMajorCard">
+        <div class="card-body">
+            <div class="card-title row">
+                <h5 class="col-11">Add Your Majors</h5>
+                <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects", "Subject")','Add your major')">
+                    <span class="bi bi-plus-circle"> </span>
+                    Add
+                </button>
+
+            </div>
+
+            <!-- List group with Advanced Contents -->
+            <div class="list-group">
+                @foreach (var s in subjects)
+                {
+                    <input name="SubjectId" value="@s.Id" hidden="hidden"/>
+                    <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@s.Name</h5>
+                        </div>
+                        <p class="mb-1">@s.Description</p>
+                    </a>
+                }
+
+
+            </div><!-- End List group Advanced Content -->
+
+        </div>
+    </div>
+
+    @* TODO: Add upload image component *@
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title row">
+                <h5 class="col-11">Tutor Verifications</h5>
+            </div>
+            <div class="row mb-3">
+                <label class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                <div class="col-md-8 col-lg-9">
+                    @* <div id="filesInputValues"> *@
+                    @*     @foreach (var i in Model.TutorVerificationInfoDtos) *@
+                    @*     { *@
+                    @*         <img src="@i.Image" style="max-width: 120px;" alt="Profile" id="avatar"> *@
+                    @*         <input id="image" asp-for="@i.Image" hidden type="text"/> *@
+                    @*     } *@
+                    @* </div> *@
+
+                    <div class="pt-2">
+                        <input type="file" id="file" name="files" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Profile", null)','file'); return false;"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" asp-action="Index" asp-controller="Tutor" class="btn btn-secondary">Back To Tutor Page</button>
+    </div>
+</form>

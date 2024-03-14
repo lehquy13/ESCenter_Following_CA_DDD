@@ -1,0 +1,58 @@
+﻿@using CED.Domain.Shared.ClassInformationConsts
+@model CED.Contracts.ClassInformations.Dtos.RequestGettingClassExtendDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h3>
+    <span style="color:#5c7bd9" class="font-weight-bold">@Model.Title</span>
+</h3>
+<h4></h4>
+
+
+<div>
+    
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-4" >
+            @Html.DisplayNameFor(model => model.SubjectName)
+        </dt>
+        <dd class="col-sm-8" >
+            @Html.DisplayFor(model => model.SubjectName)
+        </dd>
+        <dt class="col-sm-4" >
+            @Html.DisplayNameFor(model => model.RequestStatus)
+        </dt>
+        <dd class="col-sm-8" >
+            @Html.DisplayFor(model => model.RequestStatus)
+        </dd>
+       
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        @if (Model.RequestStatus == RequestStatus.Success &&Model.LearnerName != "")
+        {
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.LearnerName)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.LearnerName)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.ContactNumber)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ContactNumber)
+            </dd>
+        }
+        
+        
+    </dl>
+</div>
+
+

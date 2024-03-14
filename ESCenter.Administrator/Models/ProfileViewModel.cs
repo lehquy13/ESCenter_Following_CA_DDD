@@ -1,5 +1,5 @@
-using ESCenter.Admin.Application.Contracts.Profiles;
-using ESCenter.Admin.Application.ServiceImpls.Accounts.Commands.ChangePassword;
+using ESCenter.Application.Accounts.Commands.ChangePassword;
+using ESCenter.Application.Contracts.Profiles;
 
 namespace ESCenter.Administrator.Models;
 
