@@ -26,37 +26,24 @@ public class GetCourseRequestsByTutorIdQueryHandler(
         GetCourseRequestsByTutorIdQuery requests,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            if (string.IsNullOrEmpty(currentUserService.CurrentUserId))
+        var tutorId = IdentityGuid.Create(currentUserService.UserId);
+        var courseRequestQueryable =
+            from courseFromDb in courseRepository.GetAll()
+            join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
+            where courseFromDb.CourseRequests.Any(x => x.TutorId == tutorId)
+            select new
             {
-                return Result.Fail(TutorProfileAppServiceError.UnauthorizedError);
-            }
+                Title = courseFromDb.Title,
+                CourseRequest =
+                    courseFromDb.CourseRequests.Where(x => x.TutorId == tutorId),
+                SubjectName = subjectFromDb.Name
+            };
 
-            var tutorId = IdentityGuid.Create(new Guid(currentUserService.CurrentUserId));
-            var courseRequestQueryable =
-                from courseFromDb in courseRepository.GetAll()
-                join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-                where courseFromDb.CourseRequests.Any(x => x.TutorId == tutorId)
-                select new
-                {
-                    Title = courseFromDb.Title,
-                    CourseRequest =
-                        courseFromDb.CourseRequests.Where(x => x.TutorId == tutorId),
-                    SubjectName = subjectFromDb.Name
-                };
+        var courseRequests =
+            await asyncQueryableExecutor.ToListAsync(courseRequestQueryable, false, cancellationToken);
 
-            var courseRequests =
-                await asyncQueryableExecutor.ToListAsync(courseRequestQueryable, false, cancellationToken);
+        var courseRequestDtos = Mapper.Map<List<CourseRequestForListDto>>(courseRequests);
 
-            var courseRequestDtos = Mapper.Map<List<CourseRequestForListDto>>(courseRequests);
-
-            return courseRequestDtos;
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex.InnerException!.Message);
-            return Result.Fail(ex.Message);
-        }
+        return courseRequestDtos;
     }
 }

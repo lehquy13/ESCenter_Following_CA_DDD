@@ -78,9 +78,9 @@ public class GetTutorsQueryHandler(
 
             var totalCount = await asyncQueryableExecutor.LongCountAsync(tutors, cancellationToken);
 
-            if (!string.IsNullOrEmpty(currentUserService.CurrentUserId))
+            if (currentUserService.IsAuthenticated)
             {
-                var userGuid = IdentityGuid.Create(new Guid(currentUserService.CurrentUserId));
+                var userGuid = IdentityGuid.Create(currentUserService.UserId);
                 var discoveryQueryable =
                     from discoveryU in discoveryUserRepository.GetAll()
                     join discoveryS in discoveryRepository.GetDiscoverySubjectAsQueryable()

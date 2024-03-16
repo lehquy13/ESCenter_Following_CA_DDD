@@ -1,6 +1,9 @@
 ﻿using System.Security.Claims;
+using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Client.Application.Contracts.Courses.Dtos;
 using ESCenter.Client.Application.Contracts.Courses.Params;
+using ESCenter.Client.Application.ServiceImpls.Courses.Commands.CreateCourse;
+using ESCenter.Client.Application.ServiceImpls.Courses.Commands.CreateCourseRequest;
 using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourseDetail;
 using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourses;
 using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetRelatedCourses;
@@ -21,12 +24,6 @@ public class CourseController(ISender mediator, IMapper mapper) : Controller
 
     private async Task PackStaticListToView()
     {
-        // ViewData["Roles"] = EnumProvider.Roles;
-        // ViewData["Genders"] = EnumProvider.FullGendersOption;
-        // ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
-        // ViewData["LearningModes"] = EnumProvider.LearningModes;
-        // ViewData["Statuses"] = EnumProvider.Status;
-
         var subjectResult = await mediator.Send(new GetSubjectsQuery());
         ViewData["Subjects"] = subjectResult.Value;
     }
@@ -76,7 +73,7 @@ public class CourseController(ISender mediator, IMapper mapper) : Controller
         var courses = mediator.Send(query1);
 
         await Task.WhenAll(course, courses);
-        
+
         if (course.Result.IsSuccess && courses.Result.IsSuccess)
         {
             var courseDetail = course.Result.Value;
@@ -84,35 +81,34 @@ public class CourseController(ISender mediator, IMapper mapper) : Controller
 
             var courseDetailViewModel = new CourseDetailViewModel()
             {
-                CourseForDetailDto = courseDetail,
+                CourseDetailDto = courseDetail,
                 RelatedCourses = relatedCourses
             };
 
             return View(courseDetailViewModel);
         }
-        
+
         return RedirectToAction("Error", "Home");
     }
 
-    [HttpGet("Create")]
+    [HttpGet("create")]
     public async Task<IActionResult> Create()
     {
         await PackStaticListToView();
+        var query = new GetUserProfileQuery();
+        var result = await mediator.Send(query);
+        var viewModel = new CourseCreateForLearnerDto();
 
-        var email = HttpContext.Session.GetString("email");
-        if (email is not null)
+        if (result.IsSuccess)
         {
-            var query = new GetLearnerByMailQuery()
-            {
-                Email = email
-            };
-            var result = await mediator.Send(query);
-            if (result.IsSuccess)
-                return View(mapper.Map<CreateCourseByCustomer>(result.Value));
+            viewModel.LearnerId = result.Value.Id;
+            viewModel.LearnerName = result.Value.FirstName + " " + result.Value.LastName;
+            viewModel.ContactNumber = result.Value.PhoneNumber;
+            viewModel.LearnerGender = result.Value.Gender;
+            viewModel.Address = result.Value.City + ", " + result.Value.Country;
         }
-        //await PackStudentAndTuTorList();
 
-        return View(new CreateCourseByCustomer());
+        return View(viewModel);
     }
 
 
@@ -120,53 +116,27 @@ public class CourseController(ISender mediator, IMapper mapper) : Controller
     //[Authorize]
     [ValidateAntiForgeryToken]
     [HttpPost]
-    [Route("CreateCourse")]
+    [Route("create")]
     public async Task<IActionResult> CreateCourse(
-        CreateCourseByCustomer createUpdateCourseDto)
+        CourseCreateForLearnerDto createUpdateCourseDto)
     {
-        var command = mapper.Map<CreateUpdateCourseCommand>(createUpdateCourseDto);
-        command.Email = HttpContext.Session.GetString("email") ?? "";
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(new CreateCourseByLearnerCommand(createUpdateCourseDto));
 
-        return RedirectToAction("SuccessPage", "Home"); //implement
+        return result.IsSuccess
+            ? RedirectToAction("SuccessPage", "Home")
+            : RedirectToAction("FailPage", "Home");
     }
 
-
-    // PUT api/<CourseController>/5
     [Authorize]
     [HttpPost]
-    [Route("UpdateCourse")]
-    public async Task<IActionResult> UpdateCourse(
-        CreateUpdateCourseDto createUpdateCourseDto)
+    [Route("request")]
+    public async Task<IActionResult> RequestGettingClass(CourseRequestForCreateDto courseRequestForCreateDto)
     {
-        var command = mapper.Map<CreateUpdateCourseCommand>(createUpdateCourseDto);
-
+        var command = new CreateCourseRequestCommand(courseRequestForCreateDto);
         var result = await mediator.Send(command);
-
-        return Ok(result);
-    }
-
-
-    [HttpPost]
-    [Route("RequestGettingClass")]
-    public async Task<IActionResult> RequestGettingClass(RequestGettingClassRequest requestGettingClassRequest)
-    {
-        var tutorId = User.FindFirst(ClaimTypes.Name)?.Value;
-
-        if (User.Identity is null || !User.Identity.IsAuthenticated || tutorId is null)
+        
+        if (result.IsFailure)
         {
-            string? returnUrl = Url.Action("RequestGettingClass");
-            HttpContext.Session.SetString("Value", requestGettingClassRequest.ClassId.ToString());
-            return RedirectToAction("Index", "Authentication", new { returnUrl = returnUrl });
-        }
-
-
-        requestGettingClassRequest.TutorId = new(tutorId);
-        var command = mapper.Map<RequestGettingClassCommand>(requestGettingClassRequest);
-        var result = await mediator.Send(command);
-        if (result.IsFailed)
-        {
-            ViewBag.RequestedMessage = result.Reasons.FirstOrDefault()?.Message ?? "";
             return RedirectToAction("FailPage", "Home");
         }
 

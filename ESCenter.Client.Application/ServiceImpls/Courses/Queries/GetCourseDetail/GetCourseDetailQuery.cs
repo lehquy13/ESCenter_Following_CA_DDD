@@ -3,4 +3,4 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourseDetail;
 
-public record GetCourseDetailQuery(Guid CourseId) : IQueryRequest<CourseForDetailDto>;
+public record GetCourseDetailQuery(Guid CourseId) : IQueryRequest<CourseDetailDto>;

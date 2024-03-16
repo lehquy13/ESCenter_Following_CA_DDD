@@ -6,7 +6,7 @@ namespace ESCenter.Infrastructure.ServiceImpls.Authentication;
 
 internal class CurrentUserService : ICurrentUserService
 {
-    public string? CurrentUserId { get; }
+    public Guid UserId { get; }
     public bool IsAuthenticated { get; }
     public string? CurrentUserEmail { get; }
     public string? CurrentUserFullName { get; }
@@ -17,10 +17,18 @@ internal class CurrentUserService : ICurrentUserService
 
         if (userId != null)
         {
-            CurrentUserId = userId.Value;
+            UserId = new Guid(userId.Value);
             IsAuthenticated = true;
             CurrentUserEmail = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
             CurrentUserFullName = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value;
+        }
+    }
+
+    public void Authenticated()
+    {
+        if(UserId == Guid.Empty)
+        {
+            throw new Exception("User is not authenticated");
         }
     }
 }

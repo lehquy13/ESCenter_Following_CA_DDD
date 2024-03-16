@@ -1,52 +1,50 @@
 ﻿using System.Diagnostics;
+using ESCenter.Client.Application.ServiceImpls.Courses.Queries.PopularTutors;
+using ESCenter.Client.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Client.Controllers;
-public class HomeController : Controller
-{
-    private readonly ILogger<HomeController> _logger;
-    private readonly ISender _sender;
 
-    
-    public HomeController(ILogger<HomeController> logger, ISender sender)
-    {
-        _logger = logger;
-        _sender = sender;
-    }
-    
+public class HomeController(ISender sender) : Controller
+{
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> Index()
     {
         var query = new PopularTutorsQuery();
-        var result = await _sender.Send(query);
-        return View(result);
+        var result = await sender.Send(query);
+
+        return View(result.Value);
     }
 
     public IActionResult Privacy()
     {
         return View();
     }
+
     public IActionResult About()
     {
         return View();
-    } 
+    }
+
     public IActionResult Contact()
     {
         return View();
     }
+
     public IActionResult SuccessPage(string? message)
     {
-        return View(  "SuccessPage",
-        
-            message?? "We have received your request."
-        
+        return View("SuccessPage",
+            message ?? "We have received your request."
         );
-    } 
+    }
+
     public IActionResult FailPage()
     {
         return View();
     }
+
     public IActionResult SuccessRequestPage()
     {
         return View();

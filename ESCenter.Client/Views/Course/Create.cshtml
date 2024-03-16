@@ -1,16 +1,17 @@
-﻿@using CED.Contracts.Subjects
-@using CED.Domain.Shared
-@model CED.Contracts.ClassInformations.Dtos.CreateClassInformationByCustomer
+﻿@using ESCenter.Client.Application.Contracts.Courses.Dtos
+@using ESCenter.Domain.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ESCenter.Application.Contracts.Profiles
+@model ESCenter.Client.Application.Contracts.Courses.Dtos.CourseCreateForLearnerDto
 
 @{
     ViewData["Title"] = "Get started ";
 
 
-    List<SubjectDto> subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
+    var subjects = ViewData["Subjects"] as List<SubjectDto> ?? [];
     var genders = EnumProvider.FullGendersOption;
     var academicLevels = EnumProvider.FullAcademicLevelsOption;
-    //var cities = ViewBag.Cities as List<string>;
-
+    var user = ViewData["LoginUser"] as UserProfileDto ?? new UserProfileDto();
 }
 
 
@@ -24,7 +25,7 @@
 
 <hr/>
 <section id="course-details" class="course-details">
-    <form asp-action="CreateClassInformation" asp-controller="Course">
+    <form asp-action="CreateCourse" asp-controller="Course">
         <div class="container" data-aos="fade-up">
             <div class="row">
                 <div class="col-lg-9 row">
@@ -67,8 +68,8 @@
 
                     <div class="col-lg-3 mb-4">
                         <h6>Total students</h6>
-                        <input class="form-control" asp-for="NumberOfStudent" type="number" value="1"/>
-                        <span asp-validation-for="NumberOfStudent" class="text-danger"></span>
+                        <input class="form-control" asp-for="NumberOfLearner" type="number" value="1"/>
+                        <span asp-validation-for="NumberOfLearner" class="text-danger"></span>
                     </div>
 
                     <div class="col-lg-3 mb-4">
@@ -87,13 +88,13 @@
                     <div class="col-lg-3 col-md-4 mb-4">
                         <h6>Gender</h6>
 
-                        <select name="gender" asp-for="StudentGender" class="form-select">
+                        <select name="gender" asp-for="LearnerGender" class="form-select">
                             @foreach (var i in genders)
                             {
                                 <option class="form-control" value="@i">@i</option>
                             }
                         </select>
-                        <span asp-validation-for="StudentGender" class="text-danger"></span>
+                        <span asp-validation-for="LearnerGender" class="text-danger"></span>
 
                     </div>
 
@@ -132,13 +133,13 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <h6>Academic Level</h6>
 
-                        <select name="academicLevel" asp-for="AcademicLevel" class="form-select">
+                        <select name="academicLevel" asp-for="AcademicLevelRequirement" class="form-select">
                             @foreach (var i in academicLevels)
                             {
                                 <option class="form-control" value="@i">@i</option>
                             }
                         </select>
-                        <span asp-validation-for="AcademicLevel" class="text-danger"></span>
+                        <span asp-validation-for="AcademicLevelRequirement" class="text-danger"></span>
 
                     </div>
                     <button class="btn btn-success" type="submit">Create</button>

@@ -29,10 +29,10 @@ public class CreateCourseByLearnerCommandHandler(
         {
             var course = mapper.Map<Course>(byLearnerCommand.CourseForLearnerCreateDto);
 
-            if (!string.IsNullOrWhiteSpace(currentUserService.CurrentUserId))
+            if (currentUserService.UserId != Guid.Empty)
             {
                 var learner = await userRepository.GetAsync(
-                    IdentityGuid.Create(new Guid(currentUserService.CurrentUserId)),
+                    IdentityGuid.Create(currentUserService.UserId),
                     cancellationToken);
 
                 if (learner is not null)

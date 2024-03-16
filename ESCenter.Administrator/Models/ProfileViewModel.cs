@@ -5,8 +5,6 @@ namespace ESCenter.Administrator.Models;
 
 public class ProfileViewModel
 {
-    public UserProfileDto UserProfileDto { get; set; } = new();
-
-    public ChangePasswordCommand ChangePasswordCommand { get; set; } =
-        new(Guid.Empty, string.Empty, string.Empty, string.Empty);
+    public UserProfileDto UserProfileDto { get; init; } = new();
+    public ChangePasswordCommand ChangePasswordCommand { get; init; } = new(string.Empty, string.Empty, string.Empty);
 }

@@ -34,7 +34,7 @@ internal sealed class UnitOfWork(
                 // If the entity is type of ICreationAuditedObject<T>, we should set CreatorId
                 //TODO: The logic here may goes wrong
                 if (entityEntry.Entity is ICreationAuditedObject)
-                    entityEntry.Property("CreatorId").CurrentValue = currentUserService.CurrentUserId;
+                    entityEntry.Property("CreatorId").CurrentValue = currentUserService.UserId;
             }
 
         IEnumerable<EntityEntry<IHasModificationTime>> hasModificationTimeEnties =
@@ -47,7 +47,7 @@ internal sealed class UnitOfWork(
 
                 //TODO: The logic here may goes wrong
                 if (entityEntry.Entity is IModificationAuditedObject)
-                    entityEntry.Property("LastModifierId").CurrentValue = currentUserService.CurrentUserId;
+                    entityEntry.Property("LastModifierId").CurrentValue = currentUserService.UserId;
             }
     }
 }

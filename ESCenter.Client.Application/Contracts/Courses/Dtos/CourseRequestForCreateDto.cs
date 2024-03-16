@@ -2,6 +2,6 @@
 
 public class CourseRequestForCreateDto
 {
-    public Guid CourseId { get; set; }
-    public Guid TutorId { get; set; }
+    public Guid CourseId { get; init; }
+    public Guid TutorId { get; init; }
 }

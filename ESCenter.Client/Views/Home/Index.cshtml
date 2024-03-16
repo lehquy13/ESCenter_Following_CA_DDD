@@ -2,12 +2,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model List<CED.Contracts.Users.Tutors.TutorForDetailDto>
+@model IEnumerable<ESCenter.Client.Application.Contracts.Users.Tutors.TutorListForClientPageDto>
 <section id="hero" class="d-flex justify-content-center align-items-center">
     <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
         <h1>Unlock your potential,<br>Navigate your educational journey with Us</h1>
         <h2>EduSmart is a premier center connecting you with the finest private teachers.</h2>
-        <a asp-action="Create" asp-controller="ClassInformation" class="btn-get-started">Get Started</a>
+        <a asp-action="Create" asp-controller="Course" class="btn-get-started">Get Started</a>
     </div>
 </section><!-- End Hero -->
 <!-- ======= About Section ======= -->
@@ -131,23 +131,31 @@
                     <div class="member">
                         <img src="@i.Image" class="img-fluid" alt="" style="height:450px;">
                         <div class="member-content">
-                            <h4><a asp-controller="TutorInformation" asp-action="Detail" asp-route-id="@i.Id">@i.FirstName @i.LastName</a></h4>
+                            <h4>
+                                <a asp-controller="Tutor" asp-action="Detail" asp-route-id="@i.Id">@i.FirstName @i.LastName</a>
+                            </h4>
                             <span>@i.University</span>
                             <p>
                                 @i.Description
                             </p>
                             <div class="social">
-                                <a href=""><i class="bi bi-twitter"></i></a>
-                                <a href=""><i class="bi bi-facebook"></i></a>
-                                <a href=""><i class="bi bi-instagram"></i></a>
-                                <a href=""><i class="bi bi-linkedin"></i></a>
+                                <a href="">
+                                    <i class="bi bi-twitter"></i>
+                                </a>
+                                <a href="">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                <a href="">
+                                    <i class="bi bi-instagram"></i>
+                                </a>
+                                <a href="">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             }
-
-
 
 
         </div>

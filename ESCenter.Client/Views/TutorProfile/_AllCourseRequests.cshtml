@@ -1,7 +1,7 @@
-﻿@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.RequestGettingClassForListDto>
+﻿@model IEnumerable<ESCenter.Client.Application.Contracts.Courses.Dtos.CourseRequestDto>
 @{
-    int i = 0;
-   // Layout = "_ScriptLayout";
+    var i = 0;
+    // Layout = "_ScriptLayout";
 }
 <div class="card">
     <div class="card-body">
@@ -11,16 +11,15 @@
         <table id="example" class="table datatable">
             <thead>
             <tr>
-                <!-- a avatar comlumn will be added -->
+                <!-- a avatar column will be added -->
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
                 <th scope="col">Subject</th>
                 <th scope="col">Status</th>
-                    <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
             </tr>
             </thead>
             <tbody>
-
             @foreach (var requestGettingClassDto in Model)
             {
                 i++;
@@ -32,9 +31,9 @@
                     <td>@requestGettingClassDto.Title</td>
                     <td>@requestGettingClassDto.SubjectName</td>
                     <td>@requestGettingClassDto.RequestStatus</td>
-                   
+
                     <td>
-                        <button type="button" class="btn btn-primary" onclick="OpenGetDialog('@Url.Action("TeachingClassDetail","Profile",new{requestId = requestGettingClassDto.Id, classId = requestGettingClassDto.ClassInformationId})','Detail');">
+                        <button type="button" class="btn btn-primary" onclick="OpenGetDialog('@Url.Action("TeachingClassDetail", "Profile", new { requestId = requestGettingClassDto.Id, classId = requestGettingClassDto.CourseId })','Detail');">
                             Detail
                         </button>
                     </td>
@@ -45,8 +44,3 @@
         <!-- End Table with stripped rows -->
     </div>
 </div>
-
-
-
-
-   

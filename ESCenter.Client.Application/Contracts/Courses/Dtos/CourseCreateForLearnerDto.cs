@@ -8,7 +8,7 @@ using Mapster;
 
 namespace ESCenter.Client.Application.Contracts.Courses.Dtos;
 
-public class CourseForLearnerCreateDto
+public class CourseCreateForLearnerDto
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -32,7 +32,7 @@ public class CourseForLearnerCreateDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<CourseForLearnerCreateDto, Course>()
+        config.NewConfig<CourseCreateForLearnerDto, Course>()
             .ConstructUsing(x =>
                 Course.Create(
                     x.Title,
@@ -57,7 +57,7 @@ public class CourseForLearnerCreateDtoMappingConfig : IRegister
     }
 }
 
-public class CourseForLearnerCreateDtoValidator : AbstractValidator<CourseForLearnerCreateDto>
+public class CourseForLearnerCreateDtoValidator : AbstractValidator<CourseCreateForLearnerDto>
 {
     public CourseForLearnerCreateDtoValidator()
     {

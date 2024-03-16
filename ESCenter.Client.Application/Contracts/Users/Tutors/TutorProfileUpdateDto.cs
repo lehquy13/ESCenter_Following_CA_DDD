@@ -3,7 +3,7 @@ using Mapster;
 
 namespace ESCenter.Client.Application.Contracts.Users.Tutors;
 
-public class TutorBasicUpdateDto
+public class TutorProfileUpdateDto
 {
     public Guid Id { get; set; }
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
@@ -22,7 +22,7 @@ public class TutorBasicUpdateDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<TutorBasicUpdateDto, Tutor>()
+        config.NewConfig<TutorProfileUpdateDto, Tutor>()
             .Map(des => des.University, src => src.University)
             .Map(des => des.AcademicLevel, src => src.AcademicLevel);
         

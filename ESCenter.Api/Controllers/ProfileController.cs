@@ -1,11 +1,10 @@
-﻿using ESCenter.Host;
+﻿using ESCenter.Application.Accounts.Commands.ChangeAvatar;
+using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
+using ESCenter.Application.Accounts.Queries.GetUserProfile;
+using ESCenter.Application.Contracts.Profiles;
+using ESCenter.Host;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
-using ESCenter.Mobile.Application.Contracts.Profiles;
 using ESCenter.Mobile.Application.Contracts.Users.Tutors;
-using ESCenter.Mobile.Application.ServiceImpls.Accounts.Commands.ChangeAvatar;
-using ESCenter.Mobile.Application.ServiceImpls.Accounts.Commands.CreateUpdateBasicProfile;
-using ESCenter.Mobile.Application.ServiceImpls.Accounts.Queries.GetTutorProfile;
-using ESCenter.Mobile.Application.ServiceImpls.Accounts.Queries.GetUserProfile;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.AddOrResetDiscovery;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
@@ -13,6 +12,7 @@ using ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningCours
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Commands.UpdateTutorProfile;
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequests;
+using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetTutorProfile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

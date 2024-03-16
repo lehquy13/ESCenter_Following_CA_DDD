@@ -16,12 +16,7 @@ internal class ChangePasswordCommandHandler(
 {
     public override async Task<Result> Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
     {
-        if(string.IsNullOrEmpty(currentUserService.CurrentUserId))
-        {
-            return Result.Fail(AccountServiceError.UnauthorizedError);
-        }
-        
-        var identityId = IdentityGuid.Create(new Guid(currentUserService.CurrentUserId));
+        var identityId = IdentityGuid.Create(currentUserService.UserId);
         var result = await identityDomainServices
             .ChangePasswordAsync(
                 identityId,

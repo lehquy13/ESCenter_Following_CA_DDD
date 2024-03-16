@@ -18,4 +18,8 @@
       <_ContentIncludedByDefault Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Soenneker.Blazor.FilePond" Version="2.1.507" />
+    </ItemGroup>
+
 </Project>

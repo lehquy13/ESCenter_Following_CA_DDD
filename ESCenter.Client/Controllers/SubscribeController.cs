@@ -1,51 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ESCenter.Client.Application.ServiceImpls.Subscriber;
+using MapsterMapper;
+using Matt.SharedKernel.Domain.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Client.Controllers;
 
-[Route("[controller]")]
-public class SubscribeController : Controller
+[Route("client/[controller]")]
+public class SubscribeController(IAppLogger<SubscribeController> logger, ISender sender, IMapper mapper)
+    : Controller
 {
-    private readonly IAppLogger<SubscribeController> _logger;
-    //dependencies 
-    private readonly ISender _mediator;
-    private readonly IMapper _mapper;
-
-
-
-    public SubscribeController(IAppLogger<SubscribeController> logger, ISender sender, IMapper mapper)
-    {
-        _logger = logger;
-        _mediator = sender;
-        _mapper = mapper;
-    }
-    
-    [HttpGet("Subscribe")]
+    [HttpGet("subscribe")]
     public async Task<IActionResult> Subscribe(string mail)
     {
-        var query = new EmailSubscriptionCommand(mail);
-        
-        var result = await _mediator.Send(query);
-        if (result)
+        var query = new SubscribeCommand(mail);
+        var result = await sender.Send(query);
+
+        if (result.IsSuccess)
         {
             return RedirectToAction("SuccessPage", "Home");
         }
+
         return RedirectToAction("FailPage", "Home");
     }
-    [HttpGet("UnSubscribe")]
+
+    [HttpGet("unsubscribe")]
     public async Task<IActionResult> UnSubscribe(string mail)
     {
-        var query = new EmailUnSubscriptionCommand(mail);
-        
-        var result = await _mediator.Send(query);
-        if (result)
+        var query = new UnSubscribeCommand(mail);
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
         {
             return RedirectToAction("SuccessPage", "Home");
         }
+
         return RedirectToAction("FailPage", "Home");
     }
-   
-  
-
-
 }
-

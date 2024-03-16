@@ -1,23 +1,19 @@
 ﻿using FluentValidation;
+using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Application.Accounts.Commands.ChangePassword;
 
 public record ChangePasswordCommand(
-    Guid Id,
     string CurrentPassword,
     string NewPassword,
     string ConfirmedPassword
-) : ICommandRequest;
+) : ICommandRequest, IAuthorizationRequest;
 
 public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
     public ChangePasswordCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage("User ID is required.");
-
         RuleFor(x => x.CurrentPassword)
             .NotEmpty()
             .MinimumLength(6)

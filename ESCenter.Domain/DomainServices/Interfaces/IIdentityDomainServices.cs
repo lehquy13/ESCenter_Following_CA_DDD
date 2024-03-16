@@ -38,6 +38,6 @@ public interface IIdentityDomainServices : IDomainService
         IdentityGuid userId,
         AcademicLevel academicLevel,
         string university,
-        List<string> majors,
+        List<int> majors,
         List<string> verificationInfoDtos);
 }

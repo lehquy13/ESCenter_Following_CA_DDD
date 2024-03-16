@@ -10,6 +10,7 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -23,13 +24,14 @@ public class GetLearningCourseDetailQueryHandler(
     ITutorRepository tutorRepository,
     IIdentityRepository identityRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
+    ICurrentUserService currentUserService,
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper
 )
-    : QueryHandlerBase<GetLearningCourseDetailQuery, CourseForDetailDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetLearningCourseDetailQuery, CourseDetailDto>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<CourseForDetailDto>> Handle(GetLearningCourseDetailQuery request,
+    public override async Task<Result<CourseDetailDto>> Handle(GetLearningCourseDetailQuery request,
         CancellationToken cancellationToken)
     {
         try
@@ -40,7 +42,7 @@ public class GetLearningCourseDetailQueryHandler(
                 join tutor1 in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor1.Id
                 join tutor in userRepository.GetAll() on tutor1.UserId equals tutor.Id
                 join identityFromDb in identityRepository.GetAll() on tutor.Id equals identityFromDb.Id
-                where courseFromDb.TutorId == IdentityGuid.Create(request.LearnerId) &&
+                where courseFromDb.TutorId == IdentityGuid.Create(currentUserService.UserId) &&
                       courseFromDb.Id == CourseId.Create(request.CourseId)
                 select new
                 {
@@ -58,7 +60,7 @@ public class GetLearningCourseDetailQueryHandler(
                 return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
             }
 
-            var classDto = Mapper.Map<CourseForDetailDto>(course);
+            var classDto = Mapper.Map<CourseDetailDto>(course);
 
             return classDto;
         }

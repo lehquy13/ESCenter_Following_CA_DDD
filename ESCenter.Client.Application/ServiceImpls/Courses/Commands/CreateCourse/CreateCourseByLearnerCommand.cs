@@ -3,4 +3,4 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Client.Application.ServiceImpls.Courses.Commands.CreateCourse;
 
-public record CreateCourseByLearnerCommand(CourseForLearnerCreateDto CourseForLearnerCreateDto) : ICommandRequest;
+public record CreateCourseByLearnerCommand(CourseCreateForLearnerDto CourseCreateForLearnerDto) : ICommandRequest;

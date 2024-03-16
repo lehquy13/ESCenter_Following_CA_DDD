@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
+using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Application.Accounts.Commands.ChangeAvatar;
 
-public record ChangeAvatarCommand(string Url) : ICommandRequest;
+public record ChangeAvatarCommand(string Url) : ICommandRequest, IAuthorizationRequest;
 
 public class ChangeAvatarCommandValidator : AbstractValidator<ChangeAvatarCommand>
 {

@@ -1,4 +1,5 @@
-﻿@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.ClassInformationForListDto>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Matt.Paginated.PaginatedList<ESCenter.Client.Application.Contracts.Courses.Dtos.CourseForListDto>
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";

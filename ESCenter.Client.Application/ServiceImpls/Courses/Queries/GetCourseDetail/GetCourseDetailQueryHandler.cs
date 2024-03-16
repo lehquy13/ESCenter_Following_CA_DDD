@@ -27,9 +27,9 @@ public class GetCourseDetailQueryHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<GetCourseDetailQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetCourseDetailQuery, CourseForDetailDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetCourseDetailQuery, CourseDetailDto>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<CourseForDetailDto>> Handle(GetCourseDetailQuery request,
+    public override async Task<Result<CourseDetailDto>> Handle(GetCourseDetailQuery request,
         CancellationToken cancellationToken)
     {
         var courseFromDbQ =
@@ -46,7 +46,7 @@ public class GetCourseDetailQueryHandler(
             return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
 
-        var classDto = (courseFromDb.course, courseFromDb.sub).Adapt<CourseForDetailDto>();
+        var classDto = (courseFromDb.course, courseFromDb.sub).Adapt<CourseDetailDto>();
 
         return classDto;
     }

@@ -1,13 +1,10 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@using CED.Domain.Shared.ClassInformationConsts
-@using System.Security.Claims
-@using CloudinaryDotNet.Actions
+﻿@using System.Security.Claims
+@using ESCenter.Domain.Shared
+@using ESCenter.Domain.Shared.Courses
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ESCenter.Client.Models.ProfileViewModel
 @{
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
-
+    List<string> genders = EnumProvider.FullGendersOption;
 }
 @if (Model.IsPartialLoad is true)
 {
@@ -16,7 +13,7 @@
             <h1 class="logo me-auto">
                 <a href="/">EduSmart</a>
             </h1>
-          
+
 
             <nav id="navbar" class="navbar order-last order-lg-0">
                 <ul>
@@ -27,20 +24,17 @@
                         <a asp-action="About" asp-controller="Home">About</a>
                     </li>
                     <li>
-                        <a asp-action="Index" asp-controller="ClassInformation">Classes</a>
+                        <a asp-action="Index" asp-controller="Course">Classes</a>
                     </li>
                     <li>
-                        <a asp-action="Index" asp-controller="TutorInformation">Tutors</a>
+                        <a asp-action="Index" asp-controller="Tutor">Tutors</a>
                     </li>
                     @if (User.FindFirst(ClaimTypes.Role)?.Value != UserRole.Tutor.ToString())
                     {
                         <li>
-                            <a asp-action="Index" asp-controller="TutorInformation">Tutor Registration</a>
+                            <a asp-action="Index" asp-controller="Tutor">Tutor Registration</a>
                         </li>
                     }
-                   
-
-                    
                     <li>
                         <a asp-controller="Home" asp-action="Contact">Contact</a>
                     </li>
@@ -48,7 +42,7 @@
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
 
-            <a asp-action="Create" asp-controller="ClassInformation" class="get-started-btn">Get Started</a>
+            <a asp-action="Create" asp-controller="Course" class="get-started-btn">Get Started</a>
         </div>
 
 
@@ -74,9 +68,9 @@
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                     @* <img src="/avatar/@Model.UserDto.Image" style="max-width: 360px;" alt="Profile" class="rounded-circle"> *@
-                    <img src="@Model.UserDto.Image" style="max-width: 360px;" alt="Profile" class="rounded-circle">
-                    <h2>@Model.UserDto.FirstName @Model.UserDto.LastName</h2>
-                    <h3>@Model.UserDto.Role</h3>
+                    <img src="@Model.UserProfileDto.Avatar" style="max-width: 360px;" alt="Profile" class="rounded-circle">
+                    <h2>@Model.UserProfileDto.FirstName @Model.UserProfileDto.LastName</h2>
+                    <h3>@Model.UserProfileDto.Role</h3>
                     <div class="social-links mt-2">
                         <a href="#" class="twitter">
                             <i class="bi bi-twitter"></i>
@@ -119,12 +113,12 @@
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" id="profile-change-password-button">Change Password</button>
                         </li>
 
-                        @if (Model.UserDto.Role == UserRole.Tutor)
+                        @if (Model.UserProfileDto.Role == UserRole.Tutor.ToString())
                         {
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Teaching Class</button>
                             </li>
-                       
+
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tutor-infor">Tutor Informations</button>
                             </li>
@@ -133,43 +127,43 @@
                     <div class="tab-content pt-2">
 
                         <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                            <partial name="_ProfileOverview" model="@Model.UserDto" />
+                            <partial name="_ProfileOverview" model="@Model.UserProfileDto"/>
                         </div>
 
                         <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                             <!-- Profile Edit Form -->
 
-                            <partial name="_ProfileEdit" model="@Model.UserDto" view-data="ViewData" />
+                            <partial name="_profileEdit" model="@Model.UserProfileDto" view-data="ViewData"/>
                             <!-- End Profile Edit Form -->
 
                         </div>
 
                         <div class="tab-pane fade pt-3" id="learning-class">
                             <!-- Learning Classes -->
-                            <partial name="_AllLearningClass" model="@Model.UserDto.LearningClassInformations" />
+                            <partial name="_allLearningClass" model="@Model.LearningCourseForListDtos"/>
                             <!-- End Learning Classes -->
-
                         </div>
-                        @if (Model.UserDto.Role == UserRole.Tutor)
-                        {
-                            <div class="tab-pane fade pt-3" id="profile-settings">
+                        
+                        @* @if (Model.UserProfileDto.Role == UserRole.Tutor.ToString()) *@
+                        @* { *@
+                        @*     <div class="tab-pane fade pt-3" id="profile-settings"> *@
+                        @* *@
+                        @*         <partial name="_AllClassRequests" model="@Model.RequestGettingClassDtos" view-data="ViewData"/> *@
+                        @* *@
+                        @* *@
+                        @*     </div> *@
+                        @*     <div class="tab-pane fade pt-3" id="tutor-infor"> *@
+                        @*         <!-- Change Password Form --> *@
+                        @*         <partial name="_ProfileTutorEdit" model="@Model.TutorMinimalBasicDto"/> *@
+                        @*         <!-- End Change Password Form --> *@
+                        @* *@
+                        @*     </div> *@
+                        @* } *@
 
-                                <partial name="_AllClassRequests" model="@Model.RequestGettingClassDtos" view-data="ViewData" />
-
-
-                            </div>
-                            <div class="tab-pane fade pt-3" id="tutor-infor">
-                                <!-- Change Password Form -->
-                                <partial name="_ProfileTutorEdit" model="@Model.TutorDto" />
-                                <!-- End Change Password Form -->
-
-                            </div>
-                        }
-                       
                         <div class="tab-pane fade pt-3" id="profile-change-password">
                             <!-- Change Password Form -->
-                            <partial name="_ChangePassword" model="@Model.ChangePasswordRequest" />
+                            <partial name="_changePassword" model="@Model.ChangePasswordRequest"/>
                             <!-- End Change Password Form -->
 
                         </div>

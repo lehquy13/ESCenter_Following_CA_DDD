@@ -1,0 +1,54 @@
+﻿@using ESCenter.Client.Application.Contracts.Courses.Dtos
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model LearningCourseDetailDto
+
+@{
+    ViewData["Title"] = "Learning Course Details";
+    ViewData["CourseId"] = Model.Id;
+}
+
+<div class="container" data-aos="fade-up">
+    <div class="row">
+        <div class="col-lg-12 row">
+            <h3>Requirement Description</h3>
+
+            <div class="col-lg-6 mb-4">
+                <h6>Contact</h6>
+                <p class="form-control">@Model.</p>
+            </div>
+
+            <div class="col-lg-12 mb-4">
+                <h6>Title</h6>
+                <p class="form-control">@Model.Title</p>
+            </div>
+
+            <div class="col-lg-12 mb-4">
+                <h6>Description / Notes</h6>
+                <p class="form-control">@Model.Description</p>
+            </div>
+
+            <h3>Tutor Requirement</h3>
+
+            <div class="col-lg-4 mb-4">
+                <h6>Fee ($)</h6>
+                <p class="form-control">@Model.ChargeFee</p>
+            </div>
+
+            <h3>Tutor Requirement</h3>
+
+            <div class="col-lg-12 mb-4">
+                <h6>Tutor information</h6>
+                <p class="form-control">Name: @Model.TutorName</p>
+                <p class="form-control">Email: @Model.TutorEmail</p>
+                <p class="form-control">Phone: @Model.TutorContact</p>
+
+            </div>
+        </div>
+        @if (Model.TutorId != Guid.Empty)
+        {
+            <partial name="_ReviewCourseForm" view-data="ViewData"/>
+        }
+
+
+    </div>
+</div>

@@ -24,28 +24,14 @@ public class GetUserProfileQueryHandler(
         GetUserProfileQuery request,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            // This query includes verification information, major information, requests getting class
-            if (currentUserService.CurrentUserId is null)
-            {
-                return Result.Fail(AccountServiceError.UnauthorizedError);
-            }
+        var userProfileAsync =
+            await userRepository.GetAsync(IdentityGuid.Create(currentUserService.UserId), cancellationToken);
 
-            var userProfileAsync =
-                await userRepository.GetAsync(
-                    IdentityGuid.Create(new Guid(currentUserService.CurrentUserId)), cancellationToken);
-            
-            if (userProfileAsync is null)
-            {
-                return Result.Fail(UserError.NonExistUserError);
-            }
-
-            return Mapper.Map<UserProfileDto>(userProfileAsync);
-        }
-        catch (Exception ex)
+        if (userProfileAsync is null)
         {
-            return Result.Fail($"AccountServiceError.FailToGetTutorProfileWithException {ex.Message}");
+            return Result.Fail(UserError.NonExistUserError);
         }
+
+        return Mapper.Map<UserProfileDto>(userProfileAsync);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users.Identities;
@@ -120,7 +121,7 @@ public class IdentityDomainServices(
         IdentityGuid userId,
         AcademicLevel academicLevel,
         string university,
-        List<string> majors,
+        List<int> majors,
         List<string> verificationInfoDtos)
     {
         try
@@ -155,9 +156,7 @@ public class IdentityDomainServices(
             await tutorRepository.InsertAsync(tutor);
 
             // Handle major
-            var subjects = await subjectRepository.GetListAsync(
-                new SubjectListByNameSpec(majors)
-            );
+            var subjects = await subjectRepository.GetListByIdsAsync(majors.Select(SubjectId.Create).ToList());
 
             var tutorMajors = subjects
                 .Select(x => TutorMajor.Create(tutor.Id, x.Id, x.Name))

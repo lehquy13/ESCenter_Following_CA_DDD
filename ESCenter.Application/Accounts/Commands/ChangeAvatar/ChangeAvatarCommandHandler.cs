@@ -16,13 +16,8 @@ public class ChangeAvatarCommandHandler(
 {
     public override async Task<Result> Handle(ChangeAvatarCommand request, CancellationToken cancellationToken)
     {
-        if (currentUserService.CurrentUserId is null)
-        {
-            return Result.Fail(ProfileAppServiceError.UnAuthorized);
-        }
+        var id = IdentityGuid.Create(currentUserService.UserId);
 
-        var id = IdentityGuid.Create(new Guid(currentUserService.CurrentUserId));
-        
         var account = await accountRepository.GetAsync(id, cancellationToken);
 
         if (account == null)
@@ -31,7 +26,7 @@ public class ChangeAvatarCommandHandler(
         }
 
         account.SetAvatar(request.Url);
-        
+
         if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
             return Result.Fail(AccountServiceError.FailToUpdateUserErrorWhileSavingChanges);

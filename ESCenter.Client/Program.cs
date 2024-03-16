@@ -1,7 +1,10 @@
+using Soenneker.Blazor.FilePond.Registrars;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddFilePond();
 
 var app = builder.Build();
 

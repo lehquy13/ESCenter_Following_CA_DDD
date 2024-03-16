@@ -23,14 +23,8 @@ public class GetLearningCoursesQueryHandler(
     {
         try
         {
-            if (string.IsNullOrEmpty(currentUserService.CurrentUserId))
-            {
-                return Result.Fail(TutorProfileAppServiceError.UnauthorizedError);
-            }
-            
             var courses = await courseRepository
-                .GetLearningCoursesByUserId(IdentityGuid.Create(
-                    new Guid(currentUserService.CurrentUserId)));
+                .GetLearningCoursesByUserId(IdentityGuid.Create(currentUserService.UserId));
 
             var classInformationDtos = Mapper.Map<List<LearningCourseForListDto>>(courses);
 

@@ -1,5 +1,5 @@
-﻿@using CED.Domain.Shared.ClassInformationConsts
-@model CED.Contracts.ClassInformations.Dtos.RequestGettingClassExtendDto
+﻿@using ESCenter.Domain.Shared.Courses
+@model ESCenter.Client.Application.Contracts.Courses.Dtos.CourseRequestForDetailDto
 
 @{
     ViewData["Title"] = "Details";
@@ -8,34 +8,31 @@
 <h3>
     <span style="color:#5c7bd9" class="font-weight-bold">@Model.Title</span>
 </h3>
+
 <h4></h4>
 
-
 <div>
-    
-    <hr />
-
+    <hr/>
     <dl class="row">
-        <dt class="col-sm-4" >
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.SubjectName)
         </dt>
-        <dd class="col-sm-8" >
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.SubjectName)
         </dd>
-        <dt class="col-sm-4" >
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.RequestStatus)
         </dt>
-        <dd class="col-sm-8" >
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.RequestStatus)
         </dd>
-       
         <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        @if (Model.RequestStatus == RequestStatus.Success &&Model.LearnerName != "")
+        @if (Model.RequestStatus == RequestStatus.Approved.ToString() && Model.LearnerName != "")
         {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.LearnerName)
@@ -44,15 +41,11 @@
                 @Html.DisplayFor(model => model.LearnerName)
             </dd>
             <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.ContactNumber)
+                @Html.DisplayNameFor(model => model.LearnerContact)
             </dt>
             <dd class="col-sm-8">
-                @Html.DisplayFor(model => model.ContactNumber)
+                @Html.DisplayFor(model => model.LearnerContact)
             </dd>
         }
-        
-        
     </dl>
 </div>
-
-

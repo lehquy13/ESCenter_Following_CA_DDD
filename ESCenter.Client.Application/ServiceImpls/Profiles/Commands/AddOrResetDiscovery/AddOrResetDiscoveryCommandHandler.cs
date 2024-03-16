@@ -25,7 +25,7 @@ public class AddOrResetDiscoveryCommandHandler(
 
         if (user is null)
         {
-            return Result.Fail(UserAppServiceError.NonExistUserError);
+            return Result.Fail(UserProfileAppServiceError.NonExistUserError);
         }
 
         var discoveryQuery =
@@ -49,7 +49,7 @@ public class AddOrResetDiscoveryCommandHandler(
 
         if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
-            return Result.Fail(UserAppServiceError.FailToAddOrResetDiscoveryErrorWhileSavingChanges);
+            return Result.Fail(UserProfileAppServiceError.FailToAddOrResetDiscoveryErrorWhileSavingChanges);
         }
 
         return Result.Success();

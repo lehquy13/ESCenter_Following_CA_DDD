@@ -2,7 +2,7 @@
 
 namespace ESCenter.Client.Application.Contracts.Users.Tutors;
 
-public class TutorBasicForRegisterCommand
+public class TutorRegistrationDto
 {
     public Guid Id { get; init; }
     public string AcademicLevel { get; init; } = "Student";
@@ -17,7 +17,7 @@ public class TutorBasicForRegisterCommand
     ];
 }
 
-public class TutorBasicForRegisterCommandValidator : AbstractValidator<TutorBasicForRegisterCommand>
+public class TutorBasicForRegisterCommandValidator : AbstractValidator<TutorRegistrationDto>
 {
     public TutorBasicForRegisterCommandValidator()
     {

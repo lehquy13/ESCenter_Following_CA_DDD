@@ -1,43 +1,40 @@
 ﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Subjects;
-using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Users;
 using Mapster;
 
 namespace ESCenter.Client.Application.Contracts.Courses.Dtos;
 
-public class CourseForDetailDto : BasicAuditedEntityDto<Guid>
+public class CourseDetailDto : BasicAuditedEntityDto<Guid>
 {
     //Basic Information
-    public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Status { get; set; } = "OnVerifying";
-    public string LearningMode { get; set; } = "Offline";
+    public string Title { get; init; } = string.Empty;
+    public string Description { get; init; } = string.Empty;
+    public string Status { get; init; } = "OnVerifying";
+    public string LearningMode { get; init; } = "Offline";
 
-    public float SectionFee { get; set; } = 0;
-    public float ChargeFee { get; set; } = 0;
+    public float SectionFee { get; init; } = 0;
+    public float ChargeFee { get; init; } = 0;
 
     //Tutor related information
-    public string GenderRequirement { get; set; } = "None";
-    public string AcademicLevelRequirement { get; set; } = "Optional";
+    public string GenderRequirement { get; init; } = "None";
+    public string AcademicLevelRequirement { get; init; } = "Optional";
 
     //Student related information
-    public string LearnerName { get; set; } = "";
-    public string LearnerGender { get; set; } = "None";
-    public int NumberOfLearner { get; set; } = 1;
+    public string LearnerName { get; init; } = "";
+    public string LearnerGender { get; init; } = "None";
+    public int NumberOfLearner { get; init; } = 1;
 
     // Time related information
-    public int SessionDuration { get; set; } = 90;
-    public int SessionPerWeek { get; set; } = 2;
+    public int SessionDuration { get; init; } = 90;
+    public int SessionPerWeek { get; init; } = 2;
 
     // Address related information
-    public string Address { get; set; } = string.Empty;
+    public string Address { get; init; } = string.Empty;
 
     //Subject related information
-    public int SubjectId { get; set; }
-    public string SubjectName { get; set; } = string.Empty;
+    public int SubjectId { get; init; }
+    public string SubjectName { get; init; } = string.Empty;
 }
 
 
@@ -45,7 +42,7 @@ public class CourseForDetailDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<Tuple<Course, Subject>, CourseForDetailDto>()
+        config.NewConfig<Tuple<Course, Subject>, CourseDetailDto>()
             .Map(des => des.Id, src => src.Item1.Id.Value)
             .Map(des => des.LearnerName, src => src.Item1.LearnerName)
             .Map(des => des.Title, src => src.Item1.Title)

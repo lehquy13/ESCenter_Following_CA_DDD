@@ -1,8 +1,8 @@
-@model CED.Contracts.PaginatedList<CED.Contracts.ClassInformations.Dtos.ClassInformationForListDto>
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Matt.Paginated.PaginatedList<ESCenter.Client.Application.Contracts.Courses.Dtos.CourseForListDto>
 
 @{
     var subject = ViewBag.SubjectSearch as string ?? "";
-
 }
 
 <!-- ======= Breadcrumbs ======= -->
@@ -30,7 +30,7 @@
         
         <div class="row" data-aos="zoom-in" data-aos-delay="100">
 
-            @foreach (var i in Model)
+            @foreach (var i in Model.Items)
             {
                 <div class="course-item">
                     <div class="course-content">
@@ -51,7 +51,7 @@
                                 </li>
 
                                 <li class="col-sm-4">
-                                    <i class="far fa-calendar-alt text-danger mr-10"></i><b>Academic requirements:</b> @i.AcademicLevel
+                                    <i class="far fa-calendar-alt text-danger mr-10"></i><b>Academic requirements:</b> @i.AcademicLevelRequirement
                                 </li>
 
                                 <li class="col-sm-4">
@@ -77,7 +77,7 @@
                                     </li>
                                 }
                                 <li class="col-sm-4">
-                                    <i class="far fa-calendar-alt text-danger mr-10"></i>  <b>Minutes/week:</b> @i.MinutePerSession minutes
+                                    <i class="far fa-calendar-alt text-danger mr-10"></i>  <b>Minutes/week:</b> @i.SessionDuration minutes
                                 </li>
                                 <li class="col-sm-12">
                                     <i class="fas fa-map-marker-alt text-danger mr-10"></i>
