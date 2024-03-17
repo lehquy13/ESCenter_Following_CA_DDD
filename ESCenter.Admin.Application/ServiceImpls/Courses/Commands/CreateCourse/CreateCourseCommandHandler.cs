@@ -1,5 +1,6 @@
 ﻿using ESCenter.Application.EventHandlers;
 using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.NotificationConsts;
 using MapsterMapper;
 using Matt.ResultObject;
@@ -13,6 +14,7 @@ public class CreateCourseCommandHandler(
     IMapper mapper,
     IPublisher publisher,
     ICourseRepository courseRepository,
+    IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateCourseCommandHandler> logger)
     : CommandHandlerBase<CreateCourseCommand>(unitOfWork, logger)
@@ -23,16 +25,15 @@ public class CreateCourseCommandHandler(
         {
             var course = mapper.Map<Course>(command.CourseForCreateDto);
 
-            //TODO: Update when user repository is added
-            // if (!string.IsNullOrWhiteSpace(courseDto.ContactNumber))
-            // {
-            //     //Class was created by a system user
-            //     var user = await _userRepository.GetUserByEmail(command.Email);
-            //     if (user != null)
-            //     {
-            //         course.LearnerId = user.Id;
-            //     }
-            // }
+            if (!string.IsNullOrWhiteSpace(command.CourseForCreateDto.ContactNumber))
+            {
+                //Class was created by a system user
+                var user = await userRepository.GetUserByContact(command.CourseForCreateDto.ContactNumber);
+                if (user != null)
+                {
+                    course.SetLearnerId(user.Id); 
+                }
+            }
 
             //Handle publish event to notification service
             await courseRepository.InsertAsync(course, cancellationToken);

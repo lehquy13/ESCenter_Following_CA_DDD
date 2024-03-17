@@ -40,7 +40,13 @@ public class LoginQueryHandler(
             }
 
             //3. Generate token
-            var userLoginDto = Mapper.Map<UserLoginDto>(user);
+            var userLoginDto = new UserLoginDto()
+            {
+                Id = user.Id.Value,
+                Email = user.Email,
+                FullName = $"{user.FirstName} {user.LastName}",
+                Role = user.Role.ToString(),
+            };
             var loginToken = jwtTokenGenerator.GenerateToken(userLoginDto);
 
             return new AuthenticationResult()

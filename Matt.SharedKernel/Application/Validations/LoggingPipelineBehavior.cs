@@ -21,7 +21,7 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(
                 prop => prop.Name,
                 prop => prop.GetValue(request)?.ToString() ?? "null");
 
-        logger.LogInformation("Request Body:\n{RequestBody}",
+        logger.LogInformation("Handling Body:\n{RequestBody}",
             JsonSerializer.Serialize(body, new JsonSerializerOptions { WriteIndented = true }));
 
         var sw = Stopwatch.StartNew();

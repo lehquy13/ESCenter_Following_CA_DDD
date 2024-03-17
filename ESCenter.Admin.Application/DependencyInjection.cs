@@ -17,13 +17,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddApplicationMappings();
         services.AddBaseApplication(typeof(DependencyInjection).Assembly);
         services.AddScoped<IDashboardServices, DashboardServices>();
 
         services.AddScoped(
-            typeof(IPipelineBehavior<GetSubjectAllsQuery, Result<List<SubjectDto>>>),
-            typeof(CachingBehavior<GetSubjectAllsQuery, Result<List<SubjectDto>>>));
+            typeof(IPipelineBehavior<GetAllSubjectsQuery, Result<List<SubjectDto>>>),
+            typeof(CachingBehavior<GetAllSubjectsQuery, Result<List<SubjectDto>>>));
 
         return services;
     }

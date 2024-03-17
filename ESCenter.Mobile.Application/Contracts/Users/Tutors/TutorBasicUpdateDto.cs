@@ -1,4 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Commands.UpdateTutorProfile;
 using Mapster;
 
 namespace ESCenter.Mobile.Application.Contracts.Users.Tutors;
@@ -10,13 +11,6 @@ public class TutorBasicUpdateDto
     public string University { get; set; } = null!;
 }
 
-public class TutorBasicUpdateForClientDto
-{
-    public Guid Id { get; set; }
-    public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
-    public string University { get; set; } = null!;
-    public List<string> Majors { get; set; } = new();
-}
 
 public class TutorBasicUpdateDtoMappingConfig : IRegister
 {

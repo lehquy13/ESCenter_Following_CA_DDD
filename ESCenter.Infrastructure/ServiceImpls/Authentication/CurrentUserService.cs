@@ -18,7 +18,7 @@ internal class CurrentUserService : ICurrentUserService
         if (userId != null)
         {
             UserId = new Guid(userId.Value);
-            IsAuthenticated = true;
+            IsAuthenticated = UserId != Guid.Empty;
             CurrentUserEmail = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
             CurrentUserFullName = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value;
         }

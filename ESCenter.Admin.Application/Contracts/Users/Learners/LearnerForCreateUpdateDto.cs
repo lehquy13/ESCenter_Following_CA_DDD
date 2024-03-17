@@ -1,5 +1,6 @@
 ﻿using ESCenter.Admin.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Users;
+using FluentValidation;
 using Mapster;
 
 namespace ESCenter.Admin.Application.Contracts.Users.Learners;
@@ -12,7 +13,7 @@ public class LearnerForCreateUpdateDto : BasicAuditedEntityDto<Guid>
     public int BirthYear { get; set; } = 1960;
 
     public string Avatar { get; set; } =
-        @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
+        "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
 
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
@@ -23,6 +24,53 @@ public class LearnerForCreateUpdateDto : BasicAuditedEntityDto<Guid>
     public string PhoneNumber { get; set; } = string.Empty;
     public string Role { get; set; } = "Learner";
     public bool IsEmailConfirmed { get; set; } = false;
+}
+
+public class LearnerForCreateUpdateDtoValidator : AbstractValidator<LearnerForCreateUpdateDto>
+{
+    public LearnerForCreateUpdateDtoValidator()
+    {
+        RuleFor(dto => dto.FirstName)
+            .NotEmpty().WithMessage("First name is required.")
+            .MaximumLength(100).WithMessage("First name must not exceed 100 characters.");
+
+        RuleFor(dto => dto.LastName)
+            .NotEmpty().WithMessage("Last name is required.")
+            .MaximumLength(100).WithMessage("Last name must not exceed 100 characters.");
+
+        RuleFor(dto => dto.Gender)
+            .NotEmpty().WithMessage("Gender is required.")
+            .Must(gender => gender == "Male" || gender == "Female").WithMessage("Invalid gender value.");
+
+        RuleFor(dto => dto.BirthYear)
+            .InclusiveBetween(1900, DateTime.UtcNow.Year).WithMessage("Birth year must be between 1900 and current year.");
+
+        RuleFor(dto => dto.Email)
+            .NotEmpty().WithMessage("Email is required.")
+            .EmailAddress().WithMessage("Invalid email format.");
+
+        RuleFor(dto => dto.PhoneNumber)
+            .NotEmpty().WithMessage("Phone number is required.")
+            .Matches(@"^\d{10,11}$").WithMessage("Invalid phone number format.");
+
+        RuleFor(dto => dto.City)
+            .NotEmpty().WithMessage("City is required.")
+            .MaximumLength(100).WithMessage("City must not exceed 100 characters.");
+
+        RuleFor(dto => dto.Country)
+            .NotEmpty().WithMessage("Country is required.")
+            .MaximumLength(100).WithMessage("Country must not exceed 100 characters.");
+
+        RuleFor(dto => dto.Description)
+            .MaximumLength(1000).WithMessage("Description must not exceed 1000 characters.");
+
+        RuleFor(dto => dto.Role)
+            .NotEmpty().WithMessage("Role is required.")
+            .Must(role => role == "Learner").WithMessage("Invalid role value.");
+
+        RuleFor(dto => dto.IsEmailConfirmed)
+            .NotNull().WithMessage("Email confirmation status is required.");
+    }
 }
 
 public class LearnerForCreateUpdateDtoMappingConfig : IRegister

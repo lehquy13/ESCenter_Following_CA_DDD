@@ -14,7 +14,6 @@ public class ForgetPasswordCommandValidator : AbstractValidator<ForgetPasswordCo
     {
         RuleFor(x => x.Email)
             .NotEmpty()
-            //.Url()
             .WithMessage("Please enter a valid email.");
     }
 }

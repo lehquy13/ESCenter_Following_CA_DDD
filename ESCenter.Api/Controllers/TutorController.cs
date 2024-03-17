@@ -2,6 +2,7 @@
 using ESCenter.Mobile.Application.Contracts.Users.Learners;
 using ESCenter.Mobile.Application.Contracts.Users.Params;
 using ESCenter.Mobile.Application.Contracts.Users.Tutors;
+using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutors;
@@ -42,9 +43,9 @@ public class TutorController(
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> TutorRegistration(
-        [FromBody] TutorBasicForRegisterCommand tutorBasicForRegisterCommand)
+        [FromBody] TutorRegistrationDto tutorBasicForRegisterCommand)
     {
-        var result = await mediator.Send(tutorBasicForRegisterCommand);
+        var result = await mediator.Send(new RegisterAsTutorCommand(tutorBasicForRegisterCommand));
         return Ok(result);
     }
 

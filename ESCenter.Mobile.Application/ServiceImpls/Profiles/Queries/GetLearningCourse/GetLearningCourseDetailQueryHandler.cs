@@ -10,6 +10,7 @@ using ESCenter.Mobile.Application.ServiceImpls.Courses;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -22,6 +23,7 @@ public class GetLearningCourseDetailQueryHandler(
     IUserRepository userRepository,
     ITutorRepository tutorRepository,
     IIdentityRepository identityRepository,
+    ICurrentUserService currentUserService,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
@@ -40,7 +42,7 @@ public class GetLearningCourseDetailQueryHandler(
                 join tutor1 in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor1.Id
                 join tutor in userRepository.GetAll() on tutor1.UserId equals tutor.Id
                 join identityFromDb in identityRepository.GetAll() on tutor.Id equals identityFromDb.Id
-                where courseFromDb.TutorId == IdentityGuid.Create(request.LearnerId) &&
+                where courseFromDb.TutorId == IdentityGuid.Create(currentUserService.UserId) &&
                       courseFromDb.Id == CourseId.Create(request.CourseId)
                 select new
                 {

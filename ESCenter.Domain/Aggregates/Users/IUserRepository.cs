@@ -10,4 +10,5 @@ public interface IUserRepository : IRepository<User, IdentityGuid>
     Task<List<User>> GetTutors();
     Task<List<User>> GetTutorsByIds(IEnumerable<TutorId> tutorIds);
     Task<User?> GetTutor(TutorId tutorId);
+    Task<User?> GetUserByContact(string contact);
 }

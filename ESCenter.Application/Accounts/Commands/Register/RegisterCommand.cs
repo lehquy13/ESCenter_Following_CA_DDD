@@ -58,6 +58,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
         RuleFor(x => x.BirthYear)
             .InclusiveBetween(1900, DateTime.UtcNow.Year)
             .WithMessage("Invalid birth year.");
+        
         RuleFor(x => x.City)
             .NotEmpty()
             .WithMessage("City is required.")

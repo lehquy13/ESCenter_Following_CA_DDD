@@ -1,4 +1,4 @@
-using ESCenter.Application.Contracts.Profiles;
+using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Client.Application.Contracts.Courses.Dtos;
 using ESCenter.Client.Application.Contracts.Users.Tutors;
 using Matt.Paginated;

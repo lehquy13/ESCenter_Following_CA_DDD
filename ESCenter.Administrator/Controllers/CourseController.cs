@@ -1,6 +1,4 @@
 ﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Admin.Application.Contracts.Courses.Dtos;
-using ESCenter.Admin.Application.Contracts.Courses.Params;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CancelCourseRequest;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CreateCourse;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.DeleteCourse;
@@ -37,7 +35,7 @@ public class CourseController(
         ViewData["Statuses"] = EnumProvider.Statuses;
 
 
-        var subjects = await sender.Send(new GetSubjectAllsQuery());
+        var subjects = await sender.Send(new GetAllSubjectsQuery());
         ViewData["Subjects"] = subjects.Value;
     }
 
@@ -211,7 +209,10 @@ public class CourseController(
         Guid courseId, Guid requestId,
         CourseRequestCancelDto courseRequestCancelDto)
     {
-        var result = await sender.Send(new CancelCourseRequestCommand(courseRequestCancelDto));
+        var result = await sender.Send(new CancelCourseRequestCommand(
+            courseRequestCancelDto.CourseRequestId,
+            courseRequestCancelDto.CourseId,
+            courseRequestCancelDto.Description));
 
         if (!result.IsSuccess)
         {

@@ -34,7 +34,7 @@ internal sealed class UnitOfWork(
                 // If the entity is type of ICreationAuditedObject<T>, we should set CreatorId
                 //TODO: The logic here may goes wrong
                 if (entityEntry.Entity is ICreationAuditedObject)
-                    entityEntry.Property("CreatorId").CurrentValue = currentUserService.UserId;
+                    entityEntry.Property("CreatorId").CurrentValue = currentUserService.UserId.ToString();
             }
 
         IEnumerable<EntityEntry<IHasModificationTime>> hasModificationTimeEnties =

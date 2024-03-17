@@ -7,14 +7,14 @@ using Matt.SharedKernel.Domain.Interfaces;
 
 namespace ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 
-public class GetSubjectsQueryHandler(
+public class GetAllSubjectsQueryHandler(
     ISubjectRepository subjectRepository,
     IUnitOfWork unitOfWork,
-    IAppLogger<GetSubjectsQueryHandler> logger,
+    IAppLogger<GetAllSubjectsQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetSubjectAllsQuery, List<SubjectDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetAllSubjectsQuery, List<SubjectDto>>(unitOfWork, logger, mapper)
 {
-    public override async Task<Result<List<SubjectDto>>> Handle(GetSubjectAllsQuery request,
+    public override async Task<Result<List<SubjectDto>>> Handle(GetAllSubjectsQuery request,
         CancellationToken cancellationToken)
     {
         var subjects = await subjectRepository.GetListAsync(cancellationToken);

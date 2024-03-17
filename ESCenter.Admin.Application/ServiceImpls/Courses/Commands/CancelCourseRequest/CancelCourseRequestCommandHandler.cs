@@ -15,7 +15,7 @@ public class CancelCourseRequestCommandHandler(
     public override async Task<Result> Handle(CancelCourseRequestCommand command, CancellationToken cancellationToken)
     {
         var course =
-            await courseRepository.GetAsync(CourseId.Create(command.CourseRequestCancelDto.CourseId),
+            await courseRepository.GetAsync(CourseId.Create(command.CourseId),
                 cancellationToken);
 
         if (course is null)
@@ -25,14 +25,14 @@ public class CancelCourseRequestCommandHandler(
 
         // TODO: This will be domain service
         var courseRequest =
-            course.CourseRequests.FirstOrDefault(x => x.Id == CourseRequestId.Create(command.CourseRequestCancelDto.CourseRequestId));
+            course.CourseRequests.FirstOrDefault(x => x.Id == CourseRequestId.Create(command.CourseRequestId));
 
         if (courseRequest is null)
         {
             return Result.Fail(CourseAppServiceErrors.NonExistCourseRequestError);
         }
 
-        courseRequest.Cancel(command.CourseRequestCancelDto.Description);
+        courseRequest.Cancel(command.Description);
 
         // Check does course state still go correctly  
 

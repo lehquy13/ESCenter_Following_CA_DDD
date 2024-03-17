@@ -2,10 +2,8 @@
 using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Accounts.Queries.Login;
-using ESCenter.Application.Contracts.Profiles;
 using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
-using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetTutorMajors;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Client.Models;

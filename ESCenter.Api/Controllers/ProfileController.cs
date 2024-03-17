@@ -1,7 +1,6 @@
 ﻿using ESCenter.Application.Accounts.Commands.ChangeAvatar;
 using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
-using ESCenter.Application.Contracts.Profiles;
 using ESCenter.Host;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using ESCenter.Mobile.Application.Contracts.Users.Tutors;
@@ -75,7 +74,7 @@ public class ProfileController(
     [HttpGet("course-request/{courseRequestId}")]
     public async Task<IActionResult> CourseRequestDetail(Guid courseRequestId)
     {
-        var requestDetail = await mediator.Send(new GetCourseRequestDetailQuery(courseRequestId));
+        var requestDetail = await mediator.Send(new GetCourseRequestDetailByTutorIdQuery(courseRequestId));
         return Ok(requestDetail);
     }
 

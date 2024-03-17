@@ -17,7 +17,7 @@ public class SubjectController(ILogger<SubjectController> logger, ISender sender
     [Route("")]
     public async Task<IActionResult> Index()
     {
-        var result = await sender.Send(new GetSubjectAllsQuery());
+        var result = await sender.Send(new GetAllSubjectsQuery());
 
         if (result.IsFailure || result.Value is null)
         {

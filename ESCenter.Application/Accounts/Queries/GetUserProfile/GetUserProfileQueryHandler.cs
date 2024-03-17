@@ -1,5 +1,4 @@
-﻿using ESCenter.Application.Contracts.Profiles;
-using ESCenter.Domain.Aggregates.Users;
+﻿using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;

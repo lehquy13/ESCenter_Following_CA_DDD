@@ -5,7 +5,6 @@ using ESCenter.Application.Accounts.Commands.ChangePassword;
 using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Accounts.Queries.Login;
-using ESCenter.Application.Contracts.Profiles;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Domain.Shared;
 using MapsterMapper;

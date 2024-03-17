@@ -168,7 +168,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     [HttpGet("create")]
     public IActionResult Create()
     {
-        ViewData["Majors"] = sender.Send(new GetSubjectAllsQuery()).Result.Value;
+        ViewData["Majors"] = sender.Send(new GetAllSubjectsQuery()).Result.Value;
         return View(new TutorCreateDto());
     }
 

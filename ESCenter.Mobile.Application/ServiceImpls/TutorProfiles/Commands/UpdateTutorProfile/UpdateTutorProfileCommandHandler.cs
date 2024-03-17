@@ -6,6 +6,7 @@ using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Specifications.Subjects;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors;
 using Matt.ResultObject;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 
@@ -15,6 +16,7 @@ public class UpdateTutorInformationCommandHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<UpdateTutorInformationCommandHandler> logger,
     ITutorRepository tutorRepository,
+    ICurrentUserService currentUserService,
     ISubjectRepository subjectRepository)
     : CommandHandlerBase<UpdateTutorInformationCommand>(unitOfWork,
         logger)
@@ -24,7 +26,7 @@ public class UpdateTutorInformationCommandHandler(
     {
         try
         {
-            var tutorId = TutorId.Create(command.TutorBasicUpdateDto.Id);
+            var tutorId = TutorId.Create(currentUserService.UserId);
             var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
 
             // Check if the tutor exist

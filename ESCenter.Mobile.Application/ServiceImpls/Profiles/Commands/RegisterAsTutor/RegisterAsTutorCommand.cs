@@ -1,10 +1,13 @@
 ﻿using FluentValidation;
+using Matt.SharedKernel.Application.Contracts.Interfaces;
+using Matt.SharedKernel.Application.Mediators.Commands;
 
-namespace ESCenter.Client.Application.Contracts.Users.Tutors;
+namespace ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor;
+
+public record RegisterAsTutorCommand(TutorRegistrationDto TutorRegistrationDto) : ICommandRequest, IAuthorizationRequest;
 
 public class TutorRegistrationDto
 {
-    public Guid Id { get; init; }
     public string AcademicLevel { get; init; } = "Student";
     public string University { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
@@ -21,11 +24,6 @@ public class TutorBasicForRegisterCommandValidator : AbstractValidator<TutorRegi
 {
     public TutorBasicForRegisterCommandValidator()
     {
-        // Optional validation for Id (you can adjust based on your needs)
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage("Id is required.");
-
         RuleFor(x => x.AcademicLevel)
             .NotEmpty()
             .IsInEnum()

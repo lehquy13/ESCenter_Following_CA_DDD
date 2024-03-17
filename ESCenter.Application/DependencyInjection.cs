@@ -3,7 +3,6 @@ using FluentValidation;
 using Mapster;
 using MapsterMapper;
 using Matt.SharedKernel.Application.Validations;
-using MediatR;
 using MediatR.NotificationPublishers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,10 +14,10 @@ namespace ESCenter.Application
         {
             services
                 .AddMediator(mappingAssembly)
-                .AddMediatorBehavior()
+                .AddValidatorsFromAssembly(typeof(DependencyInjection)
+                    .Assembly) // Handle base validation of application layer
+                .AddValidatorsFromAssembly(mappingAssembly) // Handle validation of specific application layer
                 .AddApplicationMappings(mappingAssembly)
-                .AddValidatorsFromAssembly(mappingAssembly)
-                .AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly)
                 .AddLazyCache();
 
             return services;
@@ -33,30 +32,17 @@ namespace ESCenter.Application
             return services;
         }
 
-        private static IServiceCollection AddMediatorBehavior(this IServiceCollection services)
-        {
-            // services.AddScoped(
-            //     typeof(IPipelineBehavior<,>),
-            //     typeof(AuthorizationBehavior<,>));
-
-            services.AddScoped(
-                typeof(IPipelineBehavior<,>),
-                typeof(LoggingPipelineBehavior<,>));
-
-            services.AddScoped(
-                typeof(IPipelineBehavior<,>),
-                typeof(ValidationBehavior<,>));
-
-            return services;
-        }
-
         private static IServiceCollection AddMediator(this IServiceCollection services, Assembly applicationAssembly)
         {
             services.AddMediatR(
                 cfg =>
                 {
-                    cfg.RegisterServicesFromAssemblies(applicationAssembly);
+                    cfg.RegisterServicesFromAssemblies(applicationAssembly,typeof(DependencyInjection).Assembly);
                     cfg.NotificationPublisher = new TaskWhenAllPublisher();
+
+                    cfg.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
+                    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                    cfg.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
                 });
 
             return services;
@@ -66,7 +52,7 @@ namespace ESCenter.Application
             Assembly applicationAssembly)
         {
             var config = TypeAdapterConfig.GlobalSettings;
-            config.Scan(applicationAssembly);
+            config.Scan(applicationAssembly, typeof(DependencyInjection).Assembly);
 
             services.AddSingleton(config);
             services.AddScoped<IMapper, ServiceMapper>();
