@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ESCenter.Application.Behaviors;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
@@ -14,11 +13,13 @@ namespace ESCenter.Application
     {
         public static IServiceCollection AddBaseApplication(this IServiceCollection services, Assembly mappingAssembly)
         {
-            services.AddLazyCache();
             services
-                .AddMediatorBehavior(mappingAssembly)
                 .AddMediator(mappingAssembly)
-                .AddApplicationMappings(mappingAssembly);
+                .AddMediatorBehavior()
+                .AddApplicationMappings(mappingAssembly)
+                .AddValidatorsFromAssembly(mappingAssembly)
+                .AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly)
+                .AddLazyCache();
 
             return services;
         }
@@ -32,19 +33,23 @@ namespace ESCenter.Application
             return services;
         }
 
-        private static IServiceCollection AddMediatorBehavior(this IServiceCollection services, Assembly applicationAssembly)
+        private static IServiceCollection AddMediatorBehavior(this IServiceCollection services)
         {
+            // services.AddScoped(
+            //     typeof(IPipelineBehavior<,>),
+            //     typeof(AuthorizationBehavior<,>));
+
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
                 typeof(LoggingPipelineBehavior<,>));
-            
+
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
                 typeof(ValidationBehavior<,>));
 
-            services.AddValidatorsFromAssembly(applicationAssembly);
             return services;
         }
+
         private static IServiceCollection AddMediator(this IServiceCollection services, Assembly applicationAssembly)
         {
             services.AddMediatR(

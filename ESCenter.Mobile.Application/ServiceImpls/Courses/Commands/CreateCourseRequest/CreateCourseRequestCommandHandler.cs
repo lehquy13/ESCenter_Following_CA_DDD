@@ -14,7 +14,6 @@ namespace ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourse
 
 public class CreateCourseRequestCommandHandler(
     ICourseRepository courseRepository,
-    ICurrentUserService currentUserService,
     IPublisher publisher,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateCourseRequestCommandHandler> logger)

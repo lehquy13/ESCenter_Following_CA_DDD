@@ -19,17 +19,17 @@ public class AppLogger<TCategory> : IAppLogger<TCategory>
         _logger = microsoftLogger;
     }
 
-    public void LogInformation(string message, params object?[] args)
+    public void LogInformation(string? message, params object?[] args)
     {
         _logger.LogInformation(message, args);
     }
 
-    public void LogWarning(string message, params object[] args)
+    public void LogWarning(string? message, params object[] args)
     {
         _logger.LogWarning(message, args);
     }
 
-    public void LogError(string message, params object[] args)
+    public void LogError(string? message, params object[] args)
     {
         _logger.LogError(message, args);
     }

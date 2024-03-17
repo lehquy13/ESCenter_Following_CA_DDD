@@ -35,8 +35,3 @@ public class ChangeAvatarCommandHandler(
         return Result.Success();
     }
 }
-
-public static class ProfileAppServiceError
-{
-    public static Error UnAuthorized = new Error("UnAuzthorized", "Somehow they cant authorize");
-}
