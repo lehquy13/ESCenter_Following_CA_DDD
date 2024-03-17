@@ -28,6 +28,6 @@ public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordComm
             .MinimumLength(6)
             .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
             .WithMessage(
-                "New password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.");
+                "New password must be at least 6 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.");
     }
 }

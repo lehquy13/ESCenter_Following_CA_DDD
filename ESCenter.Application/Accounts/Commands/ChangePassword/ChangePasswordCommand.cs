@@ -16,15 +16,15 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
     {
         RuleFor(x => x.CurrentPassword)
             .NotEmpty()
-            .MinimumLength(8)
-            .WithMessage("Current password must be at least 8 characters long.");
+            .MinimumLength(6)
+            .WithMessage("Current password must be at least 6 characters long.");
 
         RuleFor(x => x.NewPassword)
             .NotEmpty()
-            .MinimumLength(8)
+            .MinimumLength(6)
             .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
             .WithMessage(
-                "New password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.");
+                "New password must be at least 6 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.");
 
         RuleFor(x => x.ConfirmedPassword)
             .NotEmpty()
