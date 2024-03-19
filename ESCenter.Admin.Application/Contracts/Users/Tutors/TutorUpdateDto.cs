@@ -40,6 +40,15 @@ public class SubjectMajorDto : EntityDto<int>
     public bool IsSelected { get; init; }
 }
 
+public class ReviewDetailDto
+{
+    public Guid CourseId { get; set; }
+    public Guid LearnerId { get; set; }
+    public string LearnerName { get; set; } = "";
+    public short Rate { get; set; } = 5;
+    public string Detail { get; set; } = "";
+}
+
 public class TutorForDetailDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)

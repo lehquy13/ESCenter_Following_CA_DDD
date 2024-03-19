@@ -2,6 +2,7 @@
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.NotificationConsts;
+using ESCenter.Domain.Specifications.Users;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -28,10 +29,12 @@ public class CreateCourseCommandHandler(
             if (!string.IsNullOrWhiteSpace(command.CourseForCreateDto.ContactNumber))
             {
                 //Class was created by a system user
-                var user = await userRepository.GetUserByContact(command.CourseForCreateDto.ContactNumber);
+                var user = await userRepository.GetAsync(
+                    new UserByContactSpec(command.CourseForCreateDto.ContactNumber),
+                    cancellationToken);
                 if (user != null)
                 {
-                    course.SetLearnerId(user.Id); 
+                    course.SetLearnerId(user.Id);
                 }
             }
 
@@ -40,7 +43,9 @@ public class CreateCourseCommandHandler(
             await UnitOfWork.SaveChangesAsync(cancellationToken);
 
             var message = "New class: " + course.Title + " at " + course.CreationTime.ToLongDateString();
-            await publisher.Publish(new NewObjectCreatedEvent(course.Id.Value.ToString(), message, NotificationEnum.Course), cancellationToken);
+            await publisher.Publish(
+                new NewObjectCreatedEvent(course.Id.Value.ToString(), message, NotificationEnum.Course),
+                cancellationToken);
 
             return Result.Success();
         }

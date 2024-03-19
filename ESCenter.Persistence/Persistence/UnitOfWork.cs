@@ -47,7 +47,7 @@ internal sealed class UnitOfWork(
 
                 //TODO: The logic here may goes wrong
                 if (entityEntry.Entity is IModificationAuditedObject)
-                    entityEntry.Property("LastModifierId").CurrentValue = currentUserService.UserId;
+                    entityEntry.Property("LastModifierId").CurrentValue = currentUserService.UserId.ToString();
             }
     }
 }

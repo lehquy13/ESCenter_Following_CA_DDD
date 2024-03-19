@@ -122,11 +122,7 @@ public class IdentityUser : FullAuditedAggregateRoot<IdentityGuid>
         using var hmac = new HMACSHA256(PasswordSalt);
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-        for (var i = 0; i < computedHash.Length; i++)
-            if (computedHash[i] != PasswordHash[i])
-                return false;
-
-        return true;
+        return !computedHash.Where((t, i) => t != PasswordHash[i]).Any();
     }
 
     public override string ToString()

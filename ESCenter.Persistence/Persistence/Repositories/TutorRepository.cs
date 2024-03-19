@@ -22,16 +22,17 @@ internal class TutorRepository(
             DateTime.Now.Month,
             1
         );
-        var result = AppDbContext.CourseRequests
+        var result = AppDbContext.Courses
             .AsNoTracking()
-            .Where(x => x.RequestStatus == RequestStatus.Approved)
-            .Where(x => x.CreationTime > thisMonth)
+            .Where(x => x.Status == Status.Confirmed)
+            .Where(x => x.CreationTime > thisMonth.AddMonths(-1))
             .GroupBy(x => x.TutorId)
             .OrderByDescending(x => x.Count())
             .Select(x => x.Key);
 
         var tutors = await AppDbContext.Tutors
             .Where(x => result.Contains(x.Id))
+            .Take(10)
             .ToListAsync();
 
         return tutors;

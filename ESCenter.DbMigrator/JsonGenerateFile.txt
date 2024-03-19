@@ -182,7 +182,7 @@
   '{{repeat(1000, 1000)}}',
   {
     firstName: '{{firstName(["female"])}}',
-    lastname:'{{surname()}}',
+    lastName:'{{surname()}}',
     gender: 2,
     birthYear:'{{integer(1980, 2003)}}',
     userName: function (tags) {

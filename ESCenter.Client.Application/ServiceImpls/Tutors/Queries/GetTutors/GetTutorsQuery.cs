@@ -6,4 +6,4 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutors;
 
-public record GetTutorsQuery(TutorParams TutorParams) : IQueryRequest<PaginatedList<TutorListForClientPageDto>>, IAuthorizationRequest;
+public record GetTutorsQuery(TutorParams TutorParams) : IQueryRequest<PaginatedList<TutorListForClientPageDto>>;

@@ -42,7 +42,7 @@ public class CourseForDetailDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<Tuple<Course, Subject>, CourseDetailDto>()
+        config.NewConfig<(Course, Subject), CourseDetailDto>()
             .Map(des => des.Id, src => src.Item1.Id.Value)
             .Map(des => des.LearnerName, src => src.Item1.LearnerName)
             .Map(des => des.Title, src => src.Item1.Title)

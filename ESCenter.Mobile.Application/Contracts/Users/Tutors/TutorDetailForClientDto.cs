@@ -16,7 +16,7 @@ public class TutorDetailForClientDto : BasicAuditedEntityDto<Guid>
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 
-    public string Image { get; set; } =
+    public string Avatar { get; set; } =
         "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
     public string AcademicLevel { get; set; } = "Student";
     public string University { get; set; } = string.Empty;

@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="col-lg-4">
-                <img src="@Model.Image" class="img-fluid" alt="">
+                <img src="@Model.Avatar" class="img-fluid" alt="">
                 <h3>@Model.FullName</h3>
                 <p>
                     @Model.Description
@@ -55,7 +55,7 @@
                 </div>
                 <div class="course-info d-flex justify-content-between align-items-center">
                     <h5>Rate</h5>
-                    <p>@Model.Rate</p>
+                    <p>@(Model.Rate == 0 ? "Unknown" : Model.Rate)</p>
                 </div>
 
 

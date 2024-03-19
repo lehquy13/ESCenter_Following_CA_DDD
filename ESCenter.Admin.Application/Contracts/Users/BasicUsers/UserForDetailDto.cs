@@ -12,7 +12,7 @@ public class UserForDetailDto : BasicAuditedEntityDto<Guid>
     public int BirthYear { get; set; } = 1960;
     public string Address { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Image { get; set; } = string.Empty;
+    public string Avatar { get; set; } = string.Empty;
 
     public string Email { get; set; } = string.Empty;
     public bool IsEmailConfirmed { get; set; } = false;

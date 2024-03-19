@@ -18,15 +18,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
-        IList<Assembly> assemblies = [];
-        assemblies.AddRange(Client.Application.DependencyInjection.GetApplicationCoreAssemblies);
-        assemblies.AddRange(new[]
-        {
-            typeof(ESCenter.Infrastructure.DependencyInjection).Assembly,
-            typeof(ESCenter.Persistence.DependencyInjection).Assembly
-        });
-
-        services.AddServiced(assemblies.ToArray());
+        RegisterByAutoDi(services);
 
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddCors();
@@ -37,10 +29,28 @@ public static class DependencyInjection
             .AddApplication();
         services.AddProblemDetails();
 
+        AddExceptionHandler(services);
+
+        return services;
+    }
+
+    private static void AddExceptionHandler(IServiceCollection services)
+    {
         services.AddExceptionHandler<BadRequestExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddExceptionHandler<NotFoundExceptionHandler>();
-        
-        return services;
+    }
+
+    private static void RegisterByAutoDi(IServiceCollection services)
+    {
+        IList<Assembly> assemblies = [];
+        assemblies.AddRange(Client.Application.DependencyInjection.GetApplicationCoreAssemblies);
+        assemblies.AddRange(new[]
+        {
+            typeof(ESCenter.Infrastructure.DependencyInjection).Assembly,
+            typeof(ESCenter.Persistence.DependencyInjection).Assembly
+        });
+
+        services.AddServiced(assemblies.ToArray());
     }
 }

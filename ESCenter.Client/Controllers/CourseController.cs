@@ -10,7 +10,6 @@ using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetRelatedCourses
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Models;
 using ESCenter.Domain.Shared.Courses;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESCenter.Client.Controllers;
 
 [Route("client/[controller]")]
-public class CourseController(ISender mediator, IMapper mapper) : Controller
+public class CourseController(ISender mediator) : Controller
 {
     private const int PageSize = 10;
 
@@ -69,15 +68,13 @@ public class CourseController(ISender mediator, IMapper mapper) : Controller
 
         var query1 = new GetRelatedCoursesQuery(id);
 
-        var course = mediator.Send(query);
-        var courses = mediator.Send(query1);
+        var course = await mediator.Send(query);
+        var courses = await mediator.Send(query1);
 
-        await Task.WhenAll(course, courses);
-
-        if (course.Result.IsSuccess && courses.Result.IsSuccess)
+        if (course.IsSuccess && courses.IsSuccess)
         {
-            var courseDetail = course.Result.Value;
-            var relatedCourses = courses.Result.Value;
+            var courseDetail = course.Value;
+            var relatedCourses = courses.Value;
 
             var courseDetailViewModel = new CourseDetailViewModel()
             {

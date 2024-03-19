@@ -11,7 +11,6 @@ using ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutors;
 using ESCenter.Client.Models;
 using ESCenter.Client.Utilities;
 using ESCenter.Domain.Shared.Courses;
-using MapsterMapper;
 using Matt.Paginated;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,8 +20,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Client.Controllers;
 
-[Route("[controller]")]
-public class TutorController(ISender mediator, IWebHostEnvironment webHostEnvironment, IMapper mapper)
+[Route("client/[controller]")]
+public class TutorController(ISender mediator, IWebHostEnvironment webHostEnvironment)
     : Controller
 {
     private readonly int _pageSize = 12;
@@ -40,8 +39,8 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
         int pageIndex = 1,
         string subjectName = "",
         int birthYear = 0,
-        string gender = "",
-        string academicLevel = "",
+        string gender = "None",
+        string academicLevel = "Optional",
         string address = "")
     {
         await PackStaticListToView();
@@ -57,9 +56,7 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
             Address = address
         };
 
-
         var query = new GetTutorsQuery(tutorParams);
-
         var tutorDtos = await mediator.Send(query);
 
         if (tutorDtos.IsSuccess)

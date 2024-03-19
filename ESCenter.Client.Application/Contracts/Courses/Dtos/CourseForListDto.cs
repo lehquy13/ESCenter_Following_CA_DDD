@@ -48,6 +48,7 @@ public class CourseForListDtoMappingConfig : IRegister
             .Map(des => des.SubjectName, src => src.Item2)
             .Map(des => des.Address, src => src.Item1.Address)
             .Map(des => des.Title, src => src.Item1.Title)
+            .Map(des => des, src => src.Item1)
             .Map(des => des, src => src);
     }
 }

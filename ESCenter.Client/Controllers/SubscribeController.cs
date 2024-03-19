@@ -1,13 +1,11 @@
 ﻿using ESCenter.Client.Application.ServiceImpls.Subscriber;
-using MapsterMapper;
-using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Client.Controllers;
 
 [Route("client/[controller]")]
-public class SubscribeController(IAppLogger<SubscribeController> logger, ISender sender, IMapper mapper)
+public class SubscribeController(ISender sender)
     : Controller
 {
     [HttpGet("subscribe")]

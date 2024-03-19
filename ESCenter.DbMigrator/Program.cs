@@ -77,7 +77,7 @@ internal static class Program
             if (!context.Subjects.Any())
             {
                 Console.WriteLine("No subjects found. Seeding subjects...");
-                
+
                 var somethingCalledMagic = new JsonSerializerSettings
                 {
                     ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
@@ -382,10 +382,11 @@ internal static class Program
         }
 
         userData.AddRange(tutorUSerData);
-        
-        identityUsers = HandlePassword(identityUser1, identityUser2, identityUser3,identityRoles);
+
+        identityUsers = HandlePassword(identityUser1, identityUser2, identityUser3, identityRoles);
 
         tutorData = JsonConvert.DeserializeObject<List<Tutor>>(file, somethingCalledMagic)!;
+
         if (tutorData == null)
         {
             throw new InvalidOperationException();
@@ -401,7 +402,7 @@ internal static class Program
     }
 
     private static List<IdentityUser> HandlePassword(
-        List<IdentityUser> identityUsers1, 
+        List<IdentityUser> identityUsers1,
         List<IdentityUser> identityUsers2,
         List<IdentityUser> tutorIdentityUsers3,
         List<IdentityRole> identityRoles)
@@ -433,7 +434,7 @@ internal static class Program
 
             realOnes.Add(newOne);
         }
-        
+
         foreach (var identityUser in tutorIdentityUsers3)
         {
             var newOne = IdentityUser.Create(
@@ -561,22 +562,24 @@ internal static class Program
         {
             var prop = base.CreateProperty(member, memberSerialization);
 
-            if (!prop.Writable)
+            if (prop.Writable)
             {
-                var property = member as PropertyInfo;
-                if (property != null)
+                return prop;
+            }
+
+            var property = member as PropertyInfo;
+            if (property != null)
+            {
+                prop.Writable = property.GetSetMethod(true) != null;
+                var hasPrivateSetter = property?.GetSetMethod(true) != null;
+                prop.Writable = hasPrivateSetter;
+            }
+            else
+            {
+                var fieldInfo = member as FieldInfo;
+                if (fieldInfo != null)
                 {
-                    prop.Writable = property.GetSetMethod(true) != null;
-                    var hasPrivateSetter = property?.GetSetMethod(true) != null;
-                    prop.Writable = hasPrivateSetter;
-                }
-                else
-                {
-                    var fieldInfo = member as FieldInfo;
-                    if (fieldInfo != null)
-                    {
-                        prop.Writable = true;
-                    }
+                    prop.Writable = true;
                 }
             }
 

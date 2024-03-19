@@ -1,10 +1,11 @@
-﻿using ESCenter.Application.Accounts.Commands.ForgetPassword;
+﻿using ESCenter.Application.Accounts.Commands.ChangePassword;
+using ESCenter.Application.Accounts.Commands.ForgetPassword;
 using ESCenter.Application.Accounts.Commands.Register;
 using ESCenter.Application.Accounts.Commands.ResetPassword;
 using ESCenter.Application.Accounts.Queries.Login;
 using ESCenter.Application.Accounts.Queries.ValidateToken;
 using ESCenter.Application.Contracts.Authentications;
-using MapsterMapper;
+using ESCenter.Client.Models;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESCenter.Client.Controllers;
 
 [Route("client/[controller]")]
-public class AuthenticationController(ISender mediator, IMapper mapper, IAppLogger<AuthenticationController> logger)
+public class AuthenticationController(ISender mediator, IAppLogger<AuthenticationController> logger)
     : Controller
 {
     [Route("")]
@@ -136,17 +137,19 @@ public class AuthenticationController(ISender mediator, IMapper mapper, IAppLogg
     }
 
     [HttpPost("change-password/{id:guid}")]
-    public async Task<IActionResult> ChangePassword1(Guid id, string password)
+    public async Task<IActionResult> ChangePassword1([FromRoute] Guid id, ChangePasswordRequest changePasswordRequest)
     {
-        throw new NotImplementedException();
-        // var query = new ResetPasswordCommand(new Guid(id), password);
-        //
-        // var loginResult = await mediator.Send(query);
-        //
-        // if (loginResult)
-        // {
-        //     return RedirectToAction("Index");
-        // }
+        var query = new ChangePasswordCommand(
+            changePasswordRequest.CurrentPassword,
+            changePasswordRequest.NewPassword,
+            changePasswordRequest.ConfirmPassword);
+
+        var loginResult = await mediator.Send(query);
+
+        if (loginResult.IsSuccess)
+        {
+            return RedirectToAction("SuccessPage", "Home");
+        }
 
         return RedirectToAction("FailPage", "Home");
     }

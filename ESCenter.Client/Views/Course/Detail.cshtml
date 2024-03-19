@@ -28,12 +28,12 @@
                     <form asp-controller="Course" asp-action="RequestGettingClass" class="col-lg-3">
                         @if (Context.Session.GetString("role") == UserRole.Learner.ToString())
                         {
-                            <button class="btn btn-success" disabled type="submit">Request for this class (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
+                            <button class="btn btn-success" disabled type="submit">Request (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
 
                         }
                         else
                         {
-                            <button class="btn btn-success" type="submit">Request for this class (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
+                            <button class="btn btn-success" type="submit">Request (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
 
                         }
                         <input value="@Model.CourseDetailDto.Id" hidden="" name="ClassId"/>
@@ -70,7 +70,7 @@
 
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Class' Fee</h5>
-                            <p>$@Model.CourseDetailDto.ChargeFee</p>
+                            <p>$@Model.CourseDetailDto.SectionFee</p>
                         </div>
                         <div class="course-info d-flex justify-content-between align-items-center">
                             <h5>Charge Fee</h5>

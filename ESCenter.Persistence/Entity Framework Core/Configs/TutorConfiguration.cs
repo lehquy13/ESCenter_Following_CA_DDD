@@ -26,7 +26,7 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
         builder.OwnsOne(o => o.ChangeVerificationRequest, ib =>
         {
             ib.ToTable(nameof(ChangeVerificationRequest));
-            
+
             ib.HasKey(x => x.Id);
             ib.Property(r => r.Id)
                 .HasColumnName(nameof(ChangeVerificationRequest.Id))
@@ -35,7 +35,7 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
                     id => id.Value,
                     value => ChangeVerificationRequestId.Create(value)
                 );
-            
+
             ib.Property(r => r.TutorId)
                 .HasColumnName(nameof(ChangeVerificationRequest.TutorId))
                 .ValueGeneratedNever()
@@ -49,7 +49,7 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             ib.OwnsMany(cvr => cvr.ChangeVerificationRequestDetails, cvrd =>
             {
                 cvrd.ToTable(nameof(ChangeVerificationRequestDetail));
-                
+
                 cvrd.HasKey(x => x.Id);
                 cvrd.Property(r => r.Id)
                     .HasColumnName(nameof(ChangeVerificationRequestDetail.Id))
@@ -58,7 +58,7 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
                         id => id.Value,
                         value => ChangeVerificationRequestDetailId.Create(value)
                     );
-                
+
                 cvrd.WithOwner().HasForeignKey(x => x.ChangeVerificationRequestId);
                 cvrd.Property(r => r.ImageUrl).IsRequired();
             });
@@ -133,7 +133,7 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
                 id => id.Value,
                 value => IdentityGuid.Create(value)
             );
-        
+
         builder.HasOne<User>()
             .WithOne()
             .HasForeignKey<Tutor>(nameof(Tutor.UserId))
@@ -141,8 +141,10 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(r => r.AcademicLevel).IsRequired();
+        builder.HasIndex(p => p.AcademicLevel);
         builder.Property(r => r.University).IsRequired();
         builder.Property(r => r.IsVerified).IsRequired();
         builder.Property(r => r.Rate).IsRequired();
+        builder.HasIndex(p => p.Rate);
     }
 }

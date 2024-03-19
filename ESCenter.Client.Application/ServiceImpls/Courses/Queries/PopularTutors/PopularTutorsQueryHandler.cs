@@ -23,22 +23,28 @@ public class PopularTutorsQueryHandler(
     public override async Task<Result<IEnumerable<TutorListForClientPageDto>>> Handle(PopularTutorsQuery request,
         CancellationToken cancellationToken)
     {
-        var tutorsQueryable =
-            from tutor in tutorRepository.GetAll()
-            join user in userRepository.GetAll() on tutor.UserId equals user.Id
-            where tutor.IsVerified == true
+        var tutors = await tutorRepository.GetPopularTutors();
+        
+        var userQueryable =
+            from user in userRepository.GetAll() 
+            where tutors.Select(x => x.UserId).Contains(user.Id)
             select new
             {
-                User = user,
-                Tutor = tutor
+                User = user
             };
 
-        var tutors = await asyncQueryableExecutor.ToListAsync(tutorsQueryable, false, cancellationToken);
+        var users = await asyncQueryableExecutor.ToListAsync(userQueryable, false, cancellationToken);
 
-        var tutorListForClientPageDtos = tutors
+        var joined = tutors.Join(users, tutor => tutor.UserId, user => user.User.Id, (tutor, user) => new
+        {
+            Tutor = tutor,
+            User = user.User
+        });
+        
+        var tutorListForClientPageDtos = joined
             .Select(x => (x.User, x.Tutor).Adapt<TutorListForClientPageDto>())
             .ToList();
-
+        
         return tutorListForClientPageDtos;
     }
 }

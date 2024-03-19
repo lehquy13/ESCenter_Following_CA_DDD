@@ -2,6 +2,7 @@
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
+using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -42,7 +43,7 @@ public class GetRelatedCoursesQueryHandler(
         var coursesResult = await asyncQueryableExecutor.ToListAsync(courses, false, cancellationToken);
 
         var courseDtos = coursesResult
-            .Select(x => Mapper.Map<CourseForListDto>(x))
+            .Select(x => (x.course,x.Name).Adapt<CourseForListDto>())
             .ToList();
 
         return courseDtos;

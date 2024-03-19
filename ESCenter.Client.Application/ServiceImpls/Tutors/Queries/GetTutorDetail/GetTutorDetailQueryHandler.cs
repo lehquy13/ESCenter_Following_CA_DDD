@@ -1,9 +1,11 @@
 ﻿using ESCenter.Client.Application.Contracts.Users.Tutors;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles;
 using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -28,13 +30,14 @@ public class GetTutorDetailQueryHandler(
         var tutorDetailAsQueryable =
             from user in userRepository.GetAll()
             join tutor in tutorRepository.GetAll() on user.Id equals tutor.UserId
-            join course in courseRepository.GetAll() on tutor.Id equals course.TutorId into groupCourse
+            join course in courseRepository.GetAll().Where(x => x.Review != null) on tutor.Id equals course.TutorId into
+                groupCourse
             where user.Id == IdentityGuid.Create(request.TutorId)
             select new
             {
                 User = user,
                 Tutor = tutor,
-                Reviews = groupCourse.Select(x => x.Review),
+                Reviews = groupCourse.Select(x => new { x.Review, x.LearnerName })
             };
 
         var queryResult =
@@ -45,7 +48,12 @@ public class GetTutorDetailQueryHandler(
             return Result.Fail(TutorProfileAppServiceError.NonExistTutorError);
         }
 
-        var tutorForDetailDto = Mapper.Map<TutorDetailForClientDto>(queryResult);
+        // We split the mapping bc it's hard =))) just like that
+        var tutorForDetailDto =
+            (queryResult.Tutor, queryResult.User).Adapt<TutorDetailForClientDto>();
+
+        tutorForDetailDto.Reviews =
+            queryResult.Reviews.Select(x => (x.Review, x.LearnerName).Adapt<ReviewDto>()).ToList();
 
         return tutorForDetailDto;
     }
