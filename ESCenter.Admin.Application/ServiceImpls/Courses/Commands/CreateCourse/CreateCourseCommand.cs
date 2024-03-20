@@ -58,7 +58,7 @@ public class CourseForCreateDtoMappingConfig : IRegister
                     x.SessionPerWeek,
                     x.Address,
                     SubjectId.Create(x.SubjectId),
-                    x.LearnerId.HasValue ? IdentityGuid.Create(x.LearnerId.Value) : null)
+                    x.LearnerId.HasValue ? CustomerId.Create(x.LearnerId.Value) : null)
             );
     }
 }

@@ -38,7 +38,7 @@ internal class TutorRepository(
         return tutors;
     }
 
-    public Task<Tutor?> GetTutorByUserId(IdentityGuid userId)
+    public Task<Tutor?> GetTutorByUserId(CustomerId userId)
     {
         return AppDbContext.Tutors
             .FirstOrDefaultAsync(x => x.UserId == userId);

@@ -2,7 +2,7 @@
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.NotificationConsts;
-using ESCenter.Domain.Specifications.Users;
+using ESCenter.Domain.Specifications.Customers;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -15,7 +15,7 @@ public class CreateCourseCommandHandler(
     IMapper mapper,
     IPublisher publisher,
     ICourseRepository courseRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateCourseCommandHandler> logger)
     : CommandHandlerBase<CreateCourseCommand>(unitOfWork, logger)
@@ -29,8 +29,8 @@ public class CreateCourseCommandHandler(
             if (!string.IsNullOrWhiteSpace(command.CourseForCreateDto.ContactNumber))
             {
                 //Class was created by a system user
-                var user = await userRepository.GetAsync(
-                    new UserByContactSpec(command.CourseForCreateDto.ContactNumber),
+                var user = await customerRepository.GetAsync(
+                    new CustomerByContactSpec(command.CourseForCreateDto.ContactNumber),
                     cancellationToken);
                 if (user != null)
                 {

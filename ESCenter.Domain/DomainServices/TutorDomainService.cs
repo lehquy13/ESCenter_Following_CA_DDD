@@ -19,7 +19,7 @@ public class TutorDomainService(
     private static readonly List<string> EmptyVerification = ["document.png"];
 
     public async Task<Tutor> CreateTutorWithEmptyVerificationAsync(
-        IdentityGuid userId,
+        CustomerId userId,
         AcademicLevel academicLevel,
         string university,
         IEnumerable<int> majors,

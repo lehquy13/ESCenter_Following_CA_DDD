@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Mail;
-using ESCenter.Application.Interfaces.Emails;
 using FluentEmail.Core;
 using FluentEmail.Smtp;
+using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Microsoft.Extensions.Options;
 
 namespace ESCenter.Infrastructure.ServiceImpls.EmailServices;

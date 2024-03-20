@@ -21,7 +21,7 @@ public class UserForListDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<User, UserForListDto>()
+        config.NewConfig<Customer, UserForListDto>()
             .Map(des => des.Id, src => src.Id.Value)
             .Map(des => des, src => src);
     }

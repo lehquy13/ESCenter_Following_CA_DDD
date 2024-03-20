@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Domain.DomainServices.Interfaces;
+﻿using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using Matt.ResultObject;
@@ -11,7 +11,7 @@ namespace ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.RegisterAsT
 
 public class RegisterAsTutorCommandHandler(
     IUnitOfWork unitOfWork,
-    IIdentityDomainServices identityDomainServices,
+    IIdentityService identityService,
     ICurrentUserService currentUserService,
     IAppLogger<RegisterAsTutorCommandHandler> logger)
     : CommandHandlerBase<RegisterAsTutorCommand>(unitOfWork, logger)
@@ -19,21 +19,17 @@ public class RegisterAsTutorCommandHandler(
     public override async Task<Result> Handle(RegisterAsTutorCommand command, CancellationToken cancellationToken)
     {
         // Check if the user existed
-        var result = await identityDomainServices.RegisterAsTutor(
-            IdentityGuid.Create(currentUserService.UserId),
+        var result = await identityService.RegisterAsTutor(
+            CustomerId.Create(currentUserService.UserId),
             command.TutorRegistrationDto.AcademicLevel.ToEnum<AcademicLevel>(),
             command.TutorRegistrationDto.University,
             command.TutorRegistrationDto.Majors,
-            command.TutorRegistrationDto.ImageFileUrls);
+            command.TutorRegistrationDto.ImageFileUrls, cancellationToken);
 
-        if (result.IsFailure)
+        if (result.IsFailure || await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
-            return Result.Fail(result.Error);
-        }
-
-        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-        {
-            return Result.Fail(UserAppServiceError.FailRegisteringAsTutorErrorWhileSavingChanges);
+            Logger.LogError("Fail to register tutor with error: {Error}", result.Error.ToString());
+            return Result.Fail(UserAppServiceError.FailToRegisterTutorError);
         }
 
         Logger.LogInformation("Done registering tutor");

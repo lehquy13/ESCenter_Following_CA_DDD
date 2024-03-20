@@ -18,7 +18,7 @@ namespace ESCenter.Admin.Application.ServiceImpls;
 internal class DashboardServices(
     IReadOnlyRepository<Course, CourseId> courseRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IReadOnlyRepository<User, IdentityGuid> userRepository,
+    IReadOnlyRepository<Customer, CustomerId> userRepository,
     IReadOnlyRepository<Notification, int> notificationRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork,

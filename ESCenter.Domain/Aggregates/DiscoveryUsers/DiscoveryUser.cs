@@ -8,13 +8,13 @@ namespace ESCenter.Domain.Aggregates.DiscoveryUsers;
 public class DiscoveryUser : AggregateRoot<DiscoveryUserId>
 {
     public DiscoveryId DiscoveryId { get; private set; } = null!;
-    public IdentityGuid UserId { get; private set; } = null!;
+    public CustomerId UserId { get; private set; } = null!;
 
     private DiscoveryUser()
     {
     }
 
-    public static DiscoveryUser Create(DiscoveryId discoveryId, IdentityGuid userId)
+    public static DiscoveryUser Create(DiscoveryId discoveryId, CustomerId userId)
     {
         return new DiscoveryUser
         {

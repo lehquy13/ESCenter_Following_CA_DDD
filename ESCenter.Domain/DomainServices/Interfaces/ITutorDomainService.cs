@@ -8,7 +8,7 @@ namespace ESCenter.Domain.DomainServices.Interfaces;
 public interface ITutorDomainService : IDomainService
 {
     Task<Tutor> CreateTutorWithEmptyVerificationAsync(
-        IdentityGuid userId,
+        CustomerId userId,
         AcademicLevel academicLevel,
         string university,
         IEnumerable<int> majors, 

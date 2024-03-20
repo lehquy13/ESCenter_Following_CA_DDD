@@ -1,7 +1,7 @@
 ﻿using ESCenter.Domain.Aggregates.Subscribers;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.DomainServices.Interfaces;
-using ESCenter.Domain.Specifications.Users;
+using ESCenter.Domain.Specifications.Customers;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -11,14 +11,14 @@ namespace ESCenter.Domain.DomainServices;
 
 public class SubscribeDomainService(
     IRepository<Subscriber, int> subscriberRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<SubscribeDomainService> logger)
     : DomainServiceBase(logger), ISubscribeDomainService
 {
     public async Task<Result> Subscribe(string mail)
     {
-        var user = await userRepository.GetAsync(new UserByEmailSpec(mail));
+        var user = await customerRepository.GetAsync(new CustomerByEmailSpec(mail));
         
         if (user is null)
         {
@@ -41,7 +41,7 @@ public class SubscribeDomainService(
 
     public async Task<Result> UnSubscribe(string mail)
     {
-        var user = await userRepository.GetAsync(new UserByEmailSpec(mail));
+        var user = await customerRepository.GetAsync(new CustomerByEmailSpec(mail));
         
         if (user is null)
         {

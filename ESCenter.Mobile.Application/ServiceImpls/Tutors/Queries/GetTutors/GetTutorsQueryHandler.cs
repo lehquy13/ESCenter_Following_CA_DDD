@@ -23,23 +23,22 @@ namespace ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutors;
 public class GetTutorsQueryHandler(
     ICurrentUserService currentUserService,
     ITutorRepository tutorRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IDiscoveryRepository discoveryRepository,
     ICourseRepository courseRepository,
     IRepository<DiscoveryUser, DiscoveryUserId> discoveryUserRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
-    IAppLogger<RequestHandlerBase> logger,
+    IAppLogger<GetTutorsQueryHandler> logger,
     IMapper mapper
 )
-    : QueryHandlerBase<GetTutorsQuery, PaginatedList<TutorListForClientPageDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetTutorsQuery, PaginatedList<TutorListForClientPageDto>>(logger, mapper)
 {
     public override async Task<Result<PaginatedList<TutorListForClientPageDto>>> Handle(GetTutorsQuery request,
         CancellationToken cancellationToken)
     {
         var tutors =
             from tutor in tutorRepository.GetAll()
-            join user in userRepository.GetAll() on tutor.UserId equals user.Id
+            join user in customerRepository.GetAll() on tutor.UserId equals user.Id
             join course in courseRepository.GetAll() on tutor.Id equals course.TutorId into
                 groupCourse
             where tutor.IsVerified == true
@@ -78,7 +77,7 @@ public class GetTutorsQueryHandler(
 
         if (currentUserService.IsAuthenticated)
         {
-            var userGuid = IdentityGuid.Create(currentUserService.UserId);
+            var userGuid = CustomerId.Create(currentUserService.UserId);
             var discoveryQueryable =
                 from discoveryU in discoveryUserRepository.GetAll()
                 join discoveryS in discoveryRepository.GetDiscoverySubjectAsQueryable()
@@ -102,7 +101,7 @@ public class GetTutorsQueryHandler(
             );
 
             var learntSubjectQueryable =
-                from userForSearch in userRepository.GetAll()
+                from userForSearch in customerRepository.GetAll()
                 join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
                     .LearnerId
                 where userForSearch.Id == userGuid

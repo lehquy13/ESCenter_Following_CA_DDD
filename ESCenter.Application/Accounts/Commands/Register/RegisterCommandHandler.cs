@@ -11,26 +11,31 @@ namespace ESCenter.Application.Accounts.Commands.Register;
 public class RegisterCommandHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RegisterCommandHandler> logger,
-    IIdentityDomainServices identityDomainServices,
-    IUserRepository userRepository
+    IIdentityService identityService,
+    ICustomerRepository customerRepository
 )
     : CommandHandlerBase<RegisterCommand>(unitOfWork, logger)
 {
     public override async Task<Result> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        var result = await identityDomainServices.CreateAsync(
+        var result = await identityService.CreateAsync(
             command.Username,
+            command.FirstName,
+            command.LastName,
+            command.Gender,
+            command.BirthYear,
+            Address.Create(command.City, command.Country),
+            command.Country,
+            string.Empty,
             command.Email,
-            command.Password,
-            command.PhoneNumber
-        );
+            command.PhoneNumber);
 
         if (!result.IsSuccess)
         {
             return Result.Fail(result.Error);
         }
 
-        var user = User.Create(
+        var user = Customer.Create(
             result.Value.Id,
             command.FirstName,
             command.LastName,
@@ -44,7 +49,7 @@ public class RegisterCommandHandler(
             UserRole.Learner
         );
 
-        await userRepository.InsertAsync(user, cancellationToken);
+        await customerRepository.InsertAsync(user, cancellationToken);
 
         if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {

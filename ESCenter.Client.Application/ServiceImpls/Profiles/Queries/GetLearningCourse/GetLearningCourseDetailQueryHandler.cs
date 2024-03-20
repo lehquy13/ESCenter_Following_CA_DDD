@@ -5,8 +5,8 @@ using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -20,54 +20,43 @@ namespace ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningC
 public class GetLearningCourseDetailQueryHandler(
     ICourseRepository courseRepository,
     ISubjectRepository subjectRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     ITutorRepository tutorRepository,
-    IIdentityRepository identityRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     ICurrentUserService currentUserService,
-    IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper
 )
-    : QueryHandlerBase<GetLearningCourseDetailQuery, CourseDetailDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetLearningCourseDetailQuery, LearningCourseDetailForClientDto>(logger, mapper)
 {
-    public override async Task<Result<CourseDetailDto>> Handle(GetLearningCourseDetailQuery request,
+    public override async Task<Result<LearningCourseDetailForClientDto>> Handle(GetLearningCourseDetailQuery request,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var courseRequestQueryable =
-                from courseFromDb in courseRepository.GetAll()
-                join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-                join tutor1 in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor1.Id
-                join tutor in userRepository.GetAll() on tutor1.UserId equals tutor.Id
-                join identityFromDb in identityRepository.GetAll() on tutor.Id equals identityFromDb.Id
-                where courseFromDb.TutorId == IdentityGuid.Create(currentUserService.UserId) &&
-                      courseFromDb.Id == CourseId.Create(request.CourseId)
-                select new
-                {
-                    Course = courseFromDb,
-                    Subject = subjectFromDb,
-                    TutorInfo = tutor,
-                    Identity = identityFromDb
-                };
-
-            var course =
-                await asyncQueryableExecutor.SingleOrDefault(courseRequestQueryable, false, cancellationToken);
-
-            if (course is null)
+        var courseRequestQueryable =
+            from courseFromDb in courseRepository.GetAll()
+            join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
+            join tutor in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor.Id
+            join customer in customerRepository.GetAll() on tutor.UserId equals customer.Id
+            where courseFromDb.TutorId == CustomerId.Create(currentUserService.UserId) &&
+                  courseFromDb.Id == CourseId.Create(request.CourseId)
+            select new
             {
-                return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
-            }
+                Course = courseFromDb,
+                Subject = subjectFromDb,
+                TutorId = tutor.Id,
+                TutorInfo = customer
+            };
 
-            var classDto = Mapper.Map<CourseDetailDto>(course);
+        var course =
+            await asyncQueryableExecutor.SingleOrDefault(courseRequestQueryable, false, cancellationToken);
 
-            return classDto;
-        }
-        catch (Exception ex)
+        if (course is null)
         {
-            Logger.LogError("{Message} {Detail}", ex.Message, ex.InnerException?.Message ?? string.Empty);
-            return Result.Fail(ex.Message);
+            return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
+
+        var classDto = (course.Course,course.Subject,course.TutorId, course.TutorInfo).Adapt<LearningCourseDetailForClientDto>();
+
+        return classDto;
     }
 }

@@ -14,12 +14,11 @@ namespace ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetTutorMajo
 
 public class GetTutorMajorsQueryHandler(
     ICurrentUserService currentUserService,
-    IUnitOfWork unitOfWork,
     ISubjectRepository subjectRepository,
     IReadOnlyRepository<TutorMajor, TutorMajorId> tutorMajorRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<RequestHandlerBase> logger,
-    IMapper mapper) : QueryHandlerBase<GetTutorMajorsQuery, IEnumerable<SubjectMajorDto>>(unitOfWork, logger, mapper)
+    IMapper mapper) : QueryHandlerBase<GetTutorMajorsQuery, IEnumerable<SubjectMajorDto>>(logger, mapper)
 {
     public override async Task<Result<IEnumerable<SubjectMajorDto>>> Handle(GetTutorMajorsQuery request,
         CancellationToken cancellationToken)
@@ -41,7 +40,7 @@ public class GetTutorMajorsQueryHandler(
 
         // filter out the subjects that the tutor is not majoring in
         var tutorMajors = await asyncQueryableExecutor.ToListAsync(tutorQ, false, cancellationToken);
-        
+
         return tutorMajors;
     }
 }

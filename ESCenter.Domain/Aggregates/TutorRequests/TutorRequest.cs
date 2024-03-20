@@ -9,7 +9,7 @@ namespace ESCenter.Domain.Aggregates.TutorRequests;
 public class TutorRequest : AuditedAggregateRoot<TutorRequestId>
 {
     public TutorId TutorId { get; private set; } = null!;
-    public IdentityGuid LearnerId { get; private set; } = null!;
+    public CustomerId LearnerId { get; private set; } = null!;
     public string Message { get; private set; } = string.Empty;
     public RequestStatus RequestStatus { get; private set; } = RequestStatus.Pending;
 
@@ -19,7 +19,7 @@ public class TutorRequest : AuditedAggregateRoot<TutorRequestId>
 
     public static TutorRequest Create(
         TutorId tutorId,
-        IdentityGuid learnerId,
+        CustomerId learnerId,
         string message)
     {
         return new TutorRequest()

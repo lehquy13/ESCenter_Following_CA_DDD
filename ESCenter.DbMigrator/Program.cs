@@ -9,9 +9,9 @@ using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.Entity_Framework_Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -175,15 +175,14 @@ internal static class Program
 
                 #region roles
 
-                var file = await File.ReadAllTextAsync(Path.GetFullPath("../../../3_role.json"));
-                var identityRoles = JsonConvert.DeserializeObject<List<IdentityRole>>(file, somethingCalledMagic);
-
-                if (identityRoles == null)
+                var identityRoles = new List<EsIdentityRole>
                 {
-                    return;
-                }
+                    new("Admin"),
+                    new("Tutor"),
+                    new("Learner"),
+                };
 
-                context.IdentityRoles.AddRange(identityRoles);
+                context.Roles.AddRange(identityRoles);
 
                 #endregion
 
@@ -204,8 +203,8 @@ internal static class Program
                     identityRoles,
                     out var userData,
                     out var tutorData,
-                    out var identityUsers);
-
+                    out var identityUsers,
+                    out var userRoles);
 
                 SeedTutorMajor(tutorData, subjects);
 
@@ -213,7 +212,7 @@ internal static class Program
 
                 // TODO: seed discovery for user
                 var i = userData.Count;
-                var duList = (from user in userData.TakeWhile(user => i-- != 0)
+                var duList = (from user in userData.TakeWhile(_ => i-- != 0)
                     let random = new Random().Next(0, 6)
                     select DiscoveryUser.Create(discoveries[random].Id, user.Id)).ToList();
 
@@ -221,16 +220,16 @@ internal static class Program
 
                 #endregion
 
-
-                context.Users.AddRange(userData);
+                context.Customers.AddRange(userData);
                 context.Tutors.AddRange(tutorData);
-                context.IdentityUsers.AddRange(identityUsers);
+                context.Users.AddRange(identityUsers);
+                context.UserRoles.AddRange(userRoles);
 
                 #endregion
 
                 #region courses
 
-                file = await File.ReadAllTextAsync(
+                var file = await File.ReadAllTextAsync(
                     Path.GetFullPath("../../../15_random_courses_female_noAcc.json"));
 
                 var courseData = JsonConvert.DeserializeObject<List<Course>>(
@@ -257,7 +256,7 @@ internal static class Program
                 {
                     var randomNumber = new Random().Next(0, 50);
                     var user = userData[randomNumber];
-                    course.SetLearner(user.GetFullName(), user.Gender, user.PhoneNumber!);
+                    course.SetLearner(user.GetFullName(), user.Gender, user.PhoneNumber);
                     course.SetLearnerId(user.Id);
 
                     if (course.Status != Status.Confirmed) continue;
@@ -343,23 +342,25 @@ internal static class Program
 
     private static void GetUserDataAndTutorData(
         JsonSerializerSettings somethingCalledMagic,
-        List<IdentityRole> identityRoles,
-        out List<User> userData,
+        List<EsIdentityRole> identityRoles,
+        out List<Customer> userData,
         out List<Tutor> tutorData,
-        out List<IdentityUser> identityUsers)
+        out List<EsIdentityUser> identityUsers,
+        out List<IdentityUserRole<Guid>> userRoles)
+
     {
         // Standard user
         var file = File.ReadAllText(Path.GetFullPath("../../../150_random_female_account.json"));
-        var identityUser1 = JsonConvert.DeserializeObject<List<IdentityUser>>(file, somethingCalledMagic)!;
-        userData = JsonConvert.DeserializeObject<List<User>>(file, somethingCalledMagic)!;
+        var identityUser1 = JsonConvert.DeserializeObject<List<EsIdentityUser>>(file, somethingCalledMagic)!;
+        userData = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic)!;
         if (userData == null || identityUser1 == null)
         {
             throw new InvalidOperationException();
         }
 
         file = File.ReadAllText(Path.GetFullPath("../../../200_random_male_account.json"));
-        var userData1 = JsonConvert.DeserializeObject<List<User>>(file, somethingCalledMagic);
-        var identityUser2 = JsonConvert.DeserializeObject<List<IdentityUser>>(file, somethingCalledMagic)!;
+        var userData1 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
+        var identityUser2 = JsonConvert.DeserializeObject<List<EsIdentityUser>>(file, somethingCalledMagic)!;
         if (userData1 == null || identityUser2 == null)
         {
             throw new InvalidOperationException();
@@ -373,8 +374,8 @@ internal static class Program
 
         // Tutor
         file = File.ReadAllText(Path.GetFullPath("../../../200_random_tutor.json"));
-        var tutorUSerData = JsonConvert.DeserializeObject<List<User>>(file, somethingCalledMagic);
-        var identityUser3 = JsonConvert.DeserializeObject<List<IdentityUser>>(file, somethingCalledMagic)!;
+        var tutorUSerData = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
+        var identityUser3 = JsonConvert.DeserializeObject<List<EsIdentityUser>>(file, somethingCalledMagic)!;
 
         if (tutorUSerData == null || identityUser3 == null)
         {
@@ -383,7 +384,44 @@ internal static class Program
 
         userData.AddRange(tutorUSerData);
 
-        identityUsers = HandlePassword(identityUser1, identityUser2, identityUser3, identityRoles);
+        identityUsers = identityUser1.Select(identityUser => new EsIdentityUser()
+            {
+                Id = identityUser.Id,
+                UserName = identityUser.UserName,
+                Email = identityUser.Email,
+                PasswordHash = "1q2w3E*", // Default password
+                PhoneNumber = identityUser.PhoneNumber
+            })
+            .ToList();
+
+        identityUsers.AddRange(identityUser2.Select(identityUser => new EsIdentityUser()
+        {
+            Id = identityUser.Id,
+            UserName = identityUser.UserName,
+            Email = identityUser.Email,
+            PasswordHash = "1q2w3E*", // Default password
+            PhoneNumber = identityUser.PhoneNumber
+        }));
+
+        identityUsers.AddRange(identityUser3.Select(identityUser => new EsIdentityUser()
+        {
+            Id = identityUser.Id,
+            UserName = identityUser.UserName,
+            Email = identityUser.Email,
+            PasswordHash = "1q2w3E*", // Default password
+            PhoneNumber = identityUser.PhoneNumber
+        }));
+
+        // Handle role
+
+        userRoles =
+        [
+            ..identityUsers.Select(identityUser => new IdentityUserRole<Guid>
+            {
+                UserId = identityUser.Id,
+                RoleId = identityRoles.Last().Id
+            })
+        ];
 
         tutorData = JsonConvert.DeserializeObject<List<Tutor>>(file, somethingCalledMagic)!;
 
@@ -401,52 +439,49 @@ internal static class Program
         tutorData = tutorData.OrderBy(x => x.CreationTime).ToList();
     }
 
-    private static List<IdentityUser> HandlePassword(
-        List<IdentityUser> identityUsers1,
-        List<IdentityUser> identityUsers2,
-        List<IdentityUser> tutorIdentityUsers3,
-        List<IdentityRole> identityRoles)
+    private static List<EsIdentityUser> HandlePassword(
+        List<EsIdentityUser> identityUsers1,
+        List<EsIdentityUser> identityUsers2,
+        List<EsIdentityUser> tutorIdentityUsers3,
+        List<EsIdentityRole> identityRoles)
     {
-        var realOnes = new List<IdentityUser>();
+        var realOnes = identityUsers1.Select(identityUser => new EsIdentityUser()
+            {
+                Id = identityUser.Id,
+                UserName = identityUser.UserName,
+                Email = identityUser.Email,
+                PasswordHash = "1q2w3E*", // Default password
+                PhoneNumber = identityUser.PhoneNumber
+            })
+            .ToList();
 
-        foreach (var identityUser in identityUsers1)
+        realOnes.AddRange(identityUsers2.Select(identityUser => new EsIdentityUser()
         {
-            var newOne = IdentityUser.Create(
-                identityUser.UserName,
-                identityUser.Email,
-                "1q2w3E*", // Default password
-                identityUser.PhoneNumber,
-                identityUser.Id,
-                identityRoles.Last().Id);
+            Id = identityUser.Id,
+            UserName = identityUser.UserName,
+            Email = identityUser.Email,
+            PasswordHash = "1q2w3E*", // Default password
+            PhoneNumber = identityUser.PhoneNumber
+        }));
 
-            realOnes.Add(newOne);
-        }
-
-        foreach (var identityUser in identityUsers2)
+        realOnes.AddRange(tutorIdentityUsers3.Select(identityUser => new EsIdentityUser()
         {
-            var newOne = IdentityUser.Create(
-                identityUser.UserName,
-                identityUser.Email,
-                "1q2w3E*", // Default password
-                identityUser.PhoneNumber,
-                identityUser.Id,
-                identityRoles.Last().Id);
+            Id = identityUser.Id,
+            UserName = identityUser.UserName,
+            Email = identityUser.Email,
+            PasswordHash = "1q2w3E*", // Default password
+            PhoneNumber = identityUser.PhoneNumber
+        }));
 
-            realOnes.Add(newOne);
-        }
+        // Handle role
 
-        foreach (var identityUser in tutorIdentityUsers3)
-        {
-            var newOne = IdentityUser.Create(
-                identityUser.UserName,
-                identityUser.Email,
-                "1q2w3E*", // Default password
-                identityUser.PhoneNumber,
-                identityUser.Id,
-                identityRoles[1].Id);
-
-            realOnes.Add(newOne);
-        }
+        var lístUserRoles = new List<IdentityUserRole<Guid>>(
+            realOnes.Select(identityUser => new IdentityUserRole<Guid>
+            {
+                UserId = identityUser.Id,
+                RoleId = identityRoles.Last().Id
+            })
+        );
 
         // var superUser = IdentityUser.Create(
         //     "admin",

@@ -13,27 +13,17 @@ namespace ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningC
 public class GetLearningCoursesQueryHandler(
     ICourseRepository courseRepository,
     ICurrentUserService currentUserService,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetLearningCoursesQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetLearningCoursesQuery, IEnumerable<LearningCourseForListDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetLearningCoursesQuery, IEnumerable<LearningCourseForListDto>>(logger, mapper)
 {
     public override async Task<Result<IEnumerable<LearningCourseForListDto>>> Handle(GetLearningCoursesQuery request,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var courses = await courseRepository
-                .GetLearningCoursesByUserId(IdentityGuid.Create(currentUserService.UserId));
+        var courses = await courseRepository
+            .GetLearningCoursesByUserId(CustomerId.Create(currentUserService.UserId));
+        var coursesDtos = Mapper.Map<List<LearningCourseForListDto>>(courses);
 
-            var classInformationDtos = Mapper.Map<List<LearningCourseForListDto>>(courses);
-
-            return classInformationDtos;
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex.InnerException!.Message);
-            return Result.Fail(ex.Message);
-        }
+        return coursesDtos;
     }
 }

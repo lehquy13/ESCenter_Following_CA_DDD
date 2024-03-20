@@ -11,12 +11,11 @@ using Matt.SharedKernel.Domain.Interfaces.Repositories;
 namespace ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetCourseRequest;
 
 public class GetCourseRequestQueryHandler(
-    IUnitOfWork unitOfWork,
     IAppLogger<GetCourseRequestQueryHandler> logger,
     IReadOnlyRepository<Course, CourseId> courseRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IMapper mapper)
-    : QueryHandlerBase<GetCourseRequestQuery, CourseRequestCancelDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetCourseRequestQuery, CourseRequestCancelDto>(logger, mapper)
 {
     public override async Task<Result<CourseRequestCancelDto>> Handle(GetCourseRequestQuery request,
         CancellationToken cancellationToken)

@@ -13,22 +13,21 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 
 public class GetTutorDetailQueryHandler(
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     ITutorRepository tutorRepository,
     ISubjectRepository subjectRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetTutorDetailQueryHandler> logger,
-    IMapper mapper,
-    IUnitOfWork unitOfWork)
-    : QueryHandlerBase<GetTutorDetailQuery, TutorUpdateDto>(unitOfWork, logger, mapper)
+    IMapper mapper)
+    : QueryHandlerBase<GetTutorDetailQuery, TutorUpdateDto>(logger, mapper)
 {
     public override async Task<Result<TutorUpdateDto>> Handle(GetTutorDetailQuery request,
         CancellationToken cancellationToken)
     {
         var tutorDetailAsQueryable =
-            from user in userRepository.GetAll()
+            from user in customerRepository.GetAll()
             join tutor in tutorRepository.GetAll() on user.Id equals tutor.UserId
-            where user.Id == IdentityGuid.Create(request.TutorId)
+            where user.Id == CustomerId.Create(request.TutorId)
             select new
             {
                 User = user,

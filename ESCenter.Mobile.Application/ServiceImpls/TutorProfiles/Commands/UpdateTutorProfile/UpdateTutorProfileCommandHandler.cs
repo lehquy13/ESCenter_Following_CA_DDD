@@ -24,53 +24,46 @@ public class UpdateTutorInformationCommandHandler(
     public override async Task<Result> Handle(UpdateTutorInformationCommand command,
         CancellationToken cancellationToken)
     {
-        try
+        var tutorId = TutorId.Create(currentUserService.UserId);
+        var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
+
+        // Check if the tutor exist
+        if (tutor is null)
         {
-            var tutorId = TutorId.Create(currentUserService.UserId);
-            var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
-
-            // Check if the tutor exist
-            if (tutor is null)
-            {
-                return Result.Fail(UserError.NonExistTutorError);
-            }
-
-            // Collect major ids
-            var subjectListAboutToUpdate =
-                await subjectRepository.GetListAsync(
-                    new SubjectListByNameSpec(command.TutorBasicUpdateDto.Majors),
-                    cancellationToken);
-
-            foreach (var major in tutor.TutorMajors)
-            {
-                if (subjectListAboutToUpdate.All(update => update.Id != major.SubjectId))
-                {
-                    tutor.RemoveMajor(major);
-                }
-            }
-
-            // Now current major only contains the subjects that are in the subjectListAboutToUpdate
-            // Then we add new majors to the tutor
-            var addMajors = subjectListAboutToUpdate
-                .Where(x => tutor.TutorMajors.All(update => update.SubjectId != x.Id))
-                .Select(x => TutorMajor.Create(tutorId, x.Id, x.Name))
-                .ToList();
-
-            foreach (var major in addMajors)
-            {
-                tutor.AddTutorMajor(major);
-            }
-
-            if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-            {
-                return Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges);
-            }
-
-            return Result.Success();
+            return Result.Fail(UserError.NonExistTutorError);
         }
-        catch (Exception ex)
+
+        // Collect major ids
+        var subjectListAboutToUpdate =
+            await subjectRepository.GetListAsync(
+                new SubjectListByNameSpec(command.TutorBasicUpdateDto.Majors),
+                cancellationToken);
+
+        foreach (var major in tutor.TutorMajors)
         {
-            return Result.Fail("Error happens when tutor is adding or updating: " + ex.Message);
+            if (subjectListAboutToUpdate.All(update => update.Id != major.SubjectId))
+            {
+                tutor.RemoveMajor(major);
+            }
         }
+
+        // Now current major only contains the subjects that are in the subjectListAboutToUpdate
+        // Then we add new majors to the tutor
+        var addMajors = subjectListAboutToUpdate
+            .Where(x => tutor.TutorMajors.All(update => update.SubjectId != x.Id))
+            .Select(x => TutorMajor.Create(tutorId, x.Id, x.Name))
+            .ToList();
+
+        foreach (var major in addMajors)
+        {
+            tutor.AddTutorMajor(major);
+        }
+
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+        {
+            return Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges);
+        }
+
+        return Result.Success();
     }
 }

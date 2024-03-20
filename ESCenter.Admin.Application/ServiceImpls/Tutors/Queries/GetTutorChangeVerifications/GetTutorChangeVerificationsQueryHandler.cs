@@ -12,19 +12,18 @@ namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorChangeV
 
 public class GetTutorChangeVerificationsQueryHandler(
     ITutorRepository tutorRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetTutorChangeVerificationsQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetTutorChangeVerificationsQuery, VerificationEditDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetTutorChangeVerificationsQuery, VerificationEditDto>(logger, mapper)
 {
     public override async Task<Result<VerificationEditDto>> Handle(
         GetTutorChangeVerificationsQuery request, CancellationToken cancellationToken)
     {
         var tutorQ =
             from tutorR in tutorRepository.GetAll()
-            join userR in userRepository.GetAll() on tutorR.UserId equals userR.Id
+            join userR in customerRepository.GetAll() on tutorR.UserId equals userR.Id
             where tutorR.Id == TutorId.Create(request.TutorId)
             select new
             {

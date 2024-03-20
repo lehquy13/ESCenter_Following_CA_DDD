@@ -12,14 +12,14 @@ internal class CourseRepository(
     IAppLogger<CourseRepository> appLogger)
     : RepositoryImpl<Course, CourseId>(appDbContext, appLogger), ICourseRepository
 {
-    public Task<List<Course>> GetLearningCoursesByUserId(IdentityGuid learnerId)
+    public Task<List<Course>> GetLearningCoursesByUserId(CustomerId learnerId)
     {
         return AppDbContext.Courses
             .Where(x => x.LearnerId == learnerId)
             .ToListAsync();
     }
 
-    public async Task<bool> IsCoursesRequestedByTutor(IdentityGuid tutorId, CourseId classId)
+    public async Task<bool> IsCoursesRequestedByTutor(CustomerId tutorId, CourseId classId)
     {
         return await AppDbContext.CourseRequests
             .AnyAsync(x => x.TutorId == tutorId && x.CourseId == classId);

@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Domain.DomainServices.Interfaces;
+﻿using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using Matt.ResultObject;
@@ -10,19 +10,19 @@ namespace ESCenter.Client.Application.ServiceImpls.Profiles.Commands.RegisterAsT
 
 public class RegisterAsTutorCommandHandler(
     IUnitOfWork unitOfWork,
-    IIdentityDomainServices identityDomainServices,
+    IIdentityService identityService,
     IAppLogger<RegisterAsTutorCommandHandler> logger)
     : CommandHandlerBase<RegisterAsTutorCommand>(unitOfWork, logger)
 {
     public override async Task<Result> Handle(RegisterAsTutorCommand command, CancellationToken cancellationToken)
     {
         // Check if the user existed
-        var result = await identityDomainServices.RegisterAsTutor(
-            IdentityGuid.Create(command.TutorRegistrationDto.Id),
+        var result = await identityService.RegisterAsTutor(
+            CustomerId.Create(command.TutorRegistrationDto.Id),
             command.TutorRegistrationDto.AcademicLevel.ToEnum<AcademicLevel>(),
             command.TutorRegistrationDto.University,
             command.TutorRegistrationDto.Majors,
-            command.TutorRegistrationDto.ImageFileUrls);
+            command.TutorRegistrationDto.ImageFileUrls, cancellationToken);
 
         if (result.IsFailure)
         {

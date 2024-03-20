@@ -14,6 +14,13 @@ public static class DomainServiceErrors
     public static readonly Error InvalidOtp = new("InvalidOtp", "Invalid otp");
     public static readonly Error OtpExpired = new("OtpExpired", "Otp expired");
     public static readonly Error AlreadyTutorError = new("AlreadyTutorError", "User have already been a tutor");
+    public static Error ResetPasswordFail => new("ResetPasswordFail", "Reset password fail");
+    public static Error EmailNotConfirmed => new("EmailNotConfirmed", "Email not confirmed");
+    public static Error RemoveUserFail => new("RemoveUserFail", "Remove user fail");
+    public static Error AddRoleFailed => new("AddRoleFailed", "Add role failed");
+    public static Error FailRegisteringAsTutorErrorWhileAddingRole => new("FailRegisteringAsTutorErrorWhileAddingRole",
+        "Fail to register tutor while adding role");
+
     public static Error FailRegisteringAsTutorErrorWhileSavingChanges(string message)
         => new("FailRegisteringTutorErrorWhileSavingChanges",
             $"Fail to register tutor while saving changes! {message}");

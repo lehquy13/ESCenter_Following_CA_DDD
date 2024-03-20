@@ -103,7 +103,7 @@ public class CourseForDetailDtoMappingConfig : IRegister
             .Map(des => des.CourseRequestListForAdminDtos, src => src.CourseRequests)
             .Map(des => des, src => src);
 
-        config.NewConfig<(CourseRequest, User, Tutor), CourseRequestListForAdminDto>()
+        config.NewConfig<(CourseRequest, Customer, Tutor), CourseRequestListForAdminDto>()
             .Map(des => des.Id, src => src.Item1.Id.Value)
             .Map(des => des.TutorId, src => src.Item3.Id.Value)
             .Map(des => des.RequestStatus, src => src.Item1.RequestStatus.ToString())

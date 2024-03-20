@@ -32,14 +32,14 @@ public class LearnerForProfileDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<User, UserProfileDto>()
+        config.NewConfig<Customer, UserProfileDto>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.City, src => src.Address.City)
             .Map(dest => dest.Country, src => src.Address.Country)
             .Map(dest => dest.Role, src => src.Role.ToString())
             .Map(dest => dest, src => src);
 
-        config.NewConfig<UserProfileDto, User>()
+        config.NewConfig<UserProfileDto, Customer>()
             .Map(dest => dest.FirstName, src => src.FirstName)
             .Map(dest => dest.LastName, src => src.LastName)
             .Map(dest => dest.BirthYear, src => src.BirthYear)

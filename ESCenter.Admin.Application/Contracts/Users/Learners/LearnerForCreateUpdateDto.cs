@@ -77,9 +77,9 @@ public class LearnerForCreateUpdateDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<LearnerForCreateUpdateDto, User>();
+        config.NewConfig<LearnerForCreateUpdateDto, Customer>();
 
-        config.NewConfig<User, LearnerForCreateUpdateDto>()
+        config.NewConfig<Customer, LearnerForCreateUpdateDto>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(des => des.Gender, src => src.Gender)
             .Map(des => des.FirstName, src => src.FirstName)

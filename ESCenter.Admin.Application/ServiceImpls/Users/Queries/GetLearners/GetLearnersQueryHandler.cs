@@ -8,19 +8,16 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearners;
 
 public class GetLearnersQueryHandler(
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IAppLogger<GetLearnersQueryHandler> logger,
-    IMapper mapper,
-    IUnitOfWork unitOfWork)
-    : QueryHandlerBase<GetLearnersQuery, List<UserForListDto>>(unitOfWork, logger, mapper)
+    IMapper mapper)
+    : QueryHandlerBase<GetLearnersQuery, List<UserForListDto>>(logger, mapper)
 {
-    private readonly IMapper _mapper = mapper;
-
     public override async Task<Result<List<UserForListDto>>> Handle(GetLearnersQuery request,
         CancellationToken cancellationToken)
     {
-        var learnersFromDb = await userRepository.GetLearners();
-        var userForListDtos = _mapper.Map<List<UserForListDto>>(learnersFromDb);
+        var learnersFromDb = await customerRepository.GetLearners();
+        var userForListDtos = Mapper.Map<List<UserForListDto>>(learnersFromDb);
         
         return userForListDtos;
     }

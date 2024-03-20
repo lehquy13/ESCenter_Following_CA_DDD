@@ -13,10 +13,9 @@ namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetVerification
 public class GetVerificationsByTutorIdQueryHandler(
     ITutorRepository tutorRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetVerificationsByTutorIdQuery, VerificationEditDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetVerificationsByTutorIdQuery, VerificationEditDto>(logger, mapper)
 {
     public override async Task<Result<VerificationEditDto>> Handle(GetVerificationsByTutorIdQuery request,
         CancellationToken cancellationToken)
@@ -25,7 +24,7 @@ public class GetVerificationsByTutorIdQueryHandler(
         var query =
             tutorRepository
                 .GetAll()
-                .Where(x => x.Id == IdentityGuid.Create(request.TutorId))
+                .Where(x => x.Id == CustomerId.Create(request.TutorId))
                 .Select(x => new
                 {
                     VerificationInfos = x.Verifications, ChangeVerificationRequests = x.ChangeVerificationRequest

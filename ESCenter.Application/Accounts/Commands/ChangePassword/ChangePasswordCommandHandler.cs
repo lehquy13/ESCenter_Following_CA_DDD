@@ -1,5 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Domain.DomainServices.Interfaces;
+﻿using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -8,7 +8,7 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Application.Accounts.Commands.ChangePassword;
 
 internal class ChangePasswordCommandHandler(
-    IIdentityDomainServices identityDomainServices,
+    IIdentityService identityService,
     ICurrentUserService currentUserService,
     IUnitOfWork unitOfWork,
     IAppLogger<ChangePasswordCommandHandler> logger)
@@ -16,22 +16,16 @@ internal class ChangePasswordCommandHandler(
 {
     public override async Task<Result> Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
     {
-        var identityId = IdentityGuid.Create(currentUserService.UserId);
-        var result = await identityDomainServices
+        var result = await identityService
             .ChangePasswordAsync(
-                identityId,
+                CustomerId.Create(currentUserService.UserId),
                 command.CurrentPassword,
                 command.NewPassword);
 
-        if (!result.IsSuccess)
+        if (!result.IsSuccess || await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
-            return Result.Fail(result.Error);
-        }
-
-        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-        {
-            Logger.LogWarning("Change password fail while saving changes");
-            return Result.Fail(AuthenticationErrorMessages.ChangePasswordFailWhileSavingChanges);
+            Logger.LogWarning("Change password fail", result.Error.ToString());
+            return Result.Fail(AuthenticationErrorMessages.ChangePasswordFail);
         }
 
         return Result.Success();

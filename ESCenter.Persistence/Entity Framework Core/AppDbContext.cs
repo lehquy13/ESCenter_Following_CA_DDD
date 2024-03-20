@@ -10,22 +10,21 @@ using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ESCenter.Persistence.Entity_Framework_Core;
+namespace ESCenter.Persistence.Entity_Framework_Core; 
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options)
+    : IdentityDbContext<EsIdentityUser, EsIdentityRole, Guid>(options)
 {
-    public DbSet<IdentityUser> IdentityUsers { get; set; } = null!;
-    public DbSet<IdentityRole> IdentityRoles { get; set; } = null!;
     public DbSet<Subject> Subjects { get; set; } = null!;
     public DbSet<Course> Courses { get; set; } = null!;
     public DbSet<ChangeVerificationRequest> ChangeVerificationRequests { get; set; } = null!;
     public DbSet<ChangeVerificationRequestDetail> ChangeVerificationRequestDetails { get; set; } = null!;
     public DbSet<CourseRequest> CourseRequests { get; set; } = null!;
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Customer> Customers { get; set; } = null!;
     public DbSet<Tutor> Tutors { get; set; } = null!;
     public DbSet<Verification> Verifications { get; set; } = null!;
     public DbSet<TutorMajor> TutorMajors { get; set; } = null!;
@@ -48,7 +47,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 }
 
-
 //using to support adding migration
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
@@ -56,9 +54,10 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer(
+            "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_5; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_4; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
-            "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql1;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
+            // "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql1;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
             // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_3; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
             //"workstation id=es_mssql.mssql.somee.com;packet size=4096;user id=lehquy13_SQLLogin_1;pwd=5kf5v3wgao;data source=es_mssql.mssql.somee.com;persist security info=False;initial catalog=es_mssql;TrustServerCertificate=True"

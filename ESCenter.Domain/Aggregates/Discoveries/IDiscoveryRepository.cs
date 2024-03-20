@@ -10,6 +10,6 @@ public interface IDiscoveryRepository : IRepository<Discovery, DiscoveryId>
 {
     public IQueryable<DiscoverySubject> GetDiscoverySubjectAsQueryable();
 
-    public Task<List<SubjectId>> GetUserDiscoverySubjects(IdentityGuid userGuid,
+    public Task<List<SubjectId>> GetUserDiscoverySubjects(CustomerId userGuid,
         CancellationToken cancellationToken);
 }

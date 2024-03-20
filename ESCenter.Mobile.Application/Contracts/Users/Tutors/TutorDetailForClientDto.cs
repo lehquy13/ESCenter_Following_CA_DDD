@@ -36,7 +36,7 @@ public class TutorDetailForClientDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(Tutor, User, IEnumerable<Review>), TutorDetailForClientDto>()
+        config.NewConfig<(Tutor, Customer, IEnumerable<Review>), TutorDetailForClientDto>()
             .Map(dest => dest.Id, src => src.Item1.Id.Value)
             .Map(dest => dest.FullName, src => src.Item2.GetFullName())
             .Map(dest => dest.AcademicLevel, src => src.Item1.AcademicLevel.ToString())

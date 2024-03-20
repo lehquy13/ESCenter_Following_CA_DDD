@@ -21,7 +21,7 @@ public class TutorRequestForListDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(Tutor, User, string ), TutorRequestForListDto>()
+        config.NewConfig<(Tutor, Customer, string ), TutorRequestForListDto>()
             .Map(dest => dest.Id, src => src.Item1.Id.Value)
             .Map(dest => dest.Tutor, src => src.Item1)
             .Map(dest => dest.RequestMessage, src => src.Item3)

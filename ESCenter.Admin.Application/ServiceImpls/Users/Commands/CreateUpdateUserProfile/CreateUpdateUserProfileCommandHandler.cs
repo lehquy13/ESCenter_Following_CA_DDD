@@ -19,13 +19,11 @@ public class CreateUpdateUserProfileCommandHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IUserDomainService userDomainService,
     IPublisher publisher)
     : CommandHandlerBase<CreateUpdateUserProfileCommand>(unitOfWork, logger)
 {
-    private IMapper Mapper { get; } = mapper;
-
     private const string DefaultAvatar =
         "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
 
@@ -34,14 +32,14 @@ public class CreateUpdateUserProfileCommandHandler(
     {
         try
         {
-            var user = await userRepository.GetAsync(
-                IdentityGuid.Create(command.LearnerForCreateUpdateDto.Id), cancellationToken);
+            var user = await customerRepository.GetAsync(
+                CustomerId.Create(command.LearnerForCreateUpdateDto.Id), cancellationToken);
 
             // Check if the user existed
             if (user is not null)
             {
                 // Update user
-                Mapper.Map(command.LearnerForCreateUpdateDto, user);
+                mapper.Map(command.LearnerForCreateUpdateDto, user);
 
                 if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
                 {
@@ -52,7 +50,7 @@ public class CreateUpdateUserProfileCommandHandler(
             }
 
             // Create new user
-            user = await userDomainService.CreateAsync(
+            var result = await userDomainService.CreateAsync(
                 command.LearnerForCreateUpdateDto.FirstName,
                 command.LearnerForCreateUpdateDto.LastName,
                 command.LearnerForCreateUpdateDto.Gender.ToEnum<Gender>(),
@@ -64,7 +62,14 @@ public class CreateUpdateUserProfileCommandHandler(
                 DefaultAvatar,
                 command.LearnerForCreateUpdateDto.Email,
                 command.LearnerForCreateUpdateDto.PhoneNumber,
-                UserRole.Learner);
+                UserRole.Learner, cancellationToken);
+            
+            if (result.IsFailure)
+            {
+                return result.Error;
+            }
+            
+            user = result.Value;
 
             if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {

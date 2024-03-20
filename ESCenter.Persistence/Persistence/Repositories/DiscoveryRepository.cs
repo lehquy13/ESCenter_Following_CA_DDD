@@ -18,7 +18,7 @@ internal class DiscoveryRepository(AppDbContext appDbContext, IAppLogger<Reposit
         return AppDbContext.Set<DiscoverySubject>();
     }
 
-    public async Task<List<SubjectId>> GetUserDiscoverySubjects(IdentityGuid userGuid, 
+    public async Task<List<SubjectId>> GetUserDiscoverySubjects(CustomerId userGuid, 
         CancellationToken cancellationToken)
     {
         return await AppDbContext.Database.SqlQuery<SubjectId>(

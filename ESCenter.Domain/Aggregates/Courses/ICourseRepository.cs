@@ -6,7 +6,7 @@ namespace ESCenter.Domain.Aggregates.Courses;
 
 public interface ICourseRepository : IRepository<Course, CourseId>
 {
-    Task<List<Course>> GetLearningCoursesByUserId(IdentityGuid learnerId);
-    Task<bool> IsCoursesRequestedByTutor(IdentityGuid tutorId, CourseId classId);
+    Task<List<Course>> GetLearningCoursesByUserId(CustomerId learnerId);
+    Task<bool> IsCoursesRequestedByTutor(CustomerId tutorId, CourseId classId);
     Task<Course?> GetCourseByCourseRequestId(CourseRequestId courseRequestId, CancellationToken cancellationToken);
 }

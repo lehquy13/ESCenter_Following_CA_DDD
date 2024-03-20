@@ -6,5 +6,5 @@ namespace ESCenter.Domain.Aggregates.TutorRequests;
 
 public interface ITutorRequestRepository : IRepository<TutorRequest, TutorRequestId>
 {
-    Task ClearTutorRequests(IdentityGuid tutorId, CancellationToken cancellationToken = default);
+    Task ClearTutorRequests(CustomerId tutorId, CancellationToken cancellationToken = default);
 }

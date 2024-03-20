@@ -12,7 +12,7 @@ namespace ESCenter.Client.Application.ServiceImpls.Profiles.Commands.AddOrResetD
 
 public class AddOrResetDiscoveryCommandHandler(
     IUnitOfWork unitOfWork,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IAppLogger<AddOrResetDiscoveryCommandHandler> logger,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IRepository<DiscoveryUser, DiscoveryUserId> discoveryUserRepository)
@@ -20,8 +20,8 @@ public class AddOrResetDiscoveryCommandHandler(
 {
     public override async Task<Result> Handle(AddOrResetDiscoveryCommand request, CancellationToken cancellationToken)
     {
-        var userId = IdentityGuid.Create(request.UserId);
-        var user = await userRepository.GetAsync(IdentityGuid.Create(request.UserId), cancellationToken);
+        var userId = CustomerId.Create(request.UserId);
+        var user = await customerRepository.GetAsync(CustomerId.Create(request.UserId), cancellationToken);
 
         if (user is null)
         {

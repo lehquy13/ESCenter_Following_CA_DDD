@@ -11,15 +11,13 @@ namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorMajors;
 /// Mark as deprecated
 /// </summary>
 /// <param name="subjectRepository"></param>
-/// <param name="unitOfWork"></param>
 /// <param name="logger"></param>
 /// <param name="mapper"></param>
 public class GetTutorMajorsQueryHandler(
     ISubjectRepository subjectRepository,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetTutorMajorsQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetTutorMajorsQuery, List<SubjectDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetTutorMajorsQuery, List<SubjectDto>>(logger, mapper)
 {
 
     public override async Task<Result<List<SubjectDto>>> Handle(GetTutorMajorsQuery request,

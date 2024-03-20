@@ -1,25 +1,24 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ESCenter.Persistence.Entity_Framework_Core.Configs;
 
-internal class UserConfiguration : IEntityTypeConfiguration<User>
+internal class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        builder.ToTable(nameof(User));
+        builder.ToTable(nameof(Customer));
 
         builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Id)
-            .HasColumnName(nameof(User.Id))
+            .HasColumnName(nameof(Customer.Id))
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => IdentityGuid.Create(value)
+                value => CustomerId.Create(value)
             );
 
         // TODO: learn how to config one to one relationship

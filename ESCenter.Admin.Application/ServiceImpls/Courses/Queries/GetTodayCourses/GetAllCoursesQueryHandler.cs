@@ -14,10 +14,9 @@ public class GetTodayCoursesQueryHandler(
     ICourseRepository courseRepository,
     ISubjectRepository subjectRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetTodayCoursesQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetTodayCoursesQuery, IEnumerable<CourseForListDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetTodayCoursesQuery, IEnumerable<CourseForListDto>>(logger, mapper)
 {
     public override async Task<Result<IEnumerable<CourseForListDto>>> Handle(GetTodayCoursesQuery request,
         CancellationToken cancellationToken)

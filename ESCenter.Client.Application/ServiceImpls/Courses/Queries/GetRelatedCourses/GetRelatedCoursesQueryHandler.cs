@@ -13,13 +13,12 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetRelatedCourses;
 
 public class GetRelatedCoursesQueryHandler(
-    IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     ICourseRepository courseRepository,
     ISubjectRepository subjectRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IMapper mapper)
-    : QueryHandlerBase<GetRelatedCoursesQuery, IEnumerable<CourseForListDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetRelatedCoursesQuery, IEnumerable<CourseForListDto>>(logger, mapper)
 {
     public override async Task<Result<IEnumerable<CourseForListDto>>> Handle(GetRelatedCoursesQuery request,
         CancellationToken cancellationToken)

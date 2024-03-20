@@ -68,7 +68,7 @@ public class CourseUpdateDtoMappingConfig : IRegister
             .Map(dest => dest.SessionPerWeek, src => SessionPerWeek.Create(src.SessionPerWeek))
             .Map(dest => dest.NumberOfLearner, src => src.NumberOfLearner)
             .Map(dest => dest.SubjectId, src => SubjectId.Create(src.SubjectId))
-            .Map(dest => dest.TutorId, src => src.TutorId != Guid.Empty ? IdentityGuid.Create(src.TutorId) : null)
+            .Map(dest => dest.TutorId, src => src.TutorId != Guid.Empty ? CustomerId.Create(src.TutorId) : null)
             .Map(dest => dest.Status, src => src.TutorId == Guid.Empty ? src.Status.ToEnum<Status>() : Status.Confirmed)
             .Map(dest => dest, src => src);
     }

@@ -19,7 +19,7 @@ public class CreateUpdateUserProfileCommandHandler( // Change name to Update onl
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper,
     IJwtTokenGenerator jwtTokenGenerator,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IPublisher publisher)
     : CommandHandlerBase<CreateUpdateBasicProfileCommand,
         AuthenticationResult>(unitOfWork, logger)
@@ -31,8 +31,8 @@ public class CreateUpdateUserProfileCommandHandler( // Change name to Update onl
     {
         try
         {
-            var user = await userRepository.GetAsync(
-                IdentityGuid.Create(command.UserProfileCreateUpdateDto.Id), cancellationToken);
+            var user = await customerRepository.GetAsync(
+                CustomerId.Create(command.UserProfileCreateUpdateDto.Id), cancellationToken);
 
             // Check if the user existed
             if (user is not null)
@@ -57,9 +57,9 @@ public class CreateUpdateUserProfileCommandHandler( // Change name to Update onl
             }
 
             //Create new user
-            user = Mapper.Map<User>(command.UserProfileCreateUpdateDto);
+            user = Mapper.Map<Customer>(command.UserProfileCreateUpdateDto);
 
-            await userRepository.InsertAsync(user, cancellationToken);
+            await customerRepository.InsertAsync(user, cancellationToken);
             
             if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {

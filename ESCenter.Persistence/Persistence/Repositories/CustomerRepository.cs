@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ESCenter.Persistence.Persistence.Repositories;
 
-internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserRepository> appLogger)
-    : RepositoryImpl<User, IdentityGuid>(appDbContext,
-        appLogger), IUserRepository
+internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<CustomerRepository> appLogger)
+    : RepositoryImpl<Customer, CustomerId>(appDbContext,
+        appLogger), ICustomerRepository
 {
-    public async Task<List<User>> GetLearners()
+    public async Task<List<Customer>> GetLearners()
     {
-        var users = await AppDbContext.Users
+        var users = await AppDbContext.Customers
             .AsNoTracking()
             .Where(o => o.Role == UserRole.Learner &&
                         o.IsDeleted == false)
@@ -24,9 +24,9 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
         return users;
     }
 
-    public async Task<List<User>> GetTutorsByIds(IEnumerable<TutorId> tutorIds)
+    public async Task<List<Customer>> GetTutorsByIds(IEnumerable<TutorId> tutorIds)
     {
-        var users = await AppDbContext.Users
+        var users = await AppDbContext.Customers
             .AsNoTracking()
             .Join(AppDbContext.Tutors,
                 user => user.Id,
@@ -41,9 +41,9 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
         return users;
     }
 
-    public async Task<List<User>> GetTutors()
+    public async Task<List<Customer>> GetTutors()
     {
-        var users = await AppDbContext.Users
+        var users = await AppDbContext.Customers
             .Where(o => o.Role == UserRole.Tutor &&
                         o.IsDeleted == false)
             .AsNoTracking()
@@ -52,9 +52,9 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
         return users;
     }
 
-    public async Task<User?> GetTutor(TutorId tutorId)
+    public async Task<Customer?> GetTutor(TutorId tutorId)
     {
-        var tutor = await AppDbContext.Users
+        var tutor = await AppDbContext.Customers
             .Join(AppDbContext.Tutors,
                 user => user.Id,
                 tutor => tutor.UserId,
@@ -64,9 +64,9 @@ internal class UserRepository(AppDbContext appDbContext, IAppLogger<UserReposito
         return tutor;
     }
 
-    public Task<User?> GetUserByContact(string contact)
+    public Task<Customer?> GetUserByContact(string contact)
     {
-        return AppDbContext.Users
+        return AppDbContext.Customers
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.PhoneNumber == contact);
     }

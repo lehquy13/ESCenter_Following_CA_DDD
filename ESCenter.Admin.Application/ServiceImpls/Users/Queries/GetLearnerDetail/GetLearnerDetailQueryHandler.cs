@@ -10,21 +10,18 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearnerDetail;
 
 public class GetLearnerDetailQueryHandler(
-    IUnitOfWork unitOfWork,
     IAppLogger<GetLearnerDetailQueryHandler> logger,
     IMapper mapper,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor)
-    : QueryHandlerBase<GetLearnerDetail, LearnerForCreateUpdateDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetLearnerDetail, LearnerForCreateUpdateDto>(logger, mapper)
 {
-    private readonly IMapper _mapper = mapper;
-
     public override async Task<Result<LearnerForCreateUpdateDto>> Handle(GetLearnerDetail request,
         CancellationToken cancellationToken)
     {
-        var identityId = IdentityGuid.Create(request.Id);
+        var identityId = CustomerId.Create(request.Id);
         var learnerFromDb =
-            from user in userRepository.GetAll()
+            from user in customerRepository.GetAll()
             where user.Id == identityId
             select user;
 
@@ -37,7 +34,7 @@ public class GetLearnerDetailQueryHandler(
         }
 
         // TODO: this mapper may cause some problems
-        var userForDetailDto = _mapper.Map<LearnerForCreateUpdateDto>(resultFromDb);
+        var userForDetailDto = Mapper.Map<LearnerForCreateUpdateDto>(resultFromDb);
         return userForDetailDto;
     }
 }

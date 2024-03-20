@@ -73,7 +73,7 @@ public class TutorForDetailDtoMappingConfig : IRegister
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest, src => src);
         
-        config.NewConfig<(User, Tutor), TutorUpdateDto>()
+        config.NewConfig<(Customer, Tutor), TutorUpdateDto>()
             .Map(dest => dest.Id, src => src.Item2.Id.Value)
             .Map(des => des.City, src => src.Item1.Address.City)
             .Map(des => des.Country, src => src.Item1.Address.Country)

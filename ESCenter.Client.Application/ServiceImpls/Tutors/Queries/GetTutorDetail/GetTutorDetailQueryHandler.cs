@@ -15,24 +15,23 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 
 public class GetTutorDetailQueryHandler(
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     ITutorRepository tutorRepository,
     ICourseRepository courseRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetTutorDetailQueryHandler> logger,
-    IMapper mapper,
-    IUnitOfWork unitOfWork)
-    : QueryHandlerBase<GetTutorDetailQuery, TutorDetailForClientDto>(unitOfWork, logger, mapper)
+    IMapper mapper)
+    : QueryHandlerBase<GetTutorDetailQuery, TutorDetailForClientDto>(logger, mapper)
 {
     public override async Task<Result<TutorDetailForClientDto>> Handle(GetTutorDetailQuery request,
         CancellationToken cancellationToken)
     {
         var tutorDetailAsQueryable =
-            from user in userRepository.GetAll()
+            from user in customerRepository.GetAll()
             join tutor in tutorRepository.GetAll() on user.Id equals tutor.UserId
             join course in courseRepository.GetAll().Where(x => x.Review != null) on tutor.Id equals course.TutorId into
                 groupCourse
-            where user.Id == IdentityGuid.Create(request.TutorId)
+            where user.Id == CustomerId.Create(request.TutorId)
             select new
             {
                 User = user,

@@ -1,16 +1,16 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Interfaces;
 using ESCenter.Domain.Shared.Courses;
+using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Interfaces;
 
 namespace ESCenter.Domain.DomainServices;
 
 public class UserDomainService(
     IAppLogger<UserDomainService> logger,
-    IUserRepository userRepository,
-    IIdentityRepository identityRepository
+    ICustomerRepository customerRepository,
+    IIdentityService identityService
 ) : DomainServiceBase(logger), IUserDomainService
 {
     private const string DefaultPassword = "1q2w3E*";
@@ -18,7 +18,7 @@ public class UserDomainService(
     private const string DefaultAvatar =
         "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
 
-    public async Task<User> CreateAsync(
+    public async Task<Result<Customer>> CreateAsync(
         string firstName,
         string lastName,
         Gender gender,
@@ -28,13 +28,11 @@ public class UserDomainService(
         string avatar,
         string email,
         string phoneNumber,
-        UserRole role)
+        UserRole role,
+        CancellationToken cancellationToken = default)
     {
-        var identityUser = IdentityUser.Create(email, email, DefaultPassword, phoneNumber,
-            IdentityRoleId.Create((int)role));
-
-        var user = User.Create(
-            identityUser.Id,
+        var customer = await identityService.CreateAsync(
+            string.Empty,
             firstName,
             lastName,
             gender,
@@ -44,11 +42,15 @@ public class UserDomainService(
             avatar,
             email,
             phoneNumber,
-            role
-        );
+            role, cancellationToken);
 
-        await userRepository.InsertAsync(user);
-        await identityRepository.InsertAsync(identityUser);
-        return user;
+        if (customer.IsFailure)
+        {
+            return customer;
+        }
+
+        await customerRepository.InsertAsync(customer.Value, cancellationToken);
+
+        return customer;
     }
 }

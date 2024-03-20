@@ -4,9 +4,9 @@ using Matt.SharedKernel.Domain.Specifications;
 
 namespace ESCenter.Domain.Specifications.Tutors;
 
-public class TutorProfileSpec : FindSpecificationBase<Tutor, IdentityGuid>
+public class TutorProfileSpec : FindSpecificationBase<Tutor, CustomerId>
 {
-    public TutorProfileSpec(IdentityGuid tutorId) : base(tutorId)
+    public TutorProfileSpec(CustomerId tutorId) : base(tutorId)
     {
         IncludeStrings.Add(nameof(Tutor.Verifications));
         IncludeStrings.Add(nameof(Tutor.ChangeVerificationRequest));

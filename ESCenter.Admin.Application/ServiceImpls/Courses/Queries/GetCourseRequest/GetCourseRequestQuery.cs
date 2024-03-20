@@ -1,5 +1,4 @@
-﻿using ESCenter.Admin.Application.Contracts.Courses.Dtos;
-using ESCenter.Domain.Aggregates.Courses.Entities;
+﻿using ESCenter.Domain.Aggregates.Courses.Entities;
 using FluentValidation;
 using Mapster;
 using Matt.SharedKernel.Application.Contracts.Interfaces;

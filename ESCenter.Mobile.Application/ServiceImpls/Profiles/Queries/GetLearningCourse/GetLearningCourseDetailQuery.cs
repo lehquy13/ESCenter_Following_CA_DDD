@@ -5,7 +5,7 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
 
-public record GetLearningCourseDetailQuery(Guid CourseId) : IQueryRequest<CourseForDetailDto>, IAuthorizationRequest;
+public record GetLearningCourseDetailQuery(Guid CourseId) : IQueryRequest<LearningCourseDetailForClientDto>, IAuthorizationRequest;
 
 public class GetLearningCourseDetailQueryValidator : AbstractValidator<GetLearningCourseDetailQuery>
 {

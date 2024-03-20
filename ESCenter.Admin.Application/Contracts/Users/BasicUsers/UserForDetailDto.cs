@@ -1,9 +1,9 @@
 ﻿using ESCenter.Admin.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using Mapster;
 
 namespace ESCenter.Admin.Application.Contracts.Users.BasicUsers;
+
 public class UserForDetailDto : BasicAuditedEntityDto<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
@@ -18,19 +18,18 @@ public class UserForDetailDto : BasicAuditedEntityDto<Guid>
     public bool IsEmailConfirmed { get; set; } = false;
     public string PhoneNumber { get; set; } = string.Empty;
     public string Role { get; set; } = Domain.Shared.Courses.UserRole.Learner.ToString();
-
 }
 
 public class UserForDetailDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(IdentityUser, User), UserForDetailDto>()
-            .Map(des => des.Id, src => src.Item1.Id.Value)
-            .Map(des => des.Gender, src => src.Item2.Gender)
-            .Map(des => des.Role, src => src.Item1.IdentityRole.Name)
-            .Map(des => des.Email, src => src.Item1.Email)
-            .Map(des => des.PhoneNumber, src => src.Item1.PhoneNumber)
-            .Map(des => des, src => src.Item2);
+        config.NewConfig<Customer, UserForDetailDto>()
+            .Map(des => des.Id, src => src.Id.Value)
+            .Map(des => des.Gender, src => src.Gender)
+            .Map(des => des.Role, src => src.Role.ToString())
+            .Map(des => des.Email, src => src.Email)
+            .Map(des => des.PhoneNumber, src => src.PhoneNumber)
+            .Map(des => des, src => src);
     }
 }

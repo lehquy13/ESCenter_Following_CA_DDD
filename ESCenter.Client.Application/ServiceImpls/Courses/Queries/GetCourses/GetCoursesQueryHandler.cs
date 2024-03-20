@@ -18,10 +18,9 @@ public class GetCoursesQueryHandler(
     ICourseRepository courseRepository,
     IReadOnlyRepository<Subject, SubjectId> subjectRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetCoursesQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetCoursesQuery, PaginatedList<CourseForListDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetCoursesQuery, PaginatedList<CourseForListDto>>(logger, mapper)
 {
     public override async Task<Result<PaginatedList<CourseForListDto>>> Handle(GetCoursesQuery request,
         CancellationToken cancellationToken)

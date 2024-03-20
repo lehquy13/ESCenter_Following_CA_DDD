@@ -131,10 +131,10 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => IdentityGuid.Create(value)
+                value => CustomerId.Create(value)
             );
 
-        builder.HasOne<User>()
+        builder.HasOne<Customer>()
             .WithOne()
             .HasForeignKey<Tutor>(nameof(Tutor.UserId))
             .IsRequired()

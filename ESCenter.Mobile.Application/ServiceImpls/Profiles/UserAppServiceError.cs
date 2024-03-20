@@ -17,4 +17,7 @@ public static class UserAppServiceError
     public static Error FailRegisteringAsTutorErrorWhileSavingChanges =>
         new("FailRegisteringAsTutorErrorWhileSavingChanges",
             "Fail to register as tutor while saving changes!");
+
+    public static Error FailToRegisterTutorError =>
+        new("FailToRegisterTutorError", "Fail to register tutor!");
 }

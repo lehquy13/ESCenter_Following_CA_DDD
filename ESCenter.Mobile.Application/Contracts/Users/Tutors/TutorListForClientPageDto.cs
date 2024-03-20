@@ -21,7 +21,7 @@ public class TutorListForClientPageDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(User, Tutor), TutorListForClientPageDto>()
+        config.NewConfig<(Customer, Tutor), TutorListForClientPageDto>()
             .Map(dest => dest.Id, src => src.Item2.Id.Value)
             .Map(des => des, src => src.Item2)
             .Map(des => des, src => src.Item1);

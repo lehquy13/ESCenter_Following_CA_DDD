@@ -16,7 +16,7 @@ public class UserLoginDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<User, UserLoginDto>()
+        config.NewConfig<Customer, UserLoginDto>()
             .Map(des => des.Id, src => src.Id.Value)
             .Map(des => des, src => src.GetFullName())
             .Map(des => des.Avatar, src => src.Avatar)

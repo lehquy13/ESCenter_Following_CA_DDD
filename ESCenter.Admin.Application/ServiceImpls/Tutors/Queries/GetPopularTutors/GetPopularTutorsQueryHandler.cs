@@ -9,9 +9,8 @@ namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetPopularTutor
 public class GetPopularTutorsQueryHandler(
     ITutorRepository tutorRepository,
     IAppLogger<GetPopularTutorsQueryHandler> logger,
-    IMapper mapper,
-    IUnitOfWork unitOfWork)
-    : QueryHandlerBase<GetPopularTutorsQuery, List<PopularTutorListDto>>(unitOfWork, logger, mapper)
+    IMapper mapper)
+    : QueryHandlerBase<GetPopularTutorsQuery, List<PopularTutorListDto>>(logger, mapper)
 {
     public override async Task<Result<List<PopularTutorListDto>>> Handle(GetPopularTutorsQuery request, CancellationToken cancellationToken)
     {

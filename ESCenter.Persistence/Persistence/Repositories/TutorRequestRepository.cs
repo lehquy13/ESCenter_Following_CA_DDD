@@ -8,7 +8,7 @@ namespace ESCenter.Persistence.Persistence.Repositories;
 
 internal class TutorRequestRepository(AppDbContext appDbContext, IAppLogger<RepositoryImpl<TutorRequest, TutorRequestId>> logger) : RepositoryImpl<TutorRequest, TutorRequestId>(appDbContext, logger),ITutorRequestRepository
 {
-    public Task ClearTutorRequests(IdentityGuid tutorId, CancellationToken cancellationToken = default)
+    public Task ClearTutorRequests(CustomerId tutorId, CancellationToken cancellationToken = default)
     {
         var tutorRequests = AppDbContext.TutorRequests.Where(x => x.TutorId == tutorId);
         AppDbContext.TutorRequests.RemoveRange(tutorRequests);

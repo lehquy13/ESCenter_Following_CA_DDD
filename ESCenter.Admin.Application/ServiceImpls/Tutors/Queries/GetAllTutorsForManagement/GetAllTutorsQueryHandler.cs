@@ -13,13 +13,12 @@ namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetAllTutorsFor
 
 public class GetAllTutorsQueryHandler(
     ITutorRepository tutorRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     ITutorRequestRepository tutorRequestRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetLearnersQueryHandler> logger,
-    IMapper mapper,
-    IUnitOfWork unitOfWork)
-    : QueryHandlerBase<GetAllTutorsQuery, IEnumerable<TutorListDto>>(unitOfWork, logger, mapper)
+    IMapper mapper)
+    : QueryHandlerBase<GetAllTutorsQuery, IEnumerable<TutorListDto>>(logger, mapper)
 {
     private readonly IMapper _mapper = mapper;
 
@@ -27,7 +26,7 @@ public class GetAllTutorsQueryHandler(
         CancellationToken cancellationToken)
     {
         var tutorQ =
-            from userR in userRepository.GetAll()
+            from userR in customerRepository.GetAll()
             join tutorR in tutorRepository.GetAll() on userR.Id equals tutorR.UserId
             join tutorRequestR in tutorRequestRepository.GetAll() on tutorR.Id equals tutorRequestR.TutorId into
                 tutorRequests

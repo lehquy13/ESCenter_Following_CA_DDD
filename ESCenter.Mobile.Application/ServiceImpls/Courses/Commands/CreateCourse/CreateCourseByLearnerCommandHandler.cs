@@ -16,7 +16,7 @@ public class CreateCourseByLearnerCommandHandler(
     IMapper mapper,
     IPublisher publisher,
     ICourseRepository courseRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     ICurrentUserService currentUserService,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateCourseByLearnerCommandHandler> logger)
@@ -31,8 +31,8 @@ public class CreateCourseByLearnerCommandHandler(
 
             if (currentUserService.UserId != Guid.Empty)
             {
-                var learner = await userRepository.GetAsync(
-                    IdentityGuid.Create(currentUserService.UserId),
+                var learner = await customerRepository.GetAsync(
+                    CustomerId.Create(currentUserService.UserId),
                     cancellationToken);
 
                 if (learner is not null)

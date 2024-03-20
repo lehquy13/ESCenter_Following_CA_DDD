@@ -11,20 +11,19 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Application.Accounts.Queries.GetUserProfile;
 
 public class GetUserProfileQueryHandler(
-    IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     ICurrentUserService currentUserService
 )
-    : QueryHandlerBase<GetUserProfileQuery, UserProfileDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetUserProfileQuery, UserProfileDto>(logger, mapper)
 {
     public override async Task<Result<UserProfileDto>> Handle(
         GetUserProfileQuery request,
         CancellationToken cancellationToken)
     {
         var userProfileAsync =
-            await userRepository.GetAsync(IdentityGuid.Create(currentUserService.UserId), cancellationToken);
+            await customerRepository.GetAsync(CustomerId.Create(currentUserService.UserId), cancellationToken);
 
         if (userProfileAsync is null)
         {

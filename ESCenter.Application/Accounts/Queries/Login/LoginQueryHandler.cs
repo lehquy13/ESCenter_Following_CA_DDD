@@ -10,54 +10,39 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Application.Accounts.Queries.Login;
 
 public class LoginQueryHandler(
-    IUnitOfWork unitOfWork,
     IAppLogger<LoginQueryHandler> logger,
     IMapper mapper,
-    IUserRepository userRepository,
-    IIdentityDomainServices identityDomainServices,
+    IIdentityService identityService,
     IJwtTokenGenerator jwtTokenGenerator
 )
-    : QueryHandlerBase<LoginQuery, AuthenticationResult>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<LoginQuery, AuthenticationResult>(logger, mapper)
 {
     public override async Task<Result<AuthenticationResult>> Handle(
         LoginQuery request,
         CancellationToken cancellationToken)
     {
-        try
+        var customer = await identityService.SignInAsync(
+            request.Email, request.Password, cancellationToken);
+
+        if (customer is null)
         {
-            var identityUserQ = await identityDomainServices.SignInAsync(request.Email, request.Password);
-
-            if (identityUserQ is null)
-            {
-                return Result.Fail(AuthenticationErrorMessages.LoginFailError);
-            }
-
-            var user = await userRepository.GetAsync(identityUserQ.Id, cancellationToken);
-
-            if (user is null)
-            {
-                return Result.Fail(AuthenticationErrorMessages.LoginFailError);
-            }
-
-            //3. Generate token
-            var userLoginDto = new UserLoginDto()
-            {
-                Id = user.Id.Value,
-                Email = user.Email,
-                FullName = $"{user.FirstName} {user.LastName}",
-                Role = user.Role.ToString(),
-            };
-            var loginToken = jwtTokenGenerator.GenerateToken(userLoginDto);
-
-            return new AuthenticationResult()
-            {
-                User = userLoginDto,
-                Token = loginToken,
-            };
+            return Result.Fail(AuthenticationErrorMessages.LoginFailError);
         }
-        catch (Exception ex)
+
+        //3. Generate token
+        var userLoginDto = new UserLoginDto()
         {
-            return Result.Fail($"AccountServiceError.FailToGetTutorProfileWithException {ex.Message}");
-        }
+            Id = customer.Id.Value,
+            Email = customer.Email,
+            FullName = $"{customer.FirstName} {customer.LastName}",
+            Role = customer.Role.ToString(),
+        };
+        var loginToken = jwtTokenGenerator.GenerateToken(userLoginDto);
+
+        return new AuthenticationResult()
+        {
+            User = userLoginDto,
+            Token = loginToken,
+        };
     }
 }

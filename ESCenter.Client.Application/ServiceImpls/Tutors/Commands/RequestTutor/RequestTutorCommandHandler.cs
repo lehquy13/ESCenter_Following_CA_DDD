@@ -30,7 +30,7 @@ public class RequestTutorCommandHandler(
 
         var tutorRequest = TutorRequest.Create(
             TutorId.Create(command.TutorRequestForCreateDto.TutorId),
-            IdentityGuid.Create(command.TutorRequestForCreateDto.LearnerId),
+            CustomerId.Create(command.TutorRequestForCreateDto.LearnerId),
             command.TutorRequestForCreateDto.RequestMessage);
 
         await tutorRequestRepository.InsertAsync(tutorRequest, cancellationToken);

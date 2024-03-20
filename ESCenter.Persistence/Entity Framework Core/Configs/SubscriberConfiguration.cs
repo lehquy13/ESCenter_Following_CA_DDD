@@ -19,10 +19,10 @@ internal class SubscriberConfiguration : IEntityTypeConfiguration<Subscriber>
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => IdentityGuid.Create(value)
+                value => CustomerId.Create(value)
             );
 
-        builder.HasOne<User>()
+        builder.HasOne<Customer>()
             .WithMany()
             .HasForeignKey(x => x.SubscriberId)
             .IsRequired();

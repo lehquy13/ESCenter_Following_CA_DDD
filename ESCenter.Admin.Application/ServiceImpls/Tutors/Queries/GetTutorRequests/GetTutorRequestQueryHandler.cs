@@ -15,21 +15,20 @@ public class GetTutorRequestQueryHandler(
     IAsyncQueryableExecutor asyncQueryableExecutor,
     ITutorRequestRepository tutorRequestRepository,
     ITutorRepository tutorRepository,
-    IUserRepository userRepository,
-    IUnitOfWork unitOfWork,
+    ICustomerRepository customerRepository,
     IAppLogger<GetTutorRequestQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetTutorRequestQuery, List<TutorRequestForListDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetTutorRequestQuery, List<TutorRequestForListDto>>(logger, mapper)
 {
     public override async Task<Result<List<TutorRequestForListDto>>> Handle(GetTutorRequestQuery request,
         CancellationToken cancellationToken)
     {
-        var tutorId = IdentityGuid.Create(request.TutorId);
+        var tutorId = CustomerId.Create(request.TutorId);
 
         var queryable =
             from req in tutorRequestRepository.GetAll()
             join tutor in tutorRepository.GetAll() on req.TutorId equals tutor.Id
-            join user in userRepository.GetAll() on req.LearnerId equals user.Id
+            join user in customerRepository.GetAll() on req.LearnerId equals user.Id
             where req.TutorId == tutorId
             select new
             {

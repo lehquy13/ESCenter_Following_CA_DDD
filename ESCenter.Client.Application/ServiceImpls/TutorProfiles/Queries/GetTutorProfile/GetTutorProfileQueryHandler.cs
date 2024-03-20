@@ -10,10 +10,9 @@ namespace ESCenter.Client.Application.ServiceImpls.TutorProfiles.Queries.GetTuto
 
 public class GetTutorProfileQueryHandler(
     ITutorRepository tutorRepository,
-    IUnitOfWork unitOfWork,
     IMapper mapper,
     IAppLogger<GetTutorProfileQueryHandler> logger)
-    : QueryHandlerBase<GetTutorProfileQuery, TutorMinimalBasicDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetTutorProfileQuery, TutorMinimalBasicDto>(logger, mapper)
 {
     public override async Task<Result<TutorMinimalBasicDto>> Handle(GetTutorProfileQuery request,
         CancellationToken cancellationToken)

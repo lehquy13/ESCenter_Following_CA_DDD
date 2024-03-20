@@ -8,16 +8,17 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Application.Accounts.Queries.ValidateToken;
 
 public class ValidateTokenQueryHandler(
-    IUnitOfWork unitOfWork, 
-    IAppLogger<RequestHandlerBase> logger, 
+    IAppLogger<RequestHandlerBase> logger,
     IMapper mapper,
     IJwtTokenGenerator jwtTokenGenerator
-    )
-    : QueryHandlerBase<ValidateTokenQuery>(unitOfWork, logger, mapper)
+)
+    : QueryHandlerBase<ValidateTokenQuery>(logger, mapper)
 {
     public override async Task<Result> Handle(ValidateTokenQuery request, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
-        return jwtTokenGenerator.ValidateToken(request.ValidateToken) ? Result.Success() : Result.Fail("Token is invalid.");
+        return jwtTokenGenerator.ValidateToken(request.ValidateToken)
+            ? Result.Success()
+            : Result.Fail("Token is invalid.");
     }
 }

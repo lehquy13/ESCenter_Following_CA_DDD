@@ -1,11 +1,12 @@
 ﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Users;
 using Mapster;
 
-namespace ESCenter.Client.Application.Contracts.Courses.Dtos;
+namespace ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 
-public class LearningCourseDetailDto : BasicAuditedEntityDto<Guid>
+public class LearningCourseDetailForClientDto : BasicAuditedEntityDto<Guid>
 {
     //Basic Information
     public string Title { get; init; } = string.Empty;
@@ -24,29 +25,26 @@ public class LearningCourseDetailDto : BasicAuditedEntityDto<Guid>
     public string TutorEmail { get; init; } = string.Empty;
 }
 
-
 public class LearningCourseForDetailDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<Tuple<Course, Subject>, LearningCourseDetailDto>()
+        config.NewConfig<(Course, Subject, Guid, Customer), LearningCourseDetailForClientDto>()
             .Map(des => des.Id, src => src.Item1.Id.Value)
-            //.Map(des => des.LearnerName, src => src.Item1.LearnerName)
+            .Map(des => des.TutorId, src => src.Item3)
+            .Map(des => des.TutorName, src => src.Item4.GetFullName())
+            .Map(des => des.TutorContact, src => src.Item4.Description)
+            .Map(des => des.TutorEmail, src => src.Item4.Email)
             .Map(des => des.Title, src => src.Item1.Title)
             .Map(des => des.Status, src => src.Item1.Status.ToString())
-            //.Map(des => des.GenderRequirement, src => src.Item1.GenderRequirement.ToString())
-            // .Map(des => des.LearnerGender, src => src.Item1.LearnerGender.ToString())
-            // .Map(des => des.AcademicLevelRequirement, src => src.Item1.AcademicLevelRequirement.ToString())
             .Map(des => des.LearningMode, src => src.Item1.LearningMode.ToString())
             .Map(des => des.ChargeFee, src => src.Item1.ChargeFee.Amount)
             .Map(des => des.SectionFee, src => src.Item1.SectionFee.Amount)
             .Map(des => des.SessionDuration, src => src.Item1.SessionDuration.Value)
             .Map(des => des.SessionPerWeek, src => src.Item1.SessionPerWeek.Value)
             .Map(des => des.SubjectName, src => src.Item2.Name)
-            //.Map(des => des.SubjectId, src => src.Item2.Id.Value)
             .Map(des => des.Address, src => src.Item1.Address)
             .Map(des => des.Description, src => src.Item1.Description)
-            //.Map(des => des.NumberOfLearner, src => src.Item1.NumberOfLearner)
             .Map(des => des, src => src);
     }
 }

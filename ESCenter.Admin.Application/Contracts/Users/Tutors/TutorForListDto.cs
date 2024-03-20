@@ -47,7 +47,7 @@ public class TutorForListDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(User, Tutor, int, int), TutorForListDto>()
+        config.NewConfig<(Customer, Tutor, int, int), TutorForListDto>()
             .Map(dest => dest.Id, src => src.Item2.Id.Value)
             .Map(dest => dest.FirstName, src => src.Item1.FirstName)
             .Map(dest => dest.LastName, src => src.Item1.LastName)

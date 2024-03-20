@@ -40,7 +40,7 @@ public class ReviewCourseCommandHandler(
             return Result.Fail(CourseAppServiceErrors.CourseNotConfirmedError);
         }
 
-        if (courseFromDb.LearnerId != IdentityGuid.Create(currentUserService.UserId))
+        if (courseFromDb.LearnerId != CustomerId.Create(currentUserService.UserId))
         {
             return Result.Fail(CourseAppServiceErrors.IncorrectUserOfCourseError);
         }

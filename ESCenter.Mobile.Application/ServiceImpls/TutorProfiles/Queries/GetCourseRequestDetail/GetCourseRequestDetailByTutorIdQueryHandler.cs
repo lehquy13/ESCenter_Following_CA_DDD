@@ -4,9 +4,9 @@ using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.Identities;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using ESCenter.Mobile.Application.ServiceImpls.Courses;
+using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -19,56 +19,46 @@ namespace ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCour
 public class GetCourseRequestDetailByTutorIdQueryHandler(
     ICourseRepository courseRepository,
     ISubjectRepository subjectRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     ITutorRepository tutorRepository,
-    IIdentityRepository identityRepository,
     ICurrentUserService currentUserService,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetCourseRequestDetailByTutorIdQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetCourseRequestDetailByTutorIdQuery, CourseRequestForDetailDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetCourseRequestDetailByTutorIdQuery, CourseRequestForDetailDto>(logger, mapper)
 {
     public override async Task<Result<CourseRequestForDetailDto>> Handle(GetCourseRequestDetailByTutorIdQuery request,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var courseRequestQueryable =
-                from courseFromDb in courseRepository.GetAll()
-                join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-                join tutorFromDb1 in tutorRepository.GetAll() on courseFromDb.TutorId equals tutorFromDb1.Id
-                join tutorFromDb in userRepository.GetAll() on tutorFromDb1.UserId equals tutorFromDb.Id
-                join identityFromDb in identityRepository.GetAll() on tutorFromDb.Id equals identityFromDb.Id
-                where courseFromDb.CourseRequests.Any(x =>
-                    x.Id == CourseRequestId.Create(request.CourseRequestId)
-                    && x.TutorId == TutorId.Create(currentUserService.UserId))
-                select new
-                {
-                    Course = courseFromDb,
-                    CourseRequest =
-                        courseFromDb.CourseRequests.Where(x => x.Id == CourseRequestId.Create(request.CourseRequestId)),
-                    Subject = subjectFromDb.Name,
-                    Tutor = tutorFromDb,
-                    IdentityUser = identityFromDb
-                };
-
-            var courseRequests = await asyncQueryableExecutor
-                .SingleOrDefault(courseRequestQueryable, false, cancellationToken);
-
-            if (courseRequests == null)
+        var courseRequestQueryable =
+            from courseFromDb in courseRepository.GetAll()
+            join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
+            join tutor in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor.Id
+            join customer in customerRepository.GetAll() on tutor.UserId equals customer.Id
+            where courseFromDb.CourseRequests.Any(x =>
+                x.Id == CourseRequestId.Create(request.CourseRequestId)
+                && x.TutorId == TutorId.Create(currentUserService.UserId))
+            select new
             {
-                return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
-            }
+                Course = courseFromDb,
+                CourseRequest =
+                    courseFromDb.CourseRequests.Where(x => x.Id == CourseRequestId.Create(request.CourseRequestId)),
+                Subject = subjectFromDb.Name,
+                Customer = customer
+            };
 
-            var courseRequestDtos = Mapper.Map<CourseRequestForDetailDto>(courseRequests);
+        var courseRequests = await asyncQueryableExecutor
+            .SingleOrDefault(courseRequestQueryable, false, cancellationToken);
 
-            return courseRequestDtos;
-        }
-        catch (Exception ex)
+        if (courseRequests == null)
         {
-            Logger.LogError(ex.InnerException!.Message);
-            return Result.Fail(ex.Message);
+            return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
+
+        var courseRequestDtos =
+            (courseRequests.Course, courseRequests.CourseRequest, courseRequests.Subject, courseRequests.Customer)
+            .Adapt<CourseRequestForDetailDto>();
+
+        return courseRequestDtos;
     }
 }

@@ -13,12 +13,11 @@ namespace ESCenter.Client.Application.ServiceImpls.Courses.Queries.PopularTutors
 
 public class PopularTutorsQueryHandler(
     ITutorRepository tutorRepository,
-    IUserRepository userRepository,
+    ICustomerRepository customerRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper)
-    : QueryHandlerBase<PopularTutorsQuery, IEnumerable<TutorListForClientPageDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<PopularTutorsQuery, IEnumerable<TutorListForClientPageDto>>(logger, mapper)
 {
     public override async Task<Result<IEnumerable<TutorListForClientPageDto>>> Handle(PopularTutorsQuery request,
         CancellationToken cancellationToken)
@@ -26,7 +25,7 @@ public class PopularTutorsQueryHandler(
         var tutors = await tutorRepository.GetPopularTutors();
         
         var userQueryable =
-            from user in userRepository.GetAll() 
+            from user in customerRepository.GetAll() 
             where tutors.Select(x => x.UserId).Contains(user.Id)
             select new
             {

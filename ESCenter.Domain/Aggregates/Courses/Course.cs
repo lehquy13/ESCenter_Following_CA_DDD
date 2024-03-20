@@ -28,7 +28,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public string LearnerName { get; private set; } = string.Empty;
     public int NumberOfLearner { get; private set; } = 1;
     public string ContactNumber { get; private set; } = string.Empty;
-    public IdentityGuid? LearnerId { get; private set; }
+    public CustomerId? LearnerId { get; private set; }
 
     public IReadOnlyCollection<CourseRequest> CourseRequests => _courseRequests.AsReadOnly();
 
@@ -57,7 +57,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         int sectionPerWeek,
         string address,
         SubjectId subjectId,
-        IdentityGuid? learnerId)
+        CustomerId? learnerId)
     {
         return new Course()
         {
@@ -123,7 +123,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         _courseRequests.Add(courseRequestToCreate);
     }
 
-    public void SetLearnerId(IdentityGuid learnerId)
+    public void SetLearnerId(CustomerId learnerId)
     {
         LearnerId = learnerId;
     }

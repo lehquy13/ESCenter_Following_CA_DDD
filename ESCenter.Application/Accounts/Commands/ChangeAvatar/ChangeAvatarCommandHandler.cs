@@ -8,7 +8,7 @@ using Matt.SharedKernel.Domain.Interfaces;
 namespace ESCenter.Application.Accounts.Commands.ChangeAvatar;
 
 public class ChangeAvatarCommandHandler(
-    IUserRepository accountRepository,
+    ICustomerRepository accountRepository,
     ICurrentUserService currentUserService,
     IUnitOfWork unitOfWork,
     IAppLogger<ChangeAvatarCommandHandler> logger)
@@ -16,7 +16,7 @@ public class ChangeAvatarCommandHandler(
 {
     public override async Task<Result> Handle(ChangeAvatarCommand request, CancellationToken cancellationToken)
     {
-        var id = IdentityGuid.Create(currentUserService.UserId);
+        var id = CustomerId.Create(currentUserService.UserId);
 
         var account = await accountRepository.GetAsync(id, cancellationToken);
 

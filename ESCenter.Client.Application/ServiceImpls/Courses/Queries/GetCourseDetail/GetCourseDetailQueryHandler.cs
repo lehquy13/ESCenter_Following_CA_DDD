@@ -21,13 +21,12 @@ namespace ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourseDeta
 public class GetCourseDetailQueryHandler(
     IReadOnlyRepository<Course, CourseId> courseRepository,
     IReadOnlyRepository<Subject, SubjectId> subjectRepository,
-    IReadOnlyRepository<User, IdentityGuid> userRepository,
+    IReadOnlyRepository<Customer, CustomerId> userRepository,
     IReadOnlyRepository<Tutor, TutorId> tutorRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetCourseDetailQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetCourseDetailQuery, CourseDetailDto>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetCourseDetailQuery, CourseDetailDto>(logger, mapper)
 {
     public override async Task<Result<CourseDetailDto>> Handle(GetCourseDetailQuery request,
         CancellationToken cancellationToken)

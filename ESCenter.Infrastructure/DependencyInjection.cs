@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
-using ESCenter.Application.Interfaces.Emails;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Infrastructure.ServiceImpls.AppLogger;
 using ESCenter.Infrastructure.ServiceImpls.Authentication;
@@ -9,6 +8,7 @@ using ESCenter.Infrastructure.ServiceImpls.Cloudinary;
 using ESCenter.Infrastructure.ServiceImpls.EmailServices;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Domain.Interfaces;
+using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Interfaces;
 using ESCenter.Domain.Shared;
@@ -15,7 +16,7 @@ namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Commands.CreateTutor;
 public class CreateTutorCommandHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
-    IUserDomainService userDomainService,
+    IIdentityService identityService,
     ITutorDomainService tutorDomainService,
     IPublisher publisher)
     : CommandHandlerBase<CreateTutorCommand>(unitOfWork,
@@ -23,45 +24,44 @@ public class CreateTutorCommandHandler(
 {
     public override async Task<Result> Handle(CreateTutorCommand command, CancellationToken cancellationToken)
     {
-        try
+        //Register user as new tutor
+        var userInformation = await identityService.CreateAsync(
+            string.Empty,
+            command.TutorForCreateDto.LearnerForCreateUpdateDto.FirstName,
+            command.TutorForCreateDto.LearnerForCreateUpdateDto.LastName,
+            command.TutorForCreateDto.LearnerForCreateUpdateDto.Gender.ToEnum<Gender>(),
+            command.TutorForCreateDto.LearnerForCreateUpdateDto.BirthYear,
+            Address.Create(
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.City,
+                command.TutorForCreateDto.LearnerForCreateUpdateDto.Country),
+            command.TutorForCreateDto.LearnerForCreateUpdateDto.Description,
+            string.Empty,
+            command.TutorForCreateDto.LearnerForCreateUpdateDto.Email,
+            command.TutorForCreateDto.LearnerForCreateUpdateDto.PhoneNumber,
+            UserRole.Tutor, cancellationToken);
+
+        if (userInformation.IsFailure)
         {
-            //Register user as new tutor
-            var userInformation = await userDomainService.CreateAsync(
-                command.TutorForCreateDto.LearnerForCreateUpdateDto.FirstName,
-                command.TutorForCreateDto.LearnerForCreateUpdateDto.LastName,
-                command.TutorForCreateDto.LearnerForCreateUpdateDto.Gender.ToEnum<Gender>(),
-                command.TutorForCreateDto.LearnerForCreateUpdateDto.BirthYear,
-                Address.Create(
-                    command.TutorForCreateDto.LearnerForCreateUpdateDto.City,
-                    command.TutorForCreateDto.LearnerForCreateUpdateDto.Country),
-                command.TutorForCreateDto.LearnerForCreateUpdateDto.Description,
-                string.Empty,
-                command.TutorForCreateDto.LearnerForCreateUpdateDto.Email,
-                command.TutorForCreateDto.LearnerForCreateUpdateDto.PhoneNumber,
-                UserRole.Tutor);
-
-            var tutorInformation = await tutorDomainService.CreateTutorWithEmptyVerificationAsync(
-                userInformation.Id,
-                command.TutorForCreateDto.TutorProfileCreateDto.AcademicLevel.ToEnum<AcademicLevel>(),
-                command.TutorForCreateDto.TutorProfileCreateDto.University,
-                command.TutorForCreateDto.TutorProfileCreateDto.MajorIds,
-                command.TutorForCreateDto.TutorProfileCreateDto.IsVerified);
-
-            if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-            {
-                return Result.Fail(TutorAppServiceError.FailToCreateTutorWhileSavingChanges);
-            }
-
-            var message = $"New tutor: {tutorInformation.Id.Value} at {DateTime.Now.ToLongDateString()}";
-            await publisher.Publish(
-                new NewObjectCreatedEvent(userInformation.Id.Value.ToString(), message, NotificationEnum.Tutor),
-                cancellationToken);
-
-            return Result.Success();
+            return userInformation.Error;
         }
-        catch (Exception ex)
+
+        var tutorInformation = await tutorDomainService.CreateTutorWithEmptyVerificationAsync(
+            userInformation.Value.Id,
+            command.TutorForCreateDto.TutorProfileCreateDto.AcademicLevel.ToEnum<AcademicLevel>(),
+            command.TutorForCreateDto.TutorProfileCreateDto.University,
+            command.TutorForCreateDto.TutorProfileCreateDto.MajorIds,
+            command.TutorForCreateDto.TutorProfileCreateDto.IsVerified);
+
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
-            return Result.Fail("Error happens when tutor is adding or updating: " + ex.Message);
+            return Result.Fail(TutorAppServiceError.FailToCreateTutorWhileSavingChanges);
         }
+
+        var message = $"New tutor: {tutorInformation.Id.Value} at {DateTime.Now.ToLongDateString()}";
+        await publisher.Publish(
+            new NewObjectCreatedEvent(userInformation.Value.Id.Value.ToString(), message, NotificationEnum.Tutor),
+            cancellationToken);
+
+        return Result.Success();
     }
 }

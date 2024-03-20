@@ -42,10 +42,10 @@ internal class DiscoveryUserConfiguration : IEntityTypeConfiguration<DiscoveryUs
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
-                value => IdentityGuid.Create(value)
+                value => CustomerId.Create(value)
             );
         
-        builder.HasOne<User>()
+        builder.HasOne<Customer>()
             .WithMany()
             .HasForeignKey(nameof(DiscoveryUser.UserId))
             .IsRequired();

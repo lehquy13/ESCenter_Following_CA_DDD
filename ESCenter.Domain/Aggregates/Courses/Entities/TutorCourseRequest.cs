@@ -14,7 +14,7 @@ public class TutorCourseRequest : Entity<TutorId>
     public TutorUserInfo TutorUserInfo { get; private set; } = null!;
 }
 
-public class TutorUserInfo : Entity<IdentityGuid>
+public class TutorUserInfo : Entity<CustomerId>
 {
     public TutorId TutorId { get; private set; } = null!;
     public string FirstName { get; private set; } = null!;

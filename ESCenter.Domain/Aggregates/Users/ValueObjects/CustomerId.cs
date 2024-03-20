@@ -2,17 +2,17 @@
 
 namespace ESCenter.Domain.Aggregates.Users.ValueObjects;
 
-public class IdentityGuid : ValueObject
+public class CustomerId : ValueObject
 {
     public Guid Value { get; private set; }
 
-    private IdentityGuid()
+    private CustomerId()
     {
     }
 
-    public static IdentityGuid Create(Guid guid = default)
+    public static CustomerId Create(Guid guid = default)
     {
-        return new IdentityGuid()
+        return new CustomerId()
         {
             Value = guid == default ? Guid.NewGuid() : guid
         };
@@ -21,5 +21,10 @@ public class IdentityGuid : ValueObject
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
+    }
+
+    public override string ToString()
+    {
+        return Value.ToString();
     }
 }
