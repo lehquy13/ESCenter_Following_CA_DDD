@@ -52,7 +52,7 @@ public class GetCourseDetailQueryHandler(
             tutorRepository.GetAll()
                 .Where(x => a.Any(cr => cr == x.Id))
                 .Join(userRepository.GetAll(),
-                    tutor => tutor.UserId,
+                    tutor => tutor.CustomerId,
                     user => user.Id,
                     (tutor, user) => new { user, tutor })
                 .Where(o => o.user.Role == UserRole.Tutor && o.user.IsDeleted == false)
@@ -82,7 +82,7 @@ public class GetCourseDetailQueryHandler(
         {
             var tutorQ =
                 from tutor in tutorRepository.GetAll()
-                join user in userRepository.GetAll() on tutor.UserId equals user.Id
+                join user in userRepository.GetAll() on tutor.CustomerId equals user.Id
                 where tutor.Id == courseFromDb.course.TutorId
                 select user;
 

@@ -97,14 +97,14 @@ public class ProfileController(
 
     [HttpPost("edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(UserProfileCreateUpdateDto userProfileCreateUpdateDto, IFormFile? formFile)
+    public async Task<IActionResult> Edit(UserProfileUpdateDto userProfileUpdateDto, IFormFile? formFile)
     {
         await PackStaticListToView();
 
         if (!ModelState.IsValid)
         {
             return Helper.RenderRazorViewToString(this, "_ProfileEdit",
-                userProfileCreateUpdateDto,
+                userProfileUpdateDto,
                 true
             );
         }
@@ -114,15 +114,15 @@ public class ProfileController(
         //     filePath = await Helper.SaveFiles(formFile, webHostEnvironment.WebRootPath);
         // }
 
-        var result = await mediator.Send(new CreateUpdateBasicProfileCommand(userProfileCreateUpdateDto));
+        var result = await mediator.Send(new UpdateBasicProfileCommand(userProfileUpdateDto));
         //ViewBag.Updated = result.IsSuccess;
         //Helper.ClearTempFile(webHostEnvironment.WebRootPath);
 
         if (result.IsSuccess)
         {
             HttpContext.Session.SetString("name",
-                userProfileCreateUpdateDto.FirstName + " " + userProfileCreateUpdateDto.LastName);
-            HttpContext.Session.SetString("image", userProfileCreateUpdateDto.Avatar);
+                userProfileUpdateDto.FirstName + " " + userProfileUpdateDto.LastName);
+            HttpContext.Session.SetString("image", userProfileUpdateDto.Avatar);
 
             // if (userDto.Role == UserRole.Tutor)
             // {

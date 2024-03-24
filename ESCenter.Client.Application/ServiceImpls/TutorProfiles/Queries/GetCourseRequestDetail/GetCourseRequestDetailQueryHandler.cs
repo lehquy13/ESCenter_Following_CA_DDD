@@ -31,7 +31,7 @@ public class GetCourseRequestDetailQueryHandler(
             from courseFromDb in courseRepository.GetAll()
             join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
             join tutorFromDb1 in tutorRepository.GetAll() on courseFromDb.TutorId equals tutorFromDb1.Id
-            join tutorFromDb in customerRepository.GetAll() on tutorFromDb1.UserId equals tutorFromDb.Id
+            join tutorFromDb in customerRepository.GetAll() on tutorFromDb1.CustomerId equals tutorFromDb.Id
             where courseFromDb.CourseRequests.Any(
                 x => x.Id == CourseRequestId.Create(request.CourseRequestId))
             select new

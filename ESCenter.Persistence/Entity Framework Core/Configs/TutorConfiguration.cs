@@ -126,8 +126,8 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             );
 
         //Lack of User foreign key
-        builder.Property(r => r.UserId)
-            .HasColumnName(nameof(Tutor.UserId))
+        builder.Property(r => r.CustomerId)
+            .HasColumnName(nameof(Tutor.CustomerId))
             .ValueGeneratedNever()
             .HasConversion(
                 id => id.Value,
@@ -136,7 +136,7 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
 
         builder.HasOne<Customer>()
             .WithOne()
-            .HasForeignKey<Tutor>(nameof(Tutor.UserId))
+            .HasForeignKey<Tutor>(nameof(Tutor.CustomerId))
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
 

@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
-using ESCenter.Domain.Shared.Courses;
 using ESCenter.Infrastructure.ServiceImpls.AppLogger;
 using ESCenter.Infrastructure.ServiceImpls.Authentication;
 using ESCenter.Infrastructure.ServiceImpls.Cloudinary;
@@ -23,14 +22,14 @@ namespace ESCenter.Infrastructure
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-            ConfigurationManager configuration)
+            IConfiguration configuration)
         {
-
-
             services.AddScoped(typeof(IAppLogger<>), typeof(AppLogger<>));
+            
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
             // Authentication configuration using jwt bearer
             services.AddAuth(configuration);
             IdentityModelEventSource.ShowPII = true; //Add this line
@@ -55,6 +54,7 @@ namespace ESCenter.Infrastructure
             services.AddScoped<ICloudinaryServices, CloudinaryServices>();
 
             services.AddScoped<IEmailSender, EmailSender>();
+            
             //configure BackgroundService
             //services.AddHostedService<InfrastructureBackgroundService>();
             return services;
@@ -62,7 +62,7 @@ namespace ESCenter.Infrastructure
 
         private static IServiceCollection AddAuth(
             this IServiceCollection services,
-            ConfigurationManager configuration
+            IConfiguration configuration
         )
         {
             // set configuration settings to jwtSettings and turn it into Singleton
@@ -111,11 +111,9 @@ namespace ESCenter.Infrastructure
                     };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("RequireAdministratorRole", policy => { policy.RequireRole("Admin"); });
-                options.AddPolicy("RequireTutorRole", policy => { policy.RequireRole("Tutor"); });
-            });
+            services.AddAuthorizationBuilder()
+                .AddPolicy("RequireAdministratorRole", policy => { policy.RequireRole("Admin"); })
+                .AddPolicy("RequireTutorRole", policy => { policy.RequireRole("Tutor"); });
 
             return services;
         }

@@ -26,7 +26,7 @@ public class PopularTutorsQueryHandler(
         
         var userQueryable =
             from user in customerRepository.GetAll() 
-            where tutors.Select(x => x.UserId).Contains(user.Id)
+            where tutors.Select(x => x.CustomerId).Contains(user.Id)
             select new
             {
                 User = user
@@ -34,7 +34,7 @@ public class PopularTutorsQueryHandler(
 
         var users = await asyncQueryableExecutor.ToListAsync(userQueryable, false, cancellationToken);
 
-        var joined = tutors.Join(users, tutor => tutor.UserId, user => user.User.Id, (tutor, user) => new
+        var joined = tutors.Join(users, tutor => tutor.CustomerId, user => user.User.Id, (tutor, user) => new
         {
             Tutor = tutor,
             User = user.User

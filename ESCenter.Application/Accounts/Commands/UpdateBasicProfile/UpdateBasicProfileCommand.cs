@@ -7,20 +7,20 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 
-public record CreateUpdateBasicProfileCommand(
-    UserProfileCreateUpdateDto UserProfileCreateUpdateDto
+public record UpdateBasicProfileCommand(
+    UserProfileUpdateDto UserProfileUpdateDto
 ) : ICommandRequest<AuthenticationResult>;
 
-public class CreateUpdateBasicProfileCommandValidator : AbstractValidator<CreateUpdateBasicProfileCommand>
+public class UpdateBasicProfileCommandValidator : AbstractValidator<UpdateBasicProfileCommand>
 {
-    public CreateUpdateBasicProfileCommandValidator()
+    public UpdateBasicProfileCommandValidator()
     {
-        RuleFor(x => x.UserProfileCreateUpdateDto).NotNull();
-        RuleFor(x => x.UserProfileCreateUpdateDto).SetValidator(new UserProfileCreateUpdateDtoValidator());
+        RuleFor(x => x.UserProfileUpdateDto).NotNull();
+        RuleFor(x => x.UserProfileUpdateDto).SetValidator(new UserProfileCreateUpdateDtoValidator());
     }
 }
 
-public class UserProfileCreateUpdateDto : BasicAuditedEntityDto<Guid>
+public class UserProfileUpdateDto : IAuditDto
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
@@ -37,9 +37,11 @@ public class UserProfileCreateUpdateDto : BasicAuditedEntityDto<Guid>
     public string Email { get; set; } = string.Empty;
 
     public string PhoneNumber { get; set; } = string.Empty;
+    public DateTime? LastModificationTime { get; set; }
+    public DateTime CreationTime { get; set; }
 }
 
-public class UserProfileCreateUpdateDtoValidator : AbstractValidator<UserProfileCreateUpdateDto>
+public class UserProfileCreateUpdateDtoValidator : AbstractValidator<UserProfileUpdateDto>
 {
     public UserProfileCreateUpdateDtoValidator()
     {
@@ -98,10 +100,9 @@ public class LearnerForCreateUpdateDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<UserProfileCreateUpdateDto, Customer>();
+        config.NewConfig<UserProfileUpdateDto, Customer>();
 
-        config.NewConfig<Customer, UserProfileCreateUpdateDto>()
-            .Map(dest => dest.Id, src => src.Id.Value)
+        config.NewConfig<Customer, UserProfileUpdateDto>()
             .Map(des => des.Gender, src => src.Gender)
             .Map(des => des.FirstName, src => src.FirstName)
             .Map(des => des.LastName, src => src.LastName)

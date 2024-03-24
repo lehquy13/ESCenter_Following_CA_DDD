@@ -75,7 +75,7 @@ public class ProfileController(
 
     [HttpPost("edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(UserProfileCreateUpdateDto userDto) //, IFormFile? formFile)
+    public async Task<IActionResult> Edit(UserProfileUpdateDto userDto) //, IFormFile? formFile)
     {
         PackStaticListToView();
 
@@ -88,7 +88,7 @@ public class ProfileController(
             );
         }
 
-        var result = await sender.Send(new CreateUpdateBasicProfileCommand(userDto));
+        var result = await sender.Send(new UpdateBasicProfileCommand(userDto));
 
         try
         {

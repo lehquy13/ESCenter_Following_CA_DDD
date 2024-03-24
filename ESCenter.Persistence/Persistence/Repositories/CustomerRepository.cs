@@ -30,7 +30,7 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
             .AsNoTracking()
             .Join(AppDbContext.Tutors,
                 user => user.Id,
-                tutor => tutor.UserId,
+                tutor => tutor.CustomerId,
                 (user, tutor) => new { user, tutor })
             .Where(o => o.user.Role == UserRole.Tutor
                         && tutorIds.Contains(o.tutor.Id)
@@ -57,7 +57,7 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
         var tutor = await AppDbContext.Customers
             .Join(AppDbContext.Tutors,
                 user => user.Id,
-                tutor => tutor.UserId,
+                tutor => tutor.CustomerId,
                 (user, tutor) => user)
             .FirstOrDefaultAsync();
 

@@ -2,6 +2,6 @@
 
 namespace ESCenter.Persistence.Entity_Framework_Core;
 
-public class EsIdentityUser : IdentityUser<Guid>;
+public class EsIdentityUser : IdentityUser;
 
-public class EsIdentityRole(string name) : IdentityRole<Guid>(name);
+public class EsIdentityRole(string name) : IdentityRole(name);

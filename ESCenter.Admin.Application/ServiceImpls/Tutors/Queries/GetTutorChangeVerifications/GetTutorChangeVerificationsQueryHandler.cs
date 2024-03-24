@@ -23,7 +23,7 @@ public class GetTutorChangeVerificationsQueryHandler(
     {
         var tutorQ =
             from tutorR in tutorRepository.GetAll()
-            join userR in customerRepository.GetAll() on tutorR.UserId equals userR.Id
+            join userR in customerRepository.GetAll() on tutorR.CustomerId equals userR.Id
             where tutorR.Id == TutorId.Create(request.TutorId)
             select new
             {

@@ -15,13 +15,15 @@ internal class CurrentUserService : ICurrentUserService
     {
         var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
 
-        if (userId != null)
+        if (userId == null)
         {
-            UserId = new Guid(userId.Value);
-            IsAuthenticated = UserId != Guid.Empty;
-            CurrentUserEmail = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
-            CurrentUserFullName = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value;
+            return;
         }
+        
+        UserId = new Guid(userId.Value);
+        IsAuthenticated = UserId != Guid.Empty;
+        CurrentUserEmail = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
+        CurrentUserFullName = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value;
     }
 
     public void Authenticated()

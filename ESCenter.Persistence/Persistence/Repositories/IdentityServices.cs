@@ -25,21 +25,28 @@ public class IdentityService(
     UserManager<EsIdentityUser> userManager,
     RoleManager<EsIdentityRole> roleManager,
     IUserStore<EsIdentityUser> userStore,
-    IUserEmailStore<EsIdentityUser> emailStore,
-    IUserPhoneNumberStore<EsIdentityUser> phoneNumberStore,
-    AppDbContext appDbContext,
     IEmailSender emailSender,
-    IAppLogger<IdentityService> logger)
+    IAppLogger<IdentityService> logger,
+    AppDbContext appDbContext)
     : DomainServiceBase(logger), IIdentityService
 {
     public async Task<Customer?> SignInAsync(string email, string password,
         CancellationToken cancellationToken = default)
     {
-        var identityUser = await signInManager.PasswordSignInAsync(email, password, false, false);
-
-        if (identityUser.Succeeded)
+        var identityUser = await userManager.FindByEmailAsync(email);
+        
+        if (identityUser is null)
         {
-            return await appDbContext.Customers.FindAsync(new CustomerByEmailSpec(email), cancellationToken);
+            return null;
+        }
+        
+        var result = await signInManager.CheckPasswordSignInAsync(identityUser, password, false);
+
+        if (result.Succeeded)
+        {
+            return await appDbContext.Customers.FindAsync(
+                CustomerId.Create(new Guid(identityUser.Id)),
+                cancellationToken);
         }
 
         return null;
@@ -119,8 +126,12 @@ public class IdentityService(
         EsIdentityUser esIdentityUser)
     {
         await userStore.SetUserNameAsync(esIdentityUser, email, cancellationToken);
-        await emailStore.SetEmailAsync(esIdentityUser, email, cancellationToken);
-        await phoneNumberStore.SetPhoneNumberAsync(esIdentityUser, phoneNumber, cancellationToken);
+        esIdentityUser.Email = email;
+        esIdentityUser.NormalizedEmail = email.ToUpper();
+        esIdentityUser.PhoneNumber = phoneNumber;
+        
+        //await emailStore.SetEmailAsync(esIdentityUser, email, cancellationToken);
+        //await phoneNumberStore.SetPhoneNumberAsync(esIdentityUser, phoneNumber, cancellationToken);
 
         var result = await userManager.CreateAsync(esIdentityUser, DefaultPassword);
         return result;
@@ -184,10 +195,9 @@ public class IdentityService(
             return Result.Fail(DomainServiceErrors.UserNotFound);
         }
 
-
         // Check if the user is already a tutor
         var alTutor = await appDbContext.Tutors.FirstOrDefaultAsync(
-            x => x.UserId == customer.Id,
+            x => x.CustomerId == customer.Id,
             cancellationToken: default);
 
         if (alTutor is not null)

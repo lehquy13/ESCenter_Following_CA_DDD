@@ -9,10 +9,9 @@ namespace ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 
 public class GetAllSubjectsQueryHandler(
     ISubjectRepository subjectRepository,
-    IUnitOfWork unitOfWork,
     IAppLogger<GetAllSubjectsQueryHandler> logger,
     IMapper mapper)
-    : QueryHandlerBase<GetAllSubjectsQuery, List<SubjectDto>>(unitOfWork, logger, mapper)
+    : QueryHandlerBase<GetAllSubjectsQuery, List<SubjectDto>>(logger, mapper)
 {
     public override async Task<Result<List<SubjectDto>>> Handle(GetAllSubjectsQuery request,
         CancellationToken cancellationToken)

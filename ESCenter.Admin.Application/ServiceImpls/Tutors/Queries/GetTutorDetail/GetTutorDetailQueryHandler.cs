@@ -26,7 +26,7 @@ public class GetTutorDetailQueryHandler(
     {
         var tutorDetailAsQueryable =
             from user in customerRepository.GetAll()
-            join tutor in tutorRepository.GetAll() on user.Id equals tutor.UserId
+            join tutor in tutorRepository.GetAll() on user.Id equals tutor.CustomerId
             where user.Id == CustomerId.Create(request.TutorId)
             select new
             {

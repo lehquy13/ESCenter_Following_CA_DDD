@@ -32,7 +32,6 @@ public static class DependencyInjection
         services.AddCors();
 
         services
-            //.AddSharedKernel(typeof(Mobile.Application.DependencyInjection).Assembly)
             .AddPersistence(configuration)
             .AddInfrastructure(configuration)
             .AddApplication();

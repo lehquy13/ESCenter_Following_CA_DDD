@@ -7,38 +7,40 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;
 using MapsterMapper;
 using Matt.ResultObject;
-using Matt.SharedKernel.Application.Mediators;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
 namespace ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 
-public class CreateUpdateUserProfileCommandHandler( // Change name to Update only
-    IUnitOfWork unitOfWork,
-    IAppLogger<RequestHandlerBase> logger,
-    IMapper mapper,
-    IJwtTokenGenerator jwtTokenGenerator,
+public class UpdateUserProfileCommandHandler( // Change name to Update only
     ICustomerRepository customerRepository,
+    IJwtTokenGenerator jwtTokenGenerator,
+    ICurrentUserService currentUserService,
+    IUnitOfWork unitOfWork,
+    IMapper mapper,
+    IAppLogger<UpdateUserProfileCommandHandler> logger,
     IPublisher publisher)
-    : CommandHandlerBase<CreateUpdateBasicProfileCommand,
+    : CommandHandlerBase<UpdateBasicProfileCommand,
         AuthenticationResult>(unitOfWork, logger)
 {
     private IMapper Mapper { get; } = mapper;
 
-    public override async Task<Result<AuthenticationResult>> Handle(CreateUpdateBasicProfileCommand command,
+    public override async Task<Result<AuthenticationResult>> Handle(UpdateBasicProfileCommand command,
         CancellationToken cancellationToken)
     {
         try
         {
             var user = await customerRepository.GetAsync(
-                CustomerId.Create(command.UserProfileCreateUpdateDto.Id), cancellationToken);
+                CustomerId.Create(currentUserService.UserId),
+                cancellationToken);
 
             // Check if the user existed
             if (user is not null)
             {
                 // Update user
-                Mapper.Map(command.UserProfileCreateUpdateDto, user);
+                Mapper.Map(command.UserProfileUpdateDto, user);
 
                 if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
                 {
@@ -57,10 +59,10 @@ public class CreateUpdateUserProfileCommandHandler( // Change name to Update onl
             }
 
             //Create new user
-            user = Mapper.Map<Customer>(command.UserProfileCreateUpdateDto);
+            user = Mapper.Map<Customer>(command.UserProfileUpdateDto);
 
             await customerRepository.InsertAsync(user, cancellationToken);
-            
+
             if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {
                 return Result.Fail(AccountServiceError.FailToCreateUserErrorWhileSavingChanges);
@@ -69,7 +71,8 @@ public class CreateUpdateUserProfileCommandHandler( // Change name to Update onl
             // TODO: Publish event
             var message = "New learner: " + user.FirstName + " " + user.LastName + " at " +
                           user.CreationTime.ToLongDateString();
-            await publisher.Publish(new NewObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),
+            await publisher.Publish(
+                new NewObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),
                 cancellationToken);
             //3. Generate token
             var userLoginForCreateDto = Mapper.Map<UserLoginDto>(user);
@@ -83,7 +86,8 @@ public class CreateUpdateUserProfileCommandHandler( // Change name to Update onl
         }
         catch (Exception ex)
         {
-            return Result.Fail(UserError.FailTCreateOrUpdateUserError(command.UserProfileCreateUpdateDto.Email, ex.Message));
+            return Result.Fail(
+                UserError.FailTCreateOrUpdateUserError(command.UserProfileUpdateDto.Email, ex.Message));
         }
     }
 }

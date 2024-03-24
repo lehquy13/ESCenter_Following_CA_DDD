@@ -14,10 +14,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ESCenter.Persistence.Entity_Framework_Core; 
+namespace ESCenter.Persistence.Entity_Framework_Core;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : IdentityDbContext<EsIdentityUser, EsIdentityRole, Guid>(options)
+    : IdentityDbContext<EsIdentityUser, EsIdentityRole, string>(options)
 {
     public DbSet<Subject> Subjects { get; set; } = null!;
     public DbSet<Course> Courses { get; set; } = null!;

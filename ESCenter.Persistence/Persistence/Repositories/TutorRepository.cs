@@ -41,7 +41,7 @@ internal class TutorRepository(
     public Task<Tutor?> GetTutorByUserId(CustomerId userId)
     {
         return AppDbContext.Tutors
-            .FirstOrDefaultAsync(x => x.UserId == userId);
+            .FirstOrDefaultAsync(x => x.CustomerId == userId);
     }
 
     public Task RemoveChangeVerification(ChangeVerificationRequestId id)

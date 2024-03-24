@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Api.Controllers;
 
-[Authorize]
+//[Authorize]
 public class ProfileController(
     ILogger<ProfileController> logger,
     IMediator mediator)
@@ -31,14 +31,14 @@ public class ProfileController(
         return Ok(loginResult);
     }
 
-    [HttpGet("/learning-courses")]
+    [HttpGet("learning-courses")]
     public async Task<IActionResult> GetLearningCourses()
     {
         var result = await mediator.Send(new GetLearningCoursesQuery());
         return Ok(result);
     }
 
-    [HttpGet("/tutor-information")]
+    [HttpGet("tutor-information")]
     public async Task<IActionResult> GetTutorInformation()
     {
         var result = await mediator.Send(new GetTutorProfileQuery());
@@ -55,9 +55,9 @@ public class ProfileController(
 
     [HttpPut("edit")]
     public async Task<IActionResult> Edit(
-        [FromBody] UserProfileCreateUpdateDto learnerForCreateUpdateDto)
+        [FromBody] UserProfileUpdateDto learnerForUpdateDto)
     {
-        var result = await mediator.Send(new CreateUpdateBasicProfileCommand(learnerForCreateUpdateDto));
+        var result = await mediator.Send(new UpdateBasicProfileCommand(learnerForUpdateDto));
         return Ok(result);
     }
 
