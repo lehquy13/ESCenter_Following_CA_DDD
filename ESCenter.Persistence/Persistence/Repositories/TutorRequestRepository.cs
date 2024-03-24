@@ -1,7 +1,7 @@
 ﻿using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Persistence.Entity_Framework_Core;
+using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.SharedKernel.Domain.Interfaces;
 
 namespace ESCenter.Persistence.Persistence.Repositories;

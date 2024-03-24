@@ -3,7 +3,7 @@ using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ESCenter.Persistence.Entity_Framework_Core.Configs;
+namespace ESCenter.Persistence.EntityFrameworkCore.Configs;
 
 internal class SubjectConfiguration : IEntityTypeConfiguration<Subject>
 {

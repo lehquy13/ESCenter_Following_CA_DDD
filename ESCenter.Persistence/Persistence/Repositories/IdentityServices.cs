@@ -10,7 +10,7 @@ using ESCenter.Domain.DomainServices;
 using ESCenter.Domain.DomainServices.Errors;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Specifications.Customers;
-using ESCenter.Persistence.Entity_Framework_Core;
+using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Emails;

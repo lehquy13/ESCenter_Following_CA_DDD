@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ESCenter.Persistence.Entity_Framework_Core;
+namespace ESCenter.Persistence.EntityFrameworkCore;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
     : IdentityDbContext<EsIdentityUser, EsIdentityRole, string>(options)

@@ -1,6 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
-using ESCenter.Persistence.Entity_Framework_Core;
+using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,11 +1,10 @@
 ﻿using ESCenter.Domain.Aggregates.Subscribers;
-using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ESCenter.Persistence.Entity_Framework_Core.Configs;
+namespace ESCenter.Persistence.EntityFrameworkCore.Configs;
 
 internal class SubscriberConfiguration : IEntityTypeConfiguration<Subscriber>
 {

@@ -1,5 +1,4 @@
-﻿using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.TutorRequests;
+﻿using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -8,7 +7,7 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ESCenter.Persistence.Entity_Framework_Core.Configs;
+namespace ESCenter.Persistence.EntityFrameworkCore.Configs;
 
 internal class TutorRequestConfiguration : IEntityTypeConfiguration<TutorRequest>
 {

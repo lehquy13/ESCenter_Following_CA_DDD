@@ -30,7 +30,7 @@ namespace ESCenter.Infrastructure
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
-            // Authentication configuration using jwt bearer
+            // Authentication configuration using jwt bearer 
             services.AddAuth(configuration);
             IdentityModelEventSource.ShowPII = true; //Add this line
 
@@ -72,10 +72,12 @@ namespace ESCenter.Infrastructure
             services.AddSingleton(Options.Create(jwtSettings));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IValidator, Validator>();
+            
             services.AddAuthentication(scheme =>
                 {
                     scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     scheme.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    scheme.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(options =>
                 {

@@ -1,4 +1,4 @@
-﻿using ESCenter.Persistence.Entity_Framework_Core;
+﻿using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.AutoDI;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;

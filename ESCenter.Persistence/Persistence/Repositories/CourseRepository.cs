@@ -1,7 +1,7 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Persistence.Entity_Framework_Core;
+using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ESCenter.Persistence.Entity_Framework_Core;
+namespace ESCenter.Persistence.EntityFrameworkCore;
 
 public class EsIdentityUser : IdentityUser;
 

@@ -4,7 +4,7 @@ using ESCenter.Domain.Aggregates.Discoveries.ValueObjects;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Persistence.Entity_Framework_Core;
+using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

@@ -2,8 +2,6 @@
 using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Host;
-using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
-using ESCenter.Mobile.Application.Contracts.Users.Tutors;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.AddOrResetDiscovery;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
