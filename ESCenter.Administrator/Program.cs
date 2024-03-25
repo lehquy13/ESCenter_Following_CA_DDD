@@ -1,8 +1,13 @@
 using ESCenter.Admin.Host;
+using ESCenter.Administrator;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddControllersWithViews();
+    builder.Services.AddControllersWithViews(options =>
+    {
+        options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+    });
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
     builder.Services.AddHost(builder.Configuration);
     builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

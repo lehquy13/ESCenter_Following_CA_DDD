@@ -348,12 +348,8 @@ namespace ESCenter.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AcademicLevel");
-
                     b.HasIndex("CustomerId")
                         .IsUnique();
-
-                    b.HasIndex("Rate");
 
                     b.ToTable("Tutor", (string)null);
                 });
@@ -426,7 +422,7 @@ namespace ESCenter.Persistence.Migrations
                     b.ToTable("Customer", (string)null);
                 });
 
-            modelBuilder.Entity("ESCenter.Persistence.Entity_Framework_Core.EsIdentityRole", b =>
+            modelBuilder.Entity("ESCenter.Persistence.EntityFrameworkCore.EsIdentityRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -453,7 +449,7 @@ namespace ESCenter.Persistence.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("ESCenter.Persistence.Entity_Framework_Core.EsIdentityUser", b =>
+            modelBuilder.Entity("ESCenter.Persistence.EntityFrameworkCore.EsIdentityUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -1008,7 +1004,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("ESCenter.Persistence.Entity_Framework_Core.EsIdentityRole", null)
+                    b.HasOne("ESCenter.Persistence.EntityFrameworkCore.EsIdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1017,7 +1013,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ESCenter.Persistence.Entity_Framework_Core.EsIdentityUser", null)
+                    b.HasOne("ESCenter.Persistence.EntityFrameworkCore.EsIdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1026,7 +1022,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ESCenter.Persistence.Entity_Framework_Core.EsIdentityUser", null)
+                    b.HasOne("ESCenter.Persistence.EntityFrameworkCore.EsIdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1035,13 +1031,13 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("ESCenter.Persistence.Entity_Framework_Core.EsIdentityRole", null)
+                    b.HasOne("ESCenter.Persistence.EntityFrameworkCore.EsIdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ESCenter.Persistence.Entity_Framework_Core.EsIdentityUser", null)
+                    b.HasOne("ESCenter.Persistence.EntityFrameworkCore.EsIdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1050,7 +1046,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ESCenter.Persistence.Entity_Framework_Core.EsIdentityUser", null)
+                    b.HasOne("ESCenter.Persistence.EntityFrameworkCore.EsIdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

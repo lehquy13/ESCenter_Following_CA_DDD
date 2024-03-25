@@ -5,7 +5,8 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourseRequest;
 
-public record CreateCourseRequestCommand(CourseRequestForCreateDto CourseRequestForCreateDto) : ICommandRequest, IAuthorizationRequest;
+public record CreateCourseRequestCommand(CourseRequestForCreateDto CourseRequestForCreateDto)
+    : ICommandRequest, IAuthorizationRequest;
 
 public class CreateCourseRequestCommandValidator : AbstractValidator<CreateCourseRequestCommand>
 {
@@ -16,11 +17,7 @@ public class CreateCourseRequestCommandValidator : AbstractValidator<CreateCours
     }
 }
 
-public class CourseRequestForCreateDto
-{
-    public Guid CourseId { get; set; }
-    public Guid TutorId { get; set; }
-}
+public record CourseRequestForCreateDto(Guid CourseId, Guid TutorId);
 
 public class CourseRequestForCreateDtoValidator : AbstractValidator<CourseRequestForCreateDto>
 {

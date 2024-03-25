@@ -1,10 +1,11 @@
 ﻿using ESCenter.Application.EventHandlers;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;
-using ESCenter.Domain.Specifications.Customers;
 using MapsterMapper;
 using Matt.ResultObject;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
@@ -12,10 +13,11 @@ using MediatR;
 namespace ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CreateCourse;
 
 public class CreateCourseCommandHandler(
-    IMapper mapper,
-    IPublisher publisher,
     ICourseRepository courseRepository,
     ICustomerRepository customerRepository,
+    ICurrentUserService currentUserService,
+    IMapper mapper,
+    IPublisher publisher,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateCourseCommandHandler> logger)
     : CommandHandlerBase<CreateCourseCommand>(unitOfWork, logger)
@@ -25,13 +27,13 @@ public class CreateCourseCommandHandler(
         try
         {
             var course = mapper.Map<Course>(command.CourseForCreateDto);
-
-            if (!string.IsNullOrWhiteSpace(command.CourseForCreateDto.ContactNumber))
+            
+            if (currentUserService.IsAuthenticated)
             {
-                //Class was created by a system user
                 var user = await customerRepository.GetAsync(
-                    new CustomerByContactSpec(command.CourseForCreateDto.ContactNumber),
+                    CustomerId.Create(currentUserService.UserId),
                     cancellationToken);
+                
                 if (user != null)
                 {
                     course.SetLearnerId(user.Id);
@@ -42,7 +44,7 @@ public class CreateCourseCommandHandler(
             await courseRepository.InsertAsync(course, cancellationToken);
             await UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            var message = "New class: " + course.Title + " at " + course.CreationTime.ToLongDateString();
+            var message = $"New class: {course.Title} at {course.CreationTime.ToLongDateString()}";
             await publisher.Publish(
                 new NewObjectCreatedEvent(course.Id.Value.ToString(), message, NotificationEnum.Course),
                 cancellationToken);

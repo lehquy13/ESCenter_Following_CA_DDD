@@ -29,7 +29,7 @@ public class CreateCourseByLearnerCommandHandler(
         {
             var course = mapper.Map<Course>(byLearnerCommand.CourseCreateForLearnerDto);
 
-            if (currentUserService.UserId == Guid.Empty)
+            if (currentUserService.IsAuthenticated)
             {
                 var learner = await customerRepository.GetAsync(
                     CustomerId.Create(currentUserService.UserId),
@@ -44,7 +44,6 @@ public class CreateCourseByLearnerCommandHandler(
             //Handle publish event to notification service
             await courseRepository.InsertAsync(course, cancellationToken);
             await UnitOfWork.SaveChangesAsync(cancellationToken);
-
 
             var message = "New class: " + course.Title + " was created by " + course.LearnerId +
                           " at " + course.CreationTime.ToLongDateString();

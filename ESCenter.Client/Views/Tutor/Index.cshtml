@@ -1,14 +1,18 @@
 @using ESCenter.Domain.Shared
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ESCenter.Client.Application.Contracts.Users.Params
+@using ESCenter.Domain.Shared.Courses
 @model Matt.Paginated.PaginatedList<ESCenter.Client.Application.Contracts.Users.Tutors.TutorListForClientPageDto>
 
 @{
-    var subject = ViewBag.SubjectSearch as string ?? "";
+    var tutorParams = ViewData["TutorParams"] as TutorParams ?? new TutorParams();
 
-    var currentGender = ViewBag.GenderSearch as string;
-    var currentAcademicLevel = ViewBag.AcademicLevelSearch as string;
-    var currentAddress = ViewBag.AddressSearch as string;
-    var currentBirthYear = ViewBag.BirthYearSearch;
+    var subject = tutorParams.SubjectName;
+
+    var currentGender = tutorParams.Gender  == Gender.None.ToString() ? null : tutorParams.Gender;
+    var currentAcademicLevel= tutorParams.Academic == AcademicLevel.Optional.ToString() ? null : tutorParams.Academic;
+    var currentAddress = tutorParams.Address;
+    var currentBirthYear = tutorParams.BirthYear;
     var genders = EnumProvider.FullGendersOption;
     var academicLevels = EnumProvider.FullAcademicLevelsOption;
 }
@@ -52,7 +56,7 @@
                 </select>
             </div>
             <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
-                <input class="form-control" placeholder="Birth Year" value="@((currentBirthYear != null) ? currentBirthYear : "")" type="number" min="1960" max="2010" name="birthYear">
+                <input class="form-control" placeholder="Birth Year" value="@((currentBirthYear != null) ? currentBirthYear : "")" type="number" min="0" max="2010" name="birthYear">
             </div>
             <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
 

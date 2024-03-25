@@ -15,8 +15,6 @@ using ESCenter.Persistence.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -29,7 +27,7 @@ internal static class Program
         var factory = new AppDbContextFactory();
         var context = factory.CreateDbContext(args);
 
-        int choice = 0;
+        var choice = 0;
 
         Console.WriteLine("1. Delete database");
         Console.WriteLine("2. Migrate database");
@@ -380,7 +378,7 @@ internal static class Program
 
     {
         // Standard user
-        var file = File.ReadAllText(Path.GetFullPath("../../../150_random_female_account.json"));
+        var file = await File.ReadAllTextAsync(Path.GetFullPath("../../../150_random_female_account.json"));
         var userData0 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic)!;
 
         if (userData == null)
@@ -477,6 +475,8 @@ internal static class Program
         {
             throw new InvalidOperationException();
         }
+        
+        tutorData1.AsParallel().ForAll(x => x.Verify(true));
         
         tutorData.AddRange(tutorData1);
 

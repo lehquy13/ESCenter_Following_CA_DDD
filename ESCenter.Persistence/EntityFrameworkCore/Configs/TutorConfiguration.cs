@@ -141,10 +141,10 @@ internal class TutorConfiguration : IEntityTypeConfiguration<Tutor>
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(r => r.AcademicLevel).IsRequired();
-        builder.HasIndex(p => p.AcademicLevel);
+        // builder.HasIndex(p => p.AcademicLevel);
         builder.Property(r => r.University).IsRequired();
         builder.Property(r => r.IsVerified).IsRequired();
         builder.Property(r => r.Rate).IsRequired();
-        builder.HasIndex(p => p.Rate);
+        // builder.HasIndex(p => p.Rate);
     }
 }

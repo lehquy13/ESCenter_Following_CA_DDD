@@ -1,5 +1,6 @@
 ﻿using ESCenter.Application.Accounts.Commands.ChangeAvatar;
 using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
+using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Host;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.ReviewCourse;
@@ -19,7 +20,7 @@ namespace ESCenter.Api.Controllers;
 //[Authorize]
 public class ProfileController(
     ILogger<ProfileController> logger,
-    IMediator mediator)
+    ISender mediator)
     : ApiControllerBase(logger)
 {
     [HttpGet("")]
@@ -36,6 +37,7 @@ public class ProfileController(
         return Ok(result);
     }
 
+    [Authorize(Policy = "RequireTutorRole")]
     [HttpGet("tutor-information")]
     public async Task<IActionResult> GetTutorInformation()
     {

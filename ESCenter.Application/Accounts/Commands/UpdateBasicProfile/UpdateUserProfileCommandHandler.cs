@@ -1,4 +1,5 @@
-﻿using ESCenter.Application.Contracts.Authentications;
+﻿using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
+using ESCenter.Application.Contracts.Authentications;
 using ESCenter.Application.EventHandlers;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Domain.Aggregates.Users;

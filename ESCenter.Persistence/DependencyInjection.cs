@@ -20,34 +20,32 @@ public static class DependencyInjection
         );
         // set configuration settings to emailSettingName and turn it into Singleton
         //services.AddDatabaseDeveloperPageExceptionFilter();
+        services.AddScoped<IUserStore<EsIdentityUser>, CustomUserStore>();
 
         services
-            .AddIdentity<EsIdentityUser, EsIdentityRole>(options => { options.User.RequireUniqueEmail = false; })
+            .AddIdentity<EsIdentityUser, EsIdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 6;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+            })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
-        
-        services.Configure<IdentityOptions>(options =>
-        {
-            // Password settings
-            options.Password.RequireDigit = true;
-            options.Password.RequiredLength = 10;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequiredUniqueChars = 6;
 
-            // Lockout settings
-            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-            options.Lockout.MaxFailedAccessAttempts = 10;
-            options.Lockout.AllowedForNewUsers = true;
 
-            // User settings
-            options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-            options.User.RequireUniqueEmail = true;
-            
-        });
-        
         services.AddScoped<IIdentityService, IdentityService>();
 
         return services;

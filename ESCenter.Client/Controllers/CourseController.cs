@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using ESCenter.Application.Accounts.Queries.GetUserProfile;
+﻿using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Client.Application.Contracts.Courses.Dtos;
 using ESCenter.Client.Application.Contracts.Courses.Params;
 using ESCenter.Client.Application.ServiceImpls.Courses.Commands.CreateCourse;
@@ -9,6 +8,7 @@ using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourses;
 using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetRelatedCourses;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Models;
+using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -98,7 +98,6 @@ public class CourseController(ISender mediator) : Controller
 
         if (result.IsSuccess)
         {
-            viewModel.LearnerId = result.Value.Id;
             viewModel.LearnerName = result.Value.FirstName + " " + result.Value.LastName;
             viewModel.ContactNumber = result.Value.PhoneNumber;
             viewModel.LearnerGender = result.Value.Gender;

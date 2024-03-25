@@ -61,6 +61,7 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
 
         if (tutorDtos.IsSuccess)
         {
+            ViewData["TutorParams"] = tutorParams;
             return View(tutorDtos.Value);
         }
 

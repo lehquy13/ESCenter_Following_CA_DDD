@@ -24,9 +24,9 @@ internal class DiscoveryRepository(AppDbContext appDbContext, IAppLogger<Reposit
         return await AppDbContext.Database.SqlQuery<SubjectId>(
             $"""
               SELECT SubjectId 
-              FROM DiscoverySubjects 
+              FROM DiscoverySubject 
+              JOIN DISCOVERYUSER ON DISCOVERYUSER.DiscoveryId = DISCOVERYSUBJECT.DiscoveryId 
               WHERE UserId = {userGuid.Value}
-              JOIN DISCOVERYUSERS ON DISCOVERYUSERS.DiscoveryId = DISCOVERYSUBJECTS.DiscoveryId 
               """).ToListAsync(cancellationToken);
     }
 

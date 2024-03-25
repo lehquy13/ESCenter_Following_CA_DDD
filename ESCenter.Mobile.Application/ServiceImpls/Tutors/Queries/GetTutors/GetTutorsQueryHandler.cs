@@ -8,6 +8,7 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Mobile.Application.Contracts.Users.Tutors;
+using Mapster;
 using MapsterMapper;
 using Matt.Paginated;
 using Matt.ResultObject;
@@ -49,7 +50,7 @@ public class GetTutorsQueryHandler(
                 User = user,
                 Courses = groupCourse
             };
-        
+
         if (request.TutorParams.Academic?.ToEnum<AcademicLevel>()
                 is { } ac && ac != AcademicLevel.Optional)
             tutors = tutors.Where(record => record.User != null && record.Tutor.AcademicLevel == ac);
@@ -78,25 +79,14 @@ public class GetTutorsQueryHandler(
         if (currentUserService.IsAuthenticated)
         {
             var userGuid = CustomerId.Create(currentUserService.UserId);
-            var discoveryQueryable =
-                from discoveryU in discoveryUserRepository.GetAll()
-                join discoveryS in discoveryRepository.GetDiscoverySubjectAsQueryable()
-                    on discoveryU.DiscoveryId equals discoveryS.DiscoveryId into groupDiscovery
-                where discoveryU.UserId == userGuid
-                select new
-                {
-                    DiscoverySubjects = groupDiscovery.SelectMany(x => x.SubjectName)
-                };
-
-            var userDiscoverySubjects = await asyncQueryableExecutor
-                .ToListAsync(discoveryQueryable, false, cancellationToken);
+            var discoveryQueryable = await discoveryRepository.GetUserDiscoverySubjects(userGuid, cancellationToken);
 
             // Order by the number of subjects that the user has discovered
             tutors = tutors.OrderByDescending(
                 record => record.TutorMajors.Join(
-                    userDiscoverySubjects,
-                    tutorMajor => tutorMajor.SubjectName,
-                    discovery => discovery.DiscoverySubjects,
+                    discoveryQueryable,
+                    tutorMajor => tutorMajor.SubjectId,
+                    discovery => discovery,
                     (tutor, discovery) => tutor).Count()
             );
 
@@ -105,37 +95,30 @@ public class GetTutorsQueryHandler(
                 join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
                     .LearnerId
                 where userForSearch.Id == userGuid
-                select new
-                {
-                    LearntSubject = courseForSearch.SubjectId.Value
-                };
+                select courseForSearch.SubjectId;
 
-            var learntSubjects = await asyncQueryableExecutor
-                .ToListAsync(learntSubjectQueryable, false, cancellationToken);
+            // var learntSubjects1 = await asyncQueryableExecutor
+            //     .ToListAsync(learntSubjectQueryable, false, cancellationToken);
+            // var learntSubjects = learntSubjects1.Select(x => x.Value).ToList();
 
             tutors = tutors.OrderByDescending(
                 record => record.TutorMajors.Join(
-                    learntSubjects,
-                    subjectId => subjectId.SubjectId.Value,
-                    discovery => discovery.LearntSubject,
-                    (tutor, discovery) => tutor).Count()
+                    learntSubjectQueryable,
+                    tutorMajor => tutorMajor.SubjectId,
+                    learntSubject => learntSubject,
+                    (tutorMajor, learntSubject) => tutorMajor).Count()
             );
         }
 
         var tutorFromDb = await asyncQueryableExecutor
             .ToListAsync(tutors
-                    .Skip((request.TutorParams.PageIndex - 1) * request.TutorParams.PageSize)
+                    .Skip(request.TutorParams.PageIndex * request.TutorParams.PageSize)
                     .Take(request.TutorParams.PageSize),
                 false, cancellationToken);
 
-        var mergeList = Mapper
-            .Map<List<TutorListForClientPageDto>>(tutorFromDb.Select(
-                x => new
-                {
-                    x.User,
-                    x.Tutor
-                }
-            ));
+        var mergeList = tutorFromDb.Select(
+            x => (x.User, x.Tutor).Adapt<TutorListForClientPageDto>()
+        );
 
         var result = PaginatedList<TutorListForClientPageDto>
             .Create(

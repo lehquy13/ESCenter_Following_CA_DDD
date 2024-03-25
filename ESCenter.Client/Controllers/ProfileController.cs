@@ -1,5 +1,6 @@
 ﻿using ESCenter.Application.Accounts.Commands.ChangePassword;
 using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
+using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Accounts.Queries.Login;
 using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;

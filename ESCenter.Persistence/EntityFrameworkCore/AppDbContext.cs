@@ -16,24 +16,33 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace ESCenter.Persistence.EntityFrameworkCore;
 
+public class CustomUserStore : UserStore<EsIdentityUser>  // important to use custom Identity user object here!  
+{
+    public CustomUserStore(AppDbContext context)
+        : base(context)
+    {
+        AutoSaveChanges = false;
+    }
+}
+
 public class AppDbContext(DbContextOptions<AppDbContext> options)
     : IdentityDbContext<EsIdentityUser, EsIdentityRole, string>(options)
 {
-    public DbSet<Subject> Subjects { get; set; } = null!;
-    public DbSet<Course> Courses { get; set; } = null!;
-    public DbSet<ChangeVerificationRequest> ChangeVerificationRequests { get; set; } = null!;
-    public DbSet<ChangeVerificationRequestDetail> ChangeVerificationRequestDetails { get; set; } = null!;
-    public DbSet<CourseRequest> CourseRequests { get; set; } = null!;
-    public DbSet<Customer> Customers { get; set; } = null!;
-    public DbSet<Tutor> Tutors { get; set; } = null!;
-    public DbSet<Verification> Verifications { get; set; } = null!;
-    public DbSet<TutorMajor> TutorMajors { get; set; } = null!;
-    public DbSet<TutorRequest> TutorRequests { get; set; } = null!;
-    public DbSet<Subscriber> Subscribers { get; set; } = null!;
-    public DbSet<Notification> Notifications { get; set; } = null!;
-    public DbSet<Discovery> Discoveries { get; set; } = null!;
-    public DbSet<DiscoveryUser> DiscoveryUsers { get; set; } = null!;
-    public DbSet<DiscoverySubject> DiscoverySubjects { get; set; } = null!;
+    public DbSet<Subject> Subjects { get; init; } = null!;
+    public DbSet<Course> Courses { get; init; } = null!;
+    public DbSet<ChangeVerificationRequest> ChangeVerificationRequests { get; init; } = null!;
+    public DbSet<ChangeVerificationRequestDetail> ChangeVerificationRequestDetails { get; init; } = null!;
+    public DbSet<CourseRequest> CourseRequests { get; init; } = null!;
+    public DbSet<Customer> Customers { get; init; } = null!;
+    public DbSet<Tutor> Tutors { get; init; } = null!;
+    public DbSet<Verification> Verifications { get; init; } = null!;
+    public DbSet<TutorMajor> TutorMajors { get; init; } = null!;
+    public DbSet<TutorRequest> TutorRequests { get; init; } = null!;
+    public DbSet<Subscriber> Subscribers { get; init; } = null!;
+    public DbSet<Notification> Notifications { get; init; } = null!;
+    public DbSet<Discovery> Discoveries { get; init; } = null!;
+    public DbSet<DiscoveryUser> DiscoveryUsers { get; init; } = null!;
+    public DbSet<DiscoverySubject> DiscoverySubjects { get; init; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

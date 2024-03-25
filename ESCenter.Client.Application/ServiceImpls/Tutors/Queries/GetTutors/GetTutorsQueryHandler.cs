@@ -1,8 +1,6 @@
 ﻿using ESCenter.Client.Application.Contracts.Users.Tutors;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Discoveries;
-using ESCenter.Domain.Aggregates.DiscoveryUsers;
-using ESCenter.Domain.Aggregates.DiscoveryUsers.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -14,10 +12,8 @@ using Matt.Paginated;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
-using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
-using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
 namespace ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutors;
 
@@ -28,25 +24,23 @@ public class GetTutorsQueryHandler(
     IDiscoveryRepository discoveryRepository,
     ICourseRepository courseRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IAppLogger<RequestHandlerBase> logger,
+    IAppLogger<GetTutorsQueryHandler> logger,
     IMapper mapper
-)
-    : QueryHandlerBase<GetTutorsQuery, PaginatedList<TutorListForClientPageDto>>(logger, mapper)
+) : QueryHandlerBase<GetTutorsQuery, PaginatedList<TutorListForClientPageDto>>(logger, mapper)
 {
     public override async Task<Result<PaginatedList<TutorListForClientPageDto>>> Handle(GetTutorsQuery request,
         CancellationToken cancellationToken)
     {
         var tutors =
             from tutor in tutorRepository.GetAll()
-            join user in customerRepository.GetAll() on tutor.CustomerId equals user.Id
-            join course in courseRepository.GetAll() on tutor.Id equals course.TutorId into
-                groupCourse
+            join customer in customerRepository.GetAll() on tutor.CustomerId equals customer.Id
+            join course in courseRepository.GetAll() on tutor.Id equals course.TutorId into groupCourse
             where tutor.IsVerified == true
             select new
             {
                 Tutor = tutor,
                 tutor.TutorMajors,
-                User = user,
+                User = customer,
                 Courses = groupCourse
             };
 
@@ -94,26 +88,25 @@ public class GetTutorsQueryHandler(
                 join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
                     .LearnerId
                 where userForSearch.Id == userGuid
-                select new
-                {
-                    LearntSubject = courseForSearch.SubjectId.Value
-                };
+                select courseForSearch.SubjectId;
 
-            var learntSubjects = await asyncQueryableExecutor
-                .ToListAsync(learntSubjectQueryable, false, cancellationToken);
+            // var learntSubjects1 = await asyncQueryableExecutor
+            //     .ToListAsync(learntSubjectQueryable, false, cancellationToken);
+            // var learntSubjects = learntSubjects1.Select(x => x.Value).ToList();
 
             tutors = tutors.OrderByDescending(
                 record => record.TutorMajors.Join(
-                    learntSubjects,
-                    subjectId => subjectId.SubjectId.Value,
-                    discovery => discovery.LearntSubject,
-                    (tutor, discovery) => tutor).Count()
+                    learntSubjectQueryable,
+                    tutorMajor => tutorMajor.SubjectId,
+                    learntSubject => learntSubject,
+                    (tutorMajor, learntSubject) => tutorMajor).Count()
             );
         }
 
+        //var test = await asyncQueryableExecutor.ToListAsync(tutors, false, cancellationToken);
         var tutorFromDb = await asyncQueryableExecutor
             .ToListAsync(tutors
-                    .Skip((request.TutorParams.PageIndex - 1) * request.TutorParams.PageSize)
+                    .Skip(request.TutorParams.PageIndex * request.TutorParams.PageSize)
                     .Take(request.TutorParams.PageSize),
                 false, cancellationToken);
 

@@ -1,7 +1,5 @@
-﻿using ESCenter.Admin.Application.Contracts.Courses.Dtos;
-using ESCenter.Domain.Aggregates.Courses;
+﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using FluentValidation;
@@ -26,7 +24,6 @@ public class CourseForCreateDto
     public string LearnerName { get; set; } = "";
     public int NumberOfLearner { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
-    public Guid? LearnerId { get; set; }
     public int MinutePerSession { get; set; } = 90;
     public int SessionPerWeek { get; set; } = 2;
     public string Address { get; set; } = string.Empty;
@@ -58,7 +55,7 @@ public class CourseForCreateDtoMappingConfig : IRegister
                     x.SessionPerWeek,
                     x.Address,
                     SubjectId.Create(x.SubjectId),
-                    x.LearnerId.HasValue ? CustomerId.Create(x.LearnerId.Value) : null)
+                    null)
             );
     }
 }

@@ -53,7 +53,7 @@
             <select asp-for="Gender" class="form-select">
                 <option selected>@Model.Gender</option>
 
-                @foreach (var i in genders.Where(i => i != Model.Gender))
+                @foreach (var i in genders.Where(i => i != Model.Gender.ToString()))
                 {
                     <option> @i </option>
                 }

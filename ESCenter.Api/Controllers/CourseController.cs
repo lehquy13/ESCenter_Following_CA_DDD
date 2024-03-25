@@ -4,6 +4,7 @@ using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using ESCenter.Mobile.Application.Contracts.Courses.Params;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourseRequest;
+using ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourseDetail;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,10 +32,8 @@ public class CourseController(
     [Route("{id}")]
     public async Task<IActionResult> GetCourse(Guid id)
     {
-        throw new NotImplementedException();
-        // TODO: Create a new query to get course detail, cant use same query as admin
-        // var courseById = await mediator.Send(new GetCourseDetailQuery(id));
-        //return Ok(courseById);
+        var courseById = await mediator.Send(new GetCourseDetailQuery(id));
+        return Ok(courseById);
     }
 
     // POST api/Create/<CourseController>
@@ -53,9 +52,9 @@ public class CourseController(
     [HttpPut]
     [Route("{courseId}/request-course")]
     public async Task<IActionResult> RequestCourse(
-        Guid courseId,
-        CourseRequestForCreateDto courseRequestForCreateDto)
+        [FromRoute] Guid courseId, Guid tutorId)
     {
+        var courseRequestForCreateDto = new CourseRequestForCreateDto(courseId, tutorId);
         var result = await mediator.Send(new CreateCourseRequestCommand(courseRequestForCreateDto));
         return Ok(result);
     }

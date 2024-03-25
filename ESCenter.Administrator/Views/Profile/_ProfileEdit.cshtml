@@ -60,7 +60,7 @@
 
                 @foreach (var i in genders)
                 {
-                    @if (i != Model.Gender)
+                    @if (i != Model.Gender.ToString())
                     {
                         <option> @i </option>
                     }

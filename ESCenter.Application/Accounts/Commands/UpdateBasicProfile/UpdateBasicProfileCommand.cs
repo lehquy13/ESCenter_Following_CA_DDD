@@ -1,11 +1,11 @@
 ﻿using ESCenter.Application.Contracts.Authentications;
-using ESCenter.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Shared.Courses;
 using FluentValidation;
 using Mapster;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
-namespace ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
+namespace ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 
 public record UpdateBasicProfileCommand(
     UserProfileUpdateDto UserProfileUpdateDto
@@ -20,25 +20,19 @@ public class UpdateBasicProfileCommandValidator : AbstractValidator<UpdateBasicP
     }
 }
 
-public class UserProfileUpdateDto : IAuditDto
+public class UserProfileUpdateDto
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public string Gender { get; set; } = "Male";
+    public Gender Gender { get; set; }
     public int BirthYear { get; set; } = 1960;
-
     public string Avatar { get; set; } =
         "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
-
     public string City { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-
     public string Email { get; set; } = string.Empty;
-
     public string PhoneNumber { get; set; } = string.Empty;
-    public DateTime? LastModificationTime { get; set; }
-    public DateTime CreationTime { get; set; }
 }
 
 public class UserProfileCreateUpdateDtoValidator : AbstractValidator<UserProfileUpdateDto>

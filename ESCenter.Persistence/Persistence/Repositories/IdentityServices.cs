@@ -34,12 +34,12 @@ public class IdentityService(
         CancellationToken cancellationToken = default)
     {
         var identityUser = await userManager.FindByEmailAsync(email);
-        
+
         if (identityUser is null)
         {
             return null;
         }
-        
+
         var result = await signInManager.CheckPasswordSignInAsync(identityUser, password, false);
 
         if (result.Succeeded)
@@ -76,7 +76,7 @@ public class IdentityService(
         }
 
         esIdentityUser = InitializeUserInstance();
-        
+
         var result = await CreateUser(email, phoneNumber, cancellationToken, esIdentityUser);
 
         if (!result.Succeeded)
@@ -129,7 +129,7 @@ public class IdentityService(
         esIdentityUser.Email = email;
         esIdentityUser.NormalizedEmail = email.ToUpper();
         esIdentityUser.PhoneNumber = phoneNumber;
-        
+
         //await emailStore.SetEmailAsync(esIdentityUser, email, cancellationToken);
         //await phoneNumberStore.SetPhoneNumberAsync(esIdentityUser, phoneNumber, cancellationToken);
 
@@ -142,7 +142,7 @@ public class IdentityService(
 
     public async Task<Result> ChangePasswordAsync(CustomerId customerId, string currentPassword, string newPassword)
     {
-        var identityUser = await userManager.FindByIdAsync(customerId.ToString());
+        var identityUser = await userManager.FindByIdAsync(customerId.Value.ToString());
 
         if (identityUser is null)
         {
@@ -151,7 +151,14 @@ public class IdentityService(
 
         var verifyResult = await userManager.ChangePasswordAsync(identityUser, currentPassword, newPassword);
 
-        return !verifyResult.Succeeded ? Result.Fail(DomainServiceErrors.InvalidPassword) : Result.Success();
+        if (!verifyResult.Succeeded)
+        {
+            logger.LogError("Fail to change password for user with id {userId} {Message}", customerId,
+                verifyResult.Errors.Select(x => x.Description).Aggregate((x, y) => x + " " + y));
+            return Result.Fail(DomainServiceErrors.InvalidPassword);
+        }
+
+        return Result.Success();
     }
 
     public async Task<Result> ResetPasswordAsync(
