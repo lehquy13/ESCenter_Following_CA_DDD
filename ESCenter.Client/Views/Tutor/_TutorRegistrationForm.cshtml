@@ -4,8 +4,8 @@
 @model ESCenter.Client.Models.TutorRegistrationViewModel
 @{
     var genders = EnumProvider.FullGendersOption;
+    var subjects = ViewData["Subjects"] as ICollection<SubjectDto> ?? [];
     var academicLevels = EnumProvider.AcademicLevels;
-    var subjects = ViewData["Subjects"] as IEnumerable<SubjectDto> ?? [];
 }
 <form asp-action="TutorRegistration" asp-controller="Tutor">
 
@@ -16,7 +16,7 @@
             <div class="col-12">
                 <label asp-for="Description" class="form-label">Description</label>
 
-                <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
+                <textarea class="form-control" placeholder="Tell us about yourself" asp-for="Description" style="height: 100px;"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
 
             </div>
@@ -24,7 +24,7 @@
                 <label asp-for="AcademicLevel" class="form-label">Academic Level</label>
                 <select asp-for="AcademicLevel" class="form-select">
 
-                    @foreach (string i in academicLevels)
+                    @foreach (var i in academicLevels)
                     {
                         <option> @i </option>
                     }
@@ -36,8 +36,6 @@
                 <input type="text" class="form-control" value="" asp-for="University">
                 <span asp-validation-for="University" class="text-danger"></span>
             </div>
-
-
         </div>
     </div>
     
@@ -46,29 +44,18 @@
         <div class="card-body">
             <div class="card-title row">
                 <h5 class="col-11">Add Your Majors</h5>
-                @* <button type="button" class="btn btn-primary col-1" onclick="OpenGetDialog('@Url.Action("Subjects", "Subject")','Add your major')"> *@
-                @*     <span class="bi bi-plus-circle"> </span> *@
-                @*     Add *@
-                @* </button> *@
+                
+                <div class="list-group" style="grid-template-columns: repeat(4,1fr); display: grid">
+                    @foreach (var s in subjects)
+                    {
+                        <li class="list-group-item" style="border: none">
+                            <input class="form-check-input" name="majorIds" value="@s.Id" type="checkbox"/>
+                            <label class="form-check-label">@s.Name</label>
+                        </li>
+                    }
+                </div><!-- End List group Advanced Content -->
 
             </div>
-
-            <!-- List group with Advanced Contents -->
-            <div class="list-group">
-                @foreach (var s in subjects)
-                {
-                    <input name="majors" value="@s.Id" hidden="hidden"/>
-                    <a asp-action="Detail" asp-controller="Subject" asp-route-id="@s.Id" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">@s.Name</h5>
-                        </div>
-                        <p class="mb-1">@s.Description</p>
-                    </a>
-                }
-
-
-            </div><!-- End List group Advanced Content -->
-
         </div>
     </div>
 
@@ -90,7 +77,7 @@
                     @* </div> *@
 
                     <div class="pt-2">
-                        <input type="file" id="file" name="imageFileUrls" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Profile", null)','file'); return false;"/>
+                        <input type="file" id="file" name="imageFileUrls" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Tutor", null)','file'); return false;"/>
                     </div>
                 </div>
 

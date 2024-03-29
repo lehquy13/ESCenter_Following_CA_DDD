@@ -2,6 +2,7 @@ using ESCenter.Application.Accounts.Commands.ChangePassword;
 using ESCenter.Application.Accounts.Commands.Register;
 using ESCenter.Application.Accounts.Queries.Login;
 using ESCenter.Host;
+using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESCenter.Api.Controllers;
 
 public class AuthenticationController(
-    ILogger<AuthenticationController> logger,
-    IMediator mediator)
+    IAppLogger<AuthenticationController> logger,
+    ISender mediator)
     : ApiControllerBase(logger)
 {
     [HttpPost("register")]

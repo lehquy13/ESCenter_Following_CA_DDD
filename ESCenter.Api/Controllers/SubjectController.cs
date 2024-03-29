@@ -1,14 +1,15 @@
 using ESCenter.Host;
 using ESCenter.Mobile.Application.ServiceImpls.Subjects.Queries.GetSubject;
 using ESCenter.Mobile.Application.ServiceImpls.Subjects.Queries.GetSubjects;
+using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Api.Controllers;
 
 public class SubjectController(
-    ILogger<SubjectController> logger,
-    IMediator mediator)
+    IAppLogger<SubjectController> logger,
+    ISender mediator)
     : ApiControllerBase(logger)
 {
     [HttpGet("")]

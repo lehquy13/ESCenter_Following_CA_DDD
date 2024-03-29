@@ -72,7 +72,7 @@ namespace ESCenter.Infrastructure
             services.AddSingleton(Options.Create(jwtSettings));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IValidator, Validator>();
-            
+
             services.AddAuthentication(scheme =>
                 {
                     scheme.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -111,6 +111,7 @@ namespace ESCenter.Infrastructure
                         ValidAudience = jwtSettings.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
                     };
+
                 });
 
             services.AddAuthorizationBuilder()

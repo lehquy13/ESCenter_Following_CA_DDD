@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Route("[controller]")]
+[Authorize(Policy = "RequireAdministratorRole")]
+[Route("admin/[controller]")]
 public class SubjectController(ILogger<SubjectController> logger, ISender sender) : Controller
 {
     [HttpGet]

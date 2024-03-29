@@ -34,6 +34,7 @@ public class LearnerForProfileDtoMappingConfig : IRegister
         config.NewConfig<Customer, UserProfileDto>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.City, src => src.Address.City)
+            .Map(dest => dest.Avatar, src => src.Avatar)
             .Map(dest => dest.Country, src => src.Address.Country)
             .Map(dest => dest.Role, src => src.Role.ToString())
             .Map(dest => dest, src => src);

@@ -63,9 +63,9 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer(
-            "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_5; Trusted_Connection=True;MultipleActiveResultSets=true"
+            //"Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_5; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_4; Trusted_Connection=True;MultipleActiveResultSets=true"
-            // "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
+             "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql2;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
             // "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql1;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
             // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_3; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"

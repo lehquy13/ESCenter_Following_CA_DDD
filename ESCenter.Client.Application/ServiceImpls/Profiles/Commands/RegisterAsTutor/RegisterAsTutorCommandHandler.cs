@@ -3,6 +3,7 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using Matt.ResultObject;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 
@@ -11,6 +12,7 @@ namespace ESCenter.Client.Application.ServiceImpls.Profiles.Commands.RegisterAsT
 public class RegisterAsTutorCommandHandler(
     IUnitOfWork unitOfWork,
     IIdentityService identityService,
+    ICurrentUserService currentUserService,
     IAppLogger<RegisterAsTutorCommandHandler> logger)
     : CommandHandlerBase<RegisterAsTutorCommand>(unitOfWork, logger)
 {
@@ -18,10 +20,10 @@ public class RegisterAsTutorCommandHandler(
     {
         // Check if the user existed
         var result = await identityService.RegisterAsTutor(
-            CustomerId.Create(command.TutorRegistrationDto.Id),
+            CustomerId.Create(currentUserService.UserId),
             command.TutorRegistrationDto.AcademicLevel.ToEnum<AcademicLevel>(),
             command.TutorRegistrationDto.University,
-            command.TutorRegistrationDto.Majors,
+            command.TutorRegistrationDto.MajorIds,
             command.TutorRegistrationDto.ImageFileUrls, cancellationToken);
 
         if (result.IsFailure)

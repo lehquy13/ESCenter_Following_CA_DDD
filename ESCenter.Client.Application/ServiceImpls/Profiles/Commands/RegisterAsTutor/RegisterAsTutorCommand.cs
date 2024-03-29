@@ -8,11 +8,10 @@ public record RegisterAsTutorCommand(TutorRegistrationDto TutorRegistrationDto) 
 
 public class TutorRegistrationDto
 {
-    public Guid Id { get; init; }
     public string AcademicLevel { get; init; } = "Student";
     public string University { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
-    public List<int> Majors { get; init; } = [];
+    public List<int> MajorIds { get; init; } = [];
 
     public List<string> ImageFileUrls { get; init; } =
     [
@@ -25,11 +24,6 @@ public class TutorBasicForRegisterCommandValidator : AbstractValidator<TutorRegi
 {
     public TutorBasicForRegisterCommandValidator()
     {
-        // Optional validation for Id (you can adjust based on your needs)
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage("Id is required.");
-
         RuleFor(x => x.AcademicLevel)
             .NotEmpty()
             .IsInEnum()
@@ -41,7 +35,7 @@ public class TutorBasicForRegisterCommandValidator : AbstractValidator<TutorRegi
             .WithMessage("University name must be between 1 and 100 characters long.");
 
         // Optional validation for Majors list (you can adjust based on your needs)
-        RuleForEach(x => x.Majors)
+        RuleForEach(x => x.MajorIds)
             .NotEmpty()
             .WithMessage("Each major must be between 1 and 10 characters long.");
 

@@ -30,7 +30,7 @@ internal sealed class GlobalExceptionHandler(
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
 
-        //await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+        httpContext.Response.Redirect("/admin/home/error");
 
         return true;
     }

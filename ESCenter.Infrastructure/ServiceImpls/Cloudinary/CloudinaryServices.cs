@@ -1,12 +1,14 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using ESCenter.Application.Interfaces.Cloudinarys;
-using Microsoft.Extensions.Logging;
+using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace ESCenter.Infrastructure.ServiceImpls.Cloudinary;
 
-internal class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting, ILogger<CloudinaryServices> logger)
+internal class CloudinaryServices(
+    IOptions<CloudinarySetting> cloudinarySetting,
+    IAppLogger<CloudinaryServices> logger)
     : ICloudinaryServices
 {
     private CloudinaryDotNet.Cloudinary Cloudinary { get; set; } = new(
@@ -36,7 +38,8 @@ internal class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting,
             // Log quality analysis score to the console
             logger.LogInformation("{Message}", resultJson["quality_analysis"]);
 
-            return resultJson["url"]?.ToString()??"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
+            return resultJson["url"]?.ToString() ??
+                   "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
         }
         catch (Exception ex)
         {
@@ -56,9 +59,9 @@ internal class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting,
                 UniqueFilename = false,
                 Overwrite = true
             };
-            
+
             var uploadResult = Cloudinary.Upload(uploadParams);
-            logger.LogInformation("{ResultValue}",uploadResult.JsonObj.ToString());
+            logger.LogInformation("{ResultValue}", uploadResult.JsonObj.ToString());
 
             return uploadResult.Url.ToString();
         }
@@ -68,6 +71,7 @@ internal class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting,
             return @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
         }
     }
+
     /// <summary>
     /// Recommended to use this method
     /// </summary>
@@ -76,20 +80,18 @@ internal class CloudinaryServices(IOptions<CloudinarySetting> cloudinarySetting,
     /// <returns></returns>
     public string UploadImage(string fileName, Stream stream)
     {
-        try
+        var paramss = new ImageUploadParams()
         {
-            var paramss = new ImageUploadParams()
-            {
-                File = new FileDescription(fileName, stream),
-                Transformation = new Transformation().Width(500).Height(500).Crop("fill").Gravity("face")
-            };
-            var result = Cloudinary.Upload(paramss);
-            return result.Url.ToString();
-        }
-        catch (Exception ex)
+            File = new FileDescription(fileName, stream),
+            Transformation = new Transformation().Width(500).Height(500).Crop("fill").Gravity("face")
+        };
+        var result = Cloudinary.Upload(paramss);
+
+        if (result.Url == null)
         {
-            logger.LogError("{ExMessage}", ex.Message);
-            return string.Empty;
+            throw new Exception($"Error uploading image to cloudinary {result.Error.Message}");
         }
+        
+        return result.Url.ToString();
     }
 }

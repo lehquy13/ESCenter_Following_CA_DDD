@@ -6,6 +6,7 @@ using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutors;
+using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESCenter.Api.Controllers;
 
 public class TutorController(
-    ILogger<TutorController> logger,
-    IMediator mediator)
+    IAppLogger<TutorController> logger,
+    ISender mediator)
     : ApiControllerBase(logger)
 {
     // Query

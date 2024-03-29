@@ -16,11 +16,13 @@ using ESCenter.Admin.Application.ServiceImpls.Users.Commands.CreateUpdateUserPro
 using ESCenter.Domain.Shared;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Route("[controller]")]
+[Authorize(Policy = "RequireAdministratorRole")]
+[Route("admin/[controller]")]
 public class TutorController(ILogger<TutorController> logger, IMapper mapper, ISender sender)
     : Controller
 {
@@ -64,18 +66,18 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditProfile(
         [FromRoute] Guid id,
-        [FromBody] LearnerForCreateUpdateDto tutorForProfileDto)
+        [FromBody] LearnerForCreateUpdateDto learnerForCreateUpdateDto)
     {
         if (!ModelState.IsValid)
             return Helper.RenderRazorViewToString(
                 this,
                 "Edit",
-                tutorForProfileDto,
+                learnerForCreateUpdateDto,
                 true
             );
         try
         {
-            var result = await sender.Send(new CreateUpdateUserProfileCommand(tutorForProfileDto));
+            var result = await sender.Send(new CreateUpdateUserProfileCommand(learnerForCreateUpdateDto));
 
             if (!result.IsSuccess)
             {
@@ -83,7 +85,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
                 return Helper.RenderRazorViewToString(
                     this,
                     "Edit",
-                    tutorForProfileDto,
+                    learnerForCreateUpdateDto,
                     true
                 );
             }
@@ -94,7 +96,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
             return Helper.RenderRazorViewToString(
                 this,
                 "Edit",
-                tutorForProfileDto
+                learnerForCreateUpdateDto
             );
         }
         catch (Exception ex)
@@ -109,7 +111,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
         return Helper.RenderRazorViewToString(
             this,
             "Edit",
-            tutorForProfileDto,
+            learnerForCreateUpdateDto,
             true
         );
     }

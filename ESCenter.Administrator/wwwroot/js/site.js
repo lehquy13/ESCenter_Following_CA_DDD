@@ -138,7 +138,7 @@ function AddMajorSubject(id, name, des) {
         .append(` <div class=" list-group-item list-group-item-action" id="${id}-item">
                                     <div class="row">
                                         <input name="subjectId" value="${id}"  hidden="hidden" />
-                                        <a href="/Subject/Detail?id=${id}" class="col-11">
+                                        <a href="/admin/subject/detail?id=${id}" class="col-11">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h5 class="mb-1">` + name + `</h5>
                                             </div>

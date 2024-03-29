@@ -1,4 +1,6 @@
-﻿using ESCenter.Domain.Aggregates.Tutors;
+﻿using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Mobile.Application.Contracts.Users.Tutors;
 using MapsterMapper;
@@ -6,12 +8,14 @@ using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
+using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
 namespace ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetTutorProfile;
 
 public class GetTutorProfileQueryHandler(
     ICurrentUserService currentUserService,
-    ITutorRepository tutorRepository,
+    IReadOnlyRepository<Tutor, TutorId> tutorRepository,
+    IReadOnlyRepository<Subject, SubjectId> subjectRepository,
     IMapper mapper,
     IAppLogger<GetTutorProfileQueryHandler> logger)
     : QueryHandlerBase<GetTutorProfileQuery, TutorMinimalBasicDto>(logger, mapper)

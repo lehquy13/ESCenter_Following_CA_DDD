@@ -11,15 +11,16 @@ using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Commands.UpdateTuto
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequests;
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetTutorProfile;
+using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Api.Controllers;
 
-//[Authorize]
+[Authorize]
 public class ProfileController(
-    ILogger<ProfileController> logger,
+    IAppLogger<ProfileController> logger,
     ISender mediator)
     : ApiControllerBase(logger)
 {

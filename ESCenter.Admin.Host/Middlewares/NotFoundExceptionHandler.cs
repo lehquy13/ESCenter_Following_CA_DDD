@@ -11,14 +11,14 @@ internal sealed class NotFoundExceptionHandler(
     IServiceProvider serviceProvider
 ) : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(
+    public ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
     {
         if (exception is not NotFoundException notFoundException)
         {
-            return false;
+            return ValueTask.FromResult(false);
         }
 
         using (var scope = serviceProvider.CreateScope())
@@ -42,6 +42,6 @@ internal sealed class NotFoundExceptionHandler(
 
         //await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-        return true;
+        return ValueTask.FromResult(true);
     }
 }

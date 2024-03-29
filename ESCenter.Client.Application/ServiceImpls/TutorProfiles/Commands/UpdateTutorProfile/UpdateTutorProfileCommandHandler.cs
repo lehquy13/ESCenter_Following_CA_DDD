@@ -39,12 +39,19 @@ public class UpdateTutorInformationCommandHandler(
                     new SubjectListByNameSpec(command.TutorBasicUpdateDto.Majors),
                     cancellationToken);
 
+            var majorsToRemove = new List<TutorMajor>();
+
             foreach (var major in tutor.TutorMajors)
             {
                 if (subjectListAboutToUpdate.All(update => update.Id != major.SubjectId))
                 {
-                    tutor.RemoveMajor(major);
+                    majorsToRemove.Add(major);
                 }
+            }
+
+            foreach (var major in majorsToRemove)
+            {
+                tutor.RemoveMajor(major);
             }
 
             // Now current major only contains the subjects that are in the subjectListAboutToUpdate

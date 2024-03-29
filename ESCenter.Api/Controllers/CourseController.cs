@@ -6,6 +6,7 @@ using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourseRequest;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourseDetail;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourses;
+using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESCenter.Api.Controllers;
 
 public class CourseController(
-    ILogger<CourseController> logger,
-    IMediator mediator)
+    IAppLogger<CourseController> logger,
+    ISender mediator)
     : ApiControllerBase(logger)
 {
     // GET: api/<CourseController>

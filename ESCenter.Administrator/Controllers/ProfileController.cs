@@ -2,7 +2,6 @@
 using ESCenter.Administrator.Utilities;
 using ESCenter.Application.Accounts.Commands.ChangeAvatar;
 using ESCenter.Application.Accounts.Commands.ChangePassword;
-using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Accounts.Queries.Login;
@@ -15,8 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Route("[controller]")]
-[Authorize]
+[Route("admin/[controller]")]
+[Authorize(Policy = "RequireAdministratorRole")]
 public class ProfileController(
     IMapper mapper,
     ISender sender,
@@ -33,7 +32,7 @@ public class ProfileController(
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> Profile()
+    public async Task<IActionResult> Index()
     {
         PackStaticListToView();
 
@@ -59,9 +58,8 @@ public class ProfileController(
         }
 
         var fileName = formFile.FileName;
-        await using var fileStream = new FileStream(fileName, FileMode.Create);
 
-        var result = cloudinaryServices.UploadImage(fileName, fileStream);
+        var result = cloudinaryServices.UploadImage(fileName, formFile.OpenReadStream());
 
         var changePictureResult = await sender.Send(new ChangeAvatarCommand(result));
 
@@ -115,7 +113,7 @@ public class ProfileController(
         );
     }
 
-    [HttpPost("ChangePassword")]
+    [HttpPost("change-password")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordCommand changePasswordCommand)
     {

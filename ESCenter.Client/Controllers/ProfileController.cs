@@ -1,8 +1,10 @@
-﻿using ESCenter.Application.Accounts.Commands.ChangePassword;
+﻿using ESCenter.Application.Accounts.Commands.ChangeAvatar;
+using ESCenter.Application.Accounts.Commands.ChangePassword;
 using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Accounts.Queries.Login;
+using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
@@ -19,13 +21,15 @@ namespace ESCenter.Client.Controllers;
 [Authorize]
 [Route("client/[controller]")]
 public class ProfileController(
-    ISender mediator,
+    ISender sender,
+    ILogger<ProfileController> logger,
+    ICloudinaryServices cloudinaryServices,
     IWebHostEnvironment webHostEnvironment)
     : Controller
 {
     private async Task PackStaticListToView()
     {
-        var subjects = await mediator.Send(new GetSubjectsQuery());
+        var subjects = await sender.Send(new GetSubjectsQuery());
         ViewData["Roles"] = EnumProvider.Roles;
         ViewData["Genders"] = EnumProvider.Genders;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
@@ -37,53 +41,44 @@ public class ProfileController(
     {
         await PackStaticListToView();
 
-        var query = new GetUserProfileQuery();
-        var loginResult = await mediator.Send(query);
+        var learnerProfile = await sender.Send(new GetUserProfileQuery());
 
-        if (loginResult.IsSuccess)
+        if (learnerProfile is { IsSuccess: true, Value: not null })
         {
-            var viewModelResult = new ProfileViewModel
+            return View(new ProfileViewModel
             {
-                UserProfileDto = loginResult.Value
-            };
-
-            // if (loginResult.Value.Role == UserRole.Tutor)
-            // {
-            //     var query1 = new GetTutorProfileQuery()
-            //     {
-            //         ObjectId = loginResult.Value.Id
-            //     };
-            //     var loginResult1 = await mediator.Send(query1);
-            //
-            //     viewModelResult.RequestGettingClassDtos = loginResult1.Value.RequestGettingClassForListDtos;
-            //     viewModelResult.TutorDto = loginResult1.Value.TutorMainInfoDto;
-            // }
-
-            return View(viewModelResult);
+                UserProfileDto = learnerProfile.Value,
+            });
         }
 
-        return RedirectToAction("Login", "Authentication", new LoginQuery("", ""));
+        return RedirectToAction("Index", "Authentication", new LoginQuery("", ""));
     }
 
-    [HttpPost("ChooseProfilePictures")]
-    public async Task<IActionResult> ChooseProfilePictures(List<IFormFile?> formFiles)
+    [HttpPost("change-avatar")]
+    public async Task<IActionResult> ChangeAvatar(IFormFile? formFile)
     {
-        if (formFiles.Count <= 0)
+        if (formFile is null || formFile.Length <= 0)
         {
-            return Json(false);
+            return BadRequest();
         }
 
-        var values = new List<string>();
-        foreach (var i in formFiles)
+        var fileName = formFile.FileName;
+        await using var fileStream = new FileStream(fileName, FileMode.Create);
+
+        var result = cloudinaryServices.UploadImage(fileName, fileStream);
+
+        var changePictureResult = await sender.Send(new ChangeAvatarCommand(result));
+
+        if (!changePictureResult.IsSuccess)
         {
-            var image = await Helper.SaveFiles(i, webHostEnvironment.WebRootPath);
-            values.Add("\\temp\\" + Path.GetFileName(image));
+            return BadRequest();
         }
 
-        return Json(new { res = true, images = values });
+        HttpContext.Session.SetString("image", result);
+        return Json(new { res = true, image = result });
     }
-
-    [HttpPost("ChoosePicture")]
+    
+    [HttpPost("choose-picture")]
     public async Task<IActionResult> ChoosePicture(IFormFile? formFile)
     {
         if (formFile == null)
@@ -96,71 +91,76 @@ public class ProfileController(
         return Json(new { res = true, image = "temp\\" + Path.GetFileName(image) });
     }
 
+    
     [HttpPost("edit")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(UserProfileUpdateDto userProfileUpdateDto, IFormFile? formFile)
+    public async Task<IActionResult> Edit(UserProfileUpdateDto userDto) //, IFormFile? formFile)
     {
         await PackStaticListToView();
 
         if (!ModelState.IsValid)
         {
-            return Helper.RenderRazorViewToString(this, "_ProfileEdit",
-                userProfileUpdateDto,
+            return Helper.RenderRazorViewToString(this,
+                "_ProfileEdit",
+                userDto,
                 true
             );
         }
-        // var filePath = string.Empty;
-        // if (formFile != null)
-        // {
-        //     filePath = await Helper.SaveFiles(formFile, webHostEnvironment.WebRootPath);
-        // }
 
-        var result = await mediator.Send(new UpdateBasicProfileCommand(userProfileUpdateDto));
-        //ViewBag.Updated = result.IsSuccess;
-        //Helper.ClearTempFile(webHostEnvironment.WebRootPath);
+        var result = await sender.Send(new UpdateBasicProfileCommand(userDto));
 
-        if (result.IsSuccess)
+        try
         {
-            HttpContext.Session.SetString("name",
-                userProfileUpdateDto.FirstName + " " + userProfileUpdateDto.LastName);
-            HttpContext.Session.SetString("image", userProfileUpdateDto.Avatar);
-
-            // if (userDto.Role == UserRole.Tutor)
-            // {
-            //     var query1 = new GetTutorProfileQuery()
-            //     {
-            //         ObjectId = userDto.Id
-            //     };
-            //     var loginResult1 = await mediator.Send(query1);
-            //
-            //     viewModelResult.RequestGettingClassDtos = loginResult1.Value.RequestGettingClassForListDtos;
-            //     viewModelResult.TutorDto = loginResult1.Value.TutorMainInfoDto;
-            // }
+            Helper.ClearTempFile(webHostEnvironment.WebRootPath);
+        }
+        catch (Exception)
+        {
+            logger.LogError("Temp folder does not exist");
         }
 
-        return Helper.UpdatedResult();
-    }
-
-    [HttpPost("change-password")]
-    public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
-    {
-        if (!ModelState.IsValid)
+        if (result is { IsSuccess: true, Value: not null })
         {
-            return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordRequest, true);
-        }
+            HttpContext.Session.SetString("name", result.Value.User.FullName);
+            HttpContext.Session.SetString("image", result.Value.User.Avatar);
 
-        var loginResult = await mediator.Send(
-            new ChangePasswordCommand(
-                changePasswordRequest.CurrentPassword,
-                changePasswordRequest.NewPassword,
-                changePasswordRequest.ConfirmPassword));
-
-        if (loginResult.IsSuccess)
-        {
             return Helper.UpdatedResult();
         }
 
-        return Helper.FailResult();
+        return Helper.RenderRazorViewToString(this,
+            "_ProfileEdit",
+            userDto,
+            true
+        );
+    }
+
+    [HttpPost("change-password")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(ChangePasswordCommand changePasswordCommand)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordCommand, true);
+        }
+
+        try
+        {
+            var loginResult = await sender.Send(changePasswordCommand);
+
+            if (loginResult.IsSuccess)
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Index", "Authentication");
+            }
+        }
+        catch (Exception ex)
+        {
+            //Log the error (uncomment ex variable name and write a log.)
+            ModelState.AddModelError("", "Unable to save changes. " +
+                                         "Try again, and if the problem persists, " + ex.Message +
+                                         "see your system administrator.");
+        }
+
+        return Helper.UpdatedResult();
     }
 
     [HttpGet]
@@ -168,7 +168,7 @@ public class ProfileController(
     public async Task<IActionResult> TeachingClassDetail(Guid courseId)
     {
         var query = new GetCourseRequestDetailQuery(courseId);
-        var course = await mediator.Send(query);
+        var course = await sender.Send(query);
 
         if (course.IsSuccess)
         {
@@ -183,7 +183,7 @@ public class ProfileController(
     public async Task<IActionResult> GetLearningClass(Guid courseId)
     {
         var query = new GetLearningCourseDetailQuery(courseId);
-        var course = await mediator.Send(query);
+        var course = await sender.Send(query);
         
         if (course.IsSuccess)
         {
@@ -201,7 +201,7 @@ public class ProfileController(
     {
         var command = new ReviewCourseCommand(courseId, reviewCourseView.Detail, reviewCourseView.Rate);
 
-        var result = await mediator.Send(command);
+        var result = await sender.Send(command);
 
         return RedirectToAction("Index");
     }

@@ -4,12 +4,14 @@ using ESCenter.Administrator.Models;
 using ESCenter.Administrator.Utilities;
 using ESCenter.Admin.Application.Contracts.Charts;
 using ESCenter.Domain.Shared.Courses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Route("[controller]")]
+[Route("admin/[controller]")]
+[Authorize(Policy = "RequireAdministratorRole")]
 public class HomeController(
     ILogger<HomeController> logger,
     IDashboardServices dashboardServices) : Controller

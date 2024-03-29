@@ -40,9 +40,6 @@
             <div class="col-md-3">
                 <label asp-for="SubjectId" class="form-label">Subject Name</label>
                 <select asp-for="SubjectId" class="form-select">
-                    
-                    
-
                     @foreach (var i in subjects)
                     {
                         @if (i.Name != Model.SubjectName)

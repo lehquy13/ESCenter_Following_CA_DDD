@@ -28,7 +28,8 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
 
     private async Task PackStaticListToView()
     {
-        ViewData["Subjects"] = await mediator.Send(new GetSubjectsQuery());
+        var subjects = await mediator.Send(new GetSubjectsQuery());
+        ViewData["Subjects"] = subjects.Value;
     }
 
     // Query
@@ -83,14 +84,7 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
     [Route("tutor-registration")]
     public async Task<IActionResult> TutorRegistration()
     {
-        //Get userId through User.Identity
-        var id = User.FindFirst(ClaimTypes.Name)?.Value;
-
-        if (string.IsNullOrWhiteSpace(id))
-        {
-            return RedirectToAction("Login", "Authentication");
-        }
-
+        await PackStaticListToView();
         var query = new GetUserProfileQuery();
         var result = await mediator.Send(query);
 
@@ -102,7 +96,6 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
         return RedirectToAction("Error", "Home");
     }
 
-    // POST <TutorInformationController>
     [Authorize]
     [HttpPost]
     [Route("tutor-registration")]
@@ -131,7 +124,7 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
         // }
         
         var command = new RegisterAsTutorCommand(tutorForDetailDto);
-
+        //throw new Exception();
         var result = await mediator.Send(command);
 
         Helper.ClearTempFile(webHostEnvironment.WebRootPath);
@@ -143,5 +136,23 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
         }
 
         return RedirectToAction("FailPage", "Home");
+    }
+    
+    [HttpPost("choose-profile-pictures")]
+    public async Task<IActionResult> ChooseProfilePictures(List<IFormFile?> formFiles)
+    {
+        if (formFiles.Count <= 0)
+        {
+            return Json(false);
+        }
+
+        var values = new List<string>();
+        foreach (var i in formFiles)
+        {
+            var image = await Helper.SaveFiles(i, webHostEnvironment.WebRootPath);
+            values.Add("\\temp\\" + Path.GetFileName(image));
+        }
+
+        return Json(new { res = true, images = values });
     }
 }

@@ -26,6 +26,16 @@ public class AsyncQueryableExecutor : IAsyncQueryableExecutor
         return await queryable.ToListAsync(cancellationToken);
     }
 
+    public async Task<List<T>> ToListAsSplitAsync<T>(IQueryable<T> queryable, bool isTracking = true, CancellationToken cancellationToken = default) where T : class
+    {
+        if (!isTracking)
+        {
+            queryable = queryable.AsNoTracking().AsSplitQuery();
+        }
+
+        return await queryable.ToListAsync(cancellationToken);
+    }
+
     public async Task<T?> FirstOrDefaultAsync<T>(IQueryable<T> queryable, bool isTracking,
         CancellationToken cancellationToken = default) where T : class
     {

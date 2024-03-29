@@ -21,8 +21,7 @@ public class Tutor : AuditedAggregateRoot<TutorId>
 
     // Acceptable entity because it is an entity that belongs to the aggregate root
     public IReadOnlyList<Verification> Verifications => _verifications.AsReadOnly();
-    public IReadOnlyList<TutorMajor> TutorMajors =>
-        _tutorMajors.AsReadOnly();
+    public IReadOnlyList<TutorMajor> TutorMajors => _tutorMajors.AsReadOnly();
     public ChangeVerificationRequest? ChangeVerificationRequest { get; private set; } 
 
     public void CreateChangeVerificationRequest(List<string> urls)

@@ -36,6 +36,7 @@ public class LoginQueryHandler(
             Email = customer.Email,
             FullName = $"{customer.FirstName} {customer.LastName}",
             Role = customer.Role.ToString(),
+            Avatar = customer.Avatar
         };
         var loginToken = jwtTokenGenerator.GenerateToken(userLoginDto);
 

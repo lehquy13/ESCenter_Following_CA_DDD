@@ -36,13 +36,15 @@ public class TutorDetailForClientDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(Tutor, Customer, IEnumerable<Review>), TutorDetailForClientDto>()
+        config.NewConfig<(Tutor, Customer), TutorDetailForClientDto>()
             .Map(dest => dest.Id, src => src.Item1.Id.Value)
             .Map(dest => dest.FullName, src => src.Item2.GetFullName())
             .Map(dest => dest.AcademicLevel, src => src.Item1.AcademicLevel.ToString())
             .Map(dest => dest.Rate, src => src.Item1.Rate)
+            .Map(dest => dest.University, src => src.Item1.University)
+            .Map(dest => dest.Address, src => src.Item2.Address.City + src.Item2.Address.Country)
             .Map(dest => dest.TutorMajors, src => src.Item1.TutorMajors.Select(x => x.SubjectName))
-            .Map(dest => dest.Reviews, src => src.Item3)
+            .Map(dest => dest, src => src.Item2)
             .Map(dest => dest, src => src);
     }
 }

@@ -1,3 +1,5 @@
+using System.Net;
+using System.Security.Claims;
 using ESCenter.Admin.Host;
 using ESCenter.Administrator;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -23,8 +25,22 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/home/error");
 }
+
+app.UseStatusCodePages(context => {
+    var request = context.HttpContext.Request;
+    var response = context.HttpContext.Response;
+
+    if (!context.HttpContext.User.Claims.Any(x => x is { Type: ClaimTypes.Role, Value: "Admin" }))   
+        // you may also check requests path to do this only for specific methods       
+        // && request.Path.Value.StartsWith("/specificPath")
+    {
+        response.Redirect("/admin/authentication");
+    }
+
+    return Task.CompletedTask;
+});
 
 app.UseHttpsRedirection();
 

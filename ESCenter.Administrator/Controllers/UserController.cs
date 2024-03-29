@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Route("[controller]")]
+[Authorize(Policy = "RequireAdministratorRole")]
+[Route("admin/[controller]")]
 public class UserController(ILogger<UserController> logger, ISender sender) : Controller
 {
     private void PackStaticListToView()

@@ -8,7 +8,7 @@ using Microsoft.Net.Http.Headers;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Route("[controller]")]
+[Route("admin/[controller]")]
 [Route("")]
 public class AuthenticationController(ILogger<AuthenticationController> logger, ISender sender)
     : Controller

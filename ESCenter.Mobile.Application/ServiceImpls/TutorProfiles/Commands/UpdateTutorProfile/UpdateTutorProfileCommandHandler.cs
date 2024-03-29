@@ -1,4 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -35,16 +36,21 @@ public class UpdateTutorInformationCommandHandler(
 
         // Collect major ids
         var subjectListAboutToUpdate =
-            await subjectRepository.GetListAsync(
-                new SubjectListByNameSpec(command.TutorBasicUpdateDto.Majors),
-                cancellationToken);
+            await subjectRepository.GetListByIdsAsync(command.TutorBasicUpdateDto.Majors.Select(SubjectId.Create), cancellationToken);
+
+        var majorsToRemove = new List<TutorMajor>();
 
         foreach (var major in tutor.TutorMajors)
         {
             if (subjectListAboutToUpdate.All(update => update.Id != major.SubjectId))
             {
-                tutor.RemoveMajor(major);
+                majorsToRemove.Add(major);
             }
+        }
+
+        foreach (var major in majorsToRemove)
+        {
+            tutor.RemoveMajor(major);
         }
 
         // Now current major only contains the subjects that are in the subjectListAboutToUpdate

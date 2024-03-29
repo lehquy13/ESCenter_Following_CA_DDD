@@ -21,7 +21,7 @@ public class TutorBasicUpdateForClientDto
 {
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
     public string University { get; set; } = null!;
-    public List<string> Majors { get; set; } = new();
+    public List<int> Majors { get; set; } = new();
 }
 
 public class TutorBasicUpdateForClientDtoValidator : AbstractValidator<TutorBasicUpdateForClientDto>
@@ -36,7 +36,6 @@ public class TutorBasicUpdateForClientDtoValidator : AbstractValidator<TutorBasi
             .NotEmpty().WithMessage("University is required.");
 
         RuleForEach(dto => dto.Majors)
-            .NotEmpty().WithMessage("Major name must not be empty.")
-            .MaximumLength(100).WithMessage("Major name must not exceed 100 characters.");
+            .NotEmpty().WithMessage("Major id must not be empty.");
     }
 }

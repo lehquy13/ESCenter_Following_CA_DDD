@@ -1,5 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using Mapster;
@@ -25,18 +26,19 @@ public class GetCourseRequestsByTutorIdQueryHandler(
         GetCourseRequestsByTutorIdQuery requests,
         CancellationToken cancellationToken)
     {
-        var tutorId = CustomerId.Create(currentUserService.UserId);
-        var courseRequestQueryable =
-            from courseFromDb in courseRepository.GetAll()
-            join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-            where courseFromDb.CourseRequests.Any(x => x.TutorId == tutorId)
-            select new
+        var tutorId = TutorId.Create(currentUserService.UserId);
+        var courseRequestQueryable = courseRepository.GetAll()
+            .Join(subjectRepository.GetAll(),
+                courseFromDb => courseFromDb.SubjectId,
+                subjectFromDb => subjectFromDb.Id,
+                (courseFromDb, subjectFromDb) => new { courseFromDb, subjectFromDb })
+            .Where(t => t.courseFromDb.CourseRequests.Any(x => x.TutorId == tutorId))
+            .Select(t => new
             {
-                Title = courseFromDb.Title,
-                CourseRequest =
-                    courseFromDb.CourseRequests.Where(x => x.TutorId == tutorId),
-                SubjectName = subjectFromDb.Name
-            };
+                t.courseFromDb.Title,
+                CourseRequest = t.courseFromDb.CourseRequests.Where(x => x.TutorId == tutorId),
+                SubjectName = t.subjectFromDb.Name
+            });
 
         var courseRequests =
             await asyncQueryableExecutor.ToListAsync(courseRequestQueryable, false, cancellationToken);

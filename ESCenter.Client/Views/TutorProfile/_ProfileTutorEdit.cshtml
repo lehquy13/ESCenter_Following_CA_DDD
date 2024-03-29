@@ -22,7 +22,7 @@
             @if (Model.VerificationDtos.Count <= 0)
             {
                 <div class="pt-2">
-                    <input type="file" id="file" name="files" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Profile", null)','file'); return false;"/>
+                    <input type="file" id="file" name="files" multiple="multiple" onchange="LoadImage('@Url.Action("ChooseProfilePictures", "Tutor", null)','file'); return false;"/>
                 </div>
             }
         </div>

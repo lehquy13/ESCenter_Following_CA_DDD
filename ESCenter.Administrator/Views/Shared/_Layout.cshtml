@@ -42,7 +42,7 @@
 <body>
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-        <a href="/home" class="logo d-flex align-items-center">
+        <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
             <img src="~/assets/img/logo.png" alt="">
             <span class="d-none d-lg-block">EduSmart Website</span>
         </a>
@@ -75,7 +75,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="/profile">
+                        <a class="dropdown-item d-flex align-items-center" asp-controller="Profile" asp-action="Index">
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>
@@ -90,7 +90,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="/logout">
+                        <a class="dropdown-item d-flex align-items-center" asp-controller="Authentication" asp-action="Logout">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
@@ -106,7 +106,7 @@
 
     <ul class="sidebar-nav " id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/home">
+            <a class="nav-link collapsed" asp-controller="Home" asp-action="Index">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -118,7 +118,7 @@
             </a>
             <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="/user">
+                    <a asp-action="Index" asp-controller="User">
                         <i class="bi bi-circle"></i><span>Learner</span>
                     </a>
                 </li>
@@ -168,14 +168,14 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/profile">
+            <a class="nav-link collapsed" asp-controller="Profile" asp-action="Index">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
         </li><!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/logout">
+            <a class="nav-link collapsed" asp-controller="Authentication" asp-action="Logout">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>Logout</span>
             </a>

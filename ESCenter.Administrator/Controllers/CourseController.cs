@@ -15,11 +15,13 @@ using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Administrator.Controllers;
 
-[Route("[controller]")]
+[Authorize(Policy = "RequireAdministratorRole")]
+[Route("admin/[controller]")]
 public class CourseController(
     ILogger<CourseController> logger,
     IMapper mapper,
@@ -63,6 +65,7 @@ public class CourseController(
     }
 
     [HttpGet]
+    //[Route("today")]
     public async Task<IActionResult> Today()
     {
         //var query = new GetObjectQuery<List<ClassInformationDto>>();
