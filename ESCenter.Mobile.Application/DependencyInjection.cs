@@ -12,7 +12,7 @@ namespace ESCenter.Mobile.Application
             return services;
         }
 
-        public static Assembly[] GetApplicationCoreAssemblies =>
+        public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
         [
             typeof(DependencyInjection).Assembly,
             typeof(ESCenter.Application.DependencyInjection).Assembly,
