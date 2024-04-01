@@ -38,7 +38,7 @@ public class CreateTutorCommandHandler(
             string.Empty,
             command.TutorForCreateDto.LearnerForCreateUpdateDto.Email,
             command.TutorForCreateDto.LearnerForCreateUpdateDto.PhoneNumber,
-            UserRole.Tutor, cancellationToken);
+            Role.Tutor, cancellationToken);
 
         if (userInformation.IsFailure)
         {

@@ -43,7 +43,7 @@ public interface IIdentityService : IDomainService
         string avatar,
         string email,
         string phoneNumber,
-        UserRole role = UserRole.Learner,
+        Role role = Role.Learner,
         CancellationToken cancellationToken = default);
     
     /// <summary>

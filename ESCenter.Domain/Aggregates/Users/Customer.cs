@@ -16,7 +16,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
     public string Avatar { get; private set; } = null!;
     public string Email { get; private set; } = null!;
     public string PhoneNumber { get; private set; } = null!;
-    public UserRole Role { get; private set; } = UserRole.Learner;
+    public Role Role { get; private set; } = Role.Learner;
 
     private const string DefaultAvatar =
         "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
@@ -36,7 +36,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
         string? avatar,
         string email,
         string phoneNumber,
-        UserRole role)
+        Role role)
     {
         return new Customer
         {
@@ -64,7 +64,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
     public void RegisterAsTutor(List<int> majors, AcademicLevel academicLevel, string university,
         List<string> verificationInfoDtos)
     {
-        Role = UserRole.Tutor;
+        Role = Role.Tutor;
         RaiseDomainEvent(new RegisteredAsTutorDomainEvent(Id, majors, academicLevel, university, verificationInfoDtos));
     }
 }

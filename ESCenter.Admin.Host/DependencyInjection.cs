@@ -9,13 +9,13 @@ using Matt.AutoDI;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ESCenter.Admin.Host;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddHost(
-        this IServiceCollection services,
+    public static IServiceCollection AddHost(this IServiceCollection services,
         ConfigurationManager configuration)
     {
         IList<Assembly> assemblies = [];

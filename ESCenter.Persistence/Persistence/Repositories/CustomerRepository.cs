@@ -16,7 +16,7 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
     {
         var users = await AppDbContext.Customers
             .AsNoTracking()
-            .Where(o => o.Role == UserRole.Learner &&
+            .Where(o => o.Role == Role.Learner &&
                         o.IsDeleted == false)
             .OrderByDescending(x => x.CreationTime)
             .ToListAsync();
@@ -32,7 +32,7 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
                 user => user.Id,
                 tutor => tutor.CustomerId,
                 (user, tutor) => new { user, tutor })
-            .Where(o => o.user.Role == UserRole.Tutor
+            .Where(o => o.user.Role == Role.Tutor
                         && tutorIds.Contains(o.tutor.Id)
                         && o.user.IsDeleted == false)
             .Select(x => x.user)
@@ -44,7 +44,7 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
     public async Task<List<Customer>> GetTutors()
     {
         var users = await AppDbContext.Customers
-            .Where(o => o.Role == UserRole.Tutor &&
+            .Where(o => o.Role == Role.Tutor &&
                         o.IsDeleted == false)
             .AsNoTracking()
             .ToListAsync();

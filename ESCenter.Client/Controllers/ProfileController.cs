@@ -63,7 +63,7 @@ public class ProfileController(
         }
 
         var fileName = formFile.FileName;
-        await using var fileStream = new FileStream(fileName, FileMode.Create);
+        await using var fileStream = formFile.OpenReadStream();
 
         var result = cloudinaryServices.UploadImage(fileName, fileStream);
 
@@ -77,7 +77,7 @@ public class ProfileController(
         HttpContext.Session.SetString("image", result);
         return Json(new { res = true, image = result });
     }
-    
+
     [HttpPost("choose-picture")]
     public async Task<IActionResult> ChoosePicture(IFormFile? formFile)
     {
@@ -91,7 +91,7 @@ public class ProfileController(
         return Json(new { res = true, image = "temp\\" + Path.GetFileName(image) });
     }
 
-    
+
     [HttpPost("edit")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(UserProfileUpdateDto userDto) //, IFormFile? formFile)
@@ -184,12 +184,12 @@ public class ProfileController(
     {
         var query = new GetLearningCourseDetailQuery(courseId);
         var course = await sender.Send(query);
-        
+
         if (course.IsSuccess)
         {
             return Helper.RenderRazorViewToString(this, "_LearningClassDetail", course.Value);
         }
-        
+
         return RedirectToAction("Error", "Home");
     }
 

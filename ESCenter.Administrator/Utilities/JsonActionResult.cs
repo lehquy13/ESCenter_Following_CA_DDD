@@ -1,20 +1,20 @@
-﻿namespace ESCenter.Administrator.Utilities;
+﻿using System.Text.Json;
 
-public record JsonActionResult(
-    string Res,
-    string ViewName,
-    string PartialView
-    );
+namespace ESCenter.Administrator.Utilities;
 
-//public class JsonActionResult
-//{
-//    private bool res { get; set; } = false;
-//    private string viewName { get; set; } = string.Empty;
-//    private string partialView { get; set; } = string.Empty;
+public static class JsonExtensions
+{
+    private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
+    public static T? FromJson<T>(this string json) =>
+        JsonSerializer.Deserialize<T>(json, JsonOptions);
 
-//}
-
+    public static string ToJson<T>(this T obj) =>
+        JsonSerializer.Serialize<T>(obj, JsonOptions);
+}
 
 
 

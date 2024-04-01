@@ -65,7 +65,7 @@ public class CourseController(
     }
 
     [HttpGet]
-    //[Route("today")]
+    [Route("today")]
     public async Task<IActionResult> Today()
     {
         //var query = new GetObjectQuery<List<ClassInformationDto>>();

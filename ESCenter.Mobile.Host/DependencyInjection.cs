@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ESCenter.Application;
 using ESCenter.Host.Middlewares;
 using ESCenter.Infrastructure;
 using ESCenter.Mobile.Application;
@@ -9,7 +8,6 @@ using Matt.AutoDI;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace ESCenter.Host;
 
@@ -22,8 +20,8 @@ public static class DependencyInjection
         assemblies.AddRange(Mobile.Application.DependencyInjection.GetApplicationCoreAssemblies);
         assemblies.AddRange(new[]
         {
-            typeof(ESCenter.Infrastructure.DependencyInjection).Assembly,
-            typeof(ESCenter.Persistence.DependencyInjection).Assembly
+            typeof(Infrastructure.DependencyInjection).Assembly,
+            typeof(Persistence.DependencyInjection).Assembly
         });
 
         services.AddServiced(assemblies.ToArray());

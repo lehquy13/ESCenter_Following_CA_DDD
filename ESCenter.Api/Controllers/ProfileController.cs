@@ -72,7 +72,7 @@ public class ProfileController(
     }
 
     [Authorize(Policy = "RequireTutorRole")]
-    [HttpGet("course-request/{courseRequestId}")]
+    [HttpGet("course-request/{courseRequestId:guid}")]
     public async Task<IActionResult> CourseRequestDetail(Guid courseRequestId)
     {
         var requestDetail = await mediator.Send(new GetCourseRequestDetailByTutorIdQuery(courseRequestId));
@@ -81,7 +81,7 @@ public class ProfileController(
 
     [HttpGet]
     [Route("learning-course/{courseId}")]
-    public async Task<IActionResult> GetLearningCourse(GetLearningCourseDetailQuery getLearningCourseDetail)
+    public async Task<IActionResult> GetLearningCourse(string courseId, GetLearningCourseDetailQuery getLearningCourseDetail)
     {
         var classInformation = await mediator.Send(getLearningCourseDetail);
         return Ok(classInformation);
@@ -96,7 +96,7 @@ public class ProfileController(
 
     [Authorize]
     [HttpPut]
-    [Route("learning-course/{courseId}/review")]
+    [Route("learning-course/{courseId:guid}/review")]
     public async Task<IActionResult> ReviewTutor([FromRoute] Guid courseId,
         [FromBody] ReviewDetailDto reviewDetailDto)
     {

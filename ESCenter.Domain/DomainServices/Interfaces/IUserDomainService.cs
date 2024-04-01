@@ -18,6 +18,6 @@ public interface IUserDomainService : IDomainService
         string avatar,
         string email,
         string phoneNumber,
-        UserRole role,
+        Role role,
         CancellationToken cancellationToken = default);
 }

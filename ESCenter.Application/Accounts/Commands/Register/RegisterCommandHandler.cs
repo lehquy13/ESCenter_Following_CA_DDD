@@ -46,7 +46,7 @@ public class RegisterCommandHandler(
             string.Empty,
             command.Email,
             command.PhoneNumber,
-            UserRole.Learner
+            Role.Learner
         );
 
         await customerRepository.InsertAsync(user, cancellationToken);

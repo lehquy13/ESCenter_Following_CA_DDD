@@ -62,7 +62,7 @@ public class CreateUpdateUserProfileCommandHandler(
                 DefaultAvatar,
                 command.LearnerForCreateUpdateDto.Email,
                 command.LearnerForCreateUpdateDto.PhoneNumber,
-                UserRole.Learner, cancellationToken);
+                Role.Learner, cancellationToken);
             
             if (result.IsFailure)
             {

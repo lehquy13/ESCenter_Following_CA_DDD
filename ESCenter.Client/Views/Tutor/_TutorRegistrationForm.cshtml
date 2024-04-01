@@ -3,11 +3,10 @@
 @using ESCenter.Client.Application.Contracts.Courses.Dtos
 @model ESCenter.Client.Models.TutorRegistrationViewModel
 @{
-    var genders = EnumProvider.FullGendersOption;
     var subjects = ViewData["Subjects"] as ICollection<SubjectDto> ?? [];
     var academicLevels = EnumProvider.AcademicLevels;
 }
-<form asp-action="TutorRegistration" asp-controller="Tutor">
+<form asp-action="TutorRegistration" asp-controller="Tutor" onsubmit="return callPostActionWithForm(this);">
 
     <div class="card mt-5">
         <div class="card-body row">

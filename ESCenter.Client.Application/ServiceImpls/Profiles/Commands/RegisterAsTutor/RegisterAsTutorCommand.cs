@@ -13,7 +13,7 @@ public class TutorRegistrationDto
     public string Description { get; init; } = string.Empty;
     public List<int> MajorIds { get; init; } = [];
 
-    public List<string> ImageFileUrls { get; init; } =
+    public List<string> ImageFileUrls { get; set; } =
     [
         "https://res.cloudinary.com/dhehywasc/image/upload/v1686459899/z4335058816137_8c84fd04f87afc35b461e273003c7dc3.jpg",
         "https://res.cloudinary.com/dhehywasc/image/upload/v1686723383/Screenshot2023-04-19100710.png"

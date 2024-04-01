@@ -9,10 +9,10 @@
 
     var subject = tutorParams.SubjectName;
 
-    var currentGender = tutorParams.Gender  == Gender.None.ToString() ? null : tutorParams.Gender;
-    var currentAcademicLevel= tutorParams.Academic == AcademicLevel.Optional.ToString() ? null : tutorParams.Academic;
+    var currentGender = tutorParams.Gender == Gender.None.ToString() ? null : tutorParams.Gender;
+    var currentAcademicLevel = tutorParams.Academic == AcademicLevel.Optional.ToString() ? null : tutorParams.Academic;
     var currentAddress = tutorParams.Address;
-    var currentBirthYear = tutorParams.BirthYear;
+    var currentBirthYear = tutorParams.BirthYear == 0 ? null : tutorParams.BirthYear;
     var genders = EnumProvider.FullGendersOption;
     var academicLevels = EnumProvider.FullAcademicLevelsOption;
 }
@@ -21,9 +21,9 @@
 <div class="breadcrumbs">
     <div class="container">
         <h2>Tutors</h2>
-                <p>
-                    Find your perfect tutor at <b>EduSmart</b>. Our highly qualified tutors provide personalized support and expert guidance to help you excel academically and reach your goals.
-                </p>
+        <p>
+            Find your perfect tutor at <b>EduSmart</b>. Our highly qualified tutors provide personalized support and expert guidance to help you excel academically and reach your goals.
+        </p>
     </div>
 </div><!-- End Breadcrumbs -->
 
@@ -56,7 +56,7 @@
                 </select>
             </div>
             <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
-                <input class="form-control" placeholder="Birth Year" value="@((currentBirthYear != null) ? currentBirthYear : "")" type="number" min="0" max="2010" name="birthYear">
+                <input class="form-control" placeholder="Birth Year" value="@currentBirthYear" type="number" min="0" max="2010" name="birthYear">
             </div>
             <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
 
@@ -81,7 +81,7 @@
 
             <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
                 <input class="form-control" placeholder="Address" value="@currentAddress" type="text" name="address">
-                
+
                 @* <select name="address" class="form-select"> *@
                 @*     @if (currentAcademicLevel is null) *@
                 @*     { *@
@@ -115,7 +115,9 @@
                         @* <img src="assets/img/trainers/trainer-3.jpg" class="img-fluid" alt=""> *@
 
                         <div class="member-content">
-                            <h4><a asp-action="Detail" asp-controller="Tutor" asp-route-id="@i.Id">@i.FirstName @i.LastName</a></h4>
+                            <h4>
+                                <a asp-action="Detail" asp-controller="Tutor" asp-route-id="@i.Id">@i.FirstName @i.LastName</a>
+                            </h4>
                             <span>@i.AcademicLevel</span>
                             <span>@i.University</span>
                             <p>
@@ -139,7 +141,6 @@
                     </div>
                 </div>
             }
-
 
 
         </div>

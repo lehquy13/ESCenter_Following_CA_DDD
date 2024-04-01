@@ -63,7 +63,7 @@ public class IdentityService(
         string avatar,
         string email,
         string phoneNumber,
-        UserRole role = UserRole.Learner,
+        Role role = Role.Learner,
         CancellationToken cancellationToken = default
     )
     {
@@ -116,7 +116,7 @@ public class IdentityService(
             avatar,
             email,
             phoneNumber,
-            UserRole.Learner
+            Role.Learner
         );
 
         return customer;
@@ -212,7 +212,7 @@ public class IdentityService(
             return Result.Fail(DomainServiceErrors.AlreadyTutorError);
         }
 
-        var result = await userManager.AddToRoleAsync(user, UserRole.Tutor.ToString());
+        var result = await userManager.AddToRoleAsync(user, Role.Tutor.ToString());
 
         if (!result.Succeeded)
         {

@@ -61,11 +61,9 @@ public static class Helper
         {
             string fileName = formFile.FileName;
             string path = Path.Combine(wwwRootPath + "\\temp\\", fileName);
-             using (var fileStream = new FileStream(path, FileMode.Create))
-             {
-                 await formFile.CopyToAsync(fileStream);
-                 fileStream.Position = 0;
-             }
+            await using var fileStream = formFile.OpenReadStream();
+            await formFile.CopyToAsync(fileStream);
+            fileStream.Position = 0;
             return path;
         }
 

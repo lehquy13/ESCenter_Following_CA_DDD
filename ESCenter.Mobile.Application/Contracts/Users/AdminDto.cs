@@ -16,5 +16,5 @@ public class AdminDto : BasicAuditedEntityDto<int>
     public bool IsEmailConfirmed { get; set; } = false;
     
     public string PhoneNumber { get; set; } = string.Empty;
-    public UserRole Role { get; set; } = UserRole.Admin;
+    public Role Role { get; set; } = Role.Admin;
 }

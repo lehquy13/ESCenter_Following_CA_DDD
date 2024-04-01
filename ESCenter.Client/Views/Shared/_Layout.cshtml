@@ -126,7 +126,7 @@
                         <a asp-action="Index" asp-controller="Tutor">Tutors</a>
                     </li>
 
-                    @if (User.FindFirst(ClaimTypes.Role)?.Value != UserRole.Tutor.ToString())
+                    @if (User.FindFirst(ClaimTypes.Role) != null && User.FindFirst(ClaimTypes.Role)?.Value == Role.Tutor.ToString())
                     {
                         <li>
                             <a asp-action="TutorRegistration" asp-controller="Tutor">Tutor Registration </a>

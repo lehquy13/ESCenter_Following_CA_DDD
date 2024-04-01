@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
+using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Client.Application.Contracts.Courses.Dtos;
 using ESCenter.Client.Application.Contracts.Users.Params;
 using ESCenter.Client.Application.Contracts.Users.Tutors;
@@ -21,10 +22,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace ESCenter.Client.Controllers;
 
 [Route("client/[controller]")]
-public class TutorController(ISender mediator, IWebHostEnvironment webHostEnvironment)
+public class TutorController(
+    ISender mediator,
+    IWebHostEnvironment webHostEnvironment,
+    ICloudinaryServices cloudinaryServices)
     : Controller
 {
     private readonly int _pageSize = 12;
+    private ICloudinaryServices _cloudinaryServices = cloudinaryServices;
 
     private async Task PackStaticListToView()
     {
@@ -99,30 +104,27 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
     [Authorize]
     [HttpPost]
     [Route("tutor-registration")]
-    public async Task<IActionResult> TutorRegistration(TutorRegistrationDto tutorForDetailDto)
+    public async Task<IActionResult> TutorRegistration(
+        TutorRegistrationDto tutorForDetailDto,
+        List<IFormFile> imageFileUrls)
     {
-        // if (filePaths != null)
-        // {
-        //     for (var i = 0; i < filePaths.Count; i++)
-        //     {
-        //         filePaths[i] = webHostEnvironment.WebRootPath + filePaths.ElementAt(i);
-        //     }
-        // }
-        //
-        // //Handle filepath !!! Upgrade
-        // //alternative flows: get the verification by id then push into verification list of tutor
-        // if (filePaths is { Count: > 0 })
-        // {
-        //     foreach (var i in filePaths)
-        //     {
-        //         tutorForDetailDto.TutorVerificationInfoDtos.Add(new TutorVerificationInfoDto
-        //         {
-        //             Image = i,
-        //             TutorId = tutorForDetailDto.Id
-        //         });
-        //     }
-        // }
+        tutorForDetailDto.ImageFileUrls = new List<string>();
         
+        foreach (var formFile in imageFileUrls)
+        {
+            if (formFile.Length <= 0)
+            {
+                return BadRequest();
+            }
+
+            var fileName = formFile.FileName;
+            await using var fileStream = formFile.OpenReadStream();
+
+            var uploadResult = _cloudinaryServices.UploadImage(fileName, fileStream);
+            
+            tutorForDetailDto.ImageFileUrls.Add(uploadResult);
+        }
+
         var command = new RegisterAsTutorCommand(tutorForDetailDto);
         //throw new Exception();
         var result = await mediator.Send(command);
@@ -131,13 +133,13 @@ public class TutorController(ISender mediator, IWebHostEnvironment webHostEnviro
 
         if (result.IsSuccess)
         {
-            HttpContext.Session.SetString("role", UserRole.Tutor.ToString());
+            HttpContext.Session.SetString("role", Role.Tutor.ToString());
             return RedirectToAction("SuccessPage", "Home");
         }
 
         return RedirectToAction("FailPage", "Home");
     }
-    
+
     [HttpPost("choose-profile-pictures")]
     public async Task<IActionResult> ChooseProfilePictures(List<IFormFile?> formFiles)
     {

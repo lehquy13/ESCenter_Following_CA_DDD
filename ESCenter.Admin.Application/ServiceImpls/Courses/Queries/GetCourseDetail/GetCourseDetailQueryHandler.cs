@@ -55,7 +55,7 @@ public class GetCourseDetailQueryHandler(
                     tutor => tutor.CustomerId,
                     user => user.Id,
                     (tutor, user) => new { user, tutor })
-                .Where(o => o.user.Role == UserRole.Tutor && o.user.IsDeleted == false)
+                .Where(o => o.user.Role == Role.Tutor && o.user.IsDeleted == false)
                 //.GroupBy(x => x.)
                 .Select(x => new
                 {

@@ -17,7 +17,7 @@ public class UserForDetailDto : BasicAuditedEntityDto<Guid>
     public string Email { get; set; } = string.Empty;
     public bool IsEmailConfirmed { get; set; } = false;
     public string PhoneNumber { get; set; } = string.Empty;
-    public string Role { get; set; } = Domain.Shared.Courses.UserRole.Learner.ToString();
+    public string Role { get; set; } = Domain.Shared.Courses.Role.Learner.ToString();
 }
 
 public class UserForDetailDtoMappingConfig : IRegister

@@ -1,9 +1,10 @@
 ﻿namespace ESCenter.Domain.Shared.Courses;
-public enum UserRole
+public enum Role
 {
     Undefined,
     Admin,
     Tutor,
     Learner,
-    All
+    All,
+    Staff
 }

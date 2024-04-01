@@ -243,7 +243,7 @@ internal class DashboardServices(
         // --------- Learner metrics -----------------
         var allUserToDay =
             userRepository.GetAll()
-                .Where(x => x.CreationTime >= startDay && x.Role == UserRole.Learner)
+                .Where(x => x.CreationTime >= startDay && x.Role == Role.Learner)
                 .GroupBy(x => x.CreationTime.Day)
                 .Select(x => new
                 {
@@ -265,7 +265,7 @@ internal class DashboardServices(
         // --------- Tutor metrics -----------------
         var allTutorToday =
             userRepository.GetAll()
-                .Where(x => x.CreationTime >= startDay && x.Role == UserRole.Tutor)
+                .Where(x => x.CreationTime >= startDay && x.Role == Role.Tutor)
                 .GroupBy(x => x.CreationTime.Day)
                 .Select(x => new
                 {
@@ -309,7 +309,7 @@ internal class DashboardServices(
     public Task<List<MetricObject>> GetTutorsMetrics()
     {
         var tutors = userRepository.GetAll()
-            .Where(x => x.Role == UserRole.Tutor)
+            .Where(x => x.Role == Role.Tutor)
             .Select(x => new MetricObject
             {
                 Id = x.Id,
@@ -334,7 +334,7 @@ internal class DashboardServices(
     public Task<List<MetricObject>> GetLearnersMetrics()
     {
         var learners = userRepository.GetAll()
-            .Where(x => x.Role == UserRole.Learner)
+            .Where(x => x.Role == Role.Learner)
             .Select(x => new MetricObject
             {
                 Id = x.Id,

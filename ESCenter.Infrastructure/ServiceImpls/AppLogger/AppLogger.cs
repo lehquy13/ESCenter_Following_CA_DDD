@@ -2,22 +2,14 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
-using Serilog.Extensions.Logging;
+
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 
 namespace ESCenter.Infrastructure.ServiceImpls.AppLogger;
 
-public class AppLogger<TCategory> : IAppLogger<TCategory>
+internal class AppLogger<TCategory>(ILoggerFactory serilogLogger) : IAppLogger<TCategory>
 {
-    private readonly ILogger<TCategory> _logger;
-
-    public AppLogger()
-    {
-        var microsoftLogger = new SerilogLoggerFactory(SerilogFactory.SerilogLogger)
-            .CreateLogger<TCategory>();
-
-        _logger = microsoftLogger;
-    }
+    private readonly ILogger<TCategory> _logger = serilogLogger.CreateLogger<TCategory>();
 
     public void LogInformation(string? message, params object?[] args)
     {
@@ -35,17 +27,12 @@ public class AppLogger<TCategory> : IAppLogger<TCategory>
     }
 }
 
-internal static class SerilogFactory
+internal class SerilogFactory
 {
-    public static Logger SerilogLogger { get; }
-
-    static SerilogFactory()
-    {
-        SerilogLogger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File("logs/myapp.txt", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-    }
+    public Logger SerilogLogger { get; } = new LoggerConfiguration()
+        .MinimumLevel.Debug()
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.File("logs/myapp.txt", rollingInterval: RollingInterval.Day)
+        .CreateLogger();
 }

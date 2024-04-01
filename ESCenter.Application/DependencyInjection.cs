@@ -2,6 +2,7 @@
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
+using Matt.SharedKernel.Application.Authorizations;
 using Matt.SharedKernel.Application.Validations;
 using MediatR.NotificationPublishers;
 using Microsoft.Extensions.DependencyInjection;

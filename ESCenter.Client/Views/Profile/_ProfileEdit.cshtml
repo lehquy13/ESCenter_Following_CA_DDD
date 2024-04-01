@@ -13,7 +13,11 @@
             <img src="@Model.Avatar" style="max-width: 120px;" alt="Profile" id="avatar">
             <input id="image" asp-for="Avatar" hidden type="text"/>
             <div class="pt-2">
-                <input type="file" id="formFile" name="formFile" style="visibility: hidden; width: 1px; height: 1px" onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','avatar'); return false;"/>
+                <input type="file" 
+                       id="formFile" 
+                       name="formFile" 
+                       style="visibility: hidden; width: 1px; height: 1px" 
+                       onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','avatar'); return false;"/>
                 <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
                     <i class="bi bi-upload"></i>
                 </a>

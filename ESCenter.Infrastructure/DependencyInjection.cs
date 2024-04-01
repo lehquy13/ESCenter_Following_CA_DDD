@@ -12,10 +12,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 
 namespace ESCenter.Infrastructure
 {
@@ -24,6 +24,7 @@ namespace ESCenter.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddScoped<SerilogFactory>();
             services.AddScoped(typeof(IAppLogger<>), typeof(AppLogger<>));
             
             services.AddScoped<ICurrentUserService, CurrentUserService>();
