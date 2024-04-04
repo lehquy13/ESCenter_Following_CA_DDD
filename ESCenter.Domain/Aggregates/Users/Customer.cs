@@ -65,7 +65,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
         List<string> verificationInfoDtos)
     {
         Role = Role.Tutor;
-        RaiseDomainEvent(new RegisteredAsTutorDomainEvent(Id, majors, academicLevel, university, verificationInfoDtos));
+        DomainEvents.Add(new RegisteredAsTutorDomainEvent(Id, majors, academicLevel, university, verificationInfoDtos));
     }
 }
 

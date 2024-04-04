@@ -2,10 +2,12 @@ using Matt.ResultObject;
 
 namespace ESCenter.Domain.Aggregates.Courses.Errors;
 
-public static class CourseError
+public static class CourseDomainError
 {
     public static readonly string InvalidSectionRange = "Invalid section range! It must be between 1 and 7!";
     public static readonly string InvalidMinuteValue  = "Invalid minute value! It must be equal or more than 60!";
+    public static readonly string InvalidReviewRate    = "Invalid review rate! It must be between 1 and 5!";
+    public static readonly string InvalidDetailLength  = "Invalid detail length! It must be less than 500 characters!";
 
     public static Error NonExistCourseError => new Error("NonExistCourseError", "This course doesn't exist!");
     public static Error UnAvailableClassError => new Error("UnAvailableClassError", "This course isn't available!");

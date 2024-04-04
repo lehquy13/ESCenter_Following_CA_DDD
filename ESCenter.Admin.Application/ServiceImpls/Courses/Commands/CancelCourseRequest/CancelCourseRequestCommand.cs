@@ -1,5 +1,4 @@
-﻿using ESCenter.Admin.Application.Contracts.Courses.Dtos;
-using FluentValidation;
+﻿using FluentValidation;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CancelCourseRequest;

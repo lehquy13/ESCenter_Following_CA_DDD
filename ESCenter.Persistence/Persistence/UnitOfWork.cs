@@ -4,12 +4,11 @@ using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Logging;
 
 namespace ESCenter.Persistence.Persistence;
 
 internal sealed class UnitOfWork(
-    ILogger<UnitOfWork> logger,
+    IAppLogger<UnitOfWork> logger,
     AppDbContext appDbContext,
     ICurrentUserService currentUserService) : IUnitOfWork
 {
@@ -17,7 +16,7 @@ internal sealed class UnitOfWork(
     {
         UpdateAuditableEntities();
 
-        logger.LogDebug("On save changes...");
+        logger.LogInformation("On save changes...");
         return await appDbContext.SaveChangesAsync(cancellationToken);
     }
 
@@ -41,6 +40,7 @@ internal sealed class UnitOfWork(
             appDbContext.ChangeTracker.Entries<IHasModificationTime>();
 
         foreach (var entityEntry in hasModificationTimeEnties)
+        {
             if (entityEntry.State == EntityState.Added || entityEntry.State == EntityState.Modified)
             {
                 entityEntry.Property(e => e.LastModificationTime).CurrentValue = DateTime.Now;
@@ -49,5 +49,6 @@ internal sealed class UnitOfWork(
                 if (entityEntry.Entity is IModificationAuditedObject)
                     entityEntry.Property("LastModifierId").CurrentValue = currentUserService.UserId.ToString();
             }
+        }
     }
 }

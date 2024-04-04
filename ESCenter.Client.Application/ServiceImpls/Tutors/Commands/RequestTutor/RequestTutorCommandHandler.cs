@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -43,7 +44,7 @@ public class RequestTutorCommandHandler(
         var message = "New tutor request to: " + tutorRequest.TutorId + " at " +
                       DateTime.Now.ToLongDateString();
 
-        await publisher.Publish(new NewObjectCreatedEvent(tutorRequest.TutorId.Value.ToString(), message,
+        await publisher.Publish(new NewDomainObjectCreatedEvent(tutorRequest.TutorId.Value.ToString(), message,
             NotificationEnum.TutorRequest), cancellationToken);
 
         return Result.Success();

@@ -4,11 +4,10 @@ using Matt.SharedKernel.Domain.Specifications;
 
 namespace ESCenter.Domain.Specifications.Tutors;
 
-public class TutorProfileSpec : FindSpecificationBase<Tutor, CustomerId>
+public class GetTutorByCustomerIdSpec : SpecificationBase<Tutor>
 {
-    public TutorProfileSpec(CustomerId tutorId) : base(tutorId)
+    public GetTutorByCustomerIdSpec(CustomerId customerId)
     {
-        IncludeStrings.Add(nameof(Tutor.Verifications));
-        IncludeStrings.Add(nameof(Tutor.ChangeVerificationRequest));
+        Criteria = tutor => tutor.CustomerId == customerId;
     }
 }

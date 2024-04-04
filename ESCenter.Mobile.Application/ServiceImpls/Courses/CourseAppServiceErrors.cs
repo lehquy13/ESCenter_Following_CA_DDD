@@ -28,4 +28,7 @@ public static class CourseAppServiceErrors
 
     public static Error NonExistCourseRequestError
         => new("CourseAppServiceErrors.NonExistCourseRequestError", "The request doesn't exist");
+
+    public static Error TutorDoesNotExist => new("CourseAppServiceErrors.TutorDoesNotExist", "The tutor doesn't exist");
+    public static Error CourseHasNoTutor => new("CourseAppServiceErrors.CourseHasNoTutor", "The course has no tutor");
 }

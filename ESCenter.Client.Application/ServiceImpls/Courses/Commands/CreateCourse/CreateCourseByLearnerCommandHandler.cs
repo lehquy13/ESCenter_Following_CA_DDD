@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -48,7 +49,7 @@ public class CreateCourseByLearnerCommandHandler(
             var message = "New class: " + course.Title + " was created by " + course.LearnerId +
                           " at " + course.CreationTime.ToLongDateString();
             await publisher.Publish(
-                new NewObjectCreatedEvent(course.Id.Value.ToString(), message, NotificationEnum.Course),
+                new NewDomainObjectCreatedEvent(course.Id.Value.ToString(), message, NotificationEnum.Course),
                 cancellationToken);
 
             return Result.Success();

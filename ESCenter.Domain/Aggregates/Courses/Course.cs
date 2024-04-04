@@ -1,9 +1,12 @@
-﻿using ESCenter.Domain.Aggregates.Courses.Entities;
+﻿using ESCenter.Domain.Aggregates.Courses.DomainEvents;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
+using ESCenter.Domain.Shared.NotificationConsts;
+using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Courses;
@@ -59,7 +62,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         SubjectId subjectId,
         CustomerId? learnerId)
     {
-        return new Course()
+        return new Course
         {
             Id = CourseId.Create(),
             Title = title,
@@ -81,14 +84,29 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         };
     }
 
-    public void ReviewCourse(short rate, string detail)
+    public Result ReviewCourse(short rate, string detail)
     {
         if (Status != Status.Confirmed)
         {
             throw new Exception("Course is not on going");
         }
 
-        Review = Review.Create(rate, detail, Id);
+        var result = Review.Create(rate, detail, Id);
+
+        if (!result.IsSuccess)
+        {
+            return result.Error;
+        }
+
+        Review = result.Value;
+
+        DomainEvents.Add(new CourseReviewedDomainEvent(this));
+        DomainEvents.Add(new NewDomainObjectCreatedEvent(
+            Id.Value.ToString(),
+            $"Review class: {Title} at {CreationTime.ToLongDateString()}",
+            NotificationEnum.Course));
+
+        return Result.Success();
     }
 
     public void SetLearner(string learnerName, Gender learnerGender, string contactNumber)

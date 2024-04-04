@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
@@ -46,7 +47,7 @@ public class CreateCourseRequestCommandHandler(
 
         var message = $"New request class with Id {courseRequestToCreate.Id.Value} " +
                       $"at {courseRequestToCreate.CreationTime.ToLongDateString()}";
-        await publisher.Publish(new NewObjectCreatedEvent(courseRequestToCreate.CourseId.Value.ToString(), message,
+        await publisher.Publish(new NewDomainObjectCreatedEvent(courseRequestToCreate.CourseId.Value.ToString(), message,
             NotificationEnum.Course), cancellationToken);
 
         return Result.Success();

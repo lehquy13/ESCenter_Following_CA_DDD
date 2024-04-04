@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Interfaces;
@@ -59,7 +60,7 @@ public class CreateTutorCommandHandler(
 
         var message = $"New tutor: {tutorInformation.Id.Value} at {DateTime.Now.ToLongDateString()}";
         await publisher.Publish(
-            new NewObjectCreatedEvent(userInformation.Value.Id.Value.ToString(), message, NotificationEnum.Tutor),
+            new NewDomainObjectCreatedEvent(userInformation.Value.Id.Value.ToString(), message, NotificationEnum.Tutor),
             cancellationToken);
 
         return Result.Success();

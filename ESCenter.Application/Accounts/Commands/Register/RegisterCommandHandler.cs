@@ -18,38 +18,25 @@ public class RegisterCommandHandler(
 {
     public override async Task<Result> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        var result = await identityService.CreateAsync(
-            command.Username,
+        var result = await identityService.CreateAsync(command.Username,
             command.FirstName,
             command.LastName,
             command.Gender,
             command.BirthYear,
-            Address.Create(command.City, command.Country),
+            Address.Create(command.City,
+                command.Country),
             command.Country,
             string.Empty,
             command.Email,
-            command.PhoneNumber);
+            command.PhoneNumber,
+            cancellationToken: cancellationToken);
 
         if (!result.IsSuccess)
         {
             return Result.Fail(result.Error);
         }
 
-        var user = Customer.Create(
-            result.Value.Id,
-            command.FirstName,
-            command.LastName,
-            command.Gender,
-            command.BirthYear,
-            Address.Create(command.City, command.Country),
-            string.Empty,
-            string.Empty,
-            command.Email,
-            command.PhoneNumber,
-            Role.Learner
-        );
-
-        await customerRepository.InsertAsync(user, cancellationToken);
+        await customerRepository.InsertAsync(result.Value, cancellationToken);
 
         if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {

@@ -10,23 +10,21 @@ using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Persistence.Middleware;
+using Matt.SharedKernel.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace ESCenter.Persistence.EntityFrameworkCore;
 
-public class CustomUserStore : UserStore<EsIdentityUser>  // important to use custom Identity user object here!  
-{
-    public CustomUserStore(AppDbContext context)
-        : base(context)
-    {
-        AutoSaveChanges = false;
-    }
-}
-
-public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : IdentityDbContext<EsIdentityUser, EsIdentityRole, string>(options)
+public class AppDbContext(
+    DbContextOptions<AppDbContext> options,
+    IHttpContextAccessor? httpContextAccessor = null
+)
+    : IdentityDbContext<IdentityUser, IdentityRole, string>(options)
 {
     public DbSet<Subject> Subjects { get; init; } = null!;
     public DbSet<Course> Courses { get; init; } = null!;
@@ -54,6 +52,30 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var domainEvents = ChangeTracker.Entries<IHasDomainEvents>()
+            .Select(entry => entry.Entity.PopDomainEvents())
+            .SelectMany(x => x)
+            .ToList();
+
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        if (httpContextAccessor is null || httpContextAccessor.HttpContext is null) return result;
+
+        Queue<IDomainEvent> domainEventsQueue =
+            httpContextAccessor.HttpContext.Items.TryGetValue(EventualConsistencyMiddleware.DomainEventsKey,
+                out var value) &&
+            value is Queue<IDomainEvent> existingDomainEvents
+                ? existingDomainEvents
+                : new();
+
+        domainEvents.ForEach(domainEventsQueue.Enqueue);
+        httpContextAccessor.HttpContext.Items[EventualConsistencyMiddleware.DomainEventsKey] = domainEventsQueue;
+
+        return result;
+    }
 }
 
 //using to support adding migration
@@ -65,7 +87,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         optionsBuilder.UseSqlServer(
             //"Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_5; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_4; Trusted_Connection=True;MultipleActiveResultSets=true"
-             "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql2;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
+            "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql2;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
             // "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql1;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
             // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_3; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"

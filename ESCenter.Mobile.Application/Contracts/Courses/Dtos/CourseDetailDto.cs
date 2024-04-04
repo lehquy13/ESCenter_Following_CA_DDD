@@ -21,7 +21,6 @@ public class CourseDetailDto : BasicAuditedEntityDto<Guid>
     public string AcademicLevelRequirement { get; init; } = "Optional";
 
     //Student related information
-    public string LearnerName { get; init; } = "";
     public string LearnerGender { get; init; } = "None";
     public int NumberOfLearner { get; init; } = 1;
 
@@ -44,7 +43,6 @@ public class CourseDetailDtoMappingConfig : IRegister
     {
         config.NewConfig<(Course, Subject), CourseDetailDto>()
             .Map(des => des.Id, src => src.Item1.Id.Value)
-            .Map(des => des.LearnerName, src => src.Item1.LearnerName)
             .Map(des => des.Title, src => src.Item1.Title)
             .Map(des => des.Status, src => src.Item1.Status.ToString())
             .Map(des => des.GenderRequirement, src => src.Item1.GenderRequirement.ToString())

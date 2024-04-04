@@ -12,14 +12,14 @@ internal sealed class BadRequestExceptionHandler(
     IServiceProvider serviceProvider
 ) : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(
+    public ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
     {
         if (exception is not ValidationException badRequestException)
         {
-            return false;
+            return new ValueTask<bool>(false);
         }
 
         using (var scope = serviceProvider.CreateScope())
@@ -47,6 +47,6 @@ internal sealed class BadRequestExceptionHandler(
 
         //await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-        return true;
+        return new ValueTask<bool>(true);
     }
 }

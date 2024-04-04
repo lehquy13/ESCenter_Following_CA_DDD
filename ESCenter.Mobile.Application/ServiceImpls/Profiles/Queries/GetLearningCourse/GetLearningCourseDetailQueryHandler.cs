@@ -2,8 +2,10 @@
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Specifications.Tutors;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using ESCenter.Mobile.Application.ServiceImpls.Courses;
 using Mapster;
@@ -22,7 +24,6 @@ public class GetLearningCourseDetailQueryHandler(
     ISubjectRepository subjectRepository,
     ICustomerRepository customerRepository,
     ITutorRepository tutorRepository,
-    IIdentityService identityService,
     ICurrentUserService currentUserService,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<RequestHandlerBase> logger,
@@ -36,27 +37,41 @@ public class GetLearningCourseDetailQueryHandler(
         var courseRequestQueryable =
             from courseFromDb in courseRepository.GetAll()
             join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-            join tutor in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor.Id
-            join customer in customerRepository.GetAll() on tutor.CustomerId equals customer.Id
-            where courseFromDb.TutorId == CustomerId.Create(currentUserService.UserId) &&
-                  courseFromDb.Id == CourseId.Create(request.CourseId)
+            where courseFromDb.Id == CourseId.Create(request.CourseId)
             select new
             {
                 Course = courseFromDb,
-                Subject = subjectFromDb,
-                TutorId = tutor.Id,
-                TutorInfo = customer
+                Subject = subjectFromDb
             };
 
-        var course =
-            await asyncQueryableExecutor.SingleOrDefault(courseRequestQueryable, false, cancellationToken);
+        var courseWithSubject =
+            await asyncQueryableExecutor.FirstOrDefaultAsync(courseRequestQueryable, false, cancellationToken);
 
-        if (course is null)
+        if (courseWithSubject is null)
         {
             return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
 
-        var classDto = (course.Course, course.Subject, course.TutorId, course.TutorInfo)
+        if (courseWithSubject.Course.TutorId is null)
+        {
+            return Result.Fail(CourseAppServiceErrors.CourseHasNoTutor);
+        }
+
+        var tutor = await tutorRepository.GetAsync(courseWithSubject.Course.TutorId, cancellationToken);
+
+        if (tutor is null)
+        {
+            return Result.Fail(CourseAppServiceErrors.TutorDoesNotExist);
+        }
+
+        var tutorInfo = await customerRepository.GetAsync(tutor.CustomerId, cancellationToken);
+
+        if (tutorInfo is null)
+        {
+            return Result.Fail(CourseAppServiceErrors.TutorDoesNotExist);
+        }
+
+        var classDto = (courseWithSubject.Course, courseWithSubject.Subject, tutor.Id.Value, tutorInfo)
             .Adapt<LearningCourseDetailForClientDto>();
 
         return classDto;

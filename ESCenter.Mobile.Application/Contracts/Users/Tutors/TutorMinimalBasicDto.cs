@@ -33,9 +33,15 @@ public class TutorMinimalBasicDtoMappingConfig : IRegister
         config.NewConfig<Tutor, TutorMinimalBasicDto>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Majors, src => src.TutorMajors)
+            .Map(dest => dest.VerificationDtos, src => src.Verifications)
             .Map(dest => dest.AcademicLevel, src => src.AcademicLevel.ToString())
             .Map(dest => dest, src => src);
 
+        config.NewConfig<Verification, VerificationDto>()
+            .Map(dest => dest.Id, src => src.Id.Value)
+            .Map(dest => dest.Image, src => src.Image)
+            .Map(dest => dest, src => src);
+        
         config.NewConfig<TutorMajor, TutorMajorDto>()
             .Map(dest => dest.SubjectId, src => src.SubjectId.Value)
             .Map(dest => dest.SubjectName, src => src.SubjectName)

@@ -45,9 +45,9 @@ public class CourseForLearnerCreateDtoMappingConfig : IRegister
                     x.LearnerName,
                     x.NumberOfLearner,
                     x.ContactNumber,
-                    x.MinutePerSession,
+                    999,
                     null,
-                    x.SessionPerWeek,
+                    888,
                     x.Address,
                     SubjectId.Create(x.SubjectId),
                     null)

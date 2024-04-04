@@ -21,7 +21,7 @@ public class TutorBasicUpdateForClientDto
 {
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
     public string University { get; set; } = null!;
-    public List<int> Majors { get; set; } = new();
+    public List<int> Majors { get; set; } = [];
 }
 
 public class TutorBasicUpdateForClientDtoValidator : AbstractValidator<TutorBasicUpdateForClientDto>

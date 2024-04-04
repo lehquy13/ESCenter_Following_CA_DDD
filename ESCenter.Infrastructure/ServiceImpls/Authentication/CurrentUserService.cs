@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
+using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace ESCenter.Infrastructure.ServiceImpls.Authentication;
@@ -14,9 +15,10 @@ internal class CurrentUserService : ICurrentUserService
     public string? CurrentUserEmail { get; }
     public string? CurrentUserFullName { get; }
 
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    public CurrentUserService(IHttpContextAccessor httpContextAccessor, IAppLogger<CurrentUserService> logger)
     {
         _httpContextAccessor = httpContextAccessor;
+
         try
         {
             var userId = GetSingleClaimValue(ClaimTypes.NameIdentifier);
@@ -28,8 +30,10 @@ internal class CurrentUserService : ICurrentUserService
             Permissions = GetClaimValues("permissions");
             Roles = GetClaimValues(ClaimTypes.Role);
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
+            logger.LogError("Error occurred while getting user claims: {Message}", exception.Message);
+
             UserId = Guid.Empty;
             IsAuthenticated = false;
             CurrentUserEmail = null;

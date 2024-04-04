@@ -36,7 +36,7 @@ internal class CloudinaryServices(
             var resultJson = getResourceResult.JsonObj;
 
             // Log quality analysis score to the console
-            logger.LogInformation("{Message}", resultJson["quality_analysis"]);
+            logger.LogInformation("{Message}", resultJson["quality_analysis"]!);
 
             return resultJson["url"]?.ToString() ??
                    "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";

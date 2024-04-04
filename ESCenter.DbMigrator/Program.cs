@@ -10,7 +10,6 @@ using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.Courses;
-using ESCenter.Persistence;
 using ESCenter.Persistence.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -76,14 +75,14 @@ internal static class Program
 
     private static async Task SeedData(AppDbContext context)
     {
-        var userStore = new UserStore<EsIdentityUser>(context)
+        var userStore = new UserStore<IdentityUser>(context)
         {
             AutoSaveChanges = false
         };
-        UserManager<EsIdentityUser> userManager = new UserManager<EsIdentityUser>(
+        UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(
             userStore,
             null!,
-            new PasswordHasher<EsIdentityUser>(),
+            new PasswordHasher<IdentityUser>(),
             null!,
             null!,
             null!,
@@ -196,11 +195,19 @@ internal static class Program
 
                 #region roles
 
-                var identityRoles = new List<EsIdentityRole>
+                var identityRoles = new List<IdentityRole>
                 {
-                    new("Admin"),
-                    new("Tutor"),
-                    new("Learner"),
+                    new("Admin")
+                    {
+                        NormalizedName = "ADMIN"
+                    },
+                    new("Tutor")
+                    {
+                        NormalizedName = "TUTOR"
+                    },
+                    new("Learner"){
+                        NormalizedName = "LEARNER"
+                    },
                 };
 
                 context.Roles.AddRange(identityRoles);
@@ -369,8 +376,8 @@ internal static class Program
 
     private static async Task GetUserDataAndTutorData(
         JsonSerializerSettings somethingCalledMagic,
-        UserManager<EsIdentityUser> userManager,
-        List<EsIdentityRole> identityRoles,
+        UserManager<IdentityUser> userManager,
+        List<IdentityRole> identityRoles,
         List<Customer> userData,
         List<Tutor> tutorData,
         //out List<EsIdentityUser> identityUsers,
@@ -415,7 +422,7 @@ internal static class Program
         var identityUsersCreationTasks = userData
             .Select(async customer =>
             {
-                var identityUser = new EsIdentityUser
+                var identityUser = new IdentityUser
                 {
                     UserName = customer.Email,
                     NormalizedUserName = customer.Email.ToUpper(),

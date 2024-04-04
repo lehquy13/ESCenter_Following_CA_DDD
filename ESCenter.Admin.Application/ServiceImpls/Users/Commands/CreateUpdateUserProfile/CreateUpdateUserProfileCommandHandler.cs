@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -79,7 +80,7 @@ public class CreateUpdateUserProfileCommandHandler(
             var message = $"New learner: {user.FirstName} {user.LastName} at {user.CreationTime.ToLongDateString()}";
 
             await publisher.Publish(
-                new NewObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),
+                new NewDomainObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),
                 cancellationToken);
 
             return Result.Success();

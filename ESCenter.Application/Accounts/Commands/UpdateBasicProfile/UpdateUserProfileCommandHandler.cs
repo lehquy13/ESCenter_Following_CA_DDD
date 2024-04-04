@@ -1,7 +1,7 @@
-﻿using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
-using ESCenter.Application.Contracts.Authentications;
+﻿using ESCenter.Application.Contracts.Authentications;
 using ESCenter.Application.EventHandlers;
 using ESCenter.Application.Interfaces.Authentications;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -13,7 +13,7 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
+namespace ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 
 public class UpdateUserProfileCommandHandler( // Change name to Update only
     ICustomerRepository customerRepository,
@@ -31,64 +31,57 @@ public class UpdateUserProfileCommandHandler( // Change name to Update only
     public override async Task<Result<AuthenticationResult>> Handle(UpdateBasicProfileCommand command,
         CancellationToken cancellationToken)
     {
-        try
+        var user = await customerRepository.GetAsync(
+            CustomerId.Create(currentUserService.UserId),
+            cancellationToken);
+
+        // Check if the user existed
+        if (user is not null)
         {
-            var user = await customerRepository.GetAsync(
-                CustomerId.Create(currentUserService.UserId),
-                cancellationToken);
-
-            // Check if the user existed
-            if (user is not null)
-            {
-                // Update user
-                Mapper.Map(command.UserProfileUpdateDto, user);
-
-                if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-                {
-                    return Result.Fail(AccountServiceError.FailToUpdateUserErrorWhileSavingChanges);
-                }
-
-                //3. Generate token
-                var userLoginForUpdateDto = Mapper.Map<UserLoginDto>(user);
-                var loginToken = jwtTokenGenerator.GenerateToken(userLoginForUpdateDto);
-
-                return new AuthenticationResult()
-                {
-                    User = userLoginForUpdateDto,
-                    Token = loginToken,
-                };
-            }
-
-            //Create new user
-            user = Mapper.Map<Customer>(command.UserProfileUpdateDto);
-
-            await customerRepository.InsertAsync(user, cancellationToken);
+            // Update user
+            Mapper.Map(command.UserProfileUpdateDto, user);
 
             if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
             {
-                return Result.Fail(AccountServiceError.FailToCreateUserErrorWhileSavingChanges);
+                return Result.Fail(AccountServiceError.FailToUpdateUserErrorWhileSavingChanges);
             }
 
-            // TODO: Publish event
-            var message = "New learner: " + user.FirstName + " " + user.LastName + " at " +
-                          user.CreationTime.ToLongDateString();
-            await publisher.Publish(
-                new NewObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),
-                cancellationToken);
             //3. Generate token
-            var userLoginForCreateDto = Mapper.Map<UserLoginDto>(user);
-            var loginTokenForCreate = jwtTokenGenerator.GenerateToken(userLoginForCreateDto);
+            var userLoginForUpdateDto = Mapper.Map<UserLoginDto>(user);
+            var loginToken = jwtTokenGenerator.GenerateToken(userLoginForUpdateDto);
 
             return new AuthenticationResult()
             {
-                User = userLoginForCreateDto,
-                Token = loginTokenForCreate,
+                User = userLoginForUpdateDto,
+                Token = loginToken,
             };
         }
-        catch (Exception ex)
+
+        //Create new user
+        user = Mapper.Map<Customer>(command.UserProfileUpdateDto);
+
+        await customerRepository.InsertAsync(user, cancellationToken);
+
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
-            return Result.Fail(
-                UserError.FailTCreateOrUpdateUserError(command.UserProfileUpdateDto.Email, ex.Message));
+            return Result.Fail(AccountServiceError.FailToCreateUserErrorWhileSavingChanges);
         }
+
+        // TODO: Publish event
+        var message = "New learner: " + user.FirstName + " " + user.LastName + " at " +
+                      user.CreationTime.ToLongDateString();
+        await publisher.Publish(
+            new NewDomainObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),
+            cancellationToken);
+        
+        //3. Generate token
+        var userLoginForCreateDto = Mapper.Map<UserLoginDto>(user);
+        var loginTokenForCreate = jwtTokenGenerator.GenerateToken(userLoginForCreateDto);
+
+        return new AuthenticationResult
+        {
+            User = userLoginForCreateDto,
+            Token = loginTokenForCreate,
+        };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.Errors;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
@@ -32,7 +33,7 @@ public class ReviewCourseCommandHandler(
 
         if (courseFromDb == null)
         {
-            return Result.Fail(CourseError.NonExistCourseError);
+            return Result.Fail(CourseDomainError.NonExistCourseError);
         }
 
         if (courseFromDb.Status != Status.Confirmed || courseFromDb.TutorId is null)
@@ -76,7 +77,7 @@ public class ReviewCourseCommandHandler(
         }
 
         var message = "Review class: " + courseFromDb.Title + " at " + courseFromDb.CreationTime.ToLongDateString();
-        await publisher.Publish(new NewObjectCreatedEvent(courseFromDb.Id.Value.ToString(), message,
+        await publisher.Publish(new NewDomainObjectCreatedEvent(courseFromDb.Id.Value.ToString(), message,
             NotificationEnum.Course), cancellationToken);
 
         return Result.Success();

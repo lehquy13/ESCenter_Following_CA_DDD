@@ -37,6 +37,7 @@ public static class DependencyInjection
             .AddApplication();
         services.AddProblemDetails();
 
+        services.AddExceptionHandler<UnauthorizedExceptionHandler>();
         services.AddExceptionHandler<BadRequestExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddExceptionHandler<NotFoundExceptionHandler>();

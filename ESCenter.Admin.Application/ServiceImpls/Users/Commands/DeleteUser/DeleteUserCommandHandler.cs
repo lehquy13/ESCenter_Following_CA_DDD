@@ -1,4 +1,5 @@
 ﻿using ESCenter.Application.EventHandlers;
+using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;
@@ -29,7 +30,7 @@ public class DeleteUserCommandHandler(
         }
 
         await publisher.Publish(
-            new NewObjectCreatedEvent(
+            new NewDomainObjectCreatedEvent(
                 request.Id.ToString(),
                 message,
                 NotificationEnum.Learner),

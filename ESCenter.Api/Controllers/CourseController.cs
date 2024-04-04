@@ -39,7 +39,7 @@ public class CourseController(
 
     // POST api/Create/<CourseController>
     [HttpPost]
-    [Route("create")]
+    [Route("")]
     public async Task<IActionResult> CreateCourse(
         CourseForLearnerCreateDto courseForLearnerCreateDto)
     {

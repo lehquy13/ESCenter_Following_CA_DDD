@@ -16,7 +16,7 @@ public class SessionDuration : ValueObject
     {
         if (value <= 0)
         {
-            throw new ArgumentOutOfRangeException(CourseError.InvalidMinuteValue);
+            throw new ArgumentOutOfRangeException(CourseDomainError.InvalidMinuteValue);
         }
 
         return new(value, type ?? DurationType.Minute);

@@ -1,4 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Notifications;
+﻿using ESCenter.Domain;
+using ESCenter.Domain.Aggregates.Notifications;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 using MediatR;
@@ -9,9 +10,9 @@ internal class NewObjectCreatedEventHandler(
     IRepository<Notification, int> notificationRepository,
     IAppLogger<NewObjectCreatedEventHandler> logger,
     IUnitOfWork unitOfWork)
-    : INotificationHandler<NewObjectCreatedEvent>
+    : INotificationHandler<NewDomainObjectCreatedEvent>
 {
-    public async Task Handle(NewObjectCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(NewDomainObjectCreatedEvent notification, CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating new notification...");
 

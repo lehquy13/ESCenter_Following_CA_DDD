@@ -20,10 +20,9 @@ public static class DependencyInjection
         );
         // set configuration settings to emailSettingName and turn it into Singleton
         //services.AddDatabaseDeveloperPageExceptionFilter();
-        services.AddScoped<IUserStore<EsIdentityUser>, CustomUserStore>();
 
         services
-            .AddIdentity<EsIdentityUser, EsIdentityRole>(options =>
+            .AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
@@ -41,6 +40,7 @@ public static class DependencyInjection
                 options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
+                
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();

@@ -1,5 +1,4 @@
 ﻿using ESCenter.Application.Accounts.Commands.ChangeAvatar;
-using ESCenter.Application.Accounts.Commands.CreateUpdateBasicProfile;
 using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Host;
@@ -38,7 +37,7 @@ public class ProfileController(
         return Ok(result);
     }
 
-    [Authorize(Policy = "RequireTutorRole")]
+    [Authorize(Roles = "Tutor")]
     [HttpGet("tutor-information")]
     public async Task<IActionResult> GetTutorInformation()
     {
@@ -81,9 +80,9 @@ public class ProfileController(
 
     [HttpGet]
     [Route("learning-course/{courseId}")]
-    public async Task<IActionResult> GetLearningCourse(string courseId, GetLearningCourseDetailQuery getLearningCourseDetail)
+    public async Task<IActionResult> GetLearningCourse([FromRoute] string courseId)
     {
-        var classInformation = await mediator.Send(getLearningCourseDetail);
+        var classInformation = await mediator.Send(new GetLearningCourseDetailQuery(new Guid(courseId)));
         return Ok(classInformation);
     }
 
@@ -98,9 +97,13 @@ public class ProfileController(
     [HttpPut]
     [Route("learning-course/{courseId:guid}/review")]
     public async Task<IActionResult> ReviewTutor([FromRoute] Guid courseId,
-        [FromBody] ReviewDetailDto reviewDetailDto)
+        [FromBody] ReviewCreateViewModel reviewCreateDto)
     {
-        var result = await mediator.Send(new ReviewCourseCommand(reviewDetailDto));
+        var result = await mediator.Send(new ReviewCourseCommand(
+            courseId,
+            reviewCreateDto.Rate,
+            reviewCreateDto.Detail
+        ));
         return Ok(result);
     }
 

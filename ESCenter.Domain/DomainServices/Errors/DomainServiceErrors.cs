@@ -21,6 +21,8 @@ public static class DomainServiceErrors
     public static Error FailRegisteringAsTutorErrorWhileAddingRole => new("FailRegisteringAsTutorErrorWhileAddingRole",
         "Fail to register tutor while adding role");
 
+    public static Error FailAddRoleError => new("FailAddRoleError", "Fail to add role");
+
     public static Error FailRegisteringAsTutorErrorWhileSavingChanges(string message)
         => new("FailRegisteringTutorErrorWhileSavingChanges",
             $"Fail to register tutor while saving changes! {message}");

@@ -1,15 +1,9 @@
 ﻿using System.Text;
-using System.Text.Encodings.Web;
-using Azure.Core;
-using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
-using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices;
 using ESCenter.Domain.DomainServices.Errors;
 using ESCenter.Domain.Shared.Courses;
-using ESCenter.Domain.Specifications.Customers;
 using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -21,10 +15,10 @@ using Microsoft.EntityFrameworkCore;
 namespace ESCenter.Persistence.Persistence.Repositories;
 
 public class IdentityService(
-    SignInManager<EsIdentityUser> signInManager,
-    UserManager<EsIdentityUser> userManager,
-    RoleManager<EsIdentityRole> roleManager,
-    IUserStore<EsIdentityUser> userStore,
+    SignInManager<IdentityUser> signInManager,
+    UserManager<IdentityUser> userManager,
+    RoleManager<IdentityRole> roleManager,
+    IUserStore<IdentityUser> userStore,
     IEmailSender emailSender,
     IAppLogger<IdentityService> logger,
     AppDbContext appDbContext)
@@ -77,11 +71,11 @@ public class IdentityService(
 
         esIdentityUser = InitializeUserInstance();
 
-        var result = await CreateUser(email, phoneNumber, cancellationToken, esIdentityUser);
+        var result = await CreateUser(userName, email, phoneNumber, cancellationToken, esIdentityUser);
 
         if (!result.Succeeded)
         {
-            return Result.Fail(result.Errors.First().Description);
+            return Result.Fail(result.Errors.Select(x => x.Description).Aggregate((x, y) => x + " " + y));
         }
 
         logger.LogInformation("User created a new account with password.");
@@ -97,13 +91,21 @@ public class IdentityService(
         //     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
         //     protocol: Request.Scheme);
 
-        await emailSender.SendEmail(email, "Demo email",
-            $"This email will use to confirm your email using the code {code}");
-
+        emailSender.SendEmail(email, "Demo email",
+            $"This email will use to confirm your email using the code {code}").Start();
+        
         //await emailSender.SendHtmlEmail(email, "Confirm your email",
         //  $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-        await userManager.AddToRoleAsync(esIdentityUser, role.ToString());
+        var roleAddResult = await userManager.AddToRoleAsync(esIdentityUser, role.ToString().ToUpper());
+
+        if (!roleAddResult.Succeeded)
+        {
+            logger.LogError("Fail to add role to user with id {userId} {Message}", userId,
+                roleAddResult.Errors.Select(x => x.Description).Aggregate((x, y) => x + " " + y));
+
+            return Result.Fail(DomainServiceErrors.FailAddRoleError);
+        }
 
         var customer = Customer.Create(
             CustomerId.Create(userId),
@@ -122,18 +124,20 @@ public class IdentityService(
         return customer;
     }
 
-    private async Task<IdentityResult> CreateUser(string email, string phoneNumber, CancellationToken cancellationToken,
-        EsIdentityUser esIdentityUser)
+    private async Task<IdentityResult> CreateUser(string userName, string email, string phoneNumber,
+        CancellationToken cancellationToken,
+        IdentityUser identityUser)
     {
-        await userStore.SetUserNameAsync(esIdentityUser, email, cancellationToken);
-        esIdentityUser.Email = email;
-        esIdentityUser.NormalizedEmail = email.ToUpper();
-        esIdentityUser.PhoneNumber = phoneNumber;
+        identityUser.UserName = userName;
+        identityUser.NormalizedUserName = userName.ToUpper();
+        identityUser.Email = email;
+        identityUser.NormalizedEmail = email.ToUpper();
+        identityUser.PhoneNumber = phoneNumber;
 
         //await emailStore.SetEmailAsync(esIdentityUser, email, cancellationToken);
         //await phoneNumberStore.SetPhoneNumberAsync(esIdentityUser, phoneNumber, cancellationToken);
 
-        var result = await userManager.CreateAsync(esIdentityUser, DefaultPassword);
+        var result = await userManager.CreateAsync(identityUser, DefaultPassword);
         return result;
     }
 
@@ -212,7 +216,7 @@ public class IdentityService(
             return Result.Fail(DomainServiceErrors.AlreadyTutorError);
         }
 
-        var result = await userManager.AddToRoleAsync(user, Role.Tutor.ToString());
+        var result = await userManager.AddToRoleAsync(user, Role.Tutor.ToString().ToUpper());
 
         if (!result.Succeeded)
         {
@@ -281,16 +285,16 @@ public class IdentityService(
         return Result.Success();
     }
 
-    private EsIdentityUser InitializeUserInstance()
+    private IdentityUser InitializeUserInstance()
     {
         try
         {
-            return Activator.CreateInstance<EsIdentityUser>();
+            return Activator.CreateInstance<IdentityUser>();
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(EsIdentityUser)}'. " +
-                                                $"Ensure that '{nameof(EsIdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
+                                                $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                                                 $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
         }
     }

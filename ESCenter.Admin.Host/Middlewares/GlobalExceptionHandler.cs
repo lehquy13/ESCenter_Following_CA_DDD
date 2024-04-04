@@ -10,7 +10,7 @@ internal sealed class GlobalExceptionHandler(
     IServiceProvider serviceProvider
 ) : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(
+    public ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
@@ -32,6 +32,6 @@ internal sealed class GlobalExceptionHandler(
 
         httpContext.Response.Redirect("/admin/home/error");
 
-        return true;
+        return new ValueTask<bool>(true);
     }
 }

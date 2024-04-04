@@ -1,16 +1,25 @@
 using ESCenter.Api;
 using ESCenter.Host;
+using ESCenter.Persistence;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
+
+logger.Information("Starting web host");
 
 // Add services to the container.
 builder.Services.AddControllers(options => 
 {
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
-
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddHost(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -54,12 +63,16 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.Logger.LogInformation("Adding Development middleware...");
     app.UseSwagger();
     app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"); });
 }
 
-//app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging();
+
 app.UseExceptionHandler();
+
+app.AddInfrastructureMiddleware();
 
 app.UseHttpsRedirection();
 
@@ -72,5 +85,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Logger.LogInformation("LAUNCHING");
 
 app.Run();

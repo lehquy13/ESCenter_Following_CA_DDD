@@ -11,14 +11,16 @@ public class SessionPerWeek : ValueObject
     {
         if (value <= 0 || value > 7)
         {
-            throw new ArgumentOutOfRangeException(CourseError.InvalidSectionRange);
+            throw new ArgumentOutOfRangeException(CourseDomainError.InvalidSectionRange);
         }
-        return new(value);
+        return new SessionPerWeek
+        {
+            Value = value
+        };
     }
     
-    private SessionPerWeek(int value)
+    private SessionPerWeek()
     {
-        Value = value;
     }
     
     public override IEnumerable<object> GetEqualityComponents()
