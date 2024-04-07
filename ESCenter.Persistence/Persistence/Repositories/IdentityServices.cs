@@ -92,7 +92,7 @@ public class IdentityService(
         //     protocol: Request.Scheme);
 
         emailSender.SendEmail(email, "Demo email",
-            $"This email will use to confirm your email using the code {code}").Start();
+            $"This email will use to confirm your email using the code {code}");
         
         //await emailSender.SendHtmlEmail(email, "Confirm your email",
         //  $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

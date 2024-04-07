@@ -1,36 +1,53 @@
-﻿using ESCenter.Client.Application.Contracts.Users.Tutors;
+﻿using ESCenter.Application.Accounts.Queries.GetUserProfile;
+using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetTutorMajors;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
+using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Commands.CreateChangeVerification;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Commands.UpdateTutorProfile;
+using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Queries.GetTutorProfile;
+using ESCenter.Client.Models;
 using ESCenter.Client.Utilities;
 using ESCenter.Domain.Shared;
-using ESCenter.Domain.Shared.Courses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Client.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Tutor")]
 [Route("client/[controller]")]
-public class TutorProfileController(ISender mediator) : Controller
+public class TutorProfileController(ISender sender, ICloudinaryServices cloudinaryServices) : Controller
 {
+    public async Task<IActionResult> Index()
+    {
+        await PackStaticListToView();
+        var getTutorProfile = await sender.Send(new GetTutorProfileQuery());
+        var learnerProfile = await sender.Send(new GetUserProfileQuery());
+
+        return View(
+            new TutorProfileViewModel
+            {
+                TutorForProfileDto = getTutorProfile.Value,
+                UserProfileDto = learnerProfile.Value
+            }
+        );
+    }
+
     private async Task PackStaticListToView()
     {
-        var subjects = await mediator.Send(new GetSubjectsQuery());
+        var subjects = await sender.Send(new GetSubjectsQuery());
         ViewData["Roles"] = EnumProvider.Roles;
         ViewData["Genders"] = EnumProvider.Genders;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
         ViewData["Subjects"] = subjects.Value;
     }
 
-    [Authorize]
     [HttpPost]
     [Route("")]
     public async Task<IActionResult> GetTutorMajors()
     {
         var query = new GetTutorMajorsQuery();
-        var result = await mediator.Send(query);
+        var result = await sender.Send(query);
 
         return Helper.RenderRazorViewToString(this, "_TutorMajors", result.Value);
     }
@@ -43,26 +60,8 @@ public class TutorProfileController(ISender mediator) : Controller
 
         if (ModelState.IsValid)
         {
-            //var filePath = new List<string>();
-            // if (files != null)
-            // {
-            //     foreach (var i in files)
-            //     {
-            //         if (i is not null)
-            //             filePath.Add(await Helper.SaveFiles(i, webHostEnvironment.WebRootPath));
-            //     }
-            // }
-            //
-            // if (tutorProfileUpdateDto.Role != UserRole.Tutor)
-            // {
-            //     throw new Exception("User has not registered as Tutor.");
-            // }
+            var result = await sender.Send(new UpdateTutorInformationCommand(tutorProfileUpdateDto));
 
-            var result = await mediator.Send(new UpdateTutorInformationCommand(tutorProfileUpdateDto));
-
-            //ViewBag.Updated = result.IsSuccess;
-            //Helper.ClearTempFile(webHostEnvironment.WebRootPath);
-            
             return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
         }
 
@@ -70,5 +69,18 @@ public class TutorProfileController(ISender mediator) : Controller
             tutorProfileUpdateDto,
             true
         );
+    }
+
+    [HttpPost("create-change-request")]
+    public async Task<IActionResult> CreateChangeRequest(List<IFormFile> fileElems)
+    {
+        var filePath = (from formFile in fileElems
+                let fileName = formFile.FileName
+                select cloudinaryServices.UploadImage(fileName, formFile.OpenReadStream()))
+            .ToList();
+        
+        var result = await sender.Send(new CreateChangeVerificationCommand(filePath));
+
+        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
     }
 }

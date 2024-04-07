@@ -31,6 +31,7 @@ public class ChangeVerificationRequestDetail : Entity<ChangeVerificationRequestD
     {
         return new ChangeVerificationRequestDetail()
         {
+            Id = ChangeVerificationRequestDetailId.Create(),
             ImageUrl = imageUrl,
             ChangeVerificationRequestId = changeVerificationRequestId
         };

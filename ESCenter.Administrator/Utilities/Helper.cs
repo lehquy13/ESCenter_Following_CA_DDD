@@ -8,7 +8,8 @@ namespace ESCenter.Administrator.Utilities;
 
 public static class Helper
 {
-    public static JsonResult RenderRazorViewToString(Controller? controller, string viewNamePara, object? model = null, bool isValidateView = false)
+    public static JsonResult RenderRazorViewToString(Controller? controller, string viewNamePara, object? model = null,
+        bool isValidateView = false)
     {
         if (controller is null)
             return new JsonResult(new
@@ -19,7 +20,8 @@ public static class Helper
             });
         controller.ViewData.Model = model;
         using var sw = new StringWriter();
-        IViewEngine? viewEngine = controller.HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
+        IViewEngine? viewEngine =
+            controller.HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
         if (viewEngine is null)
             return new JsonResult(new
             {
@@ -45,7 +47,7 @@ public static class Helper
             new HtmlHelperOptions()
         );
         viewResult.View.RenderAsync(viewContext);
-       
+
         return new JsonResult(new
         {
             res = !isValidateView,
@@ -61,6 +63,7 @@ public static class Helper
         {
             string fileName = formFile.FileName;
             string path = Path.Combine(wwwRootPath + "\\temp\\", fileName);
+            
             await using var fileStream = formFile.OpenReadStream();
             await formFile.CopyToAsync(fileStream);
             fileStream.Position = 0;
@@ -69,7 +72,8 @@ public static class Helper
 
         return string.Empty;
     }
-    public static  string ClearTempFile(string wwwRootPath)
+
+    public static string ClearTempFile(string wwwRootPath)
     {
         string path = Path.Combine(wwwRootPath + "\\temp\\");
 
@@ -77,12 +81,12 @@ public static class Helper
 
         foreach (FileInfo file in di.GetFiles())
         {
-            file.Delete(); 
+            file.Delete();
         }
 
         return string.Empty;
     }
-    
+
     public static JsonResult SuccessResult(string message = "")
     {
         return new JsonResult(new
@@ -90,8 +94,8 @@ public static class Helper
             res = true,
             message
         });
-    } 
-    
+    }
+
     public static JsonResult FailResult(string message = "")
     {
         return new JsonResult(new
@@ -100,7 +104,7 @@ public static class Helper
             message
         });
     }
-    
+
     public static JsonResult UpdatedResult(string message = "")
     {
         return new JsonResult(new
@@ -109,7 +113,7 @@ public static class Helper
             message
         });
     }
-    
+
     public static JsonResult UpdatedUsingModalResult(string message = "")
     {
         return new JsonResult(new
@@ -127,9 +131,9 @@ public class NoDirectAccessAttribute : ActionFilterAttribute
     {
         if (
             filterContext.HttpContext.Request.GetTypedHeaders().Referer == null ||
-             filterContext.HttpContext.Request.GetTypedHeaders().Host.Host.ToString()
-             != filterContext.HttpContext.Request.GetTypedHeaders().Referer?.Host.ToString()
-             )
+            filterContext.HttpContext.Request.GetTypedHeaders().Host.Host.ToString()
+            != filterContext.HttpContext.Request.GetTypedHeaders().Referer?.Host.ToString()
+        )
         {
             filterContext.HttpContext.Response.Redirect("/");
         }

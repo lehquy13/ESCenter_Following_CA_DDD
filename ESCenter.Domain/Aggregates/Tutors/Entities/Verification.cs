@@ -3,7 +3,7 @@ using Matt.SharedKernel.Domain.Primitives;
 
 namespace ESCenter.Domain.Aggregates.Tutors.Entities;
 
-public class Verification : Entity<VerificationId>
+public class Verification : Entity<VerificationId> // TODO: Update the verification to be an audited entity
 {
     public TutorId TutorId { get; private set; } = null!;
     public string Image { get; private set; } = null!;

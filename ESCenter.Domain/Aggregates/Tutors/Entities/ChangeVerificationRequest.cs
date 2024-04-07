@@ -5,7 +5,7 @@ using Matt.SharedKernel.Domain.Primitives;
 
 namespace ESCenter.Domain.Aggregates.Tutors.Entities;
 
-public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId>
+public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId> // TODO: Update the ChangeVerificationRequest to be an audited entity
 {
     private List<ChangeVerificationRequestDetail> _changeVerificationRequestDetails = new();
     public TutorId TutorId { get; private set; } = null!;
@@ -28,6 +28,7 @@ public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId>
 
         return new ChangeVerificationRequest()
         {
+            Id = ChangeVerificationRequestId.Create(),
             TutorId = tutorId,
             RequestStatus = RequestStatus.Pending,
             _changeVerificationRequestDetails =

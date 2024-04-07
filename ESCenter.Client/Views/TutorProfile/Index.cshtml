@@ -1,0 +1,73 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ESCenter.Client.Models.TutorProfileViewModel
+@{
+}
+
+<section class="profile" style="padding: 180px 0;">
+    <div class="row">
+        <div class="col-xl-4">
+
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="@Model.UserProfileDto.Avatar" style="max-width: 360px;" alt="Profile" class="rounded-circle">
+                    <h2>@Model.UserProfileDto.FirstName @Model.UserProfileDto.LastName</h2>
+                    <h3>@Model.UserProfileDto.Role</h3>
+                    <div class="social-links mt-2">
+                        <a href="#" class="twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="#" class="facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="linkedin">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <li class="nav-item active">
+                            <button class="nav-link active" data-bs-toggle="tab" id="profile-edit-button" data-bs-target="#profile-edit">Edit Profile</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#teaching-class">Learning Class</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#verification">Verifications</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-2">
+                        <div class="tab-pane fade show active profile-edit" id="profile-edit">
+                            <partial name="_ProfileTutorEdit" model="@Model.TutorForProfileDto" view-data="ViewData"/>
+                        </div>
+
+                        <div class="tab-pane fade pt-3" id="teaching-class">
+                            <partial name="_AllCourseRequests" model="@Model.TutorForProfileDto.BasicCourseRequests"/>
+                        </div>
+
+                        <div class="tab-pane fade pt-3" id="verification">
+                            <partial name="_AllVerificationRequests" model="@Model.TutorForProfileDto.VerificationDtos"/>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

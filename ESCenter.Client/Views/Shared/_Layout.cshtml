@@ -73,6 +73,14 @@
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>
+                        @if (User.FindFirst(ClaimTypes.Role)?.Value == Role.Tutor.ToString())
+                        {
+                            <a class="dropdown-item d-flex align-items-center" asp-action="Index" asp-controller="TutorProfile">
+                                <i class="bi bi-person"></i>
+                                <span>My Tutor Profile</span>
+                            </a>
+                        }
+
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -126,7 +134,7 @@
                         <a asp-action="Index" asp-controller="Tutor">Tutors</a>
                     </li>
 
-                    @if (User.FindFirst(ClaimTypes.Role) != null && User.FindFirst(ClaimTypes.Role)?.Value == Role.Tutor.ToString())
+                    @if (User.FindFirst(ClaimTypes.Role) != null && User.FindFirst(ClaimTypes.Role)?.Value != Role.Tutor.ToString())
                     {
                         <li>
                             <a asp-action="TutorRegistration" asp-controller="Tutor">Tutor Registration </a>

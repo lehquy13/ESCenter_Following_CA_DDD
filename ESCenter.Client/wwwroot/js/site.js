@@ -27,8 +27,65 @@ $(window).on('load', function () {
     }
 });
 
+
+
 function callPostActionWithForm(formInput) {
     let formData = new FormData(formInput);
+
+    $.ajax({
+        type: "POST",
+        url: formInput.action,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            if (response.res === true) {
+                if (response.viewName === "Profile") {
+                    $('#main').html(response.partialView);
+                }
+                alertify.success('Updated successfully');
+            } else if (response.res === "deleted" || response.res === "updated") {
+                //$('#verticalCentered').modal('hide');
+                alertify.success(response.res + ' successfully');
+                location.reload();
+            } else if (response.res === "modalUpdated") {
+                $('#largeModal').modal('hide');
+                alertify.success('updated successfully');
+            } else if (response.res === false) {
+                if (response.viewName === "_ProfileEdit") {
+                    $('#profile-edit').html(response.partialView);
+                    $('#profile-edit-button').click();
+                } else if (response.viewName === "_ChangePassword") {
+                    $('#profile-change-password').html(response.partialView);
+                    $('#profile-change-password-button').click();
+                }
+
+                alertify.error('Update failed');
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    })
+
+    return false;
+}
+
+
+
+function createChangeRequest(formInput) {
+    
+    let formData = new FormData(formInput);
+
+    for (let p of formData) {
+        let name = p[0];
+        let value = p[1];
+
+        console.log(name, value);
+    }
+
+    debugger;
+    
     $.ajax({
         type: "POST",
         url: formInput.action,

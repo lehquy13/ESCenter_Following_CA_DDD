@@ -27,6 +27,7 @@ public class Tutor : AuditedAggregateRoot<TutorId>
     public void CreateChangeVerificationRequest(List<string> urls)
     {
         ChangeVerificationRequest = ChangeVerificationRequest.Create(Id, urls);
+        IsVerified = false;
     }
 
     public void AddTutorMajor(TutorMajor tutorMajor)
