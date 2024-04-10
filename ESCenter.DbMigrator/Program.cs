@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Discoveries;
 using ESCenter.Domain.Aggregates.Discoveries.Entities;
 using ESCenter.Domain.Aggregates.Discoveries.ValueObjects;
@@ -205,7 +207,8 @@ internal static class Program
                     {
                         NormalizedName = "TUTOR"
                     },
-                    new("Learner"){
+                    new("Learner")
+                    {
                         NormalizedName = "LEARNER"
                     },
                 };
@@ -236,7 +239,6 @@ internal static class Program
                     identityRoles,
                     userData,
                     tutorData,
-                    // out var identityUsers,
                     userRoles);
 
                 SeedTutorMajor(tutorData, subjects);
@@ -244,9 +246,25 @@ internal static class Program
                 #region Seed user discoveries
 
                 var i = userData.Count;
-                var duList = (from user in userData.TakeWhile(_ => i-- != 0)
-                    let random = new Random().Next(0, 6)
-                    select DiscoveryUser.Create(discoveries[random].Id, user.Id)).ToList();
+                var duList = new List<DiscoveryUser>();
+
+                foreach (var user in userData)
+                {
+                    var random = new Random();
+                    var existing = new List<int>();
+                    for (var j = 0; j < random.Next(0, 3); j++)
+                    {
+                        var index = random.Next(0, 6);
+                        if (existing.Contains(index))
+                        {
+                            j--;
+                            continue;
+                        }
+
+                        existing.Add(index);
+                        duList.Add(DiscoveryUser.Create(discoveries[index].Id, user.Id));
+                    }
+                }
 
                 context.DiscoveryUsers.AddRange(duList);
 
@@ -260,52 +278,51 @@ internal static class Program
 
                 #endregion
 
-                #region courses
+                #region Courses
 
                 var file = await File.ReadAllTextAsync(
-                    Path.GetFullPath("../../../15_random_courses_female_noAcc.json"));
+                    Path.GetFullPath("../../../1000_course.json"));
 
-                var courseData = JsonConvert.DeserializeObject<List<Course>>(
-                    file, somethingCalledMagic);
+                var courseData = JsonConvert.DeserializeObject<List<Course>>(file, somethingCalledMagic);
 
-                if (courseData == null)
+                file = await File.ReadAllTextAsync(
+                    Path.GetFullPath("../../../100_review.json"));
+
+                var reviews = JsonConvert.DeserializeObject<List<Review>>(file, somethingCalledMagic);
+
+                if (courseData == null || reviews == null)
                 {
                     return;
                 }
 
-                file = await File.ReadAllTextAsync(Path.GetFullPath("../../../15_random_courses_male_noAcc.json"));
-                courseData.AddRange(JsonConvert.DeserializeObject<List<Course>>(file, somethingCalledMagic) ??
-                                    throw new InvalidOperationException());
-
-                file = await File.ReadAllTextAsync(Path.GetFullPath("../../../30_random_course_having_account.json"));
-                var random100Courses = JsonConvert.DeserializeObject<List<Course>>(file, somethingCalledMagic);
-                if (random100Courses == null)
+                // handle 100 course that have account
+                foreach (var course in courseData)
                 {
-                    return;
-                }
-
-                // handle 100 course that have account TODO: its out of range somewhere h
-                foreach (var course in random100Courses)
-                {
+                    // set learner
                     var randomNumber = new Random().Next(0, 50);
                     var user = userData[randomNumber];
                     course.SetLearner(user.GetFullName(), user.Gender, user.PhoneNumber);
                     course.SetLearnerId(user.Id);
 
                     if (course.Status != Status.Confirmed) continue;
-                    
+
+                    // assign tutor
                     var randomTutor = new Random().Next(0, 50);
                     var tutor = tutorData[randomTutor];
                     course.AssignTutor(tutor.Id);
+
+                    // review?
+                    var randomReview = reviews[new Random().Next(0, 99)];
+                    course.ReviewCourse(
+                        randomReview.Rate,
+                        randomReview.Detail);
                 }
 
-                courseData.AddRange(random100Courses);
-                courseData = courseData.OrderBy(x => x.CreationTime).ToList();
                 context.Courses.AddRange(courseData);
 
                 #endregion
 
-                # region seed course request
+                # region Seed course request
 
                 // Currently, we not handle this
                 // file = File.ReadAllText(Path.GetFullPath("../../../request_course_random.json"));
@@ -322,6 +339,7 @@ internal static class Program
                 #endregion
 
                 await context.SaveChangesAsync();
+
                 Console.WriteLine("All done! Enjoy my website!");
             }
             else
@@ -380,95 +398,101 @@ internal static class Program
         List<IdentityRole> identityRoles,
         List<Customer> userData,
         List<Tutor> tutorData,
-        //out List<EsIdentityUser> identityUsers,
         List<IdentityUserRole<string>> userRoles)
 
     {
         // Standard user
-        var file = await File.ReadAllTextAsync(Path.GetFullPath("../../../150_random_female_account.json"));
-        var userData0 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic)!;
+        var file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_m_learner.json"));
+        var learner2000M = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic)!;
 
         if (userData == null)
         {
             throw new InvalidOperationException();
         }
-        
-        userData.AddRange(userData0);
 
-        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../200_random_male_account.json"));
-        var userData1 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
+        userData.AddRange(learner2000M);
 
-        if (userData1 == null)
+        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_f_learner.json"));
+        var learner2000F = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
+
+        if (learner2000F == null)
         {
             throw new InvalidOperationException();
         }
 
-        // Update password
-        userData.AddRange(userData1);
-        //userData = userData.OrderBy(x => x.CreationTime).ToList();
+        userData.AddRange(learner2000F);
 
         // Tutor
-        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../200_random_tutor.json"));
-        var tutorUserData = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
+        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_f_tutor.json"));
+        var customerTutorData1 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
 
-        if (tutorUserData == null)
+        if (customerTutorData1 == null)
         {
             throw new InvalidOperationException();
         }
 
-        userData.AddRange(tutorUserData);
+        var tutorData2 = JsonConvert.DeserializeObject<List<Tutor>>(file, somethingCalledMagic)!;
 
-        // Create identity users
-        var identityUsersCreationTasks = userData
-            .Select(async customer =>
+        if (tutorData2 == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_m_tutor.json"));
+        var customerTutorData2 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
+
+        if (customerTutorData2 == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        var tutorData1 = JsonConvert.DeserializeObject<List<Tutor>>(file,
+            new JsonSerializerSettings()
             {
-                var identityUser = new IdentityUser
-                {
-                    UserName = customer.Email,
-                    NormalizedUserName = customer.Email.ToUpper(),
-                    Email = customer.Email,
-                    NormalizedEmail = customer.Email.ToUpper(),
-                    PhoneNumber = customer.PhoneNumber,
-                    Id = customer.Id.ToString()
-                };
+                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+                ContractResolver = new PrivateResolver()
+            }
+        )!;
 
-                await userManager.CreateAsync(identityUser, "1q2w3E**");
-                return identityUser;
-            });
-
-        // Await and collect identity users
-        
-        var identities = await Task.WhenAll(identityUsersCreationTasks);
-
-        // tutorUserData.AsParallel().ForAll(identityUser =>
-        //     userManager.CreateAsync(
-        //         new EsIdentityUser()
-        //         {
-        //             UserName = identityUser.Email,
-        //             NormalizedUserName = identityUser.Email.ToUpper(),
-        //             Email = identityUser.Email,
-        //             NormalizedEmail = identityUser.Email.ToUpper(),
-        //             PhoneNumber = identityUser.PhoneNumber,
-        //             Id = identityUser.Id.ToString()
-        //         },
-        //         "1q2w3E**"));
+        if (tutorData1 == null)
+        {
+            throw new InvalidOperationException();
+        }
 
 
-        // Handle role
-        // userRoles =
-        // [
-        //     ..userData.Select(identityUser => new IdentityUserRole<string>()
-        //     {
-        //         UserId = identityUser.Id.ToString(),
-        //         RoleId = identityRoles.Last().Id
-        //     }),
-        //     ..tutorUserData.Select(identityUser => new IdentityUserRole<string>()
-        //     {
-        //         UserId = identityUser.Id.ToString(),
-        //         RoleId = identityRoles[1].Id
-        //     }),
-        // ];
-        
+        customerTutorData1.AddRange(customerTutorData2);
+        userData.AddRange(customerTutorData1);
+
+        var identities = new List<IdentityUser>();
+        var count = 1;
+
+        await Task.WhenAll(userData.Select(async customer =>
+        {
+            var watch = Stopwatch.StartNew();
+
+            var identityUser = new IdentityUser
+            {
+                UserName = customer.Email,
+                NormalizedUserName = customer.Email.ToUpper(),
+                Email = customer.Email,
+                NormalizedEmail = customer.Email.ToUpper(),
+                PhoneNumber = customer.PhoneNumber,
+                Id = customer.Id.ToString()
+            };
+
+            // Perform async user creation
+            await userManager.CreateAsync(identityUser, "1q2w3E**");
+
+            // Add identityUser to the list in a thread-safe manner
+            lock (identities)
+            {
+                identities.Add(identityUser);
+            }
+
+            // Increment count atomically
+            Console.WriteLine($"{count++}. User {identityUser.Email} created in {watch.ElapsedMilliseconds}ms");
+        }));
+
         userRoles.AddRange(identities.Select((identityUser, index) => new IdentityUserRole<string>
         {
             UserId = identityUser.Id,
@@ -476,24 +500,14 @@ internal static class Program
         }));
 
 
-        var tutorData1 = JsonConvert.DeserializeObject<List<Tutor>>(file, somethingCalledMagic)!;
-
-        if (tutorData1 == null)
-        {
-            throw new InvalidOperationException();
-        }
-        
-        tutorData1.AsParallel().ForAll(x => x.Verify(true));
-        
         tutorData.AddRange(tutorData1);
+        tutorData.AddRange(tutorData2);
 
         var i = 0;
         foreach (var tutor in tutorData)
         {
-            tutor.SetUserId(tutorUserData[i++].Id);
+            tutor.SetUserId(customerTutorData1[i++].Id);
         }
-
-        //tutorData = tutorData.OrderBy(x => x.CreationTime).ToList();
     }
 
     private static IList<Discovery> Discoveries(IReadOnlyList<Subject> subjects)

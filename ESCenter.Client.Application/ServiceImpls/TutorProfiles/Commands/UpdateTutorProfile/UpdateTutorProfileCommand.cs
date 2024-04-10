@@ -12,7 +12,7 @@ public class TutorBasicUpdateForClientDto
     public Guid Id { get; set; }
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
     public string University { get; set; } = null!;
-    public List<string> Majors { get; set; } = new();
+    public List<int> MajorIds { get; set; } = new();
 }
 
 public class TutorBasicUpdateDtoMappingConfig : IRegister

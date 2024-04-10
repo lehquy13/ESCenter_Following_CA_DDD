@@ -1,5 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Courses.DomainEvents;
 using ESCenter.Domain.Aggregates.Courses.Entities;
+using ESCenter.Domain.Aggregates.Courses.Errors;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -7,6 +8,7 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
+using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Courses;
@@ -14,6 +16,8 @@ namespace ESCenter.Domain.Aggregates.Courses;
 public sealed class Course : FullAuditedAggregateRoot<CourseId>
 {
     private List<CourseRequest> _courseRequests = new();
+    private const int MaxCourseRequests = 5;
+
     public string Title { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public Status Status { get; private set; } = Status.OnVerifying;
@@ -26,7 +30,6 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public SessionPerWeek SessionPerWeek { get; private set; } = SessionPerWeek.Create(1);
     public string Address { get; private set; } = string.Empty; // TODO: Change this one to Address Value Object
     public SubjectId SubjectId { get; private set; } = null!;
-
     public Gender LearnerGender { get; private set; } = Gender.Male;
     public string LearnerName { get; private set; } = string.Empty;
     public int NumberOfLearner { get; private set; } = 1;
@@ -88,7 +91,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     {
         if (Status != Status.Confirmed)
         {
-            throw new Exception("Course is not on going");
+            return Result.Fail(CourseDomainError.CourseIsNotOnGoing);
         }
 
         var result = Review.Create(rate, detail, Id);
@@ -121,24 +124,43 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         IsDeleted = true;
     }
 
-    public void RemoveReview()
+    public Result RemoveReview()
     {
         Review = null;
+        DomainEvents.Add(new CourseReviewedDomainEvent(this));
+        DomainEvents.Add(new NewDomainObjectCreatedEvent(
+            Id.Value.ToString(),
+            $"Review class: {Title} at {CreationTime.ToLongDateString()}",
+            NotificationEnum.Course));
+
+        return Result.Success();
     }
 
-    public void Request(CourseRequest courseRequestToCreate)
+    public Result Request(CourseRequest courseRequestToCreate)
     {
         if (Status != Status.Confirmed)
         {
-            throw new Exception("Course is not on going");
+            return Result.Fail(CourseDomainError.CourseIsNotOnGoing);
         }
 
         if (_courseRequests.Any(x => x.TutorId == courseRequestToCreate.TutorId))
         {
-            throw new Exception("Requested course error");
+            return Result.Fail(CourseDomainError.RequestedCourseError);
+        }
+
+        if (_courseRequests.Count >= MaxCourseRequests)
+        {
+            return Result.Fail(CourseDomainError.MaxCourseRequestError);
         }
 
         _courseRequests.Add(courseRequestToCreate);
+
+        if (_courseRequests.Count == MaxCourseRequests)
+        {
+            Status = Status.OnProgressing;
+        }
+
+        return Result.Success();
     }
 
     public void SetLearnerId(CustomerId learnerId)
@@ -150,6 +172,20 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     {
         TutorId = tutorId;
         Status = Status.Confirmed;
+
+        // Cancel all other course requests
+        foreach (var courseRequest in _courseRequests)
+        {
+            if (courseRequest.TutorId == tutorId)
+            {
+                courseRequest.Approved();
+                continue;
+            }
+
+            courseRequest.Cancel();
+        }
+
+        DomainEvents.Add(new CourseAssignedDomainEvent(this, tutorId));
     }
 
     public void UpdateCourse(string title,
@@ -191,5 +227,19 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     {
         TutorId = null;
         Status = Status.OnVerifying;
+    }
+
+    public Result Purchase(TutorId tutorId)
+    {
+        if(Status != Status.Confirmed || Status == Status.Canceled || Status == Status.OnVerifying)
+        {
+            return Result.Fail(CourseDomainError.CourseUnavailable); 
+        }
+
+        Status = Status.OnProgressing;
+
+        DomainEvents.Add(new CoursePurchasedDomainEvent(this, tutorId));
+        
+        return Result.Success();
     }
 }

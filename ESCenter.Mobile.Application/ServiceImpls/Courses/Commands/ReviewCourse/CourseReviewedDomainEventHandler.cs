@@ -43,7 +43,7 @@ public class CourseReviewedDomainEventHandler(
 
         if (tutorToUpdate.ReviewRate.Count() >= 2)
         {
-            tutorToUpdate.Tutor.UpdateRate(tutorToUpdate.ReviewRate.Average(x => x));
+            tutorToUpdate.Tutor.UpdateRate((float)tutorToUpdate.ReviewRate.Average(x => x));
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);

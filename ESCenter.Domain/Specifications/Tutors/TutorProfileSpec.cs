@@ -4,9 +4,9 @@ using Matt.SharedKernel.Domain.Specifications;
 
 namespace ESCenter.Domain.Specifications.Tutors;
 
-public class GetTutorByCustomerIdSpec : SpecificationBase<Tutor>
+public class TutorByCustomerIdSpec : SpecificationBase<Tutor>
 {
-    public GetTutorByCustomerIdSpec(CustomerId customerId)
+    public TutorByCustomerIdSpec(CustomerId customerId)
     {
         Criteria = tutor => tutor.CustomerId == customerId;
     }

@@ -42,16 +42,6 @@ public class TutorProfileController(ISender sender, ICloudinaryServices cloudina
         ViewData["Subjects"] = subjects.Value;
     }
 
-    [HttpPost]
-    [Route("")]
-    public async Task<IActionResult> GetTutorMajors()
-    {
-        var query = new GetTutorMajorsQuery();
-        var result = await sender.Send(query);
-
-        return Helper.RenderRazorViewToString(this, "_TutorMajors", result.Value);
-    }
-
     [HttpPost("edit-tutor-information")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditTutorInformation(TutorBasicUpdateForClientDto tutorProfileUpdateDto)
@@ -65,15 +55,17 @@ public class TutorProfileController(ISender sender, ICloudinaryServices cloudina
             return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
         }
 
-        return Helper.RenderRazorViewToString(this, "_ProfileEdit",
-            tutorProfileUpdateDto,
-            true
-        );
+        return Helper.FailResult();
     }
 
     [HttpPost("create-change-request")]
     public async Task<IActionResult> CreateChangeRequest(List<IFormFile> fileElems)
     {
+        if(fileElems.Count == 0)
+        {
+            return Helper.FailResult();
+        }
+        
         var filePath = (from formFile in fileElems
                 let fileName = formFile.FileName
                 select cloudinaryServices.UploadImage(fileName, formFile.OpenReadStream()))

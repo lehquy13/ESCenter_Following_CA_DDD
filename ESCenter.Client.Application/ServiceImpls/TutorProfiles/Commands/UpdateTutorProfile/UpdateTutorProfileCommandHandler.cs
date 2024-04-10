@@ -1,11 +1,15 @@
-﻿using ESCenter.Client.Application.ServiceImpls.Tutors;
+﻿using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubject;
+using ESCenter.Client.Application.ServiceImpls.Tutors;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Specifications.Subjects;
+using ESCenter.Domain.Specifications.Tutors;
 using Matt.ResultObject;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 
@@ -13,6 +17,7 @@ namespace ESCenter.Client.Application.ServiceImpls.TutorProfiles.Commands.Update
 
 public class UpdateTutorInformationCommandHandler(
     IUnitOfWork unitOfWork,
+    ICurrentUserService currentUserService,
     IAppLogger<UpdateTutorInformationCommandHandler> logger,
     ITutorRepository tutorRepository,
     ISubjectRepository subjectRepository)
@@ -22,60 +27,47 @@ public class UpdateTutorInformationCommandHandler(
     public override async Task<Result> Handle(UpdateTutorInformationCommand command,
         CancellationToken cancellationToken)
     {
-        try
+   
+        var tutor = await tutorRepository.GetAsync(new TutorByCustomerIdSpec(CustomerId.Create(currentUserService.UserId)), cancellationToken);
+
+        // Check if the tutor exist
+        if (tutor is null)
         {
-            var tutorId = TutorId.Create(command.TutorBasicUpdateDto.Id);
-            var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
-
-            // Check if the tutor exist
-            if (tutor is null)
-            {
-                return Result.Fail(UserError.NonExistTutorError);
-            }
-
-            // Collect major ids
-            var subjectListAboutToUpdate =
-                await subjectRepository.GetListAsync(
-                    new SubjectListByNameSpec(command.TutorBasicUpdateDto.Majors),
-                    cancellationToken);
-
-            var majorsToRemove = new List<TutorMajor>();
-
-            foreach (var major in tutor.TutorMajors)
-            {
-                if (subjectListAboutToUpdate.All(update => update.Id != major.SubjectId))
-                {
-                    majorsToRemove.Add(major);
-                }
-            }
-
-            foreach (var major in majorsToRemove)
-            {
-                tutor.RemoveMajor(major);
-            }
-
-            // Now current major only contains the subjects that are in the subjectListAboutToUpdate
-            // Then we add new majors to the tutor
-            var addMajors = subjectListAboutToUpdate
-                .Where(x => tutor.TutorMajors.All(update => update.SubjectId != x.Id))
-                .Select(x => TutorMajor.Create(tutorId, x.Id, x.Name))
-                .ToList();
-
-            foreach (var major in addMajors)
-            {
-                tutor.AddTutorMajor(major);
-            }
-
-            if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-            {
-                return Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges);
-            }
-
-            return Result.Success();
+            return Result.Fail(UserError.NonExistTutorError);
         }
-        catch (Exception ex)
+
+        // Collect major ids
+        var subjectListAboutToUpdate =
+            await subjectRepository.GetListAsync(
+                new SubjectListByIdsSpec(command.TutorBasicUpdateDto.MajorIds),
+                cancellationToken);
+
+        var majorsToRemove = tutor.TutorMajors
+            .Where(major => subjectListAboutToUpdate
+                .All(update =>
+                    update.Id != major.SubjectId)
+            ).ToList();
+
+        foreach (var major in majorsToRemove)
         {
-            return Result.Fail("Error happens when tutor is adding or updating: " + ex.Message);
+            tutor.RemoveMajor(major);
         }
+
+        var addMajors = subjectListAboutToUpdate
+            .Where(x => tutor.TutorMajors.All(update => update.SubjectId != x.Id))
+            .Select(x => TutorMajor.Create(tutor.Id, x.Id, x.Name))
+            .ToList();
+
+        foreach (var major in addMajors)
+        {
+            tutor.AddTutorMajor(major);
+        }
+
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+        {
+            return Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges);
+        }
+
+        return Result.Success();
     }
 }

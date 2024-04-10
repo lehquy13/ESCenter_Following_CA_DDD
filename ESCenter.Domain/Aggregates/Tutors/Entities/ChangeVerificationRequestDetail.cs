@@ -22,18 +22,8 @@ public class ChangeVerificationRequestDetail : Entity<ChangeVerificationRequestD
         }
         return new ChangeVerificationRequestDetail()
         {
-            ImageUrl = imageUrl
-        };
-    }
-    
-    // TODO: Consider to remove
-    public static ChangeVerificationRequestDetail Create(string imageUrl, ChangeVerificationRequestId changeVerificationRequestId)
-    {
-        return new ChangeVerificationRequestDetail()
-        {
             Id = ChangeVerificationRequestDetailId.Create(),
-            ImageUrl = imageUrl,
-            ChangeVerificationRequestId = changeVerificationRequestId
+            ImageUrl = imageUrl
         };
     }
 }

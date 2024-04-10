@@ -19,7 +19,7 @@ public class CreateChangeVerificationCommandHandler(
         CancellationToken cancellationToken)
     {
         var tutor = await tutorRepository.GetAsync(
-            new GetTutorByCustomerIdSpec(CustomerId.Create(currentUserService.UserId)), cancellationToken);
+            new TutorByCustomerIdSpec(CustomerId.Create(currentUserService.UserId)), cancellationToken);
 
         if (tutor is null)
         {

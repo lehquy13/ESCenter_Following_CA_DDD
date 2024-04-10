@@ -1,11 +1,12 @@
 ﻿using ESCenter.Domain.Aggregates.Tutors.Errors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
-using Matt.SharedKernel.Domain.Primitives;
+using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Tutors.Entities;
 
-public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId> // TODO: Update the ChangeVerificationRequest to be an audited entity
+public class
+    ChangeVerificationRequest : AuditedEntity<ChangeVerificationRequestId> 
 {
     private List<ChangeVerificationRequestDetail> _changeVerificationRequestDetails = new();
     public TutorId TutorId { get; private set; } = null!;
@@ -18,7 +19,7 @@ public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId> // 
     private ChangeVerificationRequest()
     {
     }
-    
+
     public static ChangeVerificationRequest Create(TutorId tutorId, List<string> urls)
     {
         if (urls.Count < 1)
@@ -31,8 +32,9 @@ public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId> // 
             Id = ChangeVerificationRequestId.Create(),
             TutorId = tutorId,
             RequestStatus = RequestStatus.Pending,
-            _changeVerificationRequestDetails =
-                urls.Select(ChangeVerificationRequestDetail.Create).ToList()
+            _changeVerificationRequestDetails = urls
+                .Select(ChangeVerificationRequestDetail.Create)
+                .ToList()
         };
     }
 
@@ -40,7 +42,7 @@ public class ChangeVerificationRequest : Entity<ChangeVerificationRequestId> // 
     {
         RequestStatus = RequestStatus.Approved;
     }
-    
+
     public void Reject()
     {
         RequestStatus = RequestStatus.Canceled;

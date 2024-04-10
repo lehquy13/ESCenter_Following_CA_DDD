@@ -4,6 +4,7 @@ using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using ESCenter.Mobile.Application.Contracts.Courses.Params;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourseRequest;
+using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.PurchaseCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourseDetail;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourses;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -18,7 +19,6 @@ public class CourseController(
     ISender mediator)
     : ApiControllerBase(logger)
 {
-    // GET: api/<CourseController>
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> GetAllCourses([FromQuery] CourseParams courseParams)
@@ -28,16 +28,14 @@ public class CourseController(
         return Ok(courseResult);
     }
 
-    // GET api/<CourseController>/5
     [HttpGet]
-    [Route("{id}")]
+    [Route("{id:guid}")]
     public async Task<IActionResult> GetCourse(Guid id)
     {
         var courseById = await mediator.Send(new GetCourseDetailQuery(id));
         return Ok(courseById);
     }
 
-    // POST api/Create/<CourseController>
     [HttpPost]
     [Route("")]
     public async Task<IActionResult> CreateCourse(
@@ -47,8 +45,6 @@ public class CourseController(
         return Ok(creatingResult);
     }
 
-
-    // POST api/<CourseController>/RequestCourse
     [Authorize(Policy = "RequireTutorRole")]
     [HttpPut]
     [Route("{courseId}/request-course")]
@@ -57,6 +53,17 @@ public class CourseController(
     {
         var courseRequestForCreateDto = new CourseRequestForCreateDto(courseId, tutorId);
         var result = await mediator.Send(new CreateCourseRequestCommand(courseRequestForCreateDto));
+        return Ok(result);
+    }
+
+    [Authorize(Policy = "RequireTutorRole")]
+    [HttpPut]
+    [Route("{courseId:guid}/purchase-course")]
+    public async Task<IActionResult> PurchaseCourse([FromRoute] Guid courseId)
+    {
+        var purchaseCourseCommand = new PurchaseCourseCommand(courseId);
+        var result = await mediator.Send(purchaseCourseCommand);
+
         return Ok(result);
     }
 }

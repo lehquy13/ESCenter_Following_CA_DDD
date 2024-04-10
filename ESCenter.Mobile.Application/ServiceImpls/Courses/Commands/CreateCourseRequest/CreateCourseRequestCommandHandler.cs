@@ -1,12 +1,10 @@
-﻿using ESCenter.Application.EventHandlers;
-using ESCenter.Domain;
+﻿using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
-using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
@@ -22,8 +20,6 @@ public class CreateCourseRequestCommandHandler(
 {
     public override async Task<Result> Handle(CreateCourseRequestCommand command, CancellationToken cancellationToken)
     {
-        
-        
         var course = await courseRepository.GetAsync(
             CourseId.Create(command.CourseRequestForCreateDto.CourseId), cancellationToken);
 
@@ -38,16 +34,17 @@ public class CreateCourseRequestCommandHandler(
             string.Empty
         );
 
-        course.Request(courseRequestToCreate);
+        var result = course.Request(courseRequestToCreate);
 
-        if (await UnitOfWork.SaveChangesAsync(cancellationToken) < 0)
+        if (result.IsFailure || await UnitOfWork.SaveChangesAsync(cancellationToken) < 0)
         {
             return Result.Fail(CourseRequestAppServiceErrors.FailToCreateCourseRequestError);
         }
 
         var message = $"New request class with Id {courseRequestToCreate.Id.Value} " +
                       $"at {courseRequestToCreate.CreationTime.ToLongDateString()}";
-        await publisher.Publish(new NewDomainObjectCreatedEvent(courseRequestToCreate.CourseId.Value.ToString(), message,
+        await publisher.Publish(new NewDomainObjectCreatedEvent(courseRequestToCreate.CourseId.Value.ToString(),
+            message,
             NotificationEnum.Course), cancellationToken);
 
         return Result.Success();

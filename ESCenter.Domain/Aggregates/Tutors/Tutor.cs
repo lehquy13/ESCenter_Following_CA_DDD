@@ -16,10 +16,7 @@ public class Tutor : AuditedAggregateRoot<TutorId>
     public string University { get; private set; } = string.Empty;
     public bool IsVerified { get; private set; }
     public float Rate { get; private set; }
-
     public CustomerId CustomerId { get; private set; } = null!;
-
-    // Acceptable entity because it is an entity that belongs to the aggregate root
     public IReadOnlyList<Verification> Verifications => _verifications.AsReadOnly();
     public IReadOnlyList<TutorMajor> TutorMajors => _tutorMajors.AsReadOnly();
     public ChangeVerificationRequest? ChangeVerificationRequest { get; private set; } 
@@ -56,7 +53,7 @@ public class Tutor : AuditedAggregateRoot<TutorId>
 
         var verifications = verificationInfos.Select(i => Verification.Create(i, id)).ToList();
 
-        return new()
+        return new Tutor
         {
             Id = id,
             CustomerId = userId,
@@ -73,9 +70,9 @@ public class Tutor : AuditedAggregateRoot<TutorId>
         IsVerified = isVerified;
     }
 
-    public void UpdateRate(double reviewRate)
+    public void UpdateRate(float reviewRate)
     {
-        Rate = (float)reviewRate;
+        Rate = reviewRate;
     }
 
     public void RemoveMajor(TutorMajor major)

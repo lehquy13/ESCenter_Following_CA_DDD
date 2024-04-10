@@ -52,22 +52,16 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
         return users;
     }
 
-    public async Task<Customer?> GetTutor(TutorId tutorId)
+    public async Task<string?> GetTutorEmail(TutorId tutorId)
     {
-        var tutor = await AppDbContext.Customers
+        var tutorEmail = await AppDbContext
+            .Customers
             .Join(AppDbContext.Tutors,
                 user => user.Id,
                 tutor => tutor.CustomerId,
-                (user, tutor) => user)
+                (user, tutor) => user.Email)
             .FirstOrDefaultAsync();
 
-        return tutor;
-    }
-
-    public Task<Customer?> GetUserByContact(string contact)
-    {
-        return AppDbContext.Customers
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.PhoneNumber == contact);
+        return tutorEmail;
     }
 }

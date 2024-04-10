@@ -136,8 +136,8 @@
     lastname:'{{surname()}}',
     birthYear:'{{integer(1980, 2003)}}',
     userName: function (tags) {
-              return this.firstName + this.lastName + this.birthYear;
-            },
+      return this.firstName + this.lastName + this.birthYear;
+    },
     gender: 1,
     address: {
       city: '{{city()}}',
@@ -145,7 +145,7 @@
     },       
     description: '{{lorem(1,"paragraph")}}',
     avatar: '{{random( "https://res.cloudinary.com/dhehywasc/image/upload/v1702309842/male/male13_xrkqe2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male12_hfb0gy.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male11_g11pit.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male10.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male9.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male7.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male8.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male5.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male6.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male3.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male4.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829233/male/male1.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006256/male/male0.png")}}',
-    email:'{{lorem(1, "words")}}{{email()}}',
+    email:'{{email()}}',
     isEmailConfirmed:'true',
     phoneNumber: '+{{integer(1, 100)}} {{phone()}}',
     password:'1q2w3E',
@@ -177,7 +177,6 @@
 ]
 
 //tutor female account
-
 [
   '{{repeat(1000, 1000)}}',
   {
@@ -185,19 +184,19 @@
     lastName:'{{surname()}}',
     gender: 2,
     birthYear:'{{integer(1980, 2003)}}',
-    userName: function (tags) {
-                  return this.firstName + this.lastName + this.birthYear;
-        },
+    userName: function () {
+      return this.firstName + this.lastName + this.birthYear;
+    },
     address: {
       city: '{{city()}}',
       country: ' {{state()}}'
     },   
     description: '{{lorem(1,"paragraph")}}',
     avatar: '{{random("https://res.cloudinary.com/dhehywasc/image/upload/v1696829332/female/female6.jpg",      "https://res.cloudinary.com/dhehywasc/image/upload/v1696829330/female/female5.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829330/female/female4.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829328/female/female3.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female7.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female2.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829327/female/female1.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309984/female/female8_xdyrbh.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female9_w5km5c.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female10_qddbox.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female11_ziuigw.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309985/female/female12_ut5g6u.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309986/female/female13_eqmlwt.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1702309984/female/female14_dzjcri.jpg",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829325/female/female0.png",    "https://res.cloudinary.com/dhehywasc/image/upload/v1696829325/female/female0.png")}}',
-    email:'{{lorem(1, "words")}}{{email()}}',
+    email:'{{email()}}',
     isEmailConfirmed:'true',
     phoneNumber: '+{{integer(1, 100)}} {{phone()}}',
-    password:'1q2w3E*',
+    password:'1q2w3E**',
     role:'Tutor',         
     isDeleted: false,
     deleterUserId: null,
@@ -208,13 +207,13 @@
     creatorUserId: null,
     academicLevel: '{{random("UnderGraduated","Graduated","Lecturer")}}',
     university:'{{city()}} University',
-    isVerify: true,
+    isVerified: true,
     rate: 0,
     id: {
       value: '{{guid()}}'
     },
      _verifications: function (tags) {
-      var fruits = ['https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F01-certificate-template-bd38f553e90b6ccdeb50288d32b43966869dc97b9810b4f04f4cb45243dff78e.jpg?alt=media&token=2af16b93-0fc3-496d-a1f0-6af8fc17855d','https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F541340688769b88e9ac01673fb224328.jpg?alt=media&token=16ac0166-cc40-4cef-9fad-4290e7da89ec',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F5b_NHDG.jpg?alt=media&token=3779da91-4699-4aaf-a3eb-57e8fda7ca4a','https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F6ae6bb47ae8876f51b9026a11736a427.png?alt=media&token=23e39d14-d870-4941-af50-69cae31b3a2f',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F9e4860b3-756e-42c0-ae56-359f9d533b49.6.16.TH.ns2.jpg?alt=media&token=ca96e7d4-95c8-4099-9ae0-bb7c922089ad',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FBang%20TCCN%20he%201%20nam%20NHO.jpg?alt=media&token=be2f8f43-a2d6-40c0-bb0c-7b38c69803ea',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FBang-DH-FPT-2-870x490-1.png?alt=media&token=2819f5f6-cb06-4a55-bc6b-cfc847b29486',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FBest-6-Premium-Certificate-Template-Free-Download-1.webp?alt=media&token=5a9cc224-8282-400d-afdc-d5052b0e564d',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FB%E1%BA%B1ng%20Ths-%20NEU%20c%E1%BA%A5p.jpg?alt=media&token=355b4590-9080-4188-b17d-a860b3d41771',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_10.jpg?alt=media&token=ee301c9e-dbe3-41ce-8fe0-e4fba8b1cd65',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_7-2.jpg?alt=media&token=07bd20f3-f43a-432c-ba80-75fc95c69dec',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_7.jpg?alt=media&token=392665f2-b492-47bb-abb0-cd535bf0be44',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_8-2.jpg?alt=media&token=2dd4fd6f-af1f-45c9-a8c8-ebe9c0e6ce81',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_9-2.jpg?alt=media&token=cd7ae1a0-d5c6-4256-bee0-c51038958729',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-dai-hoc-uy-tin-1024x720.jpg?alt=media&token=8e9b62df-d280-4bfe-9da4-56342e54ae01',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-moi-cua-hong-ngu-copy-1476078911.webp?alt=media&token=6322a299-73c1-4e0f-8c49-fcc9e9635e53',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-thac-si.jpg?alt=media&token=3ce02551-047a-4821-bbd4-5baaa5b6c889',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-tot-nghiep-thpt-co-xep-loai-khong-3.jpg?alt=media&token=2bdd6ce3-5e15-4420-9dd3-656d254d40ea',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang_loi_1-1633360.jpg?alt=media&token=9d1273be-afcc-4b15-a0c5-b761921756c3',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang_tot_nghiep.jpg?alt=media&token=6d1dc9b7-1278-4d7e-88fb-d7ad47907d90https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbli1490152466.jpg?alt=media&token=121e470e-a6dd-4c35-b7db-e179ed3dc44c',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcao-dang-ha-noi.jpg?alt=media&token=04b20763-a5c9-4d6e-9249-3393c10d8797',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_1-2.jpg?alt=media&token=b0ecbcb3-1ab7-47b8-b390-f84733b92f59',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_2-2.jpg?alt=media&token=afb5a73e-0fd1-4e97-a544-9318e2a8a6de',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_3-2.jpg?alt=media&token=00704fb9-c1e4-4875-a68a-1039ae6e5b7a',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_4-2.jpg?alt=media&token=7a7d807a-bdd7-4207-9639-02e2a245b056',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_5-2.jpg?alt=media&token=e1ffc0e6-7e94-4dee-b930-002caeebc617',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fdai-hoc-da-nang.jpeg?alt=media&token=a9fd174b-e20e-4d85-a8fe-847f404ee91f',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Ftlp_hero_certificate-template-908f1750642c3cceba19cbc67086b678.jpg?alt=media&token=391d72fd-2055-4a86-9283-0d53f88af371',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fdummy-certificate-template-in-high-education-certificate-free-vector.jpg?alt=media&token=fe65d4d3-364f-43a1-a2bd-5c3fd404137d',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Ffree-printable-certificate-design-template-cbf0882bc95c38a60fbf0570406cf533_screen.jpg?alt=media&token=a3c5957c-47d6-4cc1-b3dd-cbf772fa8ad8',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Flam-bang-dai-hoc-uy-tin-tphcm.webp?alt=media&token=3106344d-0e6f-4db0-9126-82313dac9d15',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fmau-moi-bang-dai-hoc%20(1).jpg?alt=media&token=f00353a7-c897-4a0d-b038-2937a1d75af1',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fmau-moi-bang-dai-hoc.jpg?alt=media&token=ecbd6dd5-0feb-4c8b-9edc-61cd29b13d82',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fpngtree-certificate-template-with-luxury-and-modern-pattern-qualification-blank-elegant-vector-png-image_3587281.jpg?alt=media&token=b580dbc8-cd13-47b6-8676-d021af371f65',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fthumbnail-nhon-nhip-ke-ban-nguoi-mua-bang-dai-hoc-gia-1559287132.jpg?alt=media&token=40e3e273-3fdb-40e3-8935-f49d4c37848c',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Ftuyen-sinh-van-bang-2-su-pham-mam-non.jpg?alt=media&token=f15819cf-ba4b-419b-a8bf-917fe77d74e0',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed%20(1).jpg?alt=media&token=2c8c6c99-9ec5-4536-a3e6-0cb998a71e02',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed%20(2).jpg?alt=media&token=8953fe27-1b73-4f7d-9ab7-c6dea09d1796',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed%20(3).jpg?alt=media&token=00fb3cf8-e30e-457e-ac9a-0f500f68c8d7',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed.jpg?alt=media&token=30f88e03-987f-4432-bad8-dcedcf6065db'];
+       var fruits = ['https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F01-certificate-template-bd38f553e90b6ccdeb50288d32b43966869dc97b9810b4f04f4cb45243dff78e.jpg?alt=media&token=2af16b93-0fc3-496d-a1f0-6af8fc17855d','https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F541340688769b88e9ac01673fb224328.jpg?alt=media&token=16ac0166-cc40-4cef-9fad-4290e7da89ec',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F5b_NHDG.jpg?alt=media&token=3779da91-4699-4aaf-a3eb-57e8fda7ca4a','https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F6ae6bb47ae8876f51b9026a11736a427.png?alt=media&token=23e39d14-d870-4941-af50-69cae31b3a2f',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F9e4860b3-756e-42c0-ae56-359f9d533b49.6.16.TH.ns2.jpg?alt=media&token=ca96e7d4-95c8-4099-9ae0-bb7c922089ad',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FBang%20TCCN%20he%201%20nam%20NHO.jpg?alt=media&token=be2f8f43-a2d6-40c0-bb0c-7b38c69803ea',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FBang-DH-FPT-2-870x490-1.png?alt=media&token=2819f5f6-cb06-4a55-bc6b-cfc847b29486',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FBest-6-Premium-Certificate-Template-Free-Download-1.webp?alt=media&token=5a9cc224-8282-400d-afdc-d5052b0e564d',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FB%E1%BA%B1ng%20Ths-%20NEU%20c%E1%BA%A5p.jpg?alt=media&token=355b4590-9080-4188-b17d-a860b3d41771',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_10.jpg?alt=media&token=ee301c9e-dbe3-41ce-8fe0-e4fba8b1cd65',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_7-2.jpg?alt=media&token=07bd20f3-f43a-432c-ba80-75fc95c69dec',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_7.jpg?alt=media&token=392665f2-b492-47bb-abb0-cd535bf0be44',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_8-2.jpg?alt=media&token=2dd4fd6f-af1f-45c9-a8c8-ebe9c0e6ce81',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2FCertificate_9-2.jpg?alt=media&token=cd7ae1a0-d5c6-4256-bee0-c51038958729',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-dai-hoc-uy-tin-1024x720.jpg?alt=media&token=8e9b62df-d280-4bfe-9da4-56342e54ae01',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-moi-cua-hong-ngu-copy-1476078911.webp?alt=media&token=6322a299-73c1-4e0f-8c49-fcc9e9635e53',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-thac-si.jpg?alt=media&token=3ce02551-047a-4821-bbd4-5baaa5b6c889',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang-tot-nghiep-thpt-co-xep-loai-khong-3.jpg?alt=media&token=2bdd6ce3-5e15-4420-9dd3-656d254d40ea',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang_loi_1-1633360.jpg?alt=media&token=9d1273be-afcc-4b15-a0c5-b761921756c3',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbang_tot_nghiep.jpg?alt=media&token=6d1dc9b7-1278-4d7e-88fb-d7ad47907d90https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fbli1490152466.jpg?alt=media&token=121e470e-a6dd-4c35-b7db-e179ed3dc44c',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcao-dang-ha-noi.jpg?alt=media&token=04b20763-a5c9-4d6e-9249-3393c10d8797',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_1-2.jpg?alt=media&token=b0ecbcb3-1ab7-47b8-b390-f84733b92f59',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_2-2.jpg?alt=media&token=afb5a73e-0fd1-4e97-a544-9318e2a8a6de',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_3-2.jpg?alt=media&token=00704fb9-c1e4-4875-a68a-1039ae6e5b7a',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_4-2.jpg?alt=media&token=7a7d807a-bdd7-4207-9639-02e2a245b056',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fcertificate_5-2.jpg?alt=media&token=e1ffc0e6-7e94-4dee-b930-002caeebc617',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fdai-hoc-da-nang.jpeg?alt=media&token=a9fd174b-e20e-4d85-a8fe-847f404ee91f',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Ftlp_hero_certificate-template-908f1750642c3cceba19cbc67086b678.jpg?alt=media&token=391d72fd-2055-4a86-9283-0d53f88af371',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fdummy-certificate-template-in-high-education-certificate-free-vector.jpg?alt=media&token=fe65d4d3-364f-43a1-a2bd-5c3fd404137d',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Ffree-printable-certificate-design-template-cbf0882bc95c38a60fbf0570406cf533_screen.jpg?alt=media&token=a3c5957c-47d6-4cc1-b3dd-cbf772fa8ad8',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Flam-bang-dai-hoc-uy-tin-tphcm.webp?alt=media&token=3106344d-0e6f-4db0-9126-82313dac9d15',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fmau-moi-bang-dai-hoc%20(1).jpg?alt=media&token=f00353a7-c897-4a0d-b038-2937a1d75af1',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fmau-moi-bang-dai-hoc.jpg?alt=media&token=ecbd6dd5-0feb-4c8b-9edc-61cd29b13d82',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fpngtree-certificate-template-with-luxury-and-modern-pattern-qualification-blank-elegant-vector-png-image_3587281.jpg?alt=media&token=b580dbc8-cd13-47b6-8676-d021af371f65',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Fthumbnail-nhon-nhip-ke-ban-nguoi-mua-bang-dai-hoc-gia-1559287132.jpg?alt=media&token=40e3e273-3fdb-40e3-8935-f49d4c37848c',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Ftuyen-sinh-van-bang-2-su-pham-mam-non.jpg?alt=media&token=f15819cf-ba4b-419b-a8bf-917fe77d74e0',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed%20(1).jpg?alt=media&token=2c8c6c99-9ec5-4536-a3e6-0cb998a71e02',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed%20(2).jpg?alt=media&token=8953fe27-1b73-4f7d-9ab7-c6dea09d1796',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed%20(3).jpg?alt=media&token=00fb3cf8-e30e-457e-ac9a-0f500f68c8d7',  'https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2Funnamed.jpg?alt=media&token=30f88e03-987f-4432-bad8-dcedcf6065db'];
 
   // Generate a random number of elements to select (between 1 and fruits.length)
   var numberOfElements = Math.floor(Math.random() * 4) + 1;
@@ -225,25 +224,24 @@
   // Loop to randomly select elements
   for (var i = 0; i < numberOfElements; i++) {
     
-    	var randomId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);return v.toString(16);});
-        // Generate a random index
-        var randomIndex = Math.floor(Math.random() * fruits.length);
-        // Add the randomly selected element to the list
+    var randomId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);return v.toString(16);});
+    // Generate a random index
+    var randomIndex = Math.floor(Math.random() * fruits.length);
+    // Add the randomly selected element to the list
 
-        var newFruits = {
-          image: fruits[randomIndex],
-          tutorId : this.id,
-          id : {
-            value: randomId
-          }
-        };
+    var newFruits = {
+      image: fruits[randomIndex],
+      tutorId : this.id,
+      id : {
+        value: randomId
+      }
+    };
 
-        randomFruitList.push(newFruits);
+    randomFruitList.push(newFruits);
   }
 
-
-  return randomFruitList;
-    }
+       return randomFruitList;
+     }
   }
 ]
 
@@ -252,22 +250,22 @@
   '{{repeat(1000, 1000)}}',
   {
     firstName: '{{firstName(["male"])}}',
-    lastname:'{{surname()}}',
+    lastName:'{{surname()}}',
     gender: 1,
     birthYear:'{{integer(1980, 2003)}}',
     userName: function (tags) {
-                  return this.firstName + this.lastName + this.birthYear;
-        },
+      return this.firstName + this.lastName + this.birthYear;
+    },
     address: {
       city: '{{city()}}',
       country: ' {{state()}}'
     },   
     description: '{{lorem(1,"paragraph")}}',
     avatar: '{{random( "https://res.cloudinary.com/dhehywasc/image/upload/v1702309842/male/male13_xrkqe2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male12_hfb0gy.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1702309841/male/male11_g11pit.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male10.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male9.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male7.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male8.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male5.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006151/male/male6.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male2.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male3.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829234/male/male4.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1696829233/male/male1.jpg", "https://res.cloudinary.com/dhehywasc/image/upload/v1697006256/male/male0.png")}}',
-    email:'{{lorem(1, "words")}}{{email()}}',
+    email:'{{email()}}',
     isEmailConfirmed:'true',
     phoneNumber: '+{{integer(1, 100)}} {{phone()}}',
-    password:'1q2w3E*',
+    password:'1q2w3E**',
     role:'Tutor',         
     isDeleted: false,
     deleterUserId: null,
@@ -278,7 +276,7 @@
     creatorUserId: null,
     academicLevel: '{{random("UnderGraduated","Graduated","Lecturer")}}',
     university:'{{city()}} University',
-    isVerify: true,
+    isVerified: true,
     rate: 0,
     id: {
       value: '{{guid()}}'
@@ -294,21 +292,20 @@
 
   // Loop to randomly select elements
   for (var i = 0; i < numberOfElements; i++) {
-    
-    	var randomId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);return v.toString(16);});
+    var randomId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);return v.toString(16);});
         // Generate a random index
-        var randomIndex = Math.floor(Math.random() * fruits.length);
-        // Add the randomly selected element to the list
+    var randomIndex = Math.floor(Math.random() * fruits.length);
+    // Add the randomly selected element to the list
 
-        var newFruits = {
-          image: fruits[randomIndex],
-          tutorId : this.id,
-          id : {
-            value: randomId
-          }
-        };
+    var newFruits = {
+      image: fruits[randomIndex],
+      tutorId : this.id,
+      id : {
+        value: randomId
+      }
+    };
 
-        randomFruitList.push(newFruits);
+    randomFruitList.push(newFruits);
   }
 
 

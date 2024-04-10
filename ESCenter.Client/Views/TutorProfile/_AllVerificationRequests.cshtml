@@ -28,7 +28,18 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" type="submit">request to change verification</button>
+            
+            <button class="btn btn-secondary" type="button" onclick="function ResetUploadComponent() {
+                let $el = $('#fileElem');
+                $el.wrap('<form>').closest(
+                    'form').get(0).reset();
+                $el.unwrap();
+                
+                let $gallery = $('#gallery');
+                $gallery.empty();
+            }
+            ResetUploadComponent()">Refresh</button>
+            <button class="btn btn-primary" type="submit">Request to change verification</button>
         </form>
 
     </div>

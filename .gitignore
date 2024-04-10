@@ -4,6 +4,8 @@
 
 .idea
 
+ConsoleApp1
+
 ## Ignore logs
 ESCenter.Api/logs
 ESCenter.Administrator/logs

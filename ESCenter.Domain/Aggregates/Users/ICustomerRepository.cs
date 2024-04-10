@@ -8,6 +8,5 @@ public interface ICustomerRepository : IRepository<Customer, CustomerId>
 {
     Task<List<Customer>> GetLearners();
     Task<List<Customer>> GetTutors();
-    Task<List<Customer>> GetTutorsByIds(IEnumerable<TutorId> tutorIds);
-    Task<Customer?> GetTutor(TutorId tutorId);
+    Task<string?> GetTutorEmail(TutorId tutorId);
 }
