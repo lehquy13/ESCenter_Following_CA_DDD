@@ -1,16 +1,12 @@
 ﻿using System.Reflection;
 using ESCenter.Client.Application;
-using ESCenter.Client.Host.Middlewares;
+using ESCenter.Client.Middlewares;
 using ESCenter.Infrastructure;
 using ESCenter.Persistence;
 using FluentEmail.Core;
 using Matt.AutoDI;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-//using Matt.SharedKernel.DependencyInjections;
 
-namespace ESCenter.Client.Host;
+namespace ESCenter.Client;
 
 public static class DependencyInjection
 {
@@ -44,11 +40,11 @@ public static class DependencyInjection
     private static void RegisterByAutoDi(IServiceCollection services)
     {
         IList<Assembly> assemblies = [];
-        assemblies.AddRange(Client.Application.DependencyInjection.GetApplicationCoreAssemblies);
+        assemblies.AddRange(Application.DependencyInjection.GetApplicationCoreAssemblies);
         assemblies.AddRange(new[]
         {
-            typeof(ESCenter.Infrastructure.DependencyInjection).Assembly,
-            typeof(ESCenter.Persistence.DependencyInjection).Assembly
+            typeof(Infrastructure.DependencyInjection).Assembly,
+            typeof(Persistence.DependencyInjection).Assembly
         });
 
         services.AddServiced(assemblies.ToArray());

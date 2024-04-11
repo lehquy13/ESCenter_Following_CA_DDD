@@ -1,5 +1,4 @@
 using ESCenter.Client;
-using ESCenter.Client.Host;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Serilog;
 using Soenneker.Blazor.FilePond.Registrars;
@@ -14,11 +13,14 @@ var logger = Log.Logger = new LoggerConfiguration()
 logger.Information("Starting web host");
 
 // Add services to the container.
-builder.Services.AddControllersWithViews(options => 
+builder.Services.AddControllersWithViews(options =>
 {
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
-builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+builder.Host
+    .UseSerilog((context, configuration)
+        => configuration.ReadFrom.Configuration(context.Configuration)
+    );
 builder.Services.AddFilePond();
 builder.Services.AddHost(builder.Configuration);
 

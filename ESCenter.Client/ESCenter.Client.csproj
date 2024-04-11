@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ESCenter.Client.Host\ESCenter.Client.Host.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Shared\Error.cshtml" />
@@ -20,6 +16,12 @@
 
     <ItemGroup>
       <PackageReference Include="Soenneker.Blazor.FilePond" Version="2.1.507" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ESCenter.Client.Application\ESCenter.Client.Application.csproj" />
+      <ProjectReference Include="..\ESCenter.Infrastructure\ESCenter.Infrastructure.csproj" />
+      <ProjectReference Include="..\ESCenter.Persistence\ESCenter.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

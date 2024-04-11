@@ -1,10 +1,8 @@
 ﻿using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace ESCenter.Client.Host.Middlewares;
+namespace ESCenter.Client.Middlewares;
 
 internal sealed class GlobalExceptionHandler(
     IServiceProvider serviceProvider

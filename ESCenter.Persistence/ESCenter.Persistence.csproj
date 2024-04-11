@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj" PrivateAssets="compile"/>
+    <ProjectReference Include="..\ESCenter.Domain\ESCenter.Domain.csproj"/>
   </ItemGroup>
 
 </Project>

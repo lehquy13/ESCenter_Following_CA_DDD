@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESCenter.Application\ESCenter.Application.csproj" PrivateAssets="compile"/>
+    <ProjectReference Include="..\ESCenter.Application\ESCenter.Application.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
