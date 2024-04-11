@@ -1,5 +1,4 @@
-﻿using ESCenter.Mobile.Application.Contracts.Users.Learners;
-using FluentValidation;
+﻿using FluentValidation;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Mediators.Commands;
 

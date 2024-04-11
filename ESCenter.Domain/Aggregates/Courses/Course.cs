@@ -8,7 +8,6 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
-using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Courses;
@@ -159,6 +158,8 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         {
             Status = Status.OnProgressing;
         }
+        
+        DomainEvents.Add(new CourseRequestedDomainEvent(this));
 
         return Result.Success();
     }

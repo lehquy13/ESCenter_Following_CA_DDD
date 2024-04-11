@@ -3,6 +3,7 @@ using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Shared.Courses;
 using Mapster;
 using Matt.SharedKernel.Domain.Primitives;
 
@@ -17,15 +18,15 @@ public class CourseForDetailDto
 
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Status { get; set; } = "OnVerifying";
-    public string LearningMode { get; set; } = "Offline";
+    public string Status { get; set; } = Domain.Shared.Courses.Status.OnVerifying.ToString();
+    public string LearningMode { get; set; } = Domain.Shared.Courses.LearningMode.Offline.ToString();
 
     public float SectionFee { get; set; } = 0;
     public float ChargeFee { get; set; } = 0;
 
     //Tutor related information
-    public string GenderRequirement { get; set; } = "None";
-    public string AcademicLevelRequirement { get; set; } = "Optional";
+    public string GenderRequirement { get; set; } = Gender.None.ToString();
+    public string AcademicLevelRequirement { get; set; } = AcademicLevel.Optional.ToString();
 
     //Student related information
     public string LearnerName { get; set; } = "";

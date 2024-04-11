@@ -1,10 +1,8 @@
-﻿using ESCenter.Admin.Application.Contracts.Users.Learners;
-using ESCenter.Domain.Aggregates.Tutors;
+﻿using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using FluentValidation;
 using Mapster;
-using Matt.SharedKernel.Application.Contracts.Primitives;
 
 namespace ESCenter.Admin.Application.Contracts.Users.Tutors;
 

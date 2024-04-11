@@ -1,17 +1,9 @@
 ﻿using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
-using ESCenter.Mobile.Application.Contracts.Users.Learners;
 using Mapster;
-using Matt.SharedKernel.Application.Contracts.Primitives;
 
 namespace ESCenter.Mobile.Application.Contracts.Users.Tutors;
-
-public class TutorCreateDto : EntityDto<Guid>
-{
-    public LearnerForCreateUpdateDto LearnerForCreateUpdateDto { get; set; } = new();
-    public TutorProfileCreateDto TutorProfileCreateDto { get; set; } = new();
-}
 
 public class TutorProfileCreateDto
 {

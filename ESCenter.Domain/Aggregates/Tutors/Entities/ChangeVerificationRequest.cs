@@ -24,7 +24,7 @@ public class
     {
         if (urls.Count < 1)
         {
-            throw new ArgumentException(TutorError.InvalidImageUrls);
+            throw new ArgumentException(TutorDomainError.InvalidImageUrls);
         }
 
         return new ChangeVerificationRequest()

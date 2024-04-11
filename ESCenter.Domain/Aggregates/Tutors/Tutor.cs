@@ -1,3 +1,4 @@
+using ESCenter.Domain.Aggregates.Tutors.DomainEvents;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -19,12 +20,15 @@ public class Tutor : AuditedAggregateRoot<TutorId>
     public CustomerId CustomerId { get; private set; } = null!;
     public IReadOnlyList<Verification> Verifications => _verifications.AsReadOnly();
     public IReadOnlyList<TutorMajor> TutorMajors => _tutorMajors.AsReadOnly();
-    public ChangeVerificationRequest? ChangeVerificationRequest { get; private set; } 
+    public ChangeVerificationRequest? ChangeVerificationRequest { get; private set; }
 
     public void CreateChangeVerificationRequest(List<string> urls)
     {
         ChangeVerificationRequest = ChangeVerificationRequest.Create(Id, urls);
         IsVerified = false;
+
+        DomainEvents.Add(new ChangeVerificationRequestCreatedDomainEvent(this,
+            ChangeVerificationRequest.ChangeVerificationRequestDetails.Count));
     }
 
     public void AddTutorMajor(TutorMajor tutorMajor)
@@ -87,11 +91,11 @@ public class Tutor : AuditedAggregateRoot<TutorId>
 
     public Result ModifyChangeVerificationRequest(bool commandIsApproved)
     {
-        if(ChangeVerificationRequest is null)
+        if (ChangeVerificationRequest is null)
         {
             return Result.Fail("There is no change verification request");
         }
-        
+
         if (commandIsApproved is false)
         {
             ChangeVerificationRequest.Reject();

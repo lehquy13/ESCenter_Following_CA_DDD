@@ -1,12 +1,13 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.DomainEvents;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Mobile.Application.ServiceImpls.Courses;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Domain.EventualConsistency;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.ReviewCourse;
+namespace ESCenter.Mobile.Application.EventHandlers;
 
 public class CourseReviewedDomainEventHandler(
     ICourseRepository courseRepository,

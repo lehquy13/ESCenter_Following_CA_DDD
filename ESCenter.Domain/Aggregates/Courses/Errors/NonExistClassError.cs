@@ -30,4 +30,5 @@ public static class CourseDomainError
     public static Error CourseIsNotOnGoing { get; } = new("CourseIsNotOnGoing", "This course isn't on going!");
     public static Error MaxCourseRequestError { get; } = new("MaxCourseRequestError", "This course has reached the maximum number of requests!");
     public static Error CourseUnavailable { get; } = new("CourseConfirmed", "This course has been confirmed!");
+    public static Error NonExistTutorError { get; } = new("NonExistTutorError", "This tutor doesn't exist!");
 }

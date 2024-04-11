@@ -74,7 +74,7 @@ public class CreateCourseCommandValidator : AbstractValidator<CreateCourseComman
 
 public class CourseForCreateDtoValidator : AbstractValidator<CourseForCreateDto>
 {
-    public CourseForCreateDtoValidator() 
+    public CourseForCreateDtoValidator()
     {
         RuleFor(dto => dto.Title)
             .NotEmpty().WithMessage("Title is required.")

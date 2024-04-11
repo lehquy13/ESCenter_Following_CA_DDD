@@ -1,5 +1,4 @@
-﻿using ESCenter.Application.EventHandlers;
-using ESCenter.Domain;
+﻿using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;

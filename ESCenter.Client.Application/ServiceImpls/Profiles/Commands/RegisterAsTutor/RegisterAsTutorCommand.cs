@@ -1,5 +1,4 @@
-﻿using ESCenter.Client.Application.Contracts.Users.Tutors;
-using FluentValidation;
+﻿using FluentValidation;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Client.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor;

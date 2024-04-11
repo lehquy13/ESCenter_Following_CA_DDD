@@ -14,9 +14,6 @@ public class UpsertSubjectCommandHandler(
     IMapper mapper)
     : CommandHandlerBase<UpsertSubjectCommand>(unitOfWork, logger)
 {
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly IAppLogger<UpsertSubjectCommandHandler> _logger = logger;
-
     public override async Task<Result> Handle(UpsertSubjectCommand request, CancellationToken cancellationToken)
     {
         var subjectExists =
@@ -34,7 +31,7 @@ public class UpsertSubjectCommandHandler(
             await subjectRepository.InsertAsync(subject, cancellationToken);
         }
 
-        if (await _unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
             return Result.Fail(SubjectAppServiceError.FailToAddSubjectErrorWhileSavingChanges);
         }

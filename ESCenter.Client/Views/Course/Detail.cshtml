@@ -1,19 +1,15 @@
 @using ESCenter.Domain.Shared.Courses
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
 @model ESCenter.Client.Models.CourseDetailViewModel
 
-@{
-}
-
-<!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs" data-aos="fade-in">
     <div class="container">
         <h2>Course Details</h2>
         <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
     </div>
-</div><!-- End Breadcrumbs -->
+</div>
 
-<!-- ======= Cource Details Section ======= -->
 <section id="course-details" class="course-details">
     <div class="container" data-aos="fade-up">
 
@@ -26,15 +22,14 @@
                         <b>Subject: </b> @Model.CourseDetailDto.SubjectName
                     </h4>
                     <form asp-controller="Course" asp-action="RequestGettingClass" class="col-lg-3">
-                        @if (Context.Session.GetString("role") == Role.Learner.ToString())
+                        <input hidden="hidden" name="courseId" value="@Model.CourseDetailDto.Id"/>
+                        @if (User.FindFirst(ClaimTypes.Role)?.Value == Role.Tutor.ToString())
                         {
-                            <button class="btn btn-success" disabled type="submit">Request (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
-
+                            <button class="btn btn-success" type="submit">Request (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
                         }
                         else
                         {
-                            <button class="btn btn-success" type="submit">Request (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
-
+                            <button class="btn btn-success" disabled type="button">Login to request</button>
                         }
                         <input value="@Model.CourseDetailDto.Id" hidden="" name="ClassId"/>
                     </form>

@@ -12,7 +12,6 @@ using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
-using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -24,7 +23,6 @@ public class GetLearningCourseDetailQueryHandler(
     ISubjectRepository subjectRepository,
     ICustomerRepository customerRepository,
     ITutorRepository tutorRepository,
-    ICurrentUserService currentUserService,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper

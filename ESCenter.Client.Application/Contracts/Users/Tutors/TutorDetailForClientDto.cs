@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using ESCenter.Application.Contracts.Commons;
+﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Users;
 using Mapster;

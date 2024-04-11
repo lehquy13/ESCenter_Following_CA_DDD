@@ -1,5 +1,4 @@
-﻿using ESCenter.Application.EventHandlers;
-using ESCenter.Domain;
+﻿using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Interfaces;
@@ -20,8 +19,7 @@ public class CreateTutorCommandHandler(
     IIdentityService identityService,
     ITutorDomainService tutorDomainService,
     IPublisher publisher)
-    : CommandHandlerBase<CreateTutorCommand>(unitOfWork,
-        logger)
+    : CommandHandlerBase<CreateTutorCommand>(unitOfWork, logger)
 {
     public override async Task<Result> Handle(CreateTutorCommand command, CancellationToken cancellationToken)
     {

@@ -2,6 +2,7 @@
 using ESCenter.Domain.Aggregates.Notifications;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.NotificationConsts;
+using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 using MediatR;
@@ -11,7 +12,8 @@ namespace ESCenter.Mobile.Application.EventHandlers;
 public class CoursePurchasedDomainEventHandler(
     IEmailSender emailSender,
     ICustomerRepository customerRepository,
-    IRepository<Notification, int> notificationRepository
+    IRepository<Notification, int> notificationRepository,
+    IUnitOfWork unitOfWork
 ) : INotificationHandler<CoursePurchasedDomainEvent>
 {
     public async Task Handle(CoursePurchasedDomainEvent domainEvent, CancellationToken cancellationToken)
@@ -29,5 +31,7 @@ public class CoursePurchasedDomainEventHandler(
             NotificationEnum.Course);
 
         await notificationRepository.InsertAsync(notification, cancellationToken);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

@@ -41,7 +41,7 @@ public class AddOrResetDiscoveryCommandHandler(
             .Where(discovery => request.DiscoveryIds.Contains(discovery.DiscoveryId.Value))
             .ToList();
 
-        // update to db
+        // TODO: update to db
         discoveriesInUserDiscoveryList =
             discoveriesInUserDiscoveryList
                 .Select(discovery => discovery)

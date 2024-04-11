@@ -19,29 +19,22 @@ public class UpdateTutorInformationCommandHandler(
     public override async Task<Result> Handle(UpdateTutorInformationCommand command,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var tutorId = TutorId.Create(command.TutorBasicUpdateDto.Id);
-            var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
+        var tutorId = TutorId.Create(command.TutorBasicUpdateDto.Id);
+        var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
 
-            // Check if the tutor exist
-            if (tutor is null)
-            {
-                return Result.Fail(UserError.NonExistTutorError);
-            }
-            
-            mapper.Map(command.TutorBasicUpdateDto, tutor);
-        
-            if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-            {
-                return Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges);
-            }
-
-            return Result.Success();
-        }
-        catch (Exception ex)
+        // Check if the tutor exist
+        if (tutor is null)
         {
-            return Result.Fail("Error happens when tutor is adding or updating: " + ex.Message);
+            return Result.Fail(UserError.NonExistTutorError);
         }
+
+        mapper.Map(command.TutorBasicUpdateDto, tutor);
+
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+        {
+            return Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges);
+        }
+
+        return Result.Success();
     }
 }

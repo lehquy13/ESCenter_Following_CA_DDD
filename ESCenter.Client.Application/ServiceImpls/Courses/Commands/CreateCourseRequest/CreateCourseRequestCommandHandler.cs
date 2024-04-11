@@ -1,60 +1,31 @@
-﻿using ESCenter.Domain;
-using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.Entities;
-using ESCenter.Domain.Aggregates.Courses.ValueObjects;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
-using ESCenter.Domain.Shared.NotificationConsts;
+﻿using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.DomainServices;
 using Matt.ResultObject;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
-using MediatR;
 
 namespace ESCenter.Client.Application.ServiceImpls.Courses.Commands.CreateCourseRequest;
 
 public class CreateCourseRequestCommandHandler(
-    ICourseRepository courseRepository,
-    IPublisher publisher,
+    ICourseDomainService courseDomainService,
+    ICurrentUserService currentUserService,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateCourseRequestCommandHandler> logger)
     : CommandHandlerBase<CreateCourseRequestCommand>(unitOfWork, logger)
 {
     public override async Task<Result> Handle(CreateCourseRequestCommand command, CancellationToken cancellationToken)
     {
-        try
+        var result = await courseDomainService.RequestCourse(
+            CourseId.Create(command.CourseId),
+            CustomerId.Create(currentUserService.UserId));
+
+        if (result.IsFailure || await UnitOfWork.SaveChangesAsync(cancellationToken) < 0)
         {
-            var course = await courseRepository.GetAsync(
-                CourseId.Create(command.CourseRequestForCreateDto.CourseId), cancellationToken);
-
-            if (course is null)
-            {
-                return Result.Fail(CourseRequestAppServiceErrors.NonExistCourseError);
-            }
-
-            var courseRequestToCreate = CourseRequest.Create(
-                TutorId.Create(command.CourseRequestForCreateDto.TutorId),
-                CourseId.Create(command.CourseRequestForCreateDto.CourseId),
-                string.Empty
-            );
-
-            var result = course.Request(courseRequestToCreate);
-
-            if (result.IsFailure || await UnitOfWork.SaveChangesAsync(cancellationToken) < 0)
-            {
-                return Result.Fail(CourseRequestAppServiceErrors.FailToCreateCourseRequestError);
-            }
-
-            var message = $"New request class with Id {courseRequestToCreate.Id.Value} " +
-                          $"at {courseRequestToCreate.CreationTime.ToLongDateString()}";
-            await publisher.Publish(new NewDomainObjectCreatedEvent(courseRequestToCreate.CourseId.Value.ToString(),
-                message,
-                NotificationEnum.Course), cancellationToken);
-
-            return Result.Success();
-        }
-        catch (Exception e)
-        {
-            Logger.LogError("Fail to create course request with {Message}", e.InnerException!.Message);
             return Result.Fail(CourseRequestAppServiceErrors.FailToCreateCourseRequestError);
         }
+
+        return Result.Success();
     }
 }

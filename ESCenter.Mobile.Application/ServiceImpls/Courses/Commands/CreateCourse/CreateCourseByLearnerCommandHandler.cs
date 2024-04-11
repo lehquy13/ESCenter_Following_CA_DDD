@@ -1,12 +1,9 @@
-﻿using ESCenter.Application.EventHandlers;
-using ESCenter.Domain;
+﻿using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
-using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
-using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -16,10 +13,8 @@ using MediatR;
 namespace ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourse;
 
 public class CreateCourseByLearnerCommandHandler(
-    IMapper mapper,
     IPublisher publisher,
     ICourseRepository courseRepository,
-    ICustomerRepository customerRepository,
     ICurrentUserService currentUserService,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateCourseByLearnerCommandHandler> logger)

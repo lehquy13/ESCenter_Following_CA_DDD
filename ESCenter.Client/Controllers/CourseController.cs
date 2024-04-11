@@ -125,11 +125,10 @@ public class CourseController(ISender mediator) : Controller
 
     [Authorize]
     [HttpPost]
-    [Route("request")]
-    public async Task<IActionResult> RequestGettingClass(CourseRequestForCreateDto courseRequestForCreateDto)
+    [Route("{courseId:guid}/request")]
+    public async Task<IActionResult> RequestGettingClass(Guid courseId)
     {
-        var command = new CreateCourseRequestCommand(courseRequestForCreateDto);
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(new CreateCourseRequestCommand(courseId));
         
         if (result.IsFailure)
         {

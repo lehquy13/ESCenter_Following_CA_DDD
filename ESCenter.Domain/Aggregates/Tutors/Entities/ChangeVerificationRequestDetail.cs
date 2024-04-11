@@ -18,7 +18,7 @@ public class ChangeVerificationRequestDetail : Entity<ChangeVerificationRequestD
     {
         if (imageUrl.Length < 1)
         {
-            throw new ArgumentException(TutorError.ImageUrlCannotBeEmpty);
+            throw new ArgumentException(TutorDomainError.ImageUrlCannotBeEmpty);
         }
         return new ChangeVerificationRequestDetail()
         {

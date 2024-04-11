@@ -14,7 +14,7 @@ public class TutorUpdateDto : LearnerForCreateUpdateDto
 {
     public string AcademicLevel { get; init; } = "Student";
     public string University { get; init; } = string.Empty;
-    public bool IsVerified { get; init; } = false;
+    public bool IsVerified { get; init; }
     public short Rate { get; init; } = 5;
     public List<SubjectMajorDto> Majors { get; init; } = new(); 
     public List<VerificationDto> VerificationDtos { get; init; } = new();

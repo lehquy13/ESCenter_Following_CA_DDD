@@ -21,32 +21,25 @@ public class GetTodayCoursesQueryHandler(
     public override async Task<Result<IEnumerable<CourseForListDto>>> Handle(GetTodayCoursesQuery request,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            //Create a list of class query
-            var filterQuery = courseRepository.GetAll();
+        //Create a list of class query
+        var filterQuery = courseRepository.GetAll();
 
-            var classesQuery = filterQuery
-                .OrderByDescending(x => x.CreationTime)
-                .Where(x => x.IsDeleted == false && x.CreationTime >= DateTime.Today.AddDays(-1))
-                .Join(subjectRepository.GetAll(),
-                    course => course.SubjectId,
-                    subject => subject.Id,
-                    (course, subject) => new Tuple<Course, string>(course, subject.Name)
-                );
+        var classesQuery = filterQuery
+            .OrderByDescending(x => x.CreationTime)
+            .Where(x => x.IsDeleted == false && x.CreationTime >= DateTime.Today.AddDays(-1))
+            .Join(subjectRepository.GetAll(),
+                course => course.SubjectId,
+                subject => subject.Id,
+                (course, subject) => new Tuple<Course, string>(course, subject.Name)
+            );
 
-            var courses = await asyncQueryableExecutor.ToListAsync(classesQuery, false, cancellationToken);
+        var courses = await asyncQueryableExecutor.ToListAsync(classesQuery, false, cancellationToken);
 
-            //Get the class of the page
-            var classInformationDtos = courses
-                .Select(x => (x.Item1, x.Item2).Adapt<CourseForListDto>())
-                .ToList();
+        //Get the class of the page
+        var classInformationDtos = courses
+            .Select(x => (x.Item1, x.Item2).Adapt<CourseForListDto>())
+            .ToList();
 
-            return classInformationDtos;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+        return classInformationDtos;
     }
 }

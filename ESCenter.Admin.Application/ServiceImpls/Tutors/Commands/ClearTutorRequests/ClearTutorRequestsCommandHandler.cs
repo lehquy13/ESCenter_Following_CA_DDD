@@ -14,7 +14,7 @@ public class ClearTutorRequestsCommandHandler(
 {
     public override async Task<Result> Handle(ClearTutorRequestsCommand command, CancellationToken cancellationToken)
     {
-        await tutorRequestRepository.ClearTutorRequests(CustomerId.Create(command.TutorId));
+        await tutorRequestRepository.ClearTutorRequests(CustomerId.Create(command.TutorId), cancellationToken);
 
         if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {

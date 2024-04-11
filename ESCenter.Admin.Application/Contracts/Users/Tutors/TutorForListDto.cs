@@ -19,7 +19,7 @@ public class TutorForListDto : BasicAuditedEntityDto<Guid>
     public string Description { get; set; } = string.Empty;
 
     public string Avatar { get; set; } =
-        @"https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
+        "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
 
     //Account References
     public string PhoneNumber { get; set; } = string.Empty;

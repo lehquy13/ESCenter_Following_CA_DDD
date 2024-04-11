@@ -12,6 +12,5 @@ public class UpsertSubjectCommandValidator : AbstractValidator<UpsertSubjectComm
     {
         RuleFor(x => x.SubjectDto).NotNull();
         RuleFor(x => x.SubjectDto).SetValidator(new SubjectDtoValidator());
-        
     }
 }
