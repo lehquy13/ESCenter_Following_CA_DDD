@@ -37,7 +37,7 @@ public class GetRelatedCoursesQueryHandler(
                 course => course.SubjectId,
                 subject => subject.Id,
                 (course, subject) => new { course, subject.Name }
-            );
+            ).Take(5);
 
         var coursesResult = await asyncQueryableExecutor.ToListAsync(courses, false, cancellationToken);
 

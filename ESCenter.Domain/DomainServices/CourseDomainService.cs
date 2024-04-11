@@ -116,19 +116,3 @@ public class CourseDomainService(
         return result;
     }
 }
-
-public interface ICourseDomainService
-{
-    Task<Result> RequestCourse(CourseId courseId, CustomerId customerId);
-
-    Task<Result> CancelCourseRequest(
-        CourseId commandCourseId,
-        CourseRequestId commandCourseRequestId,
-        string commandDescription);
-
-    Task<Result> PurchaseCourse(
-        CourseId courseId,
-        CustomerId customerId);
-
-    Task<Result> ReviewCourse(CourseId courseId, short rate, string detail, CustomerId customerId);
-}

@@ -8,7 +8,6 @@ using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourses;
 using ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetRelatedCourses;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Models;
-using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

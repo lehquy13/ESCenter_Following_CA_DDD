@@ -21,8 +21,7 @@
                     <h4 class="col-lg-6">
                         <b>Subject: </b> @Model.CourseDetailDto.SubjectName
                     </h4>
-                    <form asp-controller="Course" asp-action="RequestGettingClass" class="col-lg-3">
-                        <input hidden="hidden" name="courseId" value="@Model.CourseDetailDto.Id"/>
+                    <form asp-controller="Course" asp-action="RequestGettingClass" asp-route-courseId="@Model.CourseDetailDto.Id" class="col-lg-3">
                         @if (User.FindFirst(ClaimTypes.Role)?.Value == Role.Tutor.ToString())
                         {
                             <button class="btn btn-success" type="submit">Request (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>

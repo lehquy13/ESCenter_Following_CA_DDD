@@ -24,6 +24,7 @@ public class CourseRequest : AuditedEntity<CourseRequestId>
     {
         return new CourseRequest()
         {
+            Id = CourseRequestId.Create(),
             TutorId = tutorId,
             CourseId = courseId,
             Description = description
