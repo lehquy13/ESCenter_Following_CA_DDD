@@ -139,13 +139,13 @@ function LoadImage(url, id) {
         contentType: false,
         processData: false,
         success: function (res) {
-
             if (res.res === true) {
                 $('#' + id).attr("src", res.image);
                 $('#image').attr("value", res.image);
             }
             console.log(res);
 
+            location.reload();
         },
         error: function (err) {
             console.log(err);

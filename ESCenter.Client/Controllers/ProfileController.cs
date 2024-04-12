@@ -87,9 +87,8 @@ public class ProfileController(
 
         var image = await Helper.SaveFiles(formFile, webHostEnvironment.WebRootPath);
 
-        return Json(new { res = true, image = "temp\\" + Path.GetFileName(image) });
+        return Json(new { res = true, image = "/temp/" + Path.GetFileName(image) });
     }
-
 
     [HttpPost("edit")]
     [ValidateAntiForgeryToken]
@@ -99,11 +98,7 @@ public class ProfileController(
 
         if (!ModelState.IsValid)
         {
-            return Helper.RenderRazorViewToString(this,
-                "_ProfileEdit",
-                userDto,
-                true
-            );
+            return Helper.FailResult();
         }
 
         var result = await sender.Send(new UpdateBasicProfileCommand(userDto));
@@ -125,25 +120,24 @@ public class ProfileController(
             return Helper.UpdatedResult();
         }
 
-        return Helper.RenderRazorViewToString(this,
-            "_ProfileEdit",
-            userDto,
-            true
-        );
+        return Helper.FailResult();
     }
 
     [HttpPost("change-password")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangePassword(ChangePasswordCommand changePasswordCommand)
+    public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordRequest)
     {
         if (!ModelState.IsValid)
         {
-            return Helper.RenderRazorViewToString(this, "_ChangePassword", changePasswordCommand, true);
+            return Helper.FailResult();
         }
 
         try
         {
-            var loginResult = await sender.Send(changePasswordCommand);
+            var loginResult = await sender.Send(new ChangePasswordCommand(
+                changePasswordRequest.CurrentPassword,
+                changePasswordRequest.NewPassword,
+                changePasswordRequest.ConfirmedPassword));
 
             if (loginResult.IsSuccess)
             {
@@ -159,7 +153,7 @@ public class ProfileController(
                                          "see your system administrator.");
         }
 
-        return Helper.UpdatedResult();
+        return Helper.FailResult();
     }
 
     [HttpGet]

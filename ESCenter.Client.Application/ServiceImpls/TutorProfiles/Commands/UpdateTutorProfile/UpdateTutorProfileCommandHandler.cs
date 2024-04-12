@@ -6,6 +6,8 @@ using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Specifications.Subjects;
 using ESCenter.Domain.Specifications.Tutors;
 using Matt.ResultObject;
@@ -35,6 +37,8 @@ public class UpdateTutorInformationCommandHandler(
         {
             return Result.Fail(UserError.NonExistTutorError);
         }
+        
+        tutor.UpdateBasicInformation(command.TutorBasicUpdateDto.University, command.TutorBasicUpdateDto.AcademicLevel);
 
         // Collect major ids
         var subjectListAboutToUpdate =

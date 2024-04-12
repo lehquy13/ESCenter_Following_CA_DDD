@@ -58,12 +58,18 @@ public static class Helper
 
     public static async Task<string> SaveFiles(IFormFile? formFile, string wwwRootPath)
     {
-        await Task.CompletedTask;
-        if (formFile != null && formFile.Length > 0)
+        if (formFile is { Length: > 0 })
         {
             string fileName = formFile.FileName;
             string path = Path.Combine(wwwRootPath + "\\temp\\", fileName);
-            await using var fileStream = formFile.OpenReadStream();
+            
+            //Ensure the directory exists
+            if(!Directory.Exists(wwwRootPath + "\\temp\\"))
+            {
+                Directory.CreateDirectory(wwwRootPath + "\\temp\\");
+            }
+            
+            await using var fileStream = new FileStream(path, FileMode.Create);
 
             await formFile.CopyToAsync(fileStream);
             fileStream.Position = 0;

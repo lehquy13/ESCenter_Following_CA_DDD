@@ -115,4 +115,12 @@ public class Tutor : AuditedAggregateRoot<TutorId>
 
         return Result.Success();
     }
+
+    public void UpdateBasicInformation(string university, string academicLevel)
+    {
+        University = university;
+        AcademicLevel = Enum.Parse<AcademicLevel>(academicLevel);
+
+        IsVerified = false;
+    }
 }

@@ -200,9 +200,9 @@ h6 {
 /*    transform: rotate(360deg);*/
 /*  }*/
 /*}*/
-/* Preloder */
+/* preloader */
 
-#preloder {
+#preloader {
   position: fixed;
   width: 100%;
   height: 100%;

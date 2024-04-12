@@ -1,7 +1,6 @@
 ﻿using ESCenter.Client.Application.Contracts.Users.Tutors;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles;
 using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -51,8 +50,15 @@ public class GetTutorDetailQueryHandler(
         var tutorForDetailDto =
             (queryResult.Tutor, queryResult.User).Adapt<TutorDetailForClientDto>();
 
-        tutorForDetailDto.Reviews =
-            queryResult.Reviews.Select(x => (x.Review, x.LearnerName).Adapt<ReviewDto>()).ToList();
+        tutorForDetailDto.Reviews = queryResult.Reviews.Select(x => 
+            new ReviewDto
+            {
+                LearnerName = x.LearnerName,
+                Detail = x.Review.Detail,
+                Rate = x.Review.Rate,
+                CreationTime = x.Review.CreationTime,
+                LastModificationTime = x.Review.LastModificationTime
+            }).ToList();
 
         return tutorForDetailDto;
     }

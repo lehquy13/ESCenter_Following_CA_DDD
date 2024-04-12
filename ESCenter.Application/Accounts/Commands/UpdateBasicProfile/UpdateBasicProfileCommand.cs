@@ -85,8 +85,9 @@ public class UserProfileCreateUpdateDtoValidator : AbstractValidator<UserProfile
             .WithMessage("Please enter a valid email address.");
 
         RuleFor(x => x.PhoneNumber)
-            .Matches(@"^\d+$") // Matches a sequence of digits
-            .WithMessage("Phone number must only contain digits.");
+            .NotEmpty()
+            .MaximumLength(20)
+            .WithMessage("Phone number must be between 1 and 20 characters long.");
     }
 }
 

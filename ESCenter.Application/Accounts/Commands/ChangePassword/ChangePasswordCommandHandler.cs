@@ -22,7 +22,8 @@ internal class ChangePasswordCommandHandler(
                 command.CurrentPassword,
                 command.NewPassword);
 
-        if (!result.IsSuccess || await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+        // It is not necessary to save changes here because the identity service will save the changes
+        if (!result.IsSuccess)
         {
             Logger.LogWarning("Change password fail", result.Error.ToString());
             return Result.Fail(AuthenticationErrorMessages.ChangePasswordFail);

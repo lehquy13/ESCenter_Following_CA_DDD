@@ -127,30 +127,4 @@ public class AuthenticationController(ISender mediator, IAppLogger<Authenticatio
 
         return View("SuccessPage", "If you have registered with us, we have sent an email to your registered email.");
     }
-
-    [HttpGet]
-    [Route("change-password/{id:guid}")]
-    public async Task<IActionResult> ChangePassword(Guid id)
-    {
-        await Task.CompletedTask;
-        return View("ChangePassword", id.ToString());
-    }
-
-    [HttpPost("change-password/{id:guid}")]
-    public async Task<IActionResult> ChangePassword1([FromRoute] Guid id, ChangePasswordRequest changePasswordRequest)
-    {
-        var query = new ChangePasswordCommand(
-            changePasswordRequest.CurrentPassword,
-            changePasswordRequest.NewPassword,
-            changePasswordRequest.ConfirmPassword);
-
-        var loginResult = await mediator.Send(query);
-
-        if (loginResult.IsSuccess)
-        {
-            return RedirectToAction("SuccessPage", "Home");
-        }
-
-        return RedirectToAction("FailPage", "Home");
-    }
 }

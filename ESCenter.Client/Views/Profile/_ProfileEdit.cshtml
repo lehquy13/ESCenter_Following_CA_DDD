@@ -17,7 +17,7 @@
                        id="formFile" 
                        name="formFile" 
                        style="visibility: hidden; width: 1px; height: 1px" 
-                       onchange="LoadImage('@Url.Action("ChoosePicture", "Profile", null)','avatar'); return false;"/>
+                       onchange="LoadImage('@Url.Action("ChangeAvatar", "Profile", null)','avatar'); return false;"/>
                 <a href="" onclick="document.getElementById('formFile').click(); return false" class="btn btn-primary btn-sm" title="Upload new profile image">
                     <i class="bi bi-upload"></i>
                 </a>
