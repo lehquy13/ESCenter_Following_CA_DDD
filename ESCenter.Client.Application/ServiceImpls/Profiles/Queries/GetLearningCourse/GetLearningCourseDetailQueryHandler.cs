@@ -32,20 +32,28 @@ public class GetLearningCourseDetailQueryHandler(
     public override async Task<Result<LearningCourseDetailForClientDto>> Handle(GetLearningCourseDetailQuery request,
         CancellationToken cancellationToken)
     {
-        var courseRequestQueryable =
-            from courseFromDb in courseRepository.GetAll()
-            join subjectFromDb in subjectRepository.GetAll() on courseFromDb.SubjectId equals subjectFromDb.Id
-            join tutor in tutorRepository.GetAll() on courseFromDb.TutorId equals tutor.Id
-            join customer in customerRepository.GetAll() on tutor.CustomerId equals customer.Id
-            where courseFromDb.TutorId == CustomerId.Create(currentUserService.UserId) &&
-                  courseFromDb.Id == CourseId.Create(request.CourseId)
-            select new
-            {
-                Course = courseFromDb,
-                Subject = subjectFromDb,
-                TutorId = tutor.Id,
-                TutorInfo = customer
-            };
+        var courseId = CourseId.Create(request.CourseId);
+
+        var courseRequestQueryable = courseRepository.GetAll()
+            .Where(result => result.Id == courseId)
+            .Join(subjectRepository.GetAll(),
+                courseFromDb => courseFromDb.SubjectId,
+                subjectFromDb => subjectFromDb.Id,
+                (courseFromDb, subjectFromDb) => new { Course = courseFromDb, Subject = subjectFromDb })
+            .Join(tutorRepository.GetAll(),
+                courseSubject => courseSubject.Course.TutorId,
+                tutor => tutor.Id,
+                (courseSubject, tutor) => new { CourseSubject = courseSubject, Tutor = tutor })
+            .Join(customerRepository.GetAll(),
+                joined => joined.Tutor.CustomerId,
+                customer => customer.Id,
+                (joined, customer) => new
+                {
+                    Course = joined.CourseSubject.Course,
+                    Subject = joined.CourseSubject.Subject,
+                    TutorId = joined.Tutor.Id,
+                    TutorInfo = customer
+                });
 
         var course =
             await asyncQueryableExecutor.SingleOrDefault(courseRequestQueryable, false, cancellationToken);
@@ -55,7 +63,8 @@ public class GetLearningCourseDetailQueryHandler(
             return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
 
-        var classDto = (course.Course,course.Subject,course.TutorId, course.TutorInfo).Adapt<LearningCourseDetailForClientDto>();
+        var classDto = (course.Course, course.Subject, course.TutorId.Value, course.TutorInfo)
+            .Adapt<LearningCourseDetailForClientDto>();
 
         return classDto;
     }

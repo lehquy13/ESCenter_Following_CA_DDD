@@ -1,5 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.Errors;
@@ -15,6 +16,7 @@ namespace ESCenter.Domain.DomainServices;
 public class TutorDomainService(
     IAppLogger<TutorDomainService> logger,
     ITutorRepository tutorRepository,
+    ITutorRequestRepository tutorRequestRepository,
     ISubjectRepository subjectRepository
 ) : DomainServiceBase(logger), ITutorDomainService
 {
@@ -67,6 +69,27 @@ public class TutorDomainService(
 
         tutor.UpdateAllMajor(tutorMajors);
 
+        return Result.Success();
+    }
+
+    public async Task<Result> RequestTutor(TutorId tutorId, CustomerId customerId, string message)
+    {
+        var tutor = await tutorRepository.GetAsync(tutorId);
+
+        if (tutor is null)
+        {
+            return Result.Fail(TutorDomainError.TutorNotFound);
+        }
+
+        if (!tutor.IsVerified)
+        {
+            return Result.Fail(TutorDomainError.TutorUnavailable);
+        }
+
+        var tutorRequest = TutorRequest.Create(tutorId, customerId, message);
+     
+        await tutorRequestRepository.InsertAsync(tutorRequest);
+        
         return Result.Success();
     }
 }

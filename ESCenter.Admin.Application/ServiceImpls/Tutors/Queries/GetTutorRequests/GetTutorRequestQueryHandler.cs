@@ -1,8 +1,10 @@
 ﻿using ESCenter.Admin.Application.Contracts.Users.Learners;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -23,7 +25,7 @@ public class GetTutorRequestQueryHandler(
     public override async Task<Result<List<TutorRequestForListDto>>> Handle(GetTutorRequestQuery request,
         CancellationToken cancellationToken)
     {
-        var tutorId = CustomerId.Create(request.TutorId);
+        var tutorId = TutorId.Create(request.TutorId);
 
         var queryable =
             from req in tutorRequestRepository.GetAll()
@@ -37,9 +39,12 @@ public class GetTutorRequestQueryHandler(
                 TutorRequest = req.Message
             };
 
-        var result = await asyncQueryableExecutor.ToListAsync(queryable, false, cancellationToken);
+        var results = await asyncQueryableExecutor.ToListAsync(queryable, false, cancellationToken);
 
-        var resultDto = Mapper.Map<List<TutorRequestForListDto>>(result);
+        var resultDto = results.Select(result =>
+                (result.Tutor, result.Learner, result.TutorRequest).Adapt<TutorRequestForListDto>())
+            .ToList();
+
         return resultDto;
     }
 }

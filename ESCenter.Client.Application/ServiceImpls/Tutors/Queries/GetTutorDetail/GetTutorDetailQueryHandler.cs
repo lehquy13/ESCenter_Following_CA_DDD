@@ -2,6 +2,7 @@
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Mapster;
@@ -30,7 +31,7 @@ public class GetTutorDetailQueryHandler(
             join tutor in tutorRepository.GetAll() on user.Id equals tutor.CustomerId
             join course in courseRepository.GetAll().Where(x => x.Review != null) on tutor.Id equals course.TutorId into
                 groupCourse
-            where user.Id == CustomerId.Create(request.TutorId)
+            where tutor.Id == TutorId.Create(request.TutorId)
             select new
             {
                 User = user,

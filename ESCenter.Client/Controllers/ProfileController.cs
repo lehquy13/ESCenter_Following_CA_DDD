@@ -2,10 +2,10 @@
 using ESCenter.Application.Accounts.Commands.ChangePassword;
 using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
-using ESCenter.Application.Accounts.Queries.Login;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
+using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourses;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Client.Models;
@@ -41,16 +41,19 @@ public class ProfileController(
         await PackStaticListToView();
 
         var learnerProfile = await sender.Send(new GetUserProfileQuery());
+        var learningCourses = await sender.Send(new GetLearningCoursesQuery());
 
-        if (learnerProfile is { IsSuccess: true, Value: not null })
+        if (learnerProfile is { IsSuccess: true, Value: not null }
+            && learningCourses is { IsSuccess: true, Value: not null })
         {
             return View(new ProfileViewModel
             {
                 UserProfileDto = learnerProfile.Value,
+                LearningCourseForListDtos = learningCourses.Value
             });
         }
 
-        return RedirectToAction("Index", "Authentication", new LoginQuery("", ""));
+        return RedirectToAction("Error", "Home");
     }
 
     [HttpPost("change-avatar")]
@@ -180,7 +183,7 @@ public class ProfileController(
 
         if (course.IsSuccess)
         {
-            return Helper.RenderRazorViewToString(this, "_LearningClassDetail", course.Value);
+            return Helper.RenderRazorViewToString(this, "_LearningCourseDetail", course.Value);
         }
 
         return RedirectToAction("Error", "Home");
@@ -196,6 +199,11 @@ public class ProfileController(
 
         var result = await sender.Send(command);
 
-        return RedirectToAction("Index");
+        if (result.IsSuccess)
+        {
+            return RedirectToAction("SuccessPage", "Home");
+        }
+
+        return RedirectToAction("FailPage", "Home");
     }
 }

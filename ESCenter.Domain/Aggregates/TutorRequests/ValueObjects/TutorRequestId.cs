@@ -11,9 +11,9 @@ public class TutorRequestId : ValueObject
         Value = value;
     }
     
-    public static TutorRequestId Create(Guid? value)
+    public static TutorRequestId Create(Guid value = default)
     {
-        return new(value ?? Guid.NewGuid());
+        return new(value == default ? Guid.NewGuid() : value);
     }
     
     public override IEnumerable<object> GetEqualityComponents()

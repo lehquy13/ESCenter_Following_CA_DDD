@@ -3,11 +3,6 @@ using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
-using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
-using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Domain.Shared.Courses;
 using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
@@ -21,8 +16,6 @@ namespace ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourseDeta
 public class GetCourseDetailQueryHandler(
     IReadOnlyRepository<Course, CourseId> courseRepository,
     IReadOnlyRepository<Subject, SubjectId> subjectRepository,
-    IReadOnlyRepository<Customer, CustomerId> userRepository,
-    IReadOnlyRepository<Tutor, TutorId> tutorRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetCourseDetailQueryHandler> logger,
     IMapper mapper)

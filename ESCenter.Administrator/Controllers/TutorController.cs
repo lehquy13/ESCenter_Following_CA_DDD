@@ -262,7 +262,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
         var result = await sender.Send(new GetTutorRequestQuery(id));
 
         return result.IsSuccess
-            ? Helper.SuccessResult()
+            ? Helper.RenderRazorViewToString(this, "ViewTutorRequests", result.Value)
             : RedirectToAction("Error", "Home");
     }
 

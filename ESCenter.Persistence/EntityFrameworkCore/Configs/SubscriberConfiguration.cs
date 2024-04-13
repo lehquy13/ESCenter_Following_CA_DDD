@@ -1,6 +1,4 @@
 ﻿using ESCenter.Domain.Aggregates.Subscribers;
-using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,18 +10,9 @@ internal class SubscriberConfiguration : IEntityTypeConfiguration<Subscriber>
     {
         builder.ToTable(nameof(Subscriber));
         builder.HasKey(r => r.Id);
-        
-        builder.Property(r => r.SubscriberId)
-            .HasColumnName(nameof(Subscriber.SubscriberId))
-            .ValueGeneratedNever()
-            .HasConversion(
-                id => id.Value,
-                value => CustomerId.Create(value)
-            );
 
-        builder.HasOne<Customer>()
-            .WithMany()
-            .HasForeignKey(x => x.SubscriberId)
-            .IsRequired();
+        builder.Property(x => x.Email)
+            .IsRequired()
+            .HasMaxLength(256);
     }
 }

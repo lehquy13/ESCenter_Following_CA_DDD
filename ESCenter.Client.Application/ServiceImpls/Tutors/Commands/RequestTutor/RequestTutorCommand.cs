@@ -1,12 +1,16 @@
-﻿using Matt.SharedKernel.Application.Mediators.Commands;
+﻿using FluentValidation;
+using Matt.SharedKernel.Application.Contracts.Interfaces;
+using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Client.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 
-public record RequestTutorCommand(TutorRequestForCreateDto TutorRequestForCreateDto) : ICommandRequest;
+public record RequestTutorCommand(Guid TutorId, string RequestMessage) : ICommandRequest, IAuthorizationRequest;
 
-public class TutorRequestForCreateDto
+public class RequestTutorCommandValidator : AbstractValidator<RequestTutorCommand>
 {
-    public Guid TutorId { get; set; }
-    public Guid LearnerId { get; set; }
-    public string RequestMessage { get; set; } = null!;
+    public RequestTutorCommandValidator()
+    {
+        RuleFor(x => x.TutorId).NotEmpty();
+        RuleFor(x => x.RequestMessage).NotEmpty();
+    }
 }

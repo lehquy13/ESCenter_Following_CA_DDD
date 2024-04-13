@@ -7,6 +7,7 @@ using ESCenter.Client.Application.Contracts.Users.Tutors;
 using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
+using ESCenter.Client.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 using ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 using ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutors;
 using ESCenter.Client.Models;
@@ -103,13 +104,29 @@ public class TutorController(
 
     [Authorize]
     [HttpPost]
+    [Route("{tutorId:guid}/request-tutor")]
+    public async Task<IActionResult> RequestTutor([FromRoute] Guid tutorId,
+        string requestMessage)
+    {
+        var result = await mediator.Send(new RequestTutorCommand(tutorId, requestMessage));
+
+        if (result.IsSuccess)
+        {
+            return RedirectToAction("SuccessPage", "Home");
+        }
+
+        return RedirectToAction("Error", "Home");
+    }
+
+    [Authorize]
+    [HttpPost]
     [Route("tutor-registration")]
     public async Task<IActionResult> TutorRegistration(
         TutorRegistrationDto tutorForDetailDto,
         List<IFormFile> imageFileUrls)
     {
         tutorForDetailDto.ImageFileUrls = new List<string>();
-        
+
         foreach (var formFile in imageFileUrls)
         {
             if (formFile.Length <= 0)
@@ -121,7 +138,7 @@ public class TutorController(
             await using var fileStream = formFile.OpenReadStream();
 
             var uploadResult = _cloudinaryServices.UploadImage(fileName, fileStream);
-            
+
             tutorForDetailDto.ImageFileUrls.Add(uploadResult);
         }
 
@@ -133,8 +150,7 @@ public class TutorController(
 
         if (result.IsSuccess)
         {
-            HttpContext.Session.SetString("role", Role.Tutor.ToString());
-            return RedirectToAction("SuccessPage", "Home");
+            return RedirectToAction("Logout", "Authentication");
         }
 
         return RedirectToAction("FailPage", "Home");

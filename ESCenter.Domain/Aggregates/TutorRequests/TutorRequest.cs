@@ -1,4 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
+﻿using ESCenter.Domain.Aggregates.TutorRequests.DomainEvents;
+using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
@@ -22,12 +23,17 @@ public class TutorRequest : AuditedAggregateRoot<TutorRequestId>
         CustomerId learnerId,
         string message)
     {
-        return new TutorRequest()
+        var tutorRequest = new TutorRequest()
         {
+            Id = TutorRequestId.Create(),
             TutorId = tutorId,
             LearnerId = learnerId,
             Message = message
         };
+        
+        tutorRequest.DomainEvents.Add(new TutorRequestCreatedDomainEvent(tutorRequest));
+
+        return tutorRequest;
     }
     
     public void Approve()

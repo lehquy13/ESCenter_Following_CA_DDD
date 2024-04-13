@@ -6,7 +6,7 @@
 
 <form class="col-lg-12" asp-action="ReviewTutor" asp-route-courseId="@courseId" asp-controller="Profile">
     <h6>Write your review</h6>
-    @if (string.IsNullOrWhiteSpace(Model.Detail))
+    @if (!string.IsNullOrWhiteSpace(Model.Detail))
     {
         <textarea class="form-control h-75" name="Detail" placeholder="Let's us know your thought">@Model.Detail</textarea>
     }

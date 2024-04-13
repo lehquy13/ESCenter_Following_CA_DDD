@@ -70,6 +70,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 
+app.AddInfrastructureMiddleware();
+
 app.UseExceptionHandler();
 
 app.AddInfrastructureMiddleware();

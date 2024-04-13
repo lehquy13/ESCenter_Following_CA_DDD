@@ -18,4 +18,6 @@ public interface ITutorDomainService : IDomainService
     );
 
     Task<Result> UpdateTutorMajorsAsync(TutorId tutorId, IEnumerable<int> majorIds);
+
+    Task<Result> RequestTutor(TutorId tutorId, CustomerId customerId, string message);
 }

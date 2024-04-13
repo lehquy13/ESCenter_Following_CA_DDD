@@ -1,4 +1,5 @@
 using ESCenter.Client;
+using ESCenter.Persistence;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Serilog;
 using Soenneker.Blazor.FilePond.Registrars;
@@ -36,6 +37,8 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
+app.AddInfrastructureMiddleware();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

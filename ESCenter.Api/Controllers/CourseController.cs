@@ -23,7 +23,6 @@ public class CourseController(
     [Route("")]
     public async Task<IActionResult> GetAllCourses([FromQuery] CourseParams courseParams)
     {
-        courseParams.Status = Status.Available;
         var courseResult = await mediator.Send(new GetCoursesQuery(courseParams));
         return Ok(courseResult);
     }

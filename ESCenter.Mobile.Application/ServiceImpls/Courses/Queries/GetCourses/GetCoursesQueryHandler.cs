@@ -31,28 +31,14 @@ public class GetCoursesQueryHandler(
             var courseQuery =
                 from course in courseRepository.GetAll()
                     .OrderByDescending(x => x.CreationTime)
-                    .Where(x => x.IsDeleted == false)
+                    .Where(x => x.IsDeleted == false && x.Status == Status.Available)
                 join subject in subjectRepository.GetAll().Where(x => x.IsDeleted == false)
                     on course.SubjectId equals subject.Id
-                select new 
+                select new
                 {
                     Course = course,
                     Subject = subject.Name
                 };
-
-            //Filter by Today | Verifying | Purchasing | All
-            switch (request.CourseParams.Filter)
-            {
-                case "Today":
-                    courseQuery = courseQuery.Where(x => x.Course.CreationTime >= DateTime.Today);
-                    break;
-                case "Verifying":
-                    courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnVerifying);
-                    break;
-                case "Purchasing":
-                    courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnPurchasing);
-                    break;
-            }
 
             //Filter by SubjectName if it is not null
             if (!string.IsNullOrWhiteSpace(request.CourseParams.SubjectName))
@@ -67,11 +53,12 @@ public class GetCoursesQueryHandler(
                 await asyncQueryableExecutor.ToListAsync(
                     courseQuery
                         .Skip((request.CourseParams.PageIndex - 1) * request.CourseParams.PageSize)
-                        .Take(request.CourseParams.PageSize), 
+                        .Take(request.CourseParams.PageSize),
                     false, cancellationToken);
 
             //Get the class of the page
-            var classInformationDtos = classesQueryResult.Select(classR => (classR.Course, classR.Subject).Adapt<CourseForListDto>()).ToList();
+            var classInformationDtos = classesQueryResult
+                .Select(classR => (classR.Course, classR.Subject).Adapt<CourseForListDto>()).ToList();
 
             return PaginatedList<CourseForListDto>.Create(classInformationDtos, request.CourseParams.PageIndex,
                 request.CourseParams.PageSize, count);

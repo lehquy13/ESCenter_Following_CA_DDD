@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{B41602
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCenter.Client.Application", "ESCenter.Client.Application\ESCenter.Client.Application.csproj", "{4DFA6427-08B2-4F8F-8D36-C00696A47A35}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCenter.BGServices", "ESCenter.BGServices\ESCenter.BGServices.csproj", "{0E34C874-2F93-4AD2-8318-D53BB0087DB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,10 @@ Global
 		{4DFA6427-08B2-4F8F-8D36-C00696A47A35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DFA6427-08B2-4F8F-8D36-C00696A47A35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DFA6427-08B2-4F8F-8D36-C00696A47A35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E34C874-2F93-4AD2-8318-D53BB0087DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E34C874-2F93-4AD2-8318-D53BB0087DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E34C874-2F93-4AD2-8318-D53BB0087DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E34C874-2F93-4AD2-8318-D53BB0087DB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,6 +172,7 @@ Global
 		{83E7E3CA-3978-4ED8-ADE9-A658A60E8999} = {B41602F9-ABB7-4087-B838-9914F5EBB572}
 		{AA813CC4-3E44-4E09-9A99-695C9D9B0029} = {B41602F9-ABB7-4087-B838-9914F5EBB572}
 		{4DFA6427-08B2-4F8F-8D36-C00696A47A35} = {3E87EA32-2449-4CBD-92D8-1EE674D98D58}
+		{0E34C874-2F93-4AD2-8318-D53BB0087DB9} = {7000A81C-07A1-45D4-BFD2-D78EF200C836}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A868679-8BFD-4EC3-AC85-F776ACB4B174}

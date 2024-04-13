@@ -1,6 +1,5 @@
 ﻿using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Interfaces.Cloudinarys;
-using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetTutorMajors;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Commands.CreateChangeVerification;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Commands.UpdateTutorProfile;

@@ -11,14 +11,16 @@ public class LearningCourseDetailForClientDto : BasicAuditedEntityDto<Guid>
     //Basic Information
     public string Title { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
-    public string Status { get; init; } = "OnVerifying";
-    public string LearningMode { get; init; } = "Offline";
+    public string Status { get; init; } = Domain.Shared.Courses.Status.OnVerifying.ToString();
+    public string LearningMode { get; init; } = Domain.Shared.Courses.LearningMode.Online.ToString();
     public float SectionFee { get; init; } = 0;
     public float ChargeFee { get; init; } = 0;
     public int SessionDuration { get; init; } = 90;
     public int SessionPerWeek { get; init; } = 2;
     public string Address { get; init; } = string.Empty;
     public string SubjectName { get; init; } = string.Empty;
+    public string Detail { get; init; } = string.Empty;
+    public short Rate { get; init; }
     public Guid TutorId { get; init; }
     public string TutorName { get; init; } = string.Empty;
     public string TutorContact { get; init; } = string.Empty;
@@ -45,6 +47,8 @@ public class LearningCourseForDetailDtoMappingConfig : IRegister
             .Map(des => des.SubjectName, src => src.Item2.Name)
             .Map(des => des.Address, src => src.Item1.Address)
             .Map(des => des.Description, src => src.Item1.Description)
+            .Map(des => des.Detail, src => src.Item1.Review == null ? "" : src.Item1.Review.Detail)
+            .Map(des => des.Rate, src => src.Item1.Review == null ? (short)5 : src.Item1.Review.Rate)
             .Map(des => des, src => src);
     }
 }

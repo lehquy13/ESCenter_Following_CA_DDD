@@ -54,9 +54,9 @@ public class TutorController(
     [HttpPost]
     [Route("{tutorId}/request-tutor")]
     public async Task<IActionResult> RequestTutor(Guid tutorId,
-        [FromBody] TutorRequestForCreateDto tutorRequestForCreateDto)
+        string requestMessage)
     {
-        var result = await mediator.Send(new RequestTutorCommand(tutorRequestForCreateDto));
+        var result = await mediator.Send(new RequestTutorCommand(tutorId, requestMessage));
         return Ok(result);
     }
 }
