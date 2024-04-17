@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ESCenter.Admin.Application.Contracts.Users.Learners.LearnerForCreateUpdateDto
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div>
+    <h4>@Model.FirstName @Model.LastName</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-4" hidden>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-8"hidden>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-4" hidden>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-8" hidden>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.BirthYear)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.BirthYear)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IsEmailConfirmed)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IsEmailConfirmed)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+      
+      
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.LastModificationTime)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.LastModificationTime)
+        </dd>
+       
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.CreationTime)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.CreationTime)
+        </dd>
+       
+    </dl>
+    
+    <form asp-action="DeleteConfirm" class="modal-footer">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+    </form>
+</div>

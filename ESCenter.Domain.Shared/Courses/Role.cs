@@ -2,9 +2,9 @@
 public enum Role
 {
     Undefined,
-    Admin,
-    Tutor,
-    Learner,
-    All,
-    Staff
+    Admin = 1,
+    Tutor = 2,
+    Learner = 3,
+    All = 5,
+    SuperAdmin = 4
 }

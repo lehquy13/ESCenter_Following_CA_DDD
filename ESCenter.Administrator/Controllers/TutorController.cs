@@ -1,6 +1,7 @@
 ﻿using ESCenter.Administrator.Utilities;
 using ESCenter.Admin.Application.Contracts.Users.Learners;
 using ESCenter.Admin.Application.Contracts.Users.Tutors;
+using ESCenter.Admin.Application.ServiceImpls.Customers.Commands.CreateUpdateUserProfile;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Commands.ClearTutorRequests;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Commands.CreateTutor;
@@ -12,7 +13,6 @@ using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorChangeVerif
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorMajors;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorRequests;
-using ESCenter.Admin.Application.ServiceImpls.Users.Commands.CreateUpdateUserProfile;
 using ESCenter.Domain.Shared;
 using MapsterMapper;
 using MediatR;

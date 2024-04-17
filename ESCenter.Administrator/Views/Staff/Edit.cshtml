@@ -1,0 +1,161 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ESCenter.Admin.Application.Contracts.Users.Learners.LearnerForCreateUpdateDto
+
+@{
+    ViewData["Title"] = "Edit";
+
+    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
+    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
+}
+<h1>Edit</h1>
+
+<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
+    <i class="bi bi-check-circle me-1"></i>
+    Update successfully!
+    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
+</div>
+
+<h4>@Model.FirstName @Model.LastName</h4>
+
+<hr/>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Personal Information</h5>
+
+        <!-- Multi Columns Form -->
+        <form class="row g-3" asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" method="post" onsubmit="return callPostActionWithForm(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="col-md-6">
+                <label asp-for="FirstName" class="form-label">First Name</label>
+                <input type="text" asp-for="FirstName" class="form-control"/>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" asp-for="LastName"/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <!-- ----------------------------------- -->
+
+            <div class="col-md-4">
+                <label asp-for="Gender" class="form-label">Gender</label>
+                <select asp-for="Gender" class="form-select">
+                    <option selected>@Model.Gender</option>
+
+                    @foreach (string i in genders)
+                    {
+                        @if (i != Model.Gender.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Role" class="form-label">Role</label>
+                <select asp-for="Role" class="form-select">
+                    <option selected>@Model.Role.ToString()</option>
+
+                    @foreach (string i in roles)
+                    {
+                        @if (i != Model.Role.ToString())
+                        {
+                            <option> @i </option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="BirthYear" class="form-label">Birth</label>
+                <input type="number" class="form-control" asp-for="BirthYear"/>
+
+                <span asp-validation-for="BirthYear" class="text-danger"></span>
+            </div>
+            <!-- disable email when confirmed -->
+            @if (Model.IsEmailConfirmed == true)
+            {
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+
+                    <div class="input-group mb-3">
+
+                        <input type="email" readonly asp-for="Email" class="form-control" aria-describedby="basic-addon3"/>
+                        <span class="input-group-text" id="basic-addon3">
+                            <i class="bi bi-check">
+                            </i>
+                        </span>
+
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input type="email" asp-for="Email" class="form-control"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="col-md-6">
+                <label asp-for="PhoneNumber" class="form-label">Number</label>
+                <div class="col-sm-12">
+                    <input type="text" asp-for="PhoneNumber" class="form-control"/>
+                </div>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+            </div>
+            <!-- ----------------------------------- -->
+
+            <div class="col-6">
+                <label asp-for="City" class="form-label">City</label>
+                <input type="text" class="form-control" asp-for="City" placeholder="Sai Gon"/>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            
+            <div class="col-6">
+                <label asp-for="Country" class="form-label">Address</label>
+                <input type="text" class="form-control" asp-for="Country" placeholder="Viet Nam"/>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="Id"/>
+            <div class="text-center">
+                @if (Model.Role == "Admin")
+                {
+                    <button type="submit" disabled="disabled" class="btn btn-primary">Submit</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                }
+                <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form><!-- End Multi Columns Form -->
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

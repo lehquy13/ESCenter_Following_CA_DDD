@@ -2,7 +2,7 @@
 using FluentValidation;
 using Matt.SharedKernel.Application.Mediators.Queries;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearnerDetail;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearnerDetail;
 
 public record GetLearnerDetail(Guid Id) : IQueryRequest<LearnerForCreateUpdateDto>;
 

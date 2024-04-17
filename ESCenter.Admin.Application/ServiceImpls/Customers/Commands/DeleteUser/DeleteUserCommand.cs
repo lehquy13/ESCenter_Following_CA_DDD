@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users.Commands.DeleteUser;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers.Commands.DeleteUser;
 
 public record DeleteUserCommand(Guid Id) : ICommandRequest;
 

@@ -1,6 +1,6 @@
 ﻿using Matt.ResultObject;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers;
 
 public static class UserAppServiceError
 {

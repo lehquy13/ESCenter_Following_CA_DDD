@@ -1,5 +1,4 @@
-﻿using ESCenter.Application.EventHandlers;
-using ESCenter.Domain;
+﻿using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
@@ -14,7 +13,7 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users.Commands.CreateUpdateUserProfile;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers.Commands.CreateUpdateUserProfile;
 
 public class CreateUpdateUserProfileCommandHandler(
     IUnitOfWork unitOfWork,

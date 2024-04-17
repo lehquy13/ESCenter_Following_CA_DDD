@@ -2,7 +2,6 @@ using ESCenter.Client;
 using ESCenter.Persistence;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Serilog;
-using Soenneker.Blazor.FilePond.Registrars;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +21,6 @@ builder.Host
     .UseSerilog((context, configuration)
         => configuration.ReadFrom.Configuration(context.Configuration)
     );
-builder.Services.AddFilePond();
 builder.Services.AddHost(builder.Configuration);
 
 var app = builder.Build();

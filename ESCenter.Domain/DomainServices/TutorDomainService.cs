@@ -22,7 +22,7 @@ public class TutorDomainService(
 {
     private static readonly List<string> EmptyVerification = ["document.png"];
 
-    public async Task<Tutor> CreateTutorWithEmptyVerificationAsync(
+    public async Task<Result> CreateTutorWithEmptyVerificationAsync(
         CustomerId userId,
         AcademicLevel academicLevel,
         string university,
@@ -48,7 +48,7 @@ public class TutorDomainService(
 
         await tutorRepository.InsertAsync(tutor);
 
-        return tutor;
+        return Result.Success();
     }
 
     public async Task<Result> UpdateTutorMajorsAsync(TutorId tutorId, IEnumerable<int> majorIds)

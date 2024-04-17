@@ -5,7 +5,7 @@ using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearners;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearners;
 
 public class GetLearnersQueryHandler(
     ICustomerRepository customerRepository,

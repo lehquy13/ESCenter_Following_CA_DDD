@@ -1,5 +1,7 @@
 using ESCenter.Api;
 using ESCenter.Host;
+using ESCenter.Infrastructure;
+using ESCenter.Mobile.Application;
 using ESCenter.Persistence;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
@@ -19,8 +21,16 @@ builder.Services.AddControllers(options =>
 {
     options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
 });
+
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
-builder.Services.AddHost(builder.Configuration);
+
+builder.Services.AddHost();
+
+builder.Services
+    .AddApplication()
+    .AddPresentation()
+    .AddPersistence(builder.Configuration)
+    .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -58,6 +68,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,8 +84,6 @@ app.UseSerilogRequestLogging();
 app.AddInfrastructureMiddleware();
 
 app.UseExceptionHandler();
-
-app.AddInfrastructureMiddleware();
 
 app.UseHttpsRedirection();
 

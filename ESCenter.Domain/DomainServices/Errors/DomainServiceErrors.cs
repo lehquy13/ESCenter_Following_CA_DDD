@@ -22,6 +22,8 @@ public static class DomainServiceErrors
         "Fail to register tutor while adding role");
 
     public static Error FailAddRoleError => new("FailAddRoleError", "Fail to add role");
+    public static Error Unauthorized => new("Unauthorized", "Unauthorized");
+    public static Error Incompetent => new("Incompetent", "Incompetent");
 
     public static Error FailRegisteringAsTutorErrorWhileSavingChanges(string message)
         => new("FailRegisteringTutorErrorWhileSavingChanges",

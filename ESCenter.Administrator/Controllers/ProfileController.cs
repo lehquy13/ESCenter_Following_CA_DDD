@@ -7,7 +7,6 @@ using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Accounts.Queries.Login;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Domain.Shared;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,6 @@ namespace ESCenter.Administrator.Controllers;
 [Route("admin/[controller]")]
 [Authorize(Policy = "RequireAdministratorRole")]
 public class ProfileController(
-    IMapper mapper,
     ISender sender,
     ILogger<ProfileController> logger,
     ICloudinaryServices cloudinaryServices,

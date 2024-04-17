@@ -4,6 +4,7 @@ using ESCenter.Admin.Application.ServiceImpls.Subjects.Commands.DeleteSubject;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Commands.UpsertSubject;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubject;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
+using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace ESCenter.Administrator.Controllers;
 
 [Authorize(Policy = "RequireAdministratorRole")]
 [Route("admin/[controller]")]
-public class SubjectController(ILogger<SubjectController> logger, ISender sender) : Controller
+public class SubjectController(IAppLogger<SubjectController> logger, ISender sender) : Controller
 {
     [HttpGet]
     [Route("")]
@@ -20,7 +21,7 @@ public class SubjectController(ILogger<SubjectController> logger, ISender sender
     {
         var result = await sender.Send(new GetAllSubjectsQuery());
 
-        if (result.IsFailure || result.Value is null)
+        if (result.IsFailure)
         {
             logger.LogError("GetSubjectsQuery failed: {Message}", result.DisplayMessage);
             return RedirectToAction("Error", "Home");

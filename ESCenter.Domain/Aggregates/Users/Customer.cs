@@ -1,5 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
+using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
@@ -38,7 +39,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
         string phoneNumber,
         Role role)
     {
-        return new Customer
+        var customer = new Customer
         {
             Id = identityUserId,
             FirstName = firstName,
@@ -52,6 +53,17 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
             PhoneNumber = phoneNumber,
             Role = role
         };
+
+        var message =
+            $"New user: {customer.FirstName} {customer.LastName} at {customer.CreationTime.ToLongDateString()}";
+
+        customer.DomainEvents.Add(new NewDomainObjectCreatedEvent(
+            customer.Id.Value.ToString(),
+            message,
+            NotificationEnum.Learner
+        ));
+
+        return customer;
     }
 
     public string GetFullName() => $"{FirstName} {LastName}";

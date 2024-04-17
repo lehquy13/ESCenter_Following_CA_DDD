@@ -7,7 +7,7 @@ using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearnerDetail;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearnerDetail;
 
 public class GetLearnerDetailQueryHandler(
     IAppLogger<GetLearnerDetailQueryHandler> logger,

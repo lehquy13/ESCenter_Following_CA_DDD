@@ -25,53 +25,60 @@ internal static class Program
 {
     public static async Task Main(string[] args)
     {
-        var factory = new AppDbContextFactory();
-        var context = factory.CreateDbContext(args);
-
         var choice = 0;
-
-        Console.WriteLine("1. Delete database");
-        Console.WriteLine("2. Migrate database");
-        Console.WriteLine("3. Seed database");
-        Console.WriteLine("4. Delete then migrate then seed database");
-        Console.WriteLine("5. Migrate then seed database");
-        Console.WriteLine("6. Cancel...");
-
-        Console.WriteLine("Enter your choice: ");
-
-        try
+        while (choice != 6)
         {
-            choice = int.Parse(Console.ReadLine()!);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+            var factory = new AppDbContextFactory();
+            var context = factory.CreateDbContext(args);
 
-        switch (choice)
-        {
-            case 1:
-                await context.Database.EnsureDeletedAsync();
-                return;
-            case 2:
-                await context.Database.MigrateAsync();
-                await SeedData(context);
-                return;
-            case 3:
-                await SeedData(context);
-                return;
-            case 4:
-                await context.Database.EnsureDeletedAsync();
-                await context.Database.MigrateAsync();
-                await SeedData(context);
-                return;
-            case 5:
-                await context.Database.MigrateAsync();
-                await SeedData(context);
-                return;
-            default:
-                Console.WriteLine("Cancel");
-                return;
+
+            Console.WriteLine("1. Delete database");
+            Console.WriteLine("2. Migrate database");
+            Console.WriteLine("3. Seed database");
+            Console.WriteLine("4. Delete then migrate then seed database");
+            Console.WriteLine("5. Migrate then seed database");
+            Console.WriteLine("6. Cancel...");
+
+            Console.WriteLine("Enter your choice: ");
+
+            try
+            {
+                choice = int.Parse(Console.ReadLine()!);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                choice = 7;
+            }
+
+            switch (choice)
+            {
+                case 1:
+                    await context.Database.EnsureDeletedAsync();
+                    break;
+                case 2:
+                    await context.Database.MigrateAsync();
+                    await SeedData(context);
+                    break;
+                case 3:
+                    await SeedData(context);
+                    break;
+                case 4:
+                    await context.Database.EnsureDeletedAsync();
+                    await context.Database.MigrateAsync();
+                    await SeedData(context);
+                    break;
+                case 5:
+                    await context.Database.MigrateAsync();
+                    await SeedData(context);
+                    break;
+                case 6:
+                    Console.WriteLine("Cancel");
+                    break;
+                default:
+                    Console.WriteLine("Invalid");
+                    break;
+            }
         }
     }
 
@@ -311,11 +318,30 @@ internal static class Program
                     var tutor = tutorData[randomTutor];
                     course.AssignTutor(tutor.Id);
 
-                    // review?
+                    // review
                     var randomReview = reviews[new Random().Next(0, 99)];
                     course.ReviewCourse(
                         randomReview.Rate,
                         randomReview.Detail);
+                }
+
+                // Iterate through first 50 tutors to calculate the average rate
+                for (var index = 0; index < 50; index++)
+                {
+                    var tutor = tutorData[index];
+                    var totalRate = 0;
+                    var totalReview = 0;
+                    foreach (var course in courseData
+                                 .Where(course => course.TutorId == tutor.Id
+                                                  && course.Review != null))
+                    {
+                        totalRate += course.Review!.Rate;
+                        totalReview++;
+                    }
+
+                    if (totalReview == 0) continue;
+
+                    tutor.UpdateRate((float)totalRate / totalReview);
                 }
 
                 context.Courses.AddRange(courseData);

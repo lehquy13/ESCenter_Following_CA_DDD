@@ -2,7 +2,7 @@
 using FluentValidation;
 using Matt.SharedKernel.Application.Mediators.Commands;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users.Commands.CreateUpdateUserProfile;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers.Commands.CreateUpdateUserProfile;
 
 public record CreateUpdateUserProfileCommand(
     LearnerForCreateUpdateDto LearnerForCreateUpdateDto

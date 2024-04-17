@@ -1,5 +1,4 @@
-﻿using ESCenter.Application.EventHandlers;
-using ESCenter.Domain;
+﻿using ESCenter.Domain;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.NotificationConsts;
@@ -8,7 +7,7 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Admin.Application.ServiceImpls.Users.Commands.DeleteUser;
+namespace ESCenter.Admin.Application.ServiceImpls.Customers.Commands.DeleteUser;
 
 public class DeleteUserCommandHandler(
     IIdentityService identityRepository,

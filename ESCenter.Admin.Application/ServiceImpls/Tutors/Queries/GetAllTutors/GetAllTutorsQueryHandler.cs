@@ -1,5 +1,5 @@
 ﻿using ESCenter.Admin.Application.Contracts.Users.BasicUsers;
-using ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearners;
+using ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearners;
 using ESCenter.Domain.Aggregates.Users;
 using MapsterMapper;
 using Matt.ResultObject;

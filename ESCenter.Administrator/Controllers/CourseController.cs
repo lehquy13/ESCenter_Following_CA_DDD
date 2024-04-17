@@ -7,10 +7,10 @@ using ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetAllCourses;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetCourseDetail;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetCourseRequest;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetTodayCourses;
+using ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearners;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetAllTutors;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
-using ESCenter.Admin.Application.ServiceImpls.Users.Queries.GetLearners;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
@@ -53,7 +53,6 @@ public class CourseController(
     [Route("")]
     public async Task<IActionResult> Index(string? type)
     {
-        //var query = new GetObjectQuery<List<ClassInformationDto>>();
         var status = type?.ToEnum<Status>() ?? Status.None;
         var courses = await sender.Send(new GetAllCoursesQuery(status));
         if (courses is { IsSuccess: true, Value: not null })

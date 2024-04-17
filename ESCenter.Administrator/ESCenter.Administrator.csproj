@@ -235,4 +235,15 @@
     <None Include="wwwroot\assets\vendor\simple-datatables\style.css" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Staff\Create.cshtml" />
+    <AdditionalFiles Include="Views\Staff\Delete.cshtml" />
+    <AdditionalFiles Include="Views\Staff\Detail.cshtml" />
+    <AdditionalFiles Include="Views\Staff\Edit.cshtml" />
+    <AdditionalFiles Include="Views\Staff\Index.cshtml" />
+    <AdditionalFiles Include="Views\Staff\Student.cshtml" />
+    <AdditionalFiles Include="Views\Staff\Tutor.cshtml" />
+    <AdditionalFiles Include="Views\Staff\_Subjects.cshtml" />
+  </ItemGroup>
+
 </Project>

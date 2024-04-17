@@ -15,6 +15,7 @@ public class TutorListForClientPageDto : EntityDto<Guid>
 
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
     public string University { get; set; } = string.Empty;
+    public float Rate { get; set; }
 }
 
 public class TutorListForClientPageDtoMappingConfig : IRegister

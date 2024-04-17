@@ -10,4 +10,8 @@
       <ProjectReference Include="..\ESCenter.Application\ESCenter.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ServiceImpls\Staffs\Queries\" />
+    </ItemGroup>
+
 </Project>

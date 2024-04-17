@@ -4,6 +4,7 @@ using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
+using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
@@ -55,10 +56,10 @@ public class Tutor : AuditedAggregateRoot<TutorId>
         short rate = 0)
     {
         var id = TutorId.Create();
-
         var verifications = verificationInfos.Select(i => Verification.Create(i, id)).ToList();
 
-        return new Tutor
+
+        var tutor = new Tutor
         {
             Id = id,
             CustomerId = userId,
@@ -68,6 +69,15 @@ public class Tutor : AuditedAggregateRoot<TutorId>
             IsVerified = isVerified,
             Rate = rate,
         };
+
+        var message = $"New tutor: {tutor.Id.Value} at {DateTime.Now.ToLongDateString()}";
+
+        tutor.DomainEvents.Add(new NewDomainObjectCreatedEvent(
+            tutor.Id.Value.ToString(),
+            message,
+            NotificationEnum.Tutor));
+
+        return tutor;
     }
 
     public void Verify(bool isVerified)

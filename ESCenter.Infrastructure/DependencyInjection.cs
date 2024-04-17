@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Infrastructure.ServiceImpls.AppLogger;
@@ -26,11 +27,11 @@ namespace ESCenter.Infrastructure
         {
             services.AddScoped<SerilogFactory>();
             services.AddScoped(typeof(IAppLogger<>), typeof(AppLogger<>));
-            
+
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
+
             // Authentication configuration using jwt bearer 
             services.AddAuth(configuration);
             IdentityModelEventSource.ShowPII = true; //Add this line
@@ -55,7 +56,7 @@ namespace ESCenter.Infrastructure
             services.AddScoped<ICloudinaryServices, CloudinaryServices>();
 
             services.AddScoped<IEmailSender, EmailSender>();
-            
+
             //configure BackgroundService
             //services.AddHostedService<InfrastructureBackgroundService>();
             return services;
@@ -112,11 +113,14 @@ namespace ESCenter.Infrastructure
                         ValidAudience = jwtSettings.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
                     };
-
                 });
 
             services.AddAuthorizationBuilder()
-                .AddPolicy("RequireAdministratorRole", policy => { policy.RequireRole("Admin"); })
+                .AddPolicy("RequireAdministratorRole", policy =>
+                    policy.RequireAssertion(context =>
+                        context.User.HasClaim(ClaimTypes.Role, "Admin") ||
+                        context.User.HasClaim(ClaimTypes.Role, "SuperAdmin")))
+                .AddPolicy("RequireSuperAdministratorRole", policy => { policy.RequireRole("SuperAdmin"); })
                 .AddPolicy("RequireTutorRole", policy => { policy.RequireRole("Tutor"); });
 
             return services;
