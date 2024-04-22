@@ -14,7 +14,7 @@ namespace ESCenter.Domain.Aggregates.Courses;
 
 public sealed class Course : FullAuditedAggregateRoot<CourseId>
 {
-    private List<CourseRequest> _courseRequests = new();
+    private readonly List<CourseRequest> _courseRequests = [];
     private const int MaxCourseRequests = 5;
 
     public string Title { get; private set; } = string.Empty;
@@ -158,7 +158,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         {
             Status = Status.OnProgressing;
         }
-        
+
         DomainEvents.Add(new CourseRequestedDomainEvent(this));
 
         return Result.Success();
@@ -232,15 +232,15 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public Result Purchase(TutorId tutorId)
     {
-        if(Status != Status.Confirmed || Status == Status.Canceled || Status == Status.OnVerifying)
+        if (Status != Status.Confirmed || Status == Status.Canceled || Status == Status.OnVerifying)
         {
-            return Result.Fail(CourseDomainError.CourseUnavailable); 
+            return Result.Fail(CourseDomainError.CourseUnavailable);
         }
 
         Status = Status.OnProgressing;
 
         DomainEvents.Add(new CoursePurchasedDomainEvent(this, tutorId));
-        
+
         return Result.Success();
     }
 }

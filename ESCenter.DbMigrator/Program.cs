@@ -2,6 +2,7 @@
 using System.Reflection;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.Entities;
+using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Discoveries;
 using ESCenter.Domain.Aggregates.Discoveries.Entities;
 using ESCenter.Domain.Aggregates.Discoveries.ValueObjects;

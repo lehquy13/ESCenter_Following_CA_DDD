@@ -1,11 +1,11 @@
 using ESCenter.Domain.Aggregates.Courses.Errors;
-using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using Matt.Auditing;
 using Matt.ResultObject;
-using Matt.SharedKernel.Domain.Primitives.Auditing;
+using Matt.SharedKernel.Domain.Primitives;
 
-namespace ESCenter.Domain.Aggregates.Courses.Entities;
+namespace ESCenter.Domain.Aggregates.Courses.ValueObjects;
 
-public class Review : AuditedEntity<ReviewId>
+public class Review : ValueObject, IAuditedObject
 {
     private const short MinRate = 1;
     private const short MaxRate = 5;
@@ -13,7 +13,12 @@ public class Review : AuditedEntity<ReviewId>
 
     public short Rate { get; private set; }
     public string Detail { get; private set; } = null!;
-    public CourseId CourseId { get; private set; } = null!;
+
+
+    public DateTime CreationTime { get; } 
+    public string? CreatorId { get; }
+    public DateTime? LastModificationTime { get; }
+    public string? LastModifierId { get; }
 
     private Review()
     {
@@ -33,10 +38,14 @@ public class Review : AuditedEntity<ReviewId>
 
         return new Review()
         {
-            Id = ReviewId.Create(),
             Rate = rate,
             Detail = detail,
-            CourseId = courseId
         };
+    }
+
+    public override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Rate;
+        yield return Detail;
     }
 }

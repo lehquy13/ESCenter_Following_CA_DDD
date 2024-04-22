@@ -1,5 +1,6 @@
 ﻿using ESCenter.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Courses.Entities;
+using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using Mapster;
 using Tutor = ESCenter.Domain.Aggregates.Tutors.Tutor;
