@@ -66,7 +66,7 @@ public class LearnerForCreateUpdateDtoValidator : AbstractValidator<LearnerForCr
 
         RuleFor(dto => dto.Role)
             .NotEmpty().WithMessage("Role is required.")
-            .Must(role => role == "Learner").WithMessage("Invalid role value.");
+            .Must(role => role == "Learner" || role == "Admin").WithMessage("Invalid role value.");
 
         RuleFor(dto => dto.IsEmailConfirmed)
             .NotNull().WithMessage("Email confirmation status is required.");

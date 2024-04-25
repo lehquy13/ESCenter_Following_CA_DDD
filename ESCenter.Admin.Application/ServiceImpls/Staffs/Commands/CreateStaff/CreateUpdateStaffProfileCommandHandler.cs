@@ -61,7 +61,9 @@ public class CreateUpdateStaffProfileCommandHandler(
 
         if (staff.IsFailure || await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
-            return Result.Fail(StaffAppServiceError.FailToCreateStaffErrorWhileSavingChanges);
+            return staff.IsFailure
+                ? staff.Error
+                : Result.Fail(StaffAppServiceError.FailToCreateStaffErrorWhileSavingChanges);
         }
 
         return Result.Success();

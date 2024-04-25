@@ -1,5 +1,4 @@
-﻿using ESCenter.Domain.Aggregates.Staff;
-using ESCenter.Domain.Aggregates.Users;
+﻿using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Errors;
 using ESCenter.Domain.Shared.Courses;
@@ -11,7 +10,7 @@ using Matt.SharedKernel.Domain.Interfaces.Repositories;
 namespace ESCenter.Domain.DomainServices;
 
 public class StaffDomainService(
-    IRepository<Staff, StaffId> staffRepository,
+    IRepository<Customer, CustomerId> staffRepository,
     ICurrentUserService currentUserService,
     IIdentityService identityService)
     : IStaffDomainService
@@ -34,7 +33,7 @@ public class StaffDomainService(
             return Result.Fail(DomainServiceErrors.Unauthorized);
         }
 
-        if (!currentUserService.Roles.Contains("Admin"))
+        if (!currentUserService.Roles.Contains(Role.SuperAdmin.ToString()))
         {
             return Result.Fail(DomainServiceErrors.Incompetent);
         }
@@ -47,18 +46,17 @@ public class StaffDomainService(
             birthYear,
             address,
             description,
-            string.Empty,
+            avatar,
             email,
-            phoneNumber);
+            phoneNumber,
+            Role.Admin);
 
         if (userInformation.IsFailure)
         {
             return userInformation.Error;
         }
 
-        var staff = Staff.Create(userInformation.Value.Id.Value);
-
-        await staffRepository.InsertAsync(staff);
+        await staffRepository.InsertAsync(userInformation.Value);
 
         return Result.Success();
     }

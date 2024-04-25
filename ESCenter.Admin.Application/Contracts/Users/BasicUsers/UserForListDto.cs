@@ -1,5 +1,4 @@
 ﻿using ESCenter.Admin.Application.Contracts.Commons;
-using ESCenter.Domain.Aggregates.Staff;
 using ESCenter.Domain.Aggregates.Users;
 using Mapster;
 
@@ -23,10 +22,6 @@ public class UserForListDtoMappingConfig : IRegister
     public void Register(TypeAdapterConfig config)
     {
         config.NewConfig<Customer, UserForListDto>()
-            .Map(des => des.Id, src => src.Id.Value)
-            .Map(des => des, src => src);
-        
-        config.NewConfig<Staff, UserForListDto>()
             .Map(des => des.Id, src => src.Id.Value)
             .Map(des => des, src => src);
     }

@@ -24,7 +24,7 @@
         <h5 class="card-title">Personal Information</h5>
 
         <!-- Multi Columns Form -->
-        <form class="row g-3" asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" method="post" onsubmit="return callPostActionWithForm(this);">
+        <form class="row g-3" asp-action="Edit" asp-controller="Staff" asp-route-id="@Model.Id" method="post" onsubmit="return callPostActionWithForm(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="col-md-6">

@@ -29,18 +29,13 @@ public class AppDbContext(
     public DbSet<Subject> Subjects { get; init; } = null!;
     public DbSet<Course> Courses { get; init; } = null!;
     public DbSet<ChangeVerificationRequest> ChangeVerificationRequests { get; init; } = null!;
-    public DbSet<ChangeVerificationRequestDetail> ChangeVerificationRequestDetails { get; init; } = null!;
     public DbSet<CourseRequest> CourseRequests { get; init; } = null!;
     public DbSet<Customer> Customers { get; init; } = null!;
     public DbSet<Tutor> Tutors { get; init; } = null!;
-    public DbSet<Verification> Verifications { get; init; } = null!;
-    public DbSet<TutorMajor> TutorMajors { get; init; } = null!;
     public DbSet<TutorRequest> TutorRequests { get; init; } = null!;
     public DbSet<Subscriber> Subscribers { get; init; } = null!;
-    public DbSet<Notification> Notifications { get; init; } = null!;
     public DbSet<Discovery> Discoveries { get; init; } = null!;
     public DbSet<DiscoveryUser> DiscoveryUsers { get; init; } = null!;
-    public DbSet<DiscoverySubject> DiscoverySubjects { get; init; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -86,8 +81,9 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer(
             //"Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_6; Trusted_Connection=True;MultipleActiveResultSets=true"
-            // "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql2;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
-             "Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql1;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
+            "Server=homelab-quy.duckdns.org,1433;Database=es_mssql;TrustServerCertificate=True;User Id=sa;Password=1q2w3E**;MultipleActiveResultSets=true"
+            //"Server=abcdavid-knguyen.ddns.net,30019;Database=es_mssql2;TrustServerCertificate=True;User Id=sa;Password=LHQuy12@306lkjh?;MultipleActiveResultSets=true"
+             //"Server=abcdavid-knguyen.ddns.net,30009;Database=es_mssql1;TrustServerCertificate=True;User Id=SA;Password=Devopsnhucc?#@Quy69420;MultipleActiveResultSets=true"
             // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
         );
 

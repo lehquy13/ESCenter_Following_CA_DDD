@@ -71,7 +71,12 @@ public class IdentityService(
 
         esIdentityUser = InitializeUserInstance();
 
-        var result = await CreateUser(userName, email, phoneNumber, cancellationToken, esIdentityUser);
+        var result = await CreateUser(
+            userName == "" ? email : userName,
+            email,
+            phoneNumber,
+            cancellationToken,
+            esIdentityUser);
 
         if (!result.Succeeded)
         {

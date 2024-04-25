@@ -47,7 +47,6 @@ public class GetTutorDetailQueryHandler(
             return Result.Fail(TutorProfileAppServiceError.NonExistTutorError);
         }
 
-        // We split the mapping bc it's hard =))) just like that
         var tutorForDetailDto =
             (queryResult.Tutor, queryResult.User).Adapt<TutorDetailForClientDto>();
 

@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,14 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ESCenter.Host\ESCenter.Host.csproj" />
     <ProjectReference Include="..\ESCenter.Infrastructure\ESCenter.Infrastructure.csproj" />
     <ProjectReference Include="..\ESCenter.Mobile.Application\ESCenter.Mobile.Application.csproj" />
     <ProjectReference Include="..\ESCenter.Persistence\ESCenter.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 using System.Text;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Infrastructure.ServiceImpls.AppLogger;
 using ESCenter.Infrastructure.ServiceImpls.Authentication;
 using ESCenter.Infrastructure.ServiceImpls.Cloudinary;
@@ -116,10 +117,7 @@ namespace ESCenter.Infrastructure
                 });
 
             services.AddAuthorizationBuilder()
-                .AddPolicy("RequireAdministratorRole", policy =>
-                    policy.RequireAssertion(context =>
-                        context.User.HasClaim(ClaimTypes.Role, "Admin") ||
-                        context.User.HasClaim(ClaimTypes.Role, "SuperAdmin")))
+                .AddPolicy("RequireAdministratorRole", policy => { policy.RequireRole("Admin","SuperAdmin"); })
                 .AddPolicy("RequireSuperAdministratorRole", policy => { policy.RequireRole("SuperAdmin"); })
                 .AddPolicy("RequireTutorRole", policy => { policy.RequireRole("Tutor"); });
 

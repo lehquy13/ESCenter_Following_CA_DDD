@@ -46,10 +46,5 @@ public class TutorDetailForClientDtoMappingConfig : IRegister
             .Map(dest => dest.TutorMajors, src => src.Item1.TutorMajors.Select(x => x.SubjectName))
             .Map(dest => dest, src => src.Item2)
             .Map(dest => dest, src => src);
-
-        config.NewConfig<(Review, string), ReviewDto>()
-            .Map(dest => dest.Id, src => src.Item1.Id.Value)
-            .Map(dest => dest.Id, src => src.Item2)
-            .Map(dest => dest, src => src);
     }
 }

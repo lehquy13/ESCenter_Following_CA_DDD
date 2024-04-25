@@ -18,7 +18,6 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
     public void Configure(EntityTypeBuilder<Course> builder)
     {
         ConfigureCourse(builder);
-        ConfigureReview(builder);
         ConfigureCourseRequest(builder);
     }
 
@@ -119,27 +118,16 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
                 navigationBuilder.Property(sectionFee => sectionFee.Currency)
                     .HasColumnName(nameof(Course.SectionFee.Currency));
             });
-    }
-
-    private static void ConfigureReview(EntityTypeBuilder<Course> builder)
-    {
-        builder.OwnsOne(o => o.Review, ib =>
+        
+        builder.OwnsOne(o => o.Review, navigationBuilder =>
         {
-            ib.ToTable(nameof(Review));
-            ib.HasKey(x => x.Id);
-            ib.Property(r => r.Id)
-                .HasColumnName("Id")
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => ReviewId.Create(value)
-                );
-            ib.WithOwner().HasForeignKey(nameof(Review.CourseId));
-            ib.Property(r => r.Rate).IsRequired();
-            ib.Property(r => r.Detail).IsRequired();
+            navigationBuilder.Property(r => r.Rate)
+                .HasColumnName(nameof(Review.Rate));
+            navigationBuilder.Property(r => r.Detail)
+                .HasColumnName(nameof(Review.Detail));
         });
     }
-
+    
     private static void ConfigureCourseRequest(EntityTypeBuilder<Course> builder)
     {
         builder.OwnsMany(o => o.CourseRequests, ib =>
@@ -202,10 +190,4 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
             ib.Property(r => r.Description).IsRequired();
         });
     }
-
-    private static void ConfigureTutorCourseRequest(EntityTypeBuilder<Course> builder)
-    {
-        
-    }
-
 }

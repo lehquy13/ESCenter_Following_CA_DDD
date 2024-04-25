@@ -29,8 +29,7 @@ internal sealed class BadRequestExceptionHandler(
             logger.LogError("Validation failed with errors:\n{Errors}",
                 JsonConvert.SerializeObject(badRequestException.Errors, Formatting.Indented));
         }
-
-
+        
         var problemDetails = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",

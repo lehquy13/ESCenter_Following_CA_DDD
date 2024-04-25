@@ -10,5 +10,9 @@
   {
     "id": null,
     "name": "Learner"
+  },
+  {
+    "id": null,
+    "name": "SuperAdmin"
   }
 ]

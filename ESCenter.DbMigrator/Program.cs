@@ -219,6 +219,10 @@ internal static class Program
                     {
                         NormalizedName = "LEARNER"
                     },
+                    new("SuperAdmin")
+                    {
+                        NormalizedName = "SUPERADMIN"
+                    }
                 };
 
                 context.Roles.AddRange(identityRoles);
@@ -293,19 +297,32 @@ internal static class Program
 
                 var courseData = JsonConvert.DeserializeObject<List<Course>>(file, somethingCalledMagic);
 
+                if (courseData == null)
+                {
+                    Console.WriteLine("Course data is null");
+                    return;
+                }
+
+                file = await File.ReadAllTextAsync(
+                    Path.GetFullPath("../../../1000_confirmedCourse.json"));
+
+                courseData.AddRange(JsonConvert.DeserializeObject<List<Course>>(file, somethingCalledMagic)!);
+
                 file = await File.ReadAllTextAsync(
                     Path.GetFullPath("../../../100_review.json"));
 
                 var reviews = JsonConvert.DeserializeObject<List<Review>>(file, somethingCalledMagic);
 
-                if (courseData == null || reviews == null)
+                if (reviews == null)
                 {
                     return;
                 }
 
+                int courseCount = 1;
                 // handle 100 course that have account
                 foreach (var course in courseData)
                 {
+                    Console.WriteLine($"{courseCount++} course: {course.Title}");
                     // set learner
                     var randomNumber = new Random().Next(0, 50);
                     var user = userData[randomNumber];
@@ -642,6 +659,14 @@ internal static class Program
                 prop.Writable = property.GetSetMethod(true) != null;
                 var hasPrivateSetter = property.GetSetMethod(true) != null;
                 prop.Writable = hasPrivateSetter;
+
+                // If property is CreationTime, LastModificationTime, etc. then make it random from 2 months ago to now
+                if (property.Name is "CreationTime" or "LastModificationTime")
+                {
+                    var defaultValueProvider = prop.ValueProvider;
+
+                    prop.ValueProvider = new MyValueProvider(defaultValueProvider!);
+                }
             }
             else
             {
@@ -661,6 +686,41 @@ internal static class Program
             return base.GetSerializableMembers(objectType)
                 .Concat(objectType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
                 .ToList();
+        }
+    }
+    
+    public class MyValueProvider
+        : IValueProvider
+    {
+        private readonly IValueProvider _valueProvider;
+
+        public MyValueProvider(IValueProvider valueProvider)
+        {
+            _valueProvider = valueProvider;
+        }
+
+        public void SetValue(object target, object value)
+        {
+            //This is not executed during deserialization. Why?
+            var randomDay = RandomDay();
+            _valueProvider.SetValue(target, randomDay);
+            Console.WriteLine($"Value set: {value}");
+        }
+
+        public object GetValue(object target)
+        {
+            var value = _valueProvider.GetValue(target);
+            Console.WriteLine($"Value get: {value}");
+            return value;
+        }
+        
+        private static readonly Random Gen = new Random();
+
+        private DateTime RandomDay()
+        {
+            DateTime start = DateTime.Now.AddMonths(-2);
+            int range = (DateTime.Today - start).Days;
+            return start.AddDays(Gen.Next(range));
         }
     }
 }
