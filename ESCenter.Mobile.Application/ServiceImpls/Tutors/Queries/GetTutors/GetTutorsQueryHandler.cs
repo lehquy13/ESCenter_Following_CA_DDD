@@ -111,7 +111,7 @@ public class GetTutorsQueryHandler(
         }
 
         var tutorFromDb = await asyncQueryableExecutor
-            .ToListAsync(tutors
+            .ToListAsSplitAsync(tutors
                     .Skip(request.TutorParams.PageIndex * request.TutorParams.PageSize)
                     .Take(request.TutorParams.PageSize),
                 false, cancellationToken);
