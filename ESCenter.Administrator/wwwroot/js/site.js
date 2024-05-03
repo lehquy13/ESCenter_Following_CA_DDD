@@ -79,10 +79,14 @@ function OpenGetDialog(url, title) {
         url: url,
         data: {},
         success: function (res) {
-            $('#largeModal .modal-title').html(title);
-            $('#largeModal .modal-body').html(res.partialView);
+            if(res.res === true){
+                alert(res.partialView);
+                
+                $('#largeModal .modal-title').html(title);
+                $('#largeModal .modal-body').html(res.partialView);
 
-            $('#largeModal').modal('show')
+                $('#largeModal').modal('show')
+            }
         }
     })
 }

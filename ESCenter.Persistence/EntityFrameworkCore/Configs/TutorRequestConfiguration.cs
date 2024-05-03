@@ -14,6 +14,7 @@ internal class TutorRequestConfiguration : IEntityTypeConfiguration<TutorRequest
     public void Configure(EntityTypeBuilder<TutorRequest> builder)
     {
         builder.ToTable(nameof(TutorRequest));
+        
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id)
             .HasColumnName(nameof(TutorRequest.Id))
@@ -22,6 +23,7 @@ internal class TutorRequestConfiguration : IEntityTypeConfiguration<TutorRequest
                 id => id.Value,
                 value => TutorRequestId.Create(value)
             );
+        
         builder.Property(r => r.LearnerId)
             .HasColumnName(nameof(TutorRequest.LearnerId))
             .ValueGeneratedNever()

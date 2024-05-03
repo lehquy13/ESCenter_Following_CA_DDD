@@ -1,4 +1,5 @@
 ﻿using ESCenter.Admin.Application.Contracts.Users.Learners;
+using ESCenter.Admin.Application.Contracts.Users.Tutors;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -42,7 +43,16 @@ public class GetTutorRequestQueryHandler(
         var results = await asyncQueryableExecutor.ToListAsync(queryable, false, cancellationToken);
 
         var resultDto = results.Select(result =>
-                (result.Tutor, result.Learner, result.TutorRequest).Adapt<TutorRequestForListDto>())
+                new TutorRequestForListDto
+                {
+                    Id = result.Tutor.Id.Value,
+                    TutorId = result.Tutor.Id.Value,
+                    LearnerId = result.Learner.Id.Value,
+                    PhoneNumber = result.Learner.PhoneNumber,
+                    Name = result.Learner.FirstName + " " + result.Learner.LastName,
+                    RequestMessage = result.TutorRequest
+                    
+                })
             .ToList();
 
         return resultDto;
