@@ -40,7 +40,7 @@ public class
 
     public void Approve()
     {
-        RequestStatus = RequestStatus.Approved;
+        RequestStatus = RequestStatus.Done;
     }
 
     public void Reject()

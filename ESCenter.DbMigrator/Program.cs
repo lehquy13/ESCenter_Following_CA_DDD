@@ -243,6 +243,7 @@ internal static class Program
 
                 List<Customer> userData = [];
                 List<Tutor> tutorData = [];
+                List<TutorRequest> tutorRequestDatas = [];
                 List<IdentityUserRole<string>> userRoles = [];
 
                 await GetUserDataAndTutorData(
@@ -251,6 +252,7 @@ internal static class Program
                     identityRoles,
                     userData,
                     tutorData,
+                    tutorRequestDatas,
                     userRoles);
 
                 SeedTutorMajor(tutorData, subjects);
@@ -287,6 +289,7 @@ internal static class Program
 
                 context.Tutors.AddRange(tutorData);
                 context.UserRoles.AddRange(userRoles);
+                context.TutorRequests.AddRange(tutorRequestDatas);
 
                 #endregion
 
@@ -442,6 +445,7 @@ internal static class Program
         List<IdentityRole> identityRoles,
         List<Customer> userData,
         List<Tutor> tutorData,
+        List<TutorRequest> tutorRequestData,
         List<IdentityUserRole<string>> userRoles)
 
     {
@@ -560,10 +564,18 @@ internal static class Program
                 for (var j = 0; j < random.Next(4, 7); j++)
                 {
                     var request = TutorRequest.Create(
-                            tutor.Id,
-                            userData[random.Next(0, 99)].Id,
-                            "");
+                        tutor.Id,
+                        userData[random.Next(0, 99)].Id,
+                        "");
 
+                    var doneOrNot = random.Next(0, 2);
+
+                    if (doneOrNot == 1)
+                    {
+                        request.Done();
+                    }
+
+                    tutorRequestData.Add(request);
                 }
             }
         }

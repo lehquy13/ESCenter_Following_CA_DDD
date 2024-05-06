@@ -39,6 +39,6 @@ public class CourseRequest : AuditedEntity<CourseRequestId>
 
     public void Approved()
     {
-        RequestStatus = RequestStatus.Approved;
+        RequestStatus = RequestStatus.Done;
     }
 }

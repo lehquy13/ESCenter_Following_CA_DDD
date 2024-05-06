@@ -1,18 +1,16 @@
-﻿@model List<ESCenter.Admin.Application.Contracts.Users.Learners.TutorRequestForListDto>
+﻿@using ESCenter.Domain.Shared.Courses
+@model List<ESCenter.Admin.Application.Contracts.Users.Learners.TutorRequestForListDto>
 
 @{
     ViewData["Title"] = "Edit";
 
-    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
-    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
     int i = 0;
 }
 
 <hr/>
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Tutors</h5>
+        <h5 class="card-title">Tutors Requests</h5>
 
         <!-- Table with stripped rows -->
         <table id="example" class="table datatable">
@@ -46,7 +44,14 @@
                     <td>@user.TutorEmail</td>
                     <td>@user.RequestMessage</td>
                     <td>
-                        <a asp-action="Done" asp-route-id="@user.Id">Done</a>
+                        @if (user.Status == RequestStatus.Done)
+                        {
+                            <a href='javascript:void(0);'>Done</a>
+                        }
+                        else
+                        {
+                            <a asp-action="MarkAsDone" asp-route-id="@user.Id">Done</a>
+                        }
                     </td>
                 </tr>
             }

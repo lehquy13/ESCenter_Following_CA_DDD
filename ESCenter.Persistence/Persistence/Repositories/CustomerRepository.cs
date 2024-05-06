@@ -52,6 +52,16 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
         return users;
     }
 
+    public Task<Customer?> GetTutorByTutorId(TutorId tutorId, CancellationToken cancellationToken)
+    {
+        return AppDbContext.Customers
+            .Join(AppDbContext.Tutors,
+                user => user.Id,
+                tutor => tutor.CustomerId,
+                (user, tutor) => user)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+    }
+
     public async Task<string?> GetTutorEmail(TutorId tutorId)
     {
         var tutorEmail = await AppDbContext

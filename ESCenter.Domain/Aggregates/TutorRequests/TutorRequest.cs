@@ -36,8 +36,8 @@ public class TutorRequest : AuditedAggregateRoot<TutorRequestId>
         return tutorRequest;
     }
     
-    public void Approve()
+    public void Done()
     {
-        RequestStatus = RequestStatus.Approved;
+        RequestStatus = RequestStatus.Done;
     }
 }

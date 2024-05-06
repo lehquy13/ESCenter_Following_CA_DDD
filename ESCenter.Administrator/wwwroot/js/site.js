@@ -80,8 +80,6 @@ function OpenGetDialog(url, title) {
         data: {},
         success: function (res) {
             if(res.res === true){
-                alert(res.partialView);
-                
                 $('#largeModal .modal-title').html(title);
                 $('#largeModal .modal-body').html(res.partialView);
 
