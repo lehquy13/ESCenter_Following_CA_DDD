@@ -118,16 +118,24 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
                 navigationBuilder.Property(sectionFee => sectionFee.Currency)
                     .HasColumnName(nameof(Course.SectionFee.Currency));
             });
-        
+
         builder.OwnsOne(o => o.Review, navigationBuilder =>
         {
             navigationBuilder.Property(r => r.Rate)
                 .HasColumnName(nameof(Review.Rate));
             navigationBuilder.Property(r => r.Detail)
                 .HasColumnName(nameof(Review.Detail));
+            navigationBuilder.Property(r => r.CreationTime)
+                .HasColumnName("Review_CreationTime");
+            navigationBuilder.Property(r => r.CreatorId)
+                .HasColumnName("Review_CreatorId");
+            navigationBuilder.Property(r => r.LastModificationTime)
+                .HasColumnName("Review_LastModificationTime");
+            navigationBuilder.Property(r => r.LastModifierId)
+                .HasColumnName("Review_LastModifierId");
         });
     }
-    
+
     private static void ConfigureCourseRequest(EntityTypeBuilder<Course> builder)
     {
         builder.OwnsMany(o => o.CourseRequests, ib =>
@@ -151,7 +159,7 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
                     id => id.Value,
                     value => TutorId.Create(value)
                 );
-            
+
             ib.HasOne<Tutor>()
                 .WithMany()
                 .HasForeignKey(nameof(CourseRequest.TutorId))

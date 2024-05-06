@@ -22,6 +22,7 @@ public class ReviewCourseCommandHandler(
             command.Rate,
             command.Detail,
             CustomerId.Create(currentUserService.UserId));
+        
         if (result.IsFailure)
         {
             return result;

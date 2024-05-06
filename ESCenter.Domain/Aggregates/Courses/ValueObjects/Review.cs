@@ -15,10 +15,10 @@ public class Review : ValueObject, IAuditedObject
     public string Detail { get; private set; } = null!;
 
 
-    public DateTime CreationTime { get; } 
-    public string? CreatorId { get; }
-    public DateTime? LastModificationTime { get; }
-    public string? LastModifierId { get; }
+    public DateTime CreationTime { get; private set; }
+    public string? CreatorId { get; private set; }
+    public DateTime? LastModificationTime { get; private set; }
+    public string? LastModifierId { get; private set; }
 
     private Review()
     {
