@@ -117,9 +117,9 @@ public class GetTutorsQueryHandler(
         var result = PaginatedList<TutorListForClientPageDto>
             .Create(
                 mergeList,
-                (int)totalCount,
                 request.TutorParams.PageIndex,
-                request.TutorParams.PageSize);
+                request.TutorParams.PageSize,
+                (int)totalCount);
 
         return result;
     }

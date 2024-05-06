@@ -14,7 +14,6 @@ using Matt.Paginated;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
-using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
@@ -76,39 +75,35 @@ public class GetTutorsQueryHandler(
 
         var totalCount = await asyncQueryableExecutor.LongCountAsync(tutors, cancellationToken);
 
-        if (currentUserService.IsAuthenticated)
-        {
-            var userGuid = CustomerId.Create(currentUserService.UserId);
-            var discoveryQueryable = await discoveryRepository.GetUserDiscoverySubjects(userGuid, cancellationToken);
-
-            // Order by the number of subjects that the user has discovered
-            tutors = tutors.OrderByDescending(
-                record => record.TutorMajors.Join(
-                    discoveryQueryable,
-                    tutorMajor => tutorMajor.SubjectId,
-                    discovery => discovery,
-                    (tutor, discovery) => tutor).Count()
-            );
-
-            var learntSubjectQueryable =
-                from userForSearch in customerRepository.GetAll()
-                join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
-                    .LearnerId
-                where userForSearch.Id == userGuid
-                select courseForSearch.SubjectId;
-
-            // var learntSubjects1 = await asyncQueryableExecutor
-            //     .ToListAsync(learntSubjectQueryable, false, cancellationToken);
-            // var learntSubjects = learntSubjects1.Select(x => x.Value).ToList();
-
-            tutors = tutors.OrderByDescending(
-                record => record.TutorMajors.Join(
-                    learntSubjectQueryable,
-                    tutorMajor => tutorMajor.SubjectId,
-                    learntSubject => learntSubject,
-                    (tutorMajor, learntSubject) => tutorMajor).Count()
-            );
-        }
+        // if (currentUserService.IsAuthenticated)
+        // {
+        //     var userGuid = CustomerId.Create(currentUserService.UserId);
+        //     var discoveryQueryable = await discoveryRepository.GetUserDiscoverySubjects(userGuid, cancellationToken);
+        //
+        //     // Order by the number of subjects that the user has discovered
+        //     tutors = tutors.OrderByDescending(
+        //         record => record.TutorMajors.Join(
+        //             discoveryQueryable,
+        //             tutorMajor => tutorMajor.SubjectId,
+        //             discovery => discovery,
+        //             (tutor, discovery) => tutor).Count()
+        //     );
+        //
+        //     var learntSubjectQueryable =
+        //         from userForSearch in customerRepository.GetAll()
+        //         join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
+        //             .LearnerId
+        //         where userForSearch.Id == userGuid
+        //         select courseForSearch.SubjectId;
+        //
+        //     tutors = tutors.OrderByDescending(
+        //         record => record.TutorMajors.Join(
+        //             learntSubjectQueryable,
+        //             tutorMajor => tutorMajor.SubjectId,
+        //             learntSubject => learntSubject,
+        //             (tutorMajor, learntSubject) => tutorMajor).Count()
+        //     );
+        // }
 
         var tutorFromDb = await asyncQueryableExecutor
             .ToListAsSplitAsync(tutors
@@ -123,9 +118,9 @@ public class GetTutorsQueryHandler(
         var result = PaginatedList<TutorListForClientPageDto>
             .Create(
                 mergeList,
-                (int)totalCount,
                 request.TutorParams.PageIndex,
-                request.TutorParams.PageSize);
+                request.TutorParams.PageSize,
+                (int)totalCount);
 
         return result;
     }
