@@ -50,7 +50,7 @@ public class GetCoursesQueryHandler(
                     courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnVerifying);
                     break;
                 case "Purchasing":
-                    courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnPurchasing);
+                    courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnProgressing);
                     break;
             }
 

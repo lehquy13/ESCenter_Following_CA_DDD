@@ -127,7 +127,7 @@
                         <i class="bi bi-circle"></i><span>Tutor</span>
                     </a>
                 </li>
-                @if(User.IsInRole("SuperAdmin"))
+                @if (User.IsInRole("SuperAdmin"))
                 {
                     <li>
                         <a asp-action="Index" asp-controller="Staff">
@@ -135,9 +135,15 @@
                         </a>
                     </li>
                 }
-               
+
             </ul>
         </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-controller="TutorRequest" asp-action="Index">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Tutor Requests</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link collapsed">
@@ -146,18 +152,29 @@
             </a>
             <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a asp-action="Index" asp-controller="Course">
-                        <i class="bi bi-circle"></i><span>All</span>
-                    </a>
-                </li>
-                <li>
                     <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.OnVerifying.ToString()">
                         <i class="bi bi-circle"></i><span>Verifying</span>
                     </a>
                 </li>
                 <li>
-                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.OnPurchasing.ToString()">
-                        <i class="bi bi-circle"></i><span>Purchasing</span>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.OnProgressing.ToString()">
+                        <i class="bi bi-circle"></i><span>OnProgressing</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.Confirmed.ToString()">
+                        <i class="bi bi-circle"></i><span>Confirmed</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.Available.ToString()">
+                        <i class="bi bi-circle"></i><span>Available</span>
+                    </a>
+                </li
+                >
+                <li>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.Canceled.ToString()">
+                        <i class="bi bi-circle"></i><span>Canceled</span>
                     </a>
                 </li>
                 <li>

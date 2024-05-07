@@ -3,6 +3,7 @@ using ESCenter.Admin.Application.Contracts.Users.Learners;
 using ESCenter.Admin.Application.Contracts.Users.Tutors;
 using ESCenter.Admin.Application.ServiceImpls.Customers.Commands.CreateUpdateUserProfile;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
+using ESCenter.Admin.Application.ServiceImpls.TutorRequests.Queries.GetTutorRequestsByTutorId;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Commands.ClearTutorRequests;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Commands.CreateTutor;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Commands.UpdateChangeVerificationRequestCommand;
@@ -12,7 +13,6 @@ using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetAllTutorsForMana
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorChangeVerifications;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorMajors;
-using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorRequests;
 using ESCenter.Domain.Shared;
 using MapsterMapper;
 using MediatR;
@@ -259,7 +259,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     [HttpGet("{id}/view-tutor-request")]
     public async Task<IActionResult> ViewTutorRequests([FromRoute] Guid id)
     {
-        var result = await sender.Send(new GetTutorRequestQuery(id));
+        var result = await sender.Send(new GetTutorRequestsByTutorIdQuery(id));
 
         return result.IsSuccess
             ? Helper.RenderRazorViewToString(this, "ViewTutorRequests", result.Value)

@@ -32,7 +32,7 @@
         <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        @if (Model.RequestStatus == RequestStatus.Approved.ToString() && Model.LearnerName != "")
+        @if (Model.RequestStatus == RequestStatus.Done.ToString() && Model.LearnerName != "")
         {
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.LearnerName)

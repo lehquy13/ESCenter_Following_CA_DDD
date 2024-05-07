@@ -2,6 +2,7 @@
 using ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearners;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using MapsterMapper;
 using Matt.ResultObject;
@@ -28,8 +29,6 @@ public class GetAllTutorsQueryHandler(
         var tutorQ =
             from userR in customerRepository.GetAll()
             join tutorR in tutorRepository.GetAll() on userR.Id equals tutorR.CustomerId
-            join tutorRequestR in tutorRequestRepository.GetAll() on tutorR.Id equals tutorRequestR.TutorId into
-                tutorRequests
             select new TutorListDto()
             {
                 Id = userR.Id.Value,
@@ -39,10 +38,21 @@ public class GetAllTutorsQueryHandler(
                 University = tutorR.University,
                 IsVerified = tutorR.IsVerified,
                 NumberOfChangeRequests = tutorR.ChangeVerificationRequest == null ? 0 : 1,
-                NumberOfRequests = tutorRequests.Count()
+                NumberOfRequests = 0
             };
 
-        var tutors = await asyncQueryableExecutor.ToListAsync(tutorQ, false, cancellationToken);
+        var tutors = await asyncQueryableExecutor.ToListAsSplitAsync(tutorQ, false, cancellationToken);
+
+        var tutorRequests = await tutorRequestRepository.GetListAsync(cancellationToken);
+
+        tutorRequests.ForEach(tutorRequest =>
+        {
+            var tutor = tutors.FirstOrDefault(x => x.Id == tutorRequest.TutorId.Value);
+            if (tutor != null)
+            {
+                tutor.NumberOfRequests = tutorRequests.Count;
+            }
+        });
 
         return tutors;
     }

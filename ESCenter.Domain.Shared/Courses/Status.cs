@@ -5,8 +5,7 @@ public enum Status
     OnVerifying = 0,
     Confirmed = 1,
     Canceled = 2,
-    OnPurchasing = 3,
     Available = 4,
-    OnProgressing = 5,
+    OnProgressing = 3,
     None = 7
 }

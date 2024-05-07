@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Discoveries;
 using ESCenter.Domain.Aggregates.Discoveries.Entities;
@@ -9,6 +8,7 @@ using ESCenter.Domain.Aggregates.Discoveries.ValueObjects;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
@@ -243,6 +243,7 @@ internal static class Program
 
                 List<Customer> userData = [];
                 List<Tutor> tutorData = [];
+                List<TutorRequest> tutorRequestDatas = [];
                 List<IdentityUserRole<string>> userRoles = [];
 
                 await GetUserDataAndTutorData(
@@ -251,6 +252,7 @@ internal static class Program
                     identityRoles,
                     userData,
                     tutorData,
+                    tutorRequestDatas,
                     userRoles);
 
                 SeedTutorMajor(tutorData, subjects);
@@ -287,6 +289,7 @@ internal static class Program
 
                 context.Tutors.AddRange(tutorData);
                 context.UserRoles.AddRange(userRoles);
+                context.TutorRequests.AddRange(tutorRequestDatas);
 
                 #endregion
 
@@ -442,6 +445,7 @@ internal static class Program
         List<IdentityRole> identityRoles,
         List<Customer> userData,
         List<Tutor> tutorData,
+        List<TutorRequest> tutorRequestData,
         List<IdentityUserRole<string>> userRoles)
 
     {
@@ -503,7 +507,6 @@ internal static class Program
             throw new InvalidOperationException();
         }
 
-
         customerTutorData1.AddRange(customerTutorData2);
         userData.AddRange(customerTutorData1);
 
@@ -551,7 +554,35 @@ internal static class Program
         foreach (var tutor in tutorData)
         {
             tutor.SetUserId(customerTutorData1[i++].Id);
+
+            if (i <= 50)
+            {
+                SeedTutorRequests(tutor, i);
+
+                var random = new Random();
+
+                for (var j = 0; j < random.Next(4, 7); j++)
+                {
+                    var request = TutorRequest.Create(
+                        tutor.Id,
+                        userData[random.Next(0, 99)].Id,
+                        "");
+
+                    var doneOrNot = random.Next(0, 2);
+
+                    if (doneOrNot == 1)
+                    {
+                        request.Done();
+                    }
+
+                    tutorRequestData.Add(request);
+                }
+            }
         }
+    }
+
+    private static void SeedTutorRequests(Tutor tutor, int i)
+    {
     }
 
     private static IList<Discovery> Discoveries(IReadOnlyList<Subject> subjects)
@@ -688,7 +719,7 @@ internal static class Program
                 .ToList();
         }
     }
-    
+
     public class MyValueProvider
         : IValueProvider
     {
@@ -713,7 +744,7 @@ internal static class Program
             Console.WriteLine($"Value get: {value}");
             return value;
         }
-        
+
         private static readonly Random Gen = new Random();
 
         private DateTime RandomDay()

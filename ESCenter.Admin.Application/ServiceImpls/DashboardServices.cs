@@ -94,7 +94,7 @@ internal class DashboardServices(
             });
         var onPurchasingClasses = dates.GroupJoin(
             allClasses
-                .Where(x => x.CreationTime >= startDay && x.Status == Status.OnPurchasing)
+                .Where(x => x.CreationTime >= startDay && x.Status == Status.OnProgressing)
                 .GroupBy(x => x.CreationTime.Day),
             d => d,
             c => c.Key,

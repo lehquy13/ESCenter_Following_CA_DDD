@@ -17,4 +17,7 @@ public static class TutorAppServiceError
 
     public static Error CantRequestTutorToSelf
         => new("TutorAppServiceError.CantRequestTutorToSelf", "Can't request tutor to self");
+
+    public static Error NonExistTutorOfCreatedRequestError
+        => new("TutorAppServiceError.NonExistTutorOfCreatedRequestError", "Non-exist tutor of created request");
 }
