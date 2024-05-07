@@ -36,7 +36,7 @@ public class GetTutorDetailQueryHandler(
             {
                 User = user,
                 Tutor = tutor,
-                Reviews = groupCourse.Select(x => new { x.Review, x.LearnerName })
+                Reviews = groupCourse.Where(x => x.Review != null).Select(x => new { x.Review, x.LearnerName })
             };
 
         var queryResult =
@@ -50,7 +50,7 @@ public class GetTutorDetailQueryHandler(
         var tutorForDetailDto =
             (queryResult.Tutor, queryResult.User).Adapt<TutorDetailForClientDto>();
 
-        tutorForDetailDto.Reviews = queryResult.Reviews.Select(x => 
+        tutorForDetailDto.Reviews = queryResult.Reviews.Select(x =>
             new ReviewDto
             {
                 LearnerName = x.LearnerName,
