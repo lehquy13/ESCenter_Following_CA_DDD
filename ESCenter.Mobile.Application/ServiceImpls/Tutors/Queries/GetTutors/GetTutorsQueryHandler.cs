@@ -69,41 +69,40 @@ public class GetTutorsQueryHandler(
                     sub.SubjectName.ToLower().Contains(request.TutorParams.SubjectName.ToLower()))
             );
 
+        var totalCount = await asyncQueryableExecutor.LongCountAsync(tutors, cancellationToken);
+
+        if (currentUserService.IsAuthenticated)
+        {
+            var userGuid = CustomerId.Create(currentUserService.UserId);
+            var discoveryQueryable = await discoveryRepository.GetUserDiscoverySubjects(userGuid, cancellationToken);
+
+            // Order by the number of subjects that the user has discovered
+            tutors = tutors.OrderByDescending(
+                record => record.TutorMajors
+                    .Join(discoveryQueryable,
+                        tutorMajor => tutorMajor.SubjectId,
+                        discovery => discovery,
+                        (tutor, discovery) => tutor).Count());
+
+            var learntSubjectQueryable =
+                from userForSearch in customerRepository.GetAll()
+                join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
+                    .LearnerId
+                where userForSearch.Id == userGuid
+                select courseForSearch.SubjectId;
+            
+            tutors = tutors.OrderByDescending(
+                record => record.TutorMajors.Join(
+                    learntSubjectQueryable,
+                    tutorMajor => tutorMajor.SubjectId,
+                    learntSubject => learntSubject,
+                    (tutorMajor, learntSubject) => tutorMajor).Count()
+            );
+        }
+
         tutors = tutors
             .OrderByDescending(record => record.Courses.Count())
             .ThenByDescending(record => record.Tutor.Rate);
-
-        var totalCount = await asyncQueryableExecutor.LongCountAsync(tutors, cancellationToken);
-
-        // if (currentUserService.IsAuthenticated)
-        // {
-        //     var userGuid = CustomerId.Create(currentUserService.UserId);
-        //     var discoveryQueryable = await discoveryRepository.GetUserDiscoverySubjects(userGuid, cancellationToken);
-        //
-        //     // Order by the number of subjects that the user has discovered
-        //     tutors = tutors.OrderByDescending(
-        //         record => record.TutorMajors.Join(
-        //             discoveryQueryable,
-        //             tutorMajor => tutorMajor.SubjectId,
-        //             discovery => discovery,
-        //             (tutor, discovery) => tutor).Count()
-        //     );
-        //
-        //     var learntSubjectQueryable =
-        //         from userForSearch in customerRepository.GetAll()
-        //         join courseForSearch in courseRepository.GetAll() on userForSearch.Id equals courseForSearch
-        //             .LearnerId
-        //         where userForSearch.Id == userGuid
-        //         select courseForSearch.SubjectId;
-        //
-        //     tutors = tutors.OrderByDescending(
-        //         record => record.TutorMajors.Join(
-        //             learntSubjectQueryable,
-        //             tutorMajor => tutorMajor.SubjectId,
-        //             learntSubject => learntSubject,
-        //             (tutorMajor, learntSubject) => tutorMajor).Count()
-        //     );
-        // }
 
         var tutorFromDb = await asyncQueryableExecutor
             .ToListAsSplitAsync(tutors
