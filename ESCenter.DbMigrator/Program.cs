@@ -322,6 +322,7 @@ internal static class Program
                 }
 
                 int courseCount = 1;
+                var seedTutorNumbers = tutorData.Count * 2 / 3;
                 // handle 100 course that have account
                 foreach (var course in courseData)
                 {
@@ -335,7 +336,7 @@ internal static class Program
                     if (course.Status != Status.Confirmed) continue;
 
                     // assign tutor
-                    var randomTutor = new Random().Next(0, 50);
+                    var randomTutor = new Random().Next(0, seedTutorNumbers);
                     var tutor = tutorData[randomTutor];
                     course.AssignTutor(tutor.Id);
 
@@ -347,7 +348,7 @@ internal static class Program
                 }
 
                 // Iterate through first 50 tutors to calculate the average rate
-                for (var index = 0; index < 50; index++)
+                for (var index = 0; index < seedTutorNumbers; index++)
                 {
                     var tutor = tutorData[index];
                     var totalRate = 0;
@@ -547,18 +548,16 @@ internal static class Program
         }));
 
 
-        tutorData.AddRange(tutorData1);
-        tutorData.AddRange(tutorData2);
+        tutorData.AddRange(tutorData1.Take(customerTutorData2.Count / 4));
+        tutorData.AddRange(tutorData2.Take(customerTutorData2.Count / 4));
 
         var i = 0;
         foreach (var tutor in tutorData)
         {
             tutor.SetUserId(customerTutorData1[i++].Id);
 
-            if (i <= 50)
+            if (i <= 200)
             {
-                SeedTutorRequests(tutor, i);
-
                 var random = new Random();
 
                 for (var j = 0; j < random.Next(4, 7); j++)
@@ -579,10 +578,6 @@ internal static class Program
                 }
             }
         }
-    }
-
-    private static void SeedTutorRequests(Tutor tutor, int i)
-    {
     }
 
     private static IList<Discovery> Discoveries(IReadOnlyList<Subject> subjects)

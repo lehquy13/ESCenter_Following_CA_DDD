@@ -42,7 +42,7 @@ public class GetTutorsQueryHandler(
             join course in courseRepository.GetAll() on tutor.Id equals course.TutorId into
                 groupCourse
             where tutor.IsVerified == true
-            orderby tutor.Rate, groupCourse.Count() descending
+            //orderby tutor.Rate, groupCourse.Count() descending
             select new
             {
                 Tutor = tutor,
@@ -85,20 +85,26 @@ public class GetTutorsQueryHandler(
                 select courseForSearch.SubjectId;
 
             // Order by the number of subjects that the user has discovered
-            tutors = tutors.OrderByDescending(
-                    record => record.TutorMajors
-                        .Join(discoveryQueryable,
-                            tutorMajor => tutorMajor.SubjectId,
-                            discovery => discovery,
-                            (tutor, discovery) => tutor).Count())
-                .ThenByDescending(
-                    record => record.TutorMajors.Join(
-                        learntSubjectQueryable,
-                        tutorMajor => tutorMajor.SubjectId,
-                        learntSubject => learntSubject,
-                        (tutorMajor, learntSubject) => tutorMajor).Count()
-                );
+            tutors = tutors
+                .OrderByDescending(record => record.Tutor.Rate)
+                .ThenByDescending(record => record.Courses.Count())
+                .ThenByDescending(record => record.TutorMajors.Join(
+                    discoveryQueryable,
+                    tutorMajor => tutorMajor.SubjectId,
+                    discovery => discovery,
+                    (tutor, discovery) => tutor).Count())
+                .ThenByDescending(record => record.TutorMajors.Join(
+                    learntSubjectQueryable,
+                    tutorMajor => tutorMajor.SubjectId,
+                    learntSubject => learntSubject,
+                    (tutorMajor, learntSubject) => tutorMajor).Count());
         }
+        else
+        {
+            tutors = tutors.OrderByDescending(record => record.Tutor.Rate)
+                .ThenByDescending(record => record.Courses.Count());
+        }
+
 
         var tutorFromDb = await asyncQueryableExecutor
             .ToListAsSplitAsync(tutors
@@ -107,7 +113,18 @@ public class GetTutorsQueryHandler(
                 false, cancellationToken);
 
         var mergeList = tutorFromDb.Select(
-            x => (x.User, x.Tutor).Adapt<TutorListForClientPageDto>()
+            x => new TutorListForClientPageDto()
+            {
+                Id = x.Tutor.Id.Value,
+                FirstName = x.User.FirstName,
+                LastName = x.User.LastName,
+                BirthYear = x.User.BirthYear,
+                Description = x.User.Description,
+                Avatar = x.User.Avatar,
+                AcademicLevel = x.Tutor.AcademicLevel.ToString(),
+                University = x.Tutor.University,
+                Rate = x.Tutor.Rate
+            }
         );
 
         var result = PaginatedList<TutorListForClientPageDto>

@@ -80,8 +80,8 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer(
-            // "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_6; Trusted_Connection=True;MultipleActiveResultSets=true"
-            "Server=homelab-quy.duckdns.org,1433;Database=es_mssql;TrustServerCertificate=True;User Id=sa;Password=1q2w3E**;MultipleActiveResultSets=true"
+            "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_6; Trusted_Connection=True;MultipleActiveResultSets=true"
+            // "Server=homelab-quy.duckdns.org,1433;Database=es_mssql;TrustServerCertificate=True;User Id=sa;Password=1q2w3E**;MultipleActiveResultSets=true"
             // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
         );
 
