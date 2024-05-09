@@ -1,5 +1,6 @@
 ﻿using ESCenter.Admin.Application.Contracts.Charts;
 using ESCenter.Admin.Application.Contracts.Notifications;
+using ESCenter.Admin.Application.Contracts.Users.Learners;
 
 namespace ESCenter.Admin.Application.DashBoards;
 
@@ -12,6 +13,7 @@ public interface IDashboardServices
     Task<List<MetricObject>> GetTutorsMetrics();
     Task<List<MetricObject>>  GetCoursesMetrics();
     Task<List<MetricObject>>  GetLearnersMetrics();
+    Task<IEnumerable<TutorRequestForListDto>> GetLatestTutorRequests();
 }
 
 public class MetricObject

@@ -1,17 +1,14 @@
 ﻿using System.Reflection;
 using ESCenter.Admin.Application;
-using ESCenter.Admin.Host.Middlewares;
+using ESCenter.Administrator.Middlewares;
 using ESCenter.Infrastructure;
 using ESCenter.Persistence;
 using FluentEmail.Core;
 using Matt.AutoDI;
-//using Matt.SharedKernel.DependencyInjections;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
-namespace ESCenter.Admin.Host;
+//using Matt.SharedKernel.DependencyInjections;
+
+namespace ESCenter.Administrator;
 
 public static class DependencyInjection
 {
@@ -22,8 +19,8 @@ public static class DependencyInjection
         assemblies.AddRange(Admin.Application.DependencyInjection.GetApplicationCoreAssemblies);
         assemblies.AddRange(new[]
         {
-            typeof(ESCenter.Infrastructure.DependencyInjection).Assembly,
-            typeof(ESCenter.Persistence.DependencyInjection).Assembly
+            typeof(Infrastructure.DependencyInjection).Assembly,
+            typeof(Persistence.DependencyInjection).Assembly
         });
 
         services.AddServiced(assemblies.ToArray());
@@ -41,7 +38,7 @@ public static class DependencyInjection
         services.AddExceptionHandler<UnauthorizedExceptionHandler>();
         services.AddExceptionHandler<BadRequestExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
-        
+
         return services;
     }
 }

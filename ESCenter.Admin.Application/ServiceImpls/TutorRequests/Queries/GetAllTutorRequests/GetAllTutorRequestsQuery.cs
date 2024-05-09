@@ -43,19 +43,17 @@ public class GetAllTutorRequestsQueryHandler(
 
         foreach (var tutorRequestForListDto in results)
         {
+            var tutor = await customerRepository.GetTutorByTutorId(TutorId.Create(tutorRequestForListDto.TutorId),
+                cancellationToken);
+
+            if (tutor == null)
             {
-                var tutor = await customerRepository.GetTutorByTutorId(TutorId.Create(tutorRequestForListDto.TutorId),
-                    cancellationToken);
-
-                if (tutor == null)
-                {
-                    return Result.Fail(TutorAppServiceError.NonExistTutorOfCreatedRequestError);
-                }
-
-                tutorRequestForListDto.TutorEmail = tutor.Email;
-                tutorRequestForListDto.TutorFullName = tutor.FirstName + " " + tutor.LastName;
-                tutorRequestForListDto.TutorPhoneNumber = tutor.PhoneNumber;
+                return Result.Fail(TutorAppServiceError.NonExistTutorOfCreatedRequestError);
             }
+
+            tutorRequestForListDto.TutorEmail = tutor.Email;
+            tutorRequestForListDto.TutorFullName = tutor.FirstName + " " + tutor.LastName;
+            tutorRequestForListDto.TutorPhoneNumber = tutor.PhoneNumber;
         }
 
         return results;

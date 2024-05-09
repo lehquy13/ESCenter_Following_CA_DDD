@@ -4,9 +4,12 @@
 @{
     ViewData["Title"] = "Edit";
 
-    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
+    List<string> roles =
+    [
+        "Admin",
+        "SuperAdmin"
+    ];
     List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
-    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
 }
 <h1>Edit</h1>
 

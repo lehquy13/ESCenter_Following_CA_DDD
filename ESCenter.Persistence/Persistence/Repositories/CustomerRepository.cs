@@ -55,7 +55,7 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
     public Task<Customer?> GetTutorByTutorId(TutorId tutorId, CancellationToken cancellationToken)
     {
         return AppDbContext.Customers
-            .Join(AppDbContext.Tutors,
+            .Join(AppDbContext.Tutors.Where(x => x.Id == tutorId),
                 user => user.Id,
                 tutor => tutor.CustomerId,
                 (user, tutor) => user)

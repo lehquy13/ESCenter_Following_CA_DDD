@@ -1,13 +1,11 @@
 ﻿using Matt.SharedKernel;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace ESCenter.Admin.Host.Middlewares;
+namespace ESCenter.Administrator.Middlewares;
 
-internal sealed class UnauthorizedExceptionHandler(
+internal sealed class NotFoundExceptionHandler(
     IServiceProvider serviceProvider
 ) : IExceptionHandler
 {
@@ -16,29 +14,31 @@ internal sealed class UnauthorizedExceptionHandler(
         Exception exception,
         CancellationToken cancellationToken)
     {
-        if (exception is not UnauthorizedException unauthorizedException)
+        if (exception is not NotFoundException notFoundException)
         {
             return ValueTask.FromResult(false);
         }
 
         using (var scope = serviceProvider.CreateScope())
         {
-            var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<UnauthorizedExceptionHandler>>();
+            var logger = scope.ServiceProvider.GetRequiredService<IAppLogger<NotFoundExceptionHandler>>();
 
             logger.LogError(
                 "Exception occurred: {Message}",
-                unauthorizedException.Message);
+                notFoundException.Message);
         }
 
 
         var problemDetails = new ProblemDetails
         {
-            Status = StatusCodes.Status401Unauthorized,
-            Title = "Unauthorized",
-            Detail = unauthorizedException.Message
+            Status = StatusCodes.Status404NotFound,
+            Title = "Not Found",
+            Detail = notFoundException.Message
         };
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
+
+        //await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return ValueTask.FromResult(true);
     }

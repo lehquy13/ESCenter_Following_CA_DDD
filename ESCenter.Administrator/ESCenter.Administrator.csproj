@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESCenter.Admin.Host\ESCenter.Admin.Host.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="assets\vendor\apexcharts\locales\ar.json" />
     <_ContentIncludedByDefault Remove="assets\vendor\apexcharts\locales\ca.json" />
     <_ContentIncludedByDefault Remove="assets\vendor\apexcharts\locales\cs.json" />
@@ -241,6 +237,12 @@
     <AdditionalFiles Include="Views\Staff\Detail.cshtml" />
     <AdditionalFiles Include="Views\Staff\Edit.cshtml" />
     <AdditionalFiles Include="Views\Staff\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ESCenter.Admin.Application\ESCenter.Admin.Application.csproj" />
+    <ProjectReference Include="..\ESCenter.Infrastructure\ESCenter.Infrastructure.csproj" />
+    <ProjectReference Include="..\ESCenter.Persistence\ESCenter.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

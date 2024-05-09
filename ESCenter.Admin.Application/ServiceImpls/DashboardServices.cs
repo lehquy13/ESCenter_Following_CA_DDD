@@ -1,14 +1,21 @@
 ﻿using ESCenter.Admin.Application.Contracts.Charts;
 using ESCenter.Admin.Application.Contracts.Notifications;
+using ESCenter.Admin.Application.Contracts.Users.Learners;
 using ESCenter.Admin.Application.DashBoards;
+using ESCenter.Admin.Application.ServiceImpls.Tutors;
 using ESCenter.Application;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Notifications;
+using ESCenter.Domain.Aggregates.TutorRequests;
+using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
+using Matt.ResultObject;
+using Matt.SharedKernel;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
@@ -18,8 +25,9 @@ namespace ESCenter.Admin.Application.ServiceImpls;
 internal class DashboardServices(
     IReadOnlyRepository<Course, CourseId> courseRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    IReadOnlyRepository<Customer, CustomerId> userRepository,
+    ICustomerRepository customerRepository,
     IReadOnlyRepository<Notification, int> notificationRepository,
+    IReadOnlyRepository<TutorRequest, TutorRequestId> tutorRequestRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork,
     IAppLogger<DashboardServices> logger)
@@ -80,7 +88,7 @@ internal class DashboardServices(
                 dates = d,
                 sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
             });
-        
+
         var canceledClasses = dates.GroupJoin(
             allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.Canceled)
@@ -242,7 +250,7 @@ internal class DashboardServices(
 
         // --------- Learner metrics -----------------
         var allUserToDay =
-            userRepository.GetAll()
+            customerRepository.GetAll()
                 .Where(x => x.CreationTime >= startDay && x.Role == Role.Learner)
                 .GroupBy(x => x.CreationTime.Day)
                 .Select(x => new
@@ -264,7 +272,7 @@ internal class DashboardServices(
 
         // --------- Tutor metrics -----------------
         var allTutorToday =
-            userRepository.GetAll()
+            customerRepository.GetAll()
                 .Where(x => x.CreationTime >= startDay && x.Role == Role.Tutor)
                 .GroupBy(x => x.CreationTime.Day)
                 .Select(x => new
@@ -308,7 +316,7 @@ internal class DashboardServices(
 
     public Task<List<MetricObject>> GetTutorsMetrics()
     {
-        var tutors = userRepository.GetAll()
+        var tutors = customerRepository.GetAll()
             .Where(x => x.Role == Role.Tutor)
             .Select(x => new MetricObject
             {
@@ -333,7 +341,7 @@ internal class DashboardServices(
 
     public Task<List<MetricObject>> GetLearnersMetrics()
     {
-        var learners = userRepository.GetAll()
+        var learners = customerRepository.GetAll()
             .Where(x => x.Role == Role.Learner)
             .Select(x => new MetricObject
             {
@@ -342,5 +350,41 @@ internal class DashboardServices(
             });
 
         return asyncQueryableExecutor.ToListAsync(learners, false);
+    }
+
+    public async Task<IEnumerable<TutorRequestForListDto>> GetLatestTutorRequests()
+    {
+        var queryable =
+            from req in tutorRequestRepository.GetAll()
+            join user in customerRepository.GetAll() on req.LearnerId equals user.Id
+            orderby req.RequestStatus descending
+            select new TutorRequestForListDto
+            {
+                Id = req.Id.Value,
+                TutorId = req.TutorId.Value,
+                LearnerId = req.LearnerId.Value,
+                PhoneNumber = user.PhoneNumber,
+                Name = user.FirstName + " " + user.LastName,
+                RequestMessage = req.Message,
+                Status = req.RequestStatus
+            };
+
+        var results = await asyncQueryableExecutor.ToListAsync(queryable, false);
+
+        foreach (var tutorRequestForListDto in results)
+        {
+            var tutor = await customerRepository.GetTutorByTutorId(TutorId.Create(tutorRequestForListDto.TutorId));
+
+            if (tutor == null)
+            {
+                throw new NotFoundException("NonExistTutorOfCreatedRequestError");
+            }
+
+            tutorRequestForListDto.TutorEmail = tutor.Email;
+            tutorRequestForListDto.TutorFullName = tutor.FirstName + " " + tutor.LastName;
+            tutorRequestForListDto.TutorPhoneNumber = tutor.PhoneNumber;
+        }
+
+        return results;
     }
 }

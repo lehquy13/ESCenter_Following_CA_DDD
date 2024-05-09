@@ -479,6 +479,8 @@ internal static class Program
         {
             throw new InvalidOperationException();
         }
+        
+        customerTutorData1 = customerTutorData1.Take(customerTutorData1.Count / 4).ToList();
 
         var tutorData2 = JsonConvert.DeserializeObject<List<Tutor>>(file, somethingCalledMagic)!;
 
@@ -494,6 +496,8 @@ internal static class Program
         {
             throw new InvalidOperationException();
         }
+        
+        customerTutorData2 = customerTutorData2.Take(customerTutorData2.Count / 4).ToList();
 
         var tutorData1 = JsonConvert.DeserializeObject<List<Tutor>>(file,
             new JsonSerializerSettings()
@@ -548,7 +552,7 @@ internal static class Program
         }));
 
 
-        tutorData.AddRange(tutorData1.Take(customerTutorData2.Count / 4));
+        tutorData.AddRange(tutorData1.Take(customerTutorData1.Count / 4));
         tutorData.AddRange(tutorData2.Take(customerTutorData2.Count / 4));
 
         var i = 0;

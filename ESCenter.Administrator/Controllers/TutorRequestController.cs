@@ -19,10 +19,10 @@ public class TutorRequestController(ISender sender)
         return View(result.Value);
     }
 
-    [HttpGet("done")]
-    public async Task<IActionResult> MarkAsDone([FromRoute] Guid guid)
+    [HttpGet("done/{id:guid}")]
+    public async Task<IActionResult> MarkAsDone([FromRoute] Guid id)
     {
-        var result = await sender.Send(new MarkRequestAsDoneCommand(guid));
+        var result = await sender.Send(new MarkRequestAsDoneCommand(id));
 
         return result.IsFailure
             ? RedirectToAction("Error", "Home")

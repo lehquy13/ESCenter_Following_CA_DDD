@@ -29,28 +29,28 @@
             </thead>
             <tbody>
 
-            @foreach (var user in Model)
+            @foreach (var request in Model)
             {
                 i++;
                 <tr>
                     <th scope="row">
-                        <input hidden name="Id" value="@user.Id"/>
+                        <input hidden name="Id" value="@request.Id"/>
                         @i
                     </th>
-                    <td>@user.Name</td>
-                    <td>@user.PhoneNumber</td>
-                    <td>@user.TutorFullName</td>
-                    <td>@user.TutorPhoneNumber</td>
-                    <td>@user.TutorEmail</td>
-                    <td>@user.RequestMessage</td>
+                    <td>@request.Name</td>
+                    <td>@request.PhoneNumber</td>
+                    <td>@request.TutorFullName</td>
+                    <td>@request.TutorPhoneNumber</td>
+                    <td>@request.TutorEmail</td>
+                    <td>@request.RequestMessage</td>
                     <td>
-                        @if (user.Status == RequestStatus.Done)
+                        @if (request.Status == RequestStatus.Done)
                         {
-                            <a href='javascript:void(0);'>Done</a>
+                            <a style="pointer-events: none;  cursor: default;  opacity: 0.6;" href='javascript:void(0);'>Done</a>
                         }
                         else
                         {
-                            <a asp-action="MarkAsDone" asp-route-id="@user.Id">Done</a>
+                            <a asp-action="MarkAsDone" asp-route-id="@request.Id">Done</a>
                         }
                     </td>
                 </tr>

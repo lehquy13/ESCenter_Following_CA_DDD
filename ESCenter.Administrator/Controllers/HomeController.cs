@@ -3,7 +3,9 @@ using ESCenter.Admin.Application.DashBoards;
 using ESCenter.Administrator.Models;
 using ESCenter.Administrator.Utilities;
 using ESCenter.Admin.Application.Contracts.Charts;
+using ESCenter.Admin.Application.ServiceImpls.TutorRequests.Queries.GetAllTutorRequests;
 using ESCenter.Domain.Shared.Courses;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -13,6 +15,7 @@ namespace ESCenter.Administrator.Controllers;
 [Route("admin/[controller]")]
 [Authorize(Policy = "RequireAdministratorRole")]
 public class HomeController(
+    ISender sender,
     ILogger<HomeController> logger,
     IDashboardServices dashboardServices) : Controller
 {
@@ -82,7 +85,8 @@ public class HomeController(
                     IncomingSeries = areaListData.ElementAt(3),
                     ByTime = ByTime.Week
                 },
-                NotificationDtos = notificationDtos
+                NotificationDtos = notificationDtos,
+                TutorRequests = await dashboardServices.GetLatestTutorRequests()
             }
         );
     }
