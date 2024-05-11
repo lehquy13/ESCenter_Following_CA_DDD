@@ -13,6 +13,7 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
     public async Task InvokeAsync(HttpContext context, IPublisher publisher, AppDbContext dbContext)
     {
         var transaction = await dbContext.Database.BeginTransactionAsync();
+
         context.Response.OnCompleted(async () =>
         {
             try

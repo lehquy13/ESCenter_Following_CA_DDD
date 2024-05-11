@@ -30,6 +30,6 @@ public static class DependencyInjection
     public static Assembly[] GetApplicationCoreAssemblies =>
     [
         typeof(DependencyInjection).Assembly,
-        typeof(ESCenter.Domain.DependencyInjection).Assembly
+        typeof(ESCenter.Domain.DomainDependencyInjection).Assembly
     ];
 }

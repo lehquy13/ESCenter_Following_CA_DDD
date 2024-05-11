@@ -52,6 +52,9 @@ public class GetCoursesQueryHandler(
                 case "Purchasing":
                     courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnProgressing);
                     break;
+                default:
+                    courseQuery = courseQuery.Where(x => x.Course.Status == Status.Available);
+                    break;
             }
 
             //Filter by SubjectName if it is not null

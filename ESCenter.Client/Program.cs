@@ -36,8 +36,6 @@ else
     app.UseExceptionHandler("/Home/Error");
 }
 
-app.AddInfrastructureMiddleware();
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSession();
@@ -51,6 +49,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.AddInfrastructureMiddleware();
 
 app.Logger.LogInformation("LAUNCHING");
 

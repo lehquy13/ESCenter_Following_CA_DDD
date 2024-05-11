@@ -355,21 +355,27 @@ internal class DashboardServices(
     public async Task<IEnumerable<TutorRequestForListDto>> GetLatestTutorRequests()
     {
         var queryable =
-            from req in tutorRequestRepository.GetAll()
-            join user in customerRepository.GetAll() on req.LearnerId equals user.Id
-            orderby req.RequestStatus descending
-            select new TutorRequestForListDto
-            {
-                Id = req.Id.Value,
-                TutorId = req.TutorId.Value,
-                LearnerId = req.LearnerId.Value,
-                PhoneNumber = user.PhoneNumber,
-                Name = user.FirstName + " " + user.LastName,
-                RequestMessage = req.Message,
-                Status = req.RequestStatus
-            };
+            tutorRequestRepository.GetAll()
+                .OrderByDescending(x => x.RequestStatus)
+                .ThenByDescending(x => x.CreationTime)
+                .Take(10)
+                .Join(customerRepository.GetAll(),
+                    req => req.LearnerId,
+                    user => user.Id,
+                    (req, user) => new TutorRequestForListDto
+                    {
+                        Id = req.Id.Value,
+                        TutorId = req.TutorId.Value,
+                        LearnerId = req.LearnerId.Value,
+                        PhoneNumber = user.PhoneNumber,
+                        Name = user.FirstName + " " + user.LastName,
+                        RequestMessage = req.Message,
+                        Status = req.RequestStatus
+                    });
 
-        var results = await asyncQueryableExecutor.ToListAsync(queryable, false);
+        var results = await asyncQueryableExecutor.ToListAsync(
+            queryable
+            , false);
 
         foreach (var tutorRequestForListDto in results)
         {

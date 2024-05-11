@@ -9,14 +9,15 @@ namespace ESCenter.Client.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddBaseApplication(typeof(DependencyInjection).Assembly);
+            
             return services;
         }
 
-        public static Assembly[] GetApplicationCoreAssemblies =>
+        public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
         [
             typeof(DependencyInjection).Assembly,
-            typeof(ESCenter.Application.DependencyInjection).Assembly,
-            typeof(ESCenter.Domain.DependencyInjection).Assembly
+            typeof(ApplicationDependencyInjection).Assembly,
+            typeof(Domain.DomainDependencyInjection).Assembly
         ];
     }
     

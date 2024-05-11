@@ -23,6 +23,7 @@ public static class DependencyInjection
             .AddPersistence(configuration)
             .AddInfrastructure(configuration)
             .AddApplication();
+        
         services.AddProblemDetails();
 
         AddExceptionHandler(services);
@@ -40,6 +41,7 @@ public static class DependencyInjection
     private static void RegisterByAutoDi(IServiceCollection services)
     {
         IList<Assembly> assemblies = [];
+        
         assemblies.AddRange(Application.DependencyInjection.GetApplicationCoreAssemblies);
         assemblies.AddRange(new[]
         {

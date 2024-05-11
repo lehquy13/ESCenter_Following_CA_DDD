@@ -4,6 +4,7 @@ using ESCenter.Domain.Aggregates.Courses.Errors;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.DomainServices.Interfaces;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Specifications.Tutors;
 using Matt.ResultObject;

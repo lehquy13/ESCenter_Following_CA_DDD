@@ -3,7 +3,7 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Interfaces;
 
-namespace ESCenter.Domain.DomainServices;
+namespace ESCenter.Domain.DomainServices.Interfaces;
 
 public interface ICourseDomainService : IDomainService
 {

@@ -13,9 +13,7 @@ public class CourseRequestedDomainEventHandler(
     IUnitOfWork unitOfWork
 ) : INotificationHandler<CourseRequestedDomainEvent>
 {
-    public async Task Handle(
-        CourseRequestedDomainEvent notification,
-        CancellationToken cancellationToken)
+    public async Task Handle(CourseRequestedDomainEvent notification, CancellationToken cancellationToken)
     {
         var message = $"New course request to course {TitleFormat(notification.Course.Title)}" +
                       $"at {DateTime.Now.ToLongDateString()}";

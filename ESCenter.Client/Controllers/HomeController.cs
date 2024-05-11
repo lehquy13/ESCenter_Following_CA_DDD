@@ -40,9 +40,10 @@ public class HomeController(ISender sender) : Controller
         );
     }
 
-    public IActionResult FailPage()
+    public IActionResult FailPage(string? message)
     {
-        return View();
+        ViewBag.RequestedMessage = message!;
+        return View("FailPage");
     }
 
     public IActionResult SuccessRequestPage()

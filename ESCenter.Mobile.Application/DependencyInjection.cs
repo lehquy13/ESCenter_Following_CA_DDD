@@ -15,8 +15,8 @@ namespace ESCenter.Mobile.Application
         public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
         [
             typeof(DependencyInjection).Assembly,
-            typeof(ESCenter.Application.DependencyInjection).Assembly,
-            typeof(ESCenter.Domain.DependencyInjection).Assembly
+            typeof(ESCenter.Application.ApplicationDependencyInjection).Assembly,
+            typeof(ESCenter.Domain.DomainDependencyInjection).Assembly
         ];
     }
     

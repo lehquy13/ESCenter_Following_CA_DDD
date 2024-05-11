@@ -131,7 +131,7 @@ public class CourseController(ISender mediator) : Controller
         
         if (result.IsFailure)
         {
-            return RedirectToAction("FailPage", "Home");
+            return RedirectToAction("FailPage", "Home", new { message = result.Error.Description });
         }
 
         return RedirectToAction("SuccessRequestPage", "Home");

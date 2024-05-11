@@ -4,7 +4,6 @@ using Matt.SharedKernel.Domain.Specifications.Interfaces;
 
 namespace Matt.SharedKernel.Domain.Interfaces.Repositories;
 
-//TODO: Consider to change IEntity to IAggregateRoot
 public interface IReadOnlyRepository<TEntity, TId> : IScoped
     where TEntity : class, IEntity<TId> where TId : notnull
 {

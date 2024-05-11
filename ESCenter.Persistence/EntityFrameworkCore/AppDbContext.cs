@@ -57,7 +57,7 @@ public class AppDbContext(
 
         var result = await base.SaveChangesAsync(cancellationToken);
 
-        if (httpContextAccessor is null || httpContextAccessor.HttpContext is null) return result;
+        if (httpContextAccessor?.HttpContext is null) return result;
 
         Queue<IDomainEvent> domainEventsQueue =
             httpContextAccessor.HttpContext.Items.TryGetValue(EventualConsistencyMiddleware.DomainEventsKey,

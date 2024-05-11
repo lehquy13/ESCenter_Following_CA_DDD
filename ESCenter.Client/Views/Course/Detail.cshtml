@@ -1,6 +1,7 @@
+@using System.Security.Claims
 @using ESCenter.Domain.Shared.Courses
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using System.Security.Claims
+
 @model ESCenter.Client.Models.CourseDetailViewModel
 
 <div class="breadcrumbs" data-aos="fade-in">
@@ -25,6 +26,10 @@
                         @if (User.FindFirst(ClaimTypes.Role)?.Value == Role.Tutor.ToString())
                         {
                             <button class="btn btn-success" type="submit">Request (<b>Charge</b>: @Model.CourseDetailDto.ChargeFee $)</button>
+                        }
+                        else if (User.FindFirst(ClaimTypes.Role)?.Value == Role.Learner.ToString()) 
+                        {
+                            <button class="btn btn-success" disabled type="button">Only tutor can request</button>
                         }
                         else
                         {

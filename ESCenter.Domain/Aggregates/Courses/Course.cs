@@ -137,7 +137,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public Result Request(CourseRequest courseRequestToCreate)
     {
-        if (Status != Status.Confirmed)
+        if (Status == Status.Confirmed)
         {
             return Result.Fail(CourseDomainError.CourseIsNotOnGoing);
         }
