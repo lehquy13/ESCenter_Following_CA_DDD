@@ -9,6 +9,6 @@ namespace ESCenter.Domain.Aggregates.Tutors;
 public interface ITutorRepository : IRepository<Tutor, TutorId>
 {
     Task<List<Tutor>> GetPopularTutors();
-    Task<Tutor?> GetTutorByUserId(CustomerId userId);
+    Task<Tutor?> GetTutorByUserId(CustomerId userId, CancellationToken cancellationToken = default);
     Task RemoveChangeVerification(ChangeVerificationRequestId id);
 }

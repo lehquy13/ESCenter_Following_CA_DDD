@@ -38,10 +38,12 @@ internal class TutorRepository(
         return tutors;
     }
 
-    public Task<Tutor?> GetTutorByUserId(CustomerId userId)
+    public Task<Tutor?> GetTutorByUserId(CustomerId userId, CancellationToken cancellationToken = default)
     {
         return AppDbContext.Tutors
-            .FirstOrDefaultAsync(x => x.CustomerId == userId);
+            .FirstOrDefaultAsync(x =>
+                    x.CustomerId == userId,
+                cancellationToken: cancellationToken);
     }
 
     public Task RemoveChangeVerification(ChangeVerificationRequestId id)

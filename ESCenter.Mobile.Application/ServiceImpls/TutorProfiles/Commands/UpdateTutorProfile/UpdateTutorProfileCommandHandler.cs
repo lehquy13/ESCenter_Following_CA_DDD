@@ -2,9 +2,8 @@
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
-using ESCenter.Domain.Specifications.Subjects;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
@@ -25,8 +24,8 @@ public class UpdateTutorInformationCommandHandler(
     public override async Task<Result> Handle(UpdateTutorInformationCommand command,
         CancellationToken cancellationToken)
     {
-        var tutorId = TutorId.Create(currentUserService.UserId);
-        var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
+        var tutorId = CustomerId.Create(currentUserService.UserId);
+        var tutor = await tutorRepository.GetTutorByUserId(tutorId, cancellationToken);
 
         // Check if the tutor exist
         if (tutor is null)
@@ -36,7 +35,8 @@ public class UpdateTutorInformationCommandHandler(
 
         // Collect major ids
         var subjectListAboutToUpdate =
-            await subjectRepository.GetListByIdsAsync(command.TutorBasicUpdateDto.Majors.Select(SubjectId.Create), cancellationToken);
+            await subjectRepository.GetListByIdsAsync(command.TutorBasicUpdateDto.Majors.Select(SubjectId.Create),
+                cancellationToken);
 
         var majorsToRemove = new List<TutorMajor>();
 
@@ -57,7 +57,7 @@ public class UpdateTutorInformationCommandHandler(
         // Then we add new majors to the tutor
         var addMajors = subjectListAboutToUpdate
             .Where(x => tutor.TutorMajors.All(update => update.SubjectId != x.Id))
-            .Select(x => TutorMajor.Create(tutorId, x.Id, x.Name))
+            .Select(x => TutorMajor.Create(tutor.Id, x.Id, x.Name))
             .ToList();
 
         foreach (var major in addMajors)

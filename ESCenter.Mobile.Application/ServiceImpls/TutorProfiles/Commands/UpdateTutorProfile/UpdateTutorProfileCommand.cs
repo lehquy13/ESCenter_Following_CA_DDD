@@ -16,7 +16,6 @@ public class UpdateTutorInformationCommandValidator : AbstractValidator<UpdateTu
     }
 }
 
-
 public class TutorBasicUpdateForClientDto
 {
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
