@@ -9,5 +9,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ESCenter.Domain.Shared\ESCenter.Domain.Shared.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Aggregates\PurchaseLog\" />
+  </ItemGroup>
   
 </Project>

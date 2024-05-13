@@ -5,6 +5,7 @@ using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Specifications.Tutors;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using ESCenter.Mobile.Application.ServiceImpls.Courses;
@@ -52,7 +53,25 @@ public class GetLearningCourseDetailQueryHandler(
 
         if (courseWithSubject.Course.TutorId is null)
         {
-            return Result.Fail(CourseAppServiceErrors.CourseHasNoTutor);
+            if(courseWithSubject.Course.Status == Status.Confirmed)
+                return Result.Fail(CourseAppServiceErrors.CourseHasNoTutor);
+
+            return new LearningCourseDetailForClientDto
+            {
+                Id = courseWithSubject.Course.Id.Value,
+                Title = courseWithSubject.Course.Title,
+                Description = courseWithSubject.Course.Description,
+                Status = courseWithSubject.Course.Status.ToString(),
+                LearningMode = courseWithSubject.Course.LearningMode.ToString(),
+                ChargeFee = courseWithSubject.Course.ChargeFee.Amount,
+                SectionFee = courseWithSubject.Course.SectionFee.Amount,
+                SessionDuration = courseWithSubject.Course.SessionDuration.Value,
+                SessionPerWeek = courseWithSubject.Course.SessionPerWeek.Value,
+                SubjectName = courseWithSubject.Subject.Name,
+                Address = courseWithSubject.Course.Address,
+                CreationTime = courseWithSubject.Course.CreationTime,
+                LastModificationTime = courseWithSubject.Course.LastModificationTime
+            };
         }
 
         var tutor = await tutorRepository.GetAsync(courseWithSubject.Course.TutorId, cancellationToken);
@@ -61,17 +80,18 @@ public class GetLearningCourseDetailQueryHandler(
         {
             return Result.Fail(CourseAppServiceErrors.TutorDoesNotExist);
         }
-
+            
         var tutorInfo = await customerRepository.GetAsync(tutor.CustomerId, cancellationToken);
 
         if (tutorInfo is null)
         {
             return Result.Fail(CourseAppServiceErrors.TutorDoesNotExist);
         }
-
+            
         var classDto = (courseWithSubject.Course, courseWithSubject.Subject, tutor.Id.Value, tutorInfo)
             .Adapt<LearningCourseDetailForClientDto>();
 
         return classDto;
+
     }
 }

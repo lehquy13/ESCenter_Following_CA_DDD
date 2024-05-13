@@ -32,6 +32,10 @@ public class UpdateTutorInformationCommandHandler(
         {
             return Result.Fail(UserError.NonExistTutorError);
         }
+        
+        tutor.UpdateBasicInformation(
+            command.TutorBasicUpdateDto.University,
+            command.TutorBasicUpdateDto.AcademicLevel);
 
         // Collect major ids
         var subjectListAboutToUpdate =

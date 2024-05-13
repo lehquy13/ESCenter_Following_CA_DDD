@@ -29,7 +29,6 @@ public class UpdateTutorInformationCommandHandler(
     public override async Task<Result> Handle(UpdateTutorInformationCommand command,
         CancellationToken cancellationToken)
     {
-   
         var tutor = await tutorRepository.GetAsync(new TutorByCustomerIdSpec(CustomerId.Create(currentUserService.UserId)), cancellationToken);
 
         // Check if the tutor exist

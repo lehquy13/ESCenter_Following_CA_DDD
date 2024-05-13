@@ -8,13 +8,18 @@ namespace ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 
 public class LearningCourseDetailForClientDto : BasicAuditedEntityDto<Guid>
 {
+    public LearningCourseDetailForClientDto()
+    {
+        SectionFee = 0;
+    }
+
     //Basic Information
     public string Title { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
     public string Status { get; init; } = "OnVerifying";
     public string LearningMode { get; init; } = "Offline";
-    public float SectionFee { get; init; } = 0;
-    public float ChargeFee { get; init; } = 0;
+    public float SectionFee { get; init; }
+    public float ChargeFee { get; init; }
     public int SessionDuration { get; init; } = 90;
     public int SessionPerWeek { get; init; } = 2;
     public string Address { get; init; } = string.Empty;
