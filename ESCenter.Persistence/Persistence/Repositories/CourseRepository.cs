@@ -1,6 +1,9 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +33,16 @@ internal class CourseRepository(
     {
         return AppDbContext.Courses
             .Include(x => x.CourseRequests)
-            .FirstOrDefaultAsync(x => x.CourseRequests.Any(rq => rq.Id == courseRequestId), cancellationToken);
+            .FirstOrDefaultAsync(x =>
+                x.CourseRequests.Any(rq => rq.Id == courseRequestId), cancellationToken);
+    }
+
+    public Task<List<Course>> GetAllTutorRelatedCourses(TutorId tutorId)
+    {
+        // Get all courses that are requested by tutor or owned by tutor
+        return AppDbContext.Courses
+            .Include(x => x.CourseRequests)
+            .Where(x => x.CourseRequests.Any(rq => rq.TutorId == tutorId) || x.TutorId == tutorId)
+            .ToListAsync();
     }
 }

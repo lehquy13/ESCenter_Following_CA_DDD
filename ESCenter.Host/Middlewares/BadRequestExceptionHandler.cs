@@ -30,7 +30,6 @@ internal sealed class BadRequestExceptionHandler(
                 JsonConvert.SerializeObject(badRequestException.Errors, Formatting.Indented));
         }
 
-
         var problemDetails = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
