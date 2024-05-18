@@ -5,13 +5,13 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 
-public record GetCourseRequestDetailByTutorIdQuery(Guid CourseRequestId)
+public record GetCourseRequestDetailQuery(Guid CourseId)
     : IQueryRequest<CourseRequestForDetailDto>, IAuthorizationRequest;
 
-public class GetCourseRequestDetailByTutorIdQueryValidator : AbstractValidator<GetCourseRequestDetailByTutorIdQuery>
+public class GetCourseRequestDetailByTutorIdQueryValidator : AbstractValidator<GetCourseRequestDetailQuery>
 {
     public GetCourseRequestDetailByTutorIdQueryValidator()
     {
-        RuleFor(x => x.CourseRequestId).NotEmpty();
+        RuleFor(x => x.CourseId).NotEmpty();
     }
 }

@@ -4,6 +4,7 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 
 namespace ESCenter.Mobile.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 
+public record RequestTutorRequest(string RequestMessage);
 public record RequestTutorCommand(Guid TutorId, string RequestMessage) : ICommandRequest, IAuthorizationRequest;
 
 public class RequestTutorCommandValidator : AbstractValidator<RequestTutorCommand>

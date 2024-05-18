@@ -49,7 +49,7 @@ public class ProfileController(
     [HttpGet("course-requests")]
     public async Task<IActionResult> GetCourseRequests()
     {
-        var result = await mediator.Send(new GetCourseRequestsByTutorIdQuery());
+        var result = await mediator.Send(new GetCourseRequestsQuery());
         return Ok(result);
     }
 
@@ -70,11 +70,12 @@ public class ProfileController(
         return Ok(result);
     }
 
+    // TODO: it will be fail
     [Authorize(Policy = "RequireTutorRole")]
     [HttpGet("course-request/{courseRequestId:guid}")]
     public async Task<IActionResult> CourseRequestDetail(Guid courseRequestId)
     {
-        var requestDetail = await mediator.Send(new GetCourseRequestDetailByTutorIdQuery(courseRequestId));
+        var requestDetail = await mediator.Send(new GetCourseRequestDetailQuery(courseRequestId));
         return Ok(requestDetail);
     }
 

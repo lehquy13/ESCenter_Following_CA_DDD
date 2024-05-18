@@ -16,7 +16,7 @@ public class Subscription : AuditedAggregateRoot<SubscriptionId>
         var tutorRequest = new Subscription()
         {
             Id = SubscriptionId.Create(),
-            LearnerId = customerId
+            CustomerId = customerId
         };
 
         tutorRequest.DomainEvents.Add(new SubscriptionCreatedDomainEvent(tutorRequest));
@@ -24,7 +24,17 @@ public class Subscription : AuditedAggregateRoot<SubscriptionId>
         return tutorRequest;
     }
 
-    public CustomerId LearnerId { get; private init; } = null!;
+    public CustomerId CustomerId { get; private init; } = null!;
+    public SubscriptionType SubscriptionType { get; private set; } = SubscriptionType.Basic;
+}
+
+public enum SubscriptionType
+{
+    Basic, // 2 courses each month
+    Plus, // 4 courses each month - Machine Learning Searching - Mailing about new courses
+          // - Discount on 10% 1 first courses 
+    Premium // Unlimited courses each month - Machine Learning Searching - Mailing about new courses
+            // - Higher priority when requesting courses - Discount on 15% 2 first courses
 }
 
 public record SubscriptionCreatedDomainEvent(Subscription TutorRequest) : IDomainEvent;

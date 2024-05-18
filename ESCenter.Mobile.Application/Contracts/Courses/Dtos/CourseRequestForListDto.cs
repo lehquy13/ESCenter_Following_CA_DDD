@@ -12,6 +12,14 @@ public class CourseRequestForListDto : BasicAuditedEntityDto<Guid>
     public string RequestStatus { get; set; } = "Verifying";
 }
 
+public class BasicCourseRequestDto : BasicAuditedEntityDto<Guid>
+{
+    public Guid CourseId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string SubjectName { get; set; } = string.Empty;
+    public string RequestStatus { get; set; } = "Pending";
+}
+
 public class CourseRequestForListDtoMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)

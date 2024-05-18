@@ -160,21 +160,6 @@ public class ProfileController(
     }
 
     [HttpGet]
-    [Route("request-detail/{courseId:guid}")]
-    public async Task<IActionResult> TeachingClassDetail(Guid courseId)
-    {
-        var query = new GetCourseRequestDetailQuery(courseId);
-        var course = await sender.Send(query);
-
-        if (course.IsSuccess)
-        {
-            return Helper.RenderRazorViewToString(this, "_TeachingClassDetail", course.Value);
-        }
-
-        return RedirectToAction("Error", "Home");
-    }
-
-    [HttpGet]
     [Route("learning-course/{courseId:guid}")]
     public async Task<IActionResult> GetLearningClass(Guid courseId)
     {

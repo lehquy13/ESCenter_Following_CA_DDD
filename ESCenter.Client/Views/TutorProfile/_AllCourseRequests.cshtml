@@ -32,7 +32,8 @@
                     <td>@requestGettingClassDto.RequestStatus</td>
 
                     <td>
-                        <button type="button" class="btn btn-primary" onclick="OpenGetDialog('@Url.Action("TeachingClassDetail", "Profile", new { requestId = requestGettingClassDto.Id, classId = requestGettingClassDto.CourseId })','Detail');">
+                        <button type="button" class="btn btn-primary"
+                                onclick="OpenGetDialog('@Url.Action("TeachingClassDetail", "TutorProfile", new { courseId = requestGettingClassDto.CourseId })','Detail');">
                             Detail
                         </button>
                     </td>

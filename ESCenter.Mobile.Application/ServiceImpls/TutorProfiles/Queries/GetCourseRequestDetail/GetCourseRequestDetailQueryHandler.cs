@@ -1,20 +1,18 @@
-﻿using ESCenter.Client.Application.Contracts.Courses.Dtos;
-using ESCenter.Client.Application.ServiceImpls.Courses;
-using ESCenter.Domain.Aggregates.Courses;
-using ESCenter.Domain.Aggregates.Courses.Entities;
+﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
-using Mapster;
+using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
+using ESCenter.Mobile.Application.ServiceImpls.Courses;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 
-namespace ESCenter.Client.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
+namespace ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 
 public class GetCourseRequestDetailQueryHandler(
     ICourseRepository courseRepository,

@@ -1,7 +1,5 @@
 ﻿using ESCenter.Host;
-using ESCenter.Mobile.Application.Contracts.Users.Learners;
 using ESCenter.Mobile.Application.Contracts.Users.Params;
-using ESCenter.Mobile.Application.Contracts.Users.Tutors;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
@@ -18,8 +16,6 @@ public class TutorController(
     ISender mediator)
     : ApiControllerBase(logger)
 {
-    // Query
-    // GET: api/<Tutor>
     [HttpGet]
     [Route("")]
     public async Task<IActionResult> GetAllTutors([FromQuery] TutorParams tutorParams)
@@ -28,8 +24,6 @@ public class TutorController(
         return Ok(tutorDtos);
     }
 
-
-    // GET api/<TutorController>/5
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> GetTutor(Guid id)
@@ -38,7 +32,6 @@ public class TutorController(
         return Ok(tutorDto);
     }
 
-    // TODO: test
     // POST api/<TutorController>/Register 
     [Authorize(Roles = "Learner")]
     [HttpPost]
@@ -53,10 +46,9 @@ public class TutorController(
     [Authorize]
     [HttpPost]
     [Route("{tutorId}/request-tutor")]
-    public async Task<IActionResult> RequestTutor(Guid tutorId,
-        string requestMessage)
+    public async Task<IActionResult> RequestTutor(Guid tutorId, RequestTutorRequest requestTutorRequest)
     {
-        var result = await mediator.Send(new RequestTutorCommand(tutorId, requestMessage));
+        var result = await mediator.Send(new RequestTutorCommand(tutorId, requestTutorRequest.RequestMessage));
         return Ok(result);
     }
 }
