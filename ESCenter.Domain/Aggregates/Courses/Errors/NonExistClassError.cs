@@ -28,7 +28,16 @@ public static class CourseDomainError
 
     public static Error AlreadyReviewedErrorMessage { get; } = new("ReviewFailError", "This class has been reviewed!");
     public static Error CourseIsNotOnGoing { get; } = new("CourseIsNotOnGoing", "This course isn't on going!");
-    public static Error MaxCourseRequestError { get; } = new("MaxCourseRequestError", "This course has reached the maximum number of requests!");
+
+    public static Error MaxCourseRequestError { get; } = new("MaxCourseRequestError",
+        "This course has reached the maximum number of requests!");
+
     public static Error CourseUnavailable { get; } = new("CourseConfirmed", "This course has been confirmed!");
     public static Error NonExistTutorError { get; } = new("NonExistTutorError", "This tutor doesn't exist!");
+
+    public static Error InvalidStatusForAssignTutor { get; } = new("InvalidStatusForAssignTutor",
+        "This course isn't available for assigning tutor!");
+
+    public static Error CourseUnavailableForConfirmation { get; } = new("CourseUnavailableForConfirmation",
+        "This course isn't available for confirmation!");
 }

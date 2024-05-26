@@ -28,4 +28,7 @@ public static class CourseAppServiceErrors
 
     public static Error NonExistCourseRequestError
         => new("CourseAppServiceErrors.NonExistCourseRequestError", "The request doesn't exist");
+
+    public static Error InvalidStatusForAssignTutor 
+        => new("CourseAppServiceErrors.InvalidStatusForAssignTutor", "The class isn't available for assigning tutor");
 }

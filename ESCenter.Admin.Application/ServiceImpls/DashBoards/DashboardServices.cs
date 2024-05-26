@@ -1,8 +1,6 @@
 ﻿using ESCenter.Admin.Application.Contracts.Charts;
 using ESCenter.Admin.Application.Contracts.Notifications;
 using ESCenter.Admin.Application.Contracts.Users.Learners;
-using ESCenter.Admin.Application.DashBoards;
-using ESCenter.Admin.Application.ServiceImpls.Tutors;
 using ESCenter.Application;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
@@ -11,16 +9,14 @@ using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
-using Matt.ResultObject;
 using Matt.SharedKernel;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
-namespace ESCenter.Admin.Application.ServiceImpls;
+namespace ESCenter.Admin.Application.ServiceImpls.DashBoards;
 
 internal class DashboardServices(
     IReadOnlyRepository<Course, CourseId> courseRepository,

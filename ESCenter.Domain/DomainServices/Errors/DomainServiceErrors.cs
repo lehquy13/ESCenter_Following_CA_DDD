@@ -18,14 +18,15 @@ public static class DomainServiceErrors
     public static Error EmailNotConfirmed => new("EmailNotConfirmed", "Email not confirmed");
     public static Error RemoveUserFail => new("RemoveUserFail", "Remove user fail");
     public static Error AddRoleFailed => new("AddRoleFailed", "Add role failed");
+
     public static Error FailRegisteringAsTutorErrorWhileAddingRole => new("FailRegisteringAsTutorErrorWhileAddingRole",
         "Fail to register tutor while adding role");
 
     public static Error FailAddRoleError => new("FailAddRoleError", "Fail to add role");
     public static Error Unauthorized => new("Unauthorized", "Unauthorized");
     public static Error Incompetent => new("Incompetent", "Incompetent");
+    public static Error CourseNotFound => new("CourseNotFound", "Course not found");
+    public static Error InvalidCourseStatusForPayment { get; } = new("InvalidCourseStatusForPayment",
+        "Invalid course status for payment");
 
-    public static Error FailRegisteringAsTutorErrorWhileSavingChanges(string message)
-        => new("FailRegisteringTutorErrorWhileSavingChanges",
-            $"Fail to register tutor while saving changes! {message}");
 }

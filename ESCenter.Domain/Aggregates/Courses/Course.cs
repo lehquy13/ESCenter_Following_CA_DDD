@@ -8,6 +8,7 @@ using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
+using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Primitives.Auditing;
 
 namespace ESCenter.Domain.Aggregates.Courses;
@@ -172,21 +173,31 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public void AssignTutor(TutorId tutorId)
     {
         TutorId = tutorId;
-        Status = Status.Confirmed;
 
         // Cancel all other course requests
         foreach (var courseRequest in _courseRequests)
         {
             if (courseRequest.TutorId == tutorId)
             {
-                courseRequest.Approved();
+                if (courseRequest.RequestStatus == RequestStatus.OnProgress)
+                {
+                    courseRequest.OnProgressing();
+                }
+                else
+                {
+                    courseRequest.Approved();
+                }
+
                 continue;
             }
 
-            courseRequest.Cancel();
+            if (Status == Status.Confirmed)
+            {
+                courseRequest.Cancel();
+            }
         }
 
-        DomainEvents.Add(new CourseAssignedDomainEvent(this, tutorId));
+        DomainEvents.Add(new TutorAssignedDomainEvent(this, tutorId));
     }
 
     public void UpdateCourse(string title,
@@ -243,4 +254,48 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
         return Result.Success();
     }
+
+    public Result ConfirmedCourse()
+    {
+        if (Status != Status.OnProgressing || TutorId is null)
+        {
+            return Result.Fail(CourseDomainError.CourseUnavailableForConfirmation);
+        }
+
+        Status = Status.Confirmed;
+
+        foreach (var courseRequest in _courseRequests)
+        {
+            if (courseRequest.TutorId == TutorId)
+            {
+                courseRequest.Approved();
+                continue;
+            }
+
+            courseRequest.Cancel();
+        }
+        
+        DomainEvents.Add(new CourseConfirmedDomainEvent(this));
+        
+        return Result.Success();
+    }
+
+    public Result SetCourseTutorForPayment(TutorId tutorId)
+    {
+        if (Status is Status.Confirmed or Status.Canceled)
+        {
+            return Result.Fail(CourseDomainError.CourseUnavailable);
+        }
+
+        Status = Status.OnProgressing;
+        TutorId = tutorId;
+
+        // TODO: Add domain event for this action
+        DomainEvents.Add(new TutorAssignedDomainEvent(this, tutorId));
+
+        return Result.Success();
+    }
 }
+
+// TODO: Add domain event for this action
+public record CourseConfirmedDomainEvent(Course Course) : IDomainEvent;

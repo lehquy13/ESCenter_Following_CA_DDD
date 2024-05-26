@@ -26,6 +26,8 @@ public class UpdateCourseCommandHandler(
             return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
 
+        var updateStatus = command.CourseUpdateDto.Status.ToEnum<Status>();
+
         course.UpdateCourse(
             command.CourseUpdateDto.Title,
             command.CourseUpdateDto.Description,
@@ -41,7 +43,7 @@ public class UpdateCourseCommandHandler(
             command.CourseUpdateDto.SessionDuration,
             command.CourseUpdateDto.SessionPerWeek,
             command.CourseUpdateDto.Address,
-            command.CourseUpdateDto.Status.ToEnum<Status>(),
+            updateStatus,
             SubjectId.Create(command.CourseUpdateDto.SubjectId));
 
         if (command.CourseUpdateDto.TutorId != Guid.Empty &&
@@ -49,10 +51,14 @@ public class UpdateCourseCommandHandler(
         {
             var tutorId = TutorId.Create(command.CourseUpdateDto.TutorId);
 
+            if (updateStatus != Status.Confirmed && updateStatus != Status.OnProgressing)
+            {
+                return Result.Fail(CourseAppServiceErrors.InvalidStatusForAssignTutor);
+            }
+
             course.AssignTutor(tutorId);
         }
-        else if (command.CourseUpdateDto.TutorId == Guid.Empty &&
-                 course.TutorId is not null)
+        else if (command.CourseUpdateDto.TutorId == Guid.Empty && course.TutorId is not null)
         {
             course.UnAssignTutor();
         }

@@ -41,4 +41,10 @@ public class CourseRequest : AuditedEntity<CourseRequestId>
     {
         RequestStatus = RequestStatus.Done;
     }
+
+    public void OnProgressing()
+    {
+        RequestStatus = RequestStatus.OnProgress;
+
+    }
 }

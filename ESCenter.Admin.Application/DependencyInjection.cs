@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using ESCenter.Admin.Application.Contracts.Courses.Dtos;
-using ESCenter.Admin.Application.DashBoards;
 using ESCenter.Admin.Application.ServiceImpls;
+using ESCenter.Admin.Application.ServiceImpls.DashBoards;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Application;
 using ESCenter.Application.Behaviors;

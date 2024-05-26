@@ -1,7 +1,7 @@
 using System.Collections;
 using ESCenter.Admin.Application.Contracts.Notifications;
 using ESCenter.Admin.Application.Contracts.Users.Learners;
-using ESCenter.Admin.Application.DashBoards;
+using ESCenter.Admin.Application.ServiceImpls.DashBoards;
 
 namespace ESCenter.Administrator.Models;
 

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using ESCenter.Admin.Application.DashBoards;
 using ESCenter.Administrator.Models;
 using ESCenter.Administrator.Utilities;
 using ESCenter.Admin.Application.Contracts.Charts;
+using ESCenter.Admin.Application.ServiceImpls.DashBoards;
 using ESCenter.Admin.Application.ServiceImpls.TutorRequests.Queries.GetAllTutorRequests;
 using ESCenter.Domain.Shared.Courses;
 using MediatR;

@@ -7,7 +7,7 @@ using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace ESCenter.Mobile.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers;
 
 public class CoursePurchasedDomainEventHandler(
     IEmailSender emailSender,
@@ -23,7 +23,12 @@ public class CoursePurchasedDomainEventHandler(
 
         var tutorEmail = await customerRepository.GetTutorEmail(domainEvent.TutorId);
 
-        emailSender.SendEmail(tutorEmail, "Course Purchased", message);
+        if (tutorEmail is null)
+        {
+            return;
+        }
+
+        _ = emailSender.SendEmail(tutorEmail, "Course Purchased", message);
 
         var notification = Notification.Create(
             $"A course has been purchased",

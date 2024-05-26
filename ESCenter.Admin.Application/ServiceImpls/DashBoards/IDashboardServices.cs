@@ -2,7 +2,7 @@
 using ESCenter.Admin.Application.Contracts.Notifications;
 using ESCenter.Admin.Application.Contracts.Users.Learners;
 
-namespace ESCenter.Admin.Application.DashBoards;
+namespace ESCenter.Admin.Application.ServiceImpls.DashBoards;
 
 public interface IDashboardServices
 {

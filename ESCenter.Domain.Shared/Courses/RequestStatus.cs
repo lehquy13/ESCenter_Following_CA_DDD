@@ -4,4 +4,5 @@ public enum RequestStatus
     Done,
     Pending,
     Canceled,
+    OnProgress
 }

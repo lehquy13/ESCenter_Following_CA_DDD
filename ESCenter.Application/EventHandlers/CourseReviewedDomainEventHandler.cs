@@ -1,13 +1,13 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.DomainEvents;
 using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Mobile.Application.ServiceImpls.Courses;
+using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Domain.EventualConsistency;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Mobile.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers;
 
 public class CourseReviewedDomainEventHandler(
     ICourseRepository courseRepository,
@@ -39,7 +39,7 @@ public class CourseReviewedDomainEventHandler(
         if (tutorToUpdate is null)
         {
             logger.LogError("Doesnt have any tutor to update rate");
-            throw new EventualConsistencyException(CourseAppServiceErrors.TutorNotExistsError);
+            throw new EventualConsistencyException(new Error("TutorNotFound","Tutor Not Found"));
         }
 
         if (tutorToUpdate.ReviewRate.Count() >= 2)
