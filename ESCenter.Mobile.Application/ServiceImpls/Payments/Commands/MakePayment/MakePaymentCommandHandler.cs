@@ -5,15 +5,15 @@ using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
-namespace ESCenter.Mobile.Application.ServiceImpls.Payments.Commands.PurchasePayment;
+namespace ESCenter.Mobile.Application.ServiceImpls.Payments.Commands.MakePayment;
 
-public class PaidCourseCommandHandler(
+public class MakePaymentCommandHandler(
     IRepository<Payment, PaymentId> paymentRepository,
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger
-) : CommandHandlerBase<PaidCourseCommand>(unitOfWork, logger)
+) : CommandHandlerBase<MakePaymentCommand>(unitOfWork, logger)
 {
-    public override async Task<Result> Handle(PaidCourseCommand command, CancellationToken cancellationToken)
+    public override async Task<Result> Handle(MakePaymentCommand command, CancellationToken cancellationToken)
     {
         var payment = await paymentRepository.GetAsync(PaymentId.Create(command.Id), cancellationToken);
 
@@ -22,7 +22,12 @@ public class PaidCourseCommandHandler(
             return Result.Fail("Payment not found");
         }
 
-        payment.SetTutorPaid();
+        var result = payment.SetTutorPaid();
+        
+        if (result.IsFailure)
+        {
+            return result;
+        }
 
         await UnitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -55,6 +55,11 @@ public class CourseController(
         return Ok(result);
     }
 
+    /// <summary>
+    /// Deprecated
+    /// </summary>
+    /// <param name="courseId"></param>
+    /// <returns></returns>
     [Authorize(Policy = "RequireTutorRole")]
     [HttpPut]
     [Route("{courseId:guid}/purchase-course")]

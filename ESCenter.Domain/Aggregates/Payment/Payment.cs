@@ -42,11 +42,18 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
         PaymentStatus = PaymentStatus.Canceled;
     }
 
-    public void SetTutorPaid()
+    public Result SetTutorPaid()
     {
+        if (PaymentStatus != PaymentStatus.Pending)
+        {
+            return Result.Fail("Payment not pending");
+        }
+
         PaymentStatus = PaymentStatus.TutorPaid;
 
         DomainEvents.Add(new TutorPaidDomainEvent(this));
+        
+        return Result.Success();
     }
 
     public Result ConfirmPayment()
