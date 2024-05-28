@@ -1,5 +1,4 @@
-﻿using ESCenter.Host;
-using ESCenter.Mobile.Application.ServiceImpls.Payments.Commands.MakePayment;
+﻿using ESCenter.Mobile.Application.ServiceImpls.Payments.Commands.MakePayment;
 using ESCenter.Mobile.Application.ServiceImpls.Payments.Queries.Gets;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;

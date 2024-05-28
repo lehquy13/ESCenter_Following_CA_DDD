@@ -2,7 +2,6 @@ using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Client.Application.Contracts.Courses.Dtos;
 using ESCenter.Client.Application.Contracts.Users.Tutors;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles;
-using Matt.Paginated;
 
 namespace ESCenter.Client.Models;
 

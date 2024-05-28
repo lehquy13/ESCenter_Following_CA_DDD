@@ -3,4 +3,4 @@ using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetAllTutors;
 
-public record GetAllTutorsQuery() : IQueryRequest<List<UserForListDto>>;
+public record GetAllTutorsQuery : IQueryRequest<List<UserForListDto>>;

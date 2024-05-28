@@ -1,7 +1,8 @@
-﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CancelCourseRequest;
+﻿using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CancelCourseRequest;
+using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.ConfirmCourse;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CreateCourse;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.DeleteCourse;
+using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.SetCourseTutor;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Commands.UpdateCourse;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetAllCourses;
 using ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetCourseDetail;
@@ -11,9 +12,9 @@ using ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearners;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetAllTutors;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
+using ESCenter.Administrator.Utilities;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
-using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,7 @@ namespace ESCenter.Administrator.Controllers;
 
 [Authorize(Policy = "RequireAdministratorRole")]
 [Route("admin/[controller]")]
-public class CourseController(
-    ILogger<CourseController> logger,
-    IMapper mapper,
-    ISender sender)
-    : Controller
+public class CourseController(ISender sender) : Controller
 {
     private async Task PackStaticListToView()
     {
@@ -67,9 +64,9 @@ public class CourseController(
     [Route("today")]
     public async Task<IActionResult> Today()
     {
-        //var query = new GetObjectQuery<List<ClassInformationDto>>();
         var courses = await sender.Send(new GetTodayCoursesQuery());
-        if (courses is { IsSuccess: true, Value: not null })
+
+        if (courses is { IsSuccess: true })
         {
             return View("Index", courses.Value);
         }
@@ -84,10 +81,13 @@ public class CourseController(
         await PackStudentAndTutorList();
 
         var result = await sender.Send(new GetCourseDetailQuery(id));
-        ViewBag.Action = "Edit";
 
         if (result.IsSuccess)
         {
+            var tutors = await sender.Send(new GetAllTutorsBySubjectIdQuery(result.Value.SubjectId));
+
+            ViewData["Tutors"] = tutors.Value;
+
             return View(result.Value);
         }
 
@@ -106,7 +106,6 @@ public class CourseController(
         }
 
         await PackStaticListToView();
-        await PackStudentAndTutorList();
 
         return Helper.UpdatedResult();
     }
@@ -115,7 +114,6 @@ public class CourseController(
     public async Task<IActionResult> Create()
     {
         await PackStaticListToView();
-        //await PackStudentAndTuTorList();
 
         return View(new CourseForCreateDto());
     }
@@ -153,12 +151,7 @@ public class CourseController(
     {
         var result = await sender.Send(new DeleteCourseCommand(id));
 
-        if (!result.IsSuccess)
-        {
-            return RedirectToAction("Error", "Home");
-        }
-
-        return RedirectToAction("Index");
+        return !result.IsSuccess ? RedirectToAction("Error", "Home") : RedirectToAction("Index");
     }
 
     [HttpGet("{id}/detail")]
@@ -175,16 +168,14 @@ public class CourseController(
     }
 
     [HttpGet]
-    [Route("pick-tutor")]
-    public async Task<IActionResult> PickTutor()
+    [Route($"pick-tutor")]
+    public async Task<IActionResult> PickTutor([FromQuery] int subjectId)
     {
-        var result = await sender.Send(new GetAllTutorsQuery());
-        if (result.IsSuccess)
-        {
-            return Helper.RenderRazorViewToString(this, "_PickTutor", result.Value);
-        }
+        var result = await sender.Send(new GetAllTutorsBySubjectIdQuery(subjectId));
 
-        return BadRequest();
+        return result.IsSuccess
+            ? Helper.RenderRazorViewToString(this, "_PickTutor", result.Value)
+            : Helper.FailResult();
     }
 
     [HttpGet("view-tutor/{id:guid}")]
@@ -206,7 +197,7 @@ public class CourseController(
         return Json(new { tutorId = tutorId });
     }
 
-    [HttpPost("{courseId}/cancel-request/{requestId}")]
+    [HttpPost("{courseId:guid}/cancel-request/{requestId:guid}")]
     public async Task<IActionResult> CancelRequest(
         Guid courseId, Guid requestId,
         CourseRequestCancelDto courseRequestCancelDto)
@@ -239,5 +230,21 @@ public class CourseController(
             "_EditRequest",
             result.Value
         );
+    }
+
+    [HttpPost("{courseId:guid}/set-tutor")]
+    public async Task<IActionResult> SetTutor([FromRoute] Guid courseId, [FromForm] Guid tutorId)
+    {
+        var result = await sender.Send(new SetCourseTutorCommand(courseId, tutorId));
+
+        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
+    }
+
+    [HttpGet("{courseId:guid}/confirm-course")]
+    public async Task<IActionResult> ConfirmCourse(Guid courseId)
+    {
+        var result = await sender.Send(new ConfirmCourseCommand(courseId));
+
+        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
     }
 }

@@ -5,26 +5,15 @@
 $(function () {
     $(document).bind('ajaxStart', function () {
         $('#preloader').css('display', 'block');
-    }).bind('ajaxStop', function () {
+    });
+    $(document).bind('ajaxStop', function () {
         $('#preloader').css('display', 'none');
     });
 });
 
 $(window).on('load', function () {
     //$(".loader").fadeOut();
-    $("#preloader").delay(100).fadeOut("slow");
-
-    /*------------------
-        Product filter
-    --------------------*/
-    $('.filter__controls li').on('click', function () {
-        $('.filter__controls li').removeClass('active');
-        $(this).addClass('active');
-    });
-    if ($('.property__gallery').length > 0) {
-        var containerEl = document.querySelector('.property__gallery');
-        var mixer = mixitup(containerEl);
-    }
+    $("#preloader").fadeOut("slow");
 });
 
 function callPostActionWithForm(formInput) {
@@ -69,8 +58,24 @@ function callPostActionWithForm(formInput) {
 }
 
 function RemoveTutor() {
-    $('#tutorInfor').attr("value", '');
+    $('#tutorInfo').attr("value", '');
     $('#tutorId').attr("value", 0);
+}
+
+function CallGetAction(url) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {},
+        success: function (res) {
+            if (res.res === true) {
+                alertify.success(res.message);
+            }
+            else{
+                alertify.error(res.message);
+            }
+        }
+    })
 }
 
 function OpenGetDialog(url, title) {
@@ -79,7 +84,7 @@ function OpenGetDialog(url, title) {
         url: url,
         data: {},
         success: function (res) {
-            if(res.res === true){
+            if (res.res === true) {
                 $('#largeModal .modal-title').html(title);
                 $('#largeModal .modal-body').html(res.partialView);
 
@@ -89,17 +94,9 @@ function OpenGetDialog(url, title) {
     })
 }
 
-function OpenConfirmDialog(url, title) {
-    $('#verticalCentered .modal-title').html(title);
-
-    $('#confirmDialogForm').attr('action', url);
-    $('#verticalCentered').modal('show')
-
-}
-
 function LoadImage(url, id) {
     let formData = new FormData();
-    
+
     formData.append('formFile', $('#formFile')[0].files[0]);
     $.ajax({
         type: "POST",
@@ -129,7 +126,7 @@ function ApproveTutor(id, name, phone) {
     $(document.body).removeClass('modal-open');
     $('.modal-backdrop').remove();
     $('#tutorId').attr("value", id);
-    $('#tutorInfor').attr("value", name + " - " + phone);
+    $('#tutorInfo').attr("value", name + " - " + phone);
 
 }
 
@@ -154,18 +151,15 @@ function CancelRequest(url) {
 function AddMajorSubject(id, name, des) {
     $('#tutorMajorCard .list-group')
         .append(` <div class=" list-group-item list-group-item-action" id="${id}-item">
-                                    <div class="row">
-                                        <input name="subjectId" value="${id}"  hidden="hidden" />
-                                        <a href="/admin/subject/detail?id=${id}" class="col-11">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">` + name + `</h5>
-                                            </div>
-                                            <p class="mb-1">` + des + `</p>
-                                        </a>
-                                        <button type="button" class="col-1 btn btn-danger" onclick="RemoveMajorSubject('${id}')">Remove</button>
-
-                                    </div>
-                                </div>`);
-
-
+                    <div class="row">
+                        <input name="subjectId" value="${id}"  hidden="hidden" />
+                        <a href="/admin/subject/detail?id=${id}" class="col-11">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">` + name + `</h5>
+                            </div>
+                            <p class="mb-1">` + des + `</p>
+                        </a>
+                        <button type="button" class="col-1 btn btn-danger" onclick="RemoveMajorSubject('${id}')">Remove</button>
+                    </div>
+                </div>`);
 }

@@ -74,4 +74,14 @@ internal class CustomerRepository(AppDbContext appDbContext, IAppLogger<Customer
 
         return tutorEmail;
     }
+
+    public async Task<List<Customer>> GetTutorsByTutorIds(List<TutorId> tutors)
+    {
+        return await AppDbContext.Customers
+            .Join(AppDbContext.Tutors,
+                cus => cus.Id,
+                tutor => tutor.CustomerId,
+                (cus, tutor) => cus)
+            .ToListAsync();
+    }
 }

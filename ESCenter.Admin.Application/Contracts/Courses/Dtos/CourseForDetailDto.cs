@@ -18,7 +18,7 @@ public class CourseForDetailDto
 
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Status { get; set; } = Domain.Shared.Courses.Status.OnVerifying.ToString();
+    public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; set; } = Domain.Shared.Courses.LearningMode.Offline.ToString();
 
     public float SectionFee { get; set; } = 0;

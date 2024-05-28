@@ -46,14 +46,6 @@
                     <td>
                         <a asp-action="Edit" asp-route-id="@user.Id">Edit</a>|
                         <a asp-action="Detail" asp-route-id="@user.Id">Details</a> |
-                        @if (user.NumberOfRequests == 0)
-                        {
-                            <button class="btn btn-link">No Requests</button>
-                        }
-                        else
-                        {
-                            <button class="btn btn-link" onclick="OpenGetDialog('@Url.Action("ViewTutorRequests", "Tutor", new {id = user.Id})','Tutor Requests')">(@user.NumberOfRequests) Requests</button>
-                        }
                         |
                         <a href="#" onclick="OpenGetDialog('@Url.Action("Delete", "User", new { id = user.Id })','Are you sure you want to delete this user?');">Delete</a>
                     </td>

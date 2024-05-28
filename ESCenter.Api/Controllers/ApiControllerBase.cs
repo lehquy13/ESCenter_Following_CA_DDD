@@ -1,8 +1,7 @@
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-namespace ESCenter.Host;
+namespace ESCenter.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

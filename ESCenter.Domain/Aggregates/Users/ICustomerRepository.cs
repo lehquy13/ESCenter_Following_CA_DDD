@@ -10,4 +10,5 @@ public interface ICustomerRepository : IRepository<Customer, CustomerId>
     Task<List<Customer>> GetTutors();
     Task<Customer?> GetTutorByTutorId(TutorId tutorId, CancellationToken cancellationToken = default);
     Task<string?> GetTutorEmail(TutorId tutorId);
+    Task<List<Customer>> GetTutorsByTutorIds(List<TutorId> tutors);
 }

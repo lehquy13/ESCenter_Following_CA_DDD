@@ -1,5 +1,7 @@
+using System.Net;
 using System.Security.Claims;
 using ESCenter.Administrator;
+using ESCenter.Administrator.Middlewares;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Serilog;
 
@@ -39,26 +41,25 @@ else
 
 app.UseSerilogRequestLogging();
 
-app.UseStatusCodePages(context =>
-{
-    var request = context.HttpContext.Request;
-    var response = context.HttpContext.Response;
-
-    if (!context.HttpContext.User.Claims.Any(x => x is { Type: ClaimTypes.Role, Value: "Admin" }))
-    {
-        response.Redirect("/admin/authentication");
-    }
-
-    return Task.CompletedTask;
-});
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
 app.UseSession();
 
+
 app.UseAuthentication();
+
+app.UseStatusCodePages(context =>
+{
+    var response = context.HttpContext.Response;
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+        response.StatusCode == (int)HttpStatusCode.Forbidden)
+        response.Redirect("/admin/authentication");
+    
+    return Task.CompletedTask;
+});
+
 app.UseRouting();
 
 app.UseAuthorization();

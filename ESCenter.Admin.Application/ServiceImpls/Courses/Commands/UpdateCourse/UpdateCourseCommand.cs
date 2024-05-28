@@ -20,7 +20,7 @@ public class CourseUpdateDto
 
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Status { get; set; } = Domain.Shared.Courses.Status.OnVerifying.ToString();
+    public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; set; } = Domain.Shared.Courses.LearningMode.Offline.ToString();
 
     public float SectionFee { get; set; } = 0;
@@ -45,9 +45,6 @@ public class CourseUpdateDto
 
     //Subject related information
     public int SubjectId { get; set; }
-
-    //Confirmed data related
-    public Guid TutorId { get; set; }
 }
 
 public class CourseUpdateDtoMappingConfig : IRegister
@@ -67,9 +64,10 @@ public class CourseUpdateDtoMappingConfig : IRegister
             .Map(dest => dest.SessionDuration, src => SessionDuration.Create(src.SessionDuration, null))
             .Map(dest => dest.SessionPerWeek, src => SessionPerWeek.Create(src.SessionPerWeek))
             .Map(dest => dest.NumberOfLearner, src => src.NumberOfLearner)
+            .Map(dest => dest.Status, src => src.Status.ToEnum<Status>())
             .Map(dest => dest.SubjectId, src => SubjectId.Create(src.SubjectId))
-            .Map(dest => dest.TutorId, src => src.TutorId != Guid.Empty ? CustomerId.Create(src.TutorId) : null)
-            .Map(dest => dest.Status, src => src.TutorId == Guid.Empty ? src.Status.ToEnum<Status>() : Status.Confirmed)
+            // .Map(dest => dest.TutorId, src => src.TutorId != Guid.Empty ? CustomerId.Create(src.TutorId) : null)
+            // .Map(dest => dest.Status, src => src.TutorId == Guid.Empty ? src.Status.ToEnum<Status>() : Status.Confirmed)
             .Map(dest => dest, src => src);
     }
 }
@@ -80,7 +78,7 @@ public class UpdateCourseCommandValidator : AbstractValidator<UpdateCourseComman
     {
         RuleFor(command => command.CourseUpdateDto)
             .NotNull().WithMessage("CourseUpdateDto is required.");
-        
+
         RuleFor(command => command.CourseUpdateDto)
             .SetValidator(new CourseUpdateDtoValidator());
     }
@@ -109,6 +107,5 @@ public class CourseUpdateDtoValidator : AbstractValidator<CourseUpdateDto>
         RuleFor(dto => dto.SessionPerWeek).GreaterThan(0).WithMessage("SessionPerWeek must be greater than 0.");
         RuleFor(dto => dto.Address).NotEmpty().WithMessage("Address is required.");
         RuleFor(dto => dto.SubjectId).NotEmpty().WithMessage("SubjectId is required.");
-        RuleFor(dto => dto.TutorId).NotEmpty().WithMessage("TutorId is required.");
     }
 }

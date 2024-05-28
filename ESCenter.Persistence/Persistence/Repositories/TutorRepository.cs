@@ -1,6 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Subjects;
+﻿using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
@@ -57,5 +56,13 @@ internal class TutorRepository(
         }
 
         return Task.CompletedTask;
+    }
+
+    public async Task<List<TutorId>> GetTutorsBySubjectId(SubjectId subjectId, CancellationToken cancellationToken)
+    {
+        return await AppDbContext.Tutors
+            .Where(x => x.TutorMajors.Any(xx => xx.SubjectId == subjectId))
+            .Select(x => x.Id)
+            .ToListAsync(cancellationToken: cancellationToken);
     }
 }

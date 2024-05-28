@@ -49,10 +49,10 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
             return Result.Fail("Payment not pending");
         }
 
-        PaymentStatus = PaymentStatus.TutorPaid;
+        PaymentStatus = PaymentStatus.UnverifiedPayment;
 
         DomainEvents.Add(new TutorPaidDomainEvent(this));
-        
+
         return Result.Success();
     }
 
@@ -69,6 +69,7 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
     }
 }
 
+// TODO: add domain event handler
 public record TutorPaidDomainEvent(Payment Payment) : IDomainEvent;
 
 public enum PaymentStatus
@@ -76,5 +77,5 @@ public enum PaymentStatus
     Pending,
     Completed,
     Canceled,
-    TutorPaid
+    UnverifiedPayment
 }

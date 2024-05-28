@@ -1,5 +1,4 @@
 using ESCenter.Api;
-using ESCenter.Host;
 using ESCenter.Infrastructure;
 using ESCenter.Mobile.Application;
 using ESCenter.Persistence;
@@ -23,8 +22,6 @@ builder.Services.AddControllers(options =>
 });
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
-
-builder.Services.AddHost();
 
 builder.Services
     .AddApplication()

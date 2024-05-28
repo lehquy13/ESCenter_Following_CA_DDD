@@ -1,10 +1,11 @@
-﻿using Matt.SharedKernel.Application.Mediators.Queries;
+﻿using Matt.SharedKernel.Application.Contracts.Primitives;
+using Matt.SharedKernel.Application.Mediators.Queries;
 
 namespace ESCenter.Admin.Application.ServiceImpls.Payments.Queries.Gets;
 
 public record GetAllPaymentsQuery() : IQueryRequest<IEnumerable<PaymentDto>>;
 
-public class PaymentDto
+public class PaymentDto 
 {
     public Guid PaymentId { get; set; }
     public Guid TutorId { get; set; }

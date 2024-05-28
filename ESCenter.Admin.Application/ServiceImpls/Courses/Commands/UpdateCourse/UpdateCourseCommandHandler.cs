@@ -46,22 +46,27 @@ public class UpdateCourseCommandHandler(
             updateStatus,
             SubjectId.Create(command.CourseUpdateDto.SubjectId));
 
-        if (command.CourseUpdateDto.TutorId != Guid.Empty &&
-            command.CourseUpdateDto.TutorId != course.TutorId?.Value)
+        if (course.Status is Status.OnProgressing or Status.Confirmed)
         {
-            var tutorId = TutorId.Create(command.CourseUpdateDto.TutorId);
-
-            if (updateStatus != Status.Confirmed && updateStatus != Status.OnProgressing)
-            {
-                return Result.Fail(CourseAppServiceErrors.InvalidStatusForAssignTutor);
-            }
-
-            course.AssignTutor(tutorId);
+            return Result.Fail(CourseAppServiceErrors.InvalidCourseStatus);
         }
-        else if (command.CourseUpdateDto.TutorId == Guid.Empty && course.TutorId is not null)
-        {
-            course.UnAssignTutor();
-        }
+
+        // if (command.CourseUpdateDto.TutorId != Guid.Empty &&
+        //     command.CourseUpdateDto.TutorId != course.TutorId?.Value)
+        // {
+        //     var tutorId = TutorId.Create(command.CourseUpdateDto.TutorId);
+        //
+        //     if (updateStatus != Status.Confirmed && updateStatus != Status.OnProgressing)
+        //     {
+        //         return Result.Fail(CourseAppServiceErrors.InvalidStatusForAssignTutor);
+        //     }
+        //
+        //     course.AssignTutor(tutorId);
+        // }
+        // else if (command.CourseUpdateDto.TutorId == Guid.Empty && course.TutorId is not null)
+        // {
+        //     course.UnAssignTutor();
+        // }
 
         return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0
             ? Result.Fail(CourseAppServiceErrors.UpdateCourseFailedWhileSavingChanges)

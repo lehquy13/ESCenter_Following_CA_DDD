@@ -4,6 +4,7 @@ using ESCenter.Domain.Aggregates.Discoveries;
 using ESCenter.Domain.Aggregates.Discoveries.Entities;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;
 using ESCenter.Domain.Aggregates.Notifications;
+using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subscribers;
 using ESCenter.Domain.Aggregates.TutorRequests;
@@ -36,6 +37,9 @@ public class AppDbContext(
     public DbSet<Subscriber> Subscribers { get; init; } = null!;
     public DbSet<Discovery> Discoveries { get; init; } = null!;
     public DbSet<DiscoveryUser> DiscoveryUsers { get; init; } = null!;
+    public DbSet<Notification> Notifications { get; init; } = null!;
+    public DbSet<Payment> Payments { get; init; } = null!;
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

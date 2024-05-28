@@ -2,7 +2,6 @@
 using ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearners;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using MapsterMapper;
 using Matt.ResultObject;
@@ -42,17 +41,6 @@ public class GetAllTutorsQueryHandler(
             };
 
         var tutors = await asyncQueryableExecutor.ToListAsSplitAsync(tutorQ, false, cancellationToken);
-
-        var tutorRequests = await tutorRequestRepository.GetListAsync(cancellationToken);
-
-        tutorRequests.ForEach(tutorRequest =>
-        {
-            var tutor = tutors.FirstOrDefault(x => x.Id == tutorRequest.TutorId.Value);
-            if (tutor != null)
-            {
-                tutor.NumberOfRequests = tutorRequests.Count;
-            }
-        });
 
         return tutors;
     }

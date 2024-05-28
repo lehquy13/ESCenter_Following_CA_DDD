@@ -32,7 +32,7 @@ public class UpdateTutorInformationCommandHandler(
         {
             return Result.Fail(UserError.NonExistTutorError);
         }
-        
+
         tutor.UpdateBasicInformation(
             command.TutorBasicUpdateDto.University,
             command.TutorBasicUpdateDto.AcademicLevel);
@@ -69,11 +69,8 @@ public class UpdateTutorInformationCommandHandler(
             tutor.AddTutorMajor(major);
         }
 
-        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-        {
-            return Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges);
-        }
-
-        return Result.Success();
+        return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0
+            ? Result.Fail(TutorAppServiceError.FailToUpdateTutorWhileSavingChanges)
+            : Result.Success();
     }
 }

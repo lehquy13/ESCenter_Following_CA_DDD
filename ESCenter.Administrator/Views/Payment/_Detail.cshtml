@@ -1,0 +1,55 @@
+﻿@model ESCenter.Admin.Application.ServiceImpls.Payments.Queries.Gets.PaymentDto
+
+<h1>Detail</h1>
+
+<div>
+
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-4" >
+            @Html.DisplayNameFor(model => model.CourseTitle)
+        </dt>
+        <dd class="col-sm-8" >
+            @Html.DisplayFor(model => model.CourseTitle)
+        </dd>
+        <dt class="col-sm-4" >
+            @Html.DisplayNameFor(model => model.TutorName)
+        </dt>
+        <dd class="col-sm-8" >
+            @Html.DisplayFor(model => model.TutorName)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.TutorEmail)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.TutorEmail)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.PaymentStatus)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.PaymentStatus)
+        </dd>
+        @* <dt class="col-sm-4"> *@
+        @*     @Html.DisplayNameFor(model => model.Total) *@
+        @* </dt> *@
+        @* <dd class="col-sm-8"> *@
+        @*     @Html.DisplayFor(model => model.Total) *@
+        @* </dd> *@
+    </dl>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

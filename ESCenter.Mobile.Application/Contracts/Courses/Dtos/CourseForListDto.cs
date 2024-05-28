@@ -8,7 +8,7 @@ public sealed class CourseForListDto : BasicAuditedEntityDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string Status { get; set; } = "OnVerifying";
+    public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; set; } = "Offline";
 
     public float Fee { get; set; } = 0;

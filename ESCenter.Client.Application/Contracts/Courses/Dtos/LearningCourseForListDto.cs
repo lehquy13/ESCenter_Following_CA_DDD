@@ -7,7 +7,7 @@ namespace ESCenter.Client.Application.Contracts.Courses.Dtos;
 public sealed class LearningCourseForListDto : BasicAuditedEntityDto<Guid>
 {
     public string Title { get; set; } = string.Empty;
-    public string Status { get; set; } = "OnVerifying";
+    public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; set; } = string.Empty;
     public string SubjectName { get; set; } = string.Empty;
 }

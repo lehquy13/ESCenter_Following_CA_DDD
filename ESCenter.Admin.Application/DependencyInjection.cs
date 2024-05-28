@@ -1,12 +1,10 @@
 ﻿using System.Reflection;
 using ESCenter.Admin.Application.Contracts.Courses.Dtos;
-using ESCenter.Admin.Application.ServiceImpls;
 using ESCenter.Admin.Application.ServiceImpls.DashBoards;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Application;
 using ESCenter.Application.Behaviors;
-using ESCenter.Application.Mapping;
-using Matt.Paginated;
+using ESCenter.Domain;
 using Matt.ResultObject;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +16,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddBaseApplication(typeof(DependencyInjection).Assembly);
+
         services.AddScoped<IDashboardServices, DashboardServices>();
 
         services.AddScoped(
@@ -27,9 +26,10 @@ public static class DependencyInjection
         return services;
     }
 
-    public static Assembly[] GetApplicationCoreAssemblies =>
+    public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
     [
         typeof(DependencyInjection).Assembly,
-        typeof(ESCenter.Domain.DomainDependencyInjection).Assembly
+        typeof(BaseApplicationDependencyInjection).Assembly,
+        typeof(DomainDependencyInjection).Assembly
     ];
 }

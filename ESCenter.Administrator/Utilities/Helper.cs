@@ -59,7 +59,7 @@ public static class Helper
     public static async Task<string> SaveFiles(IFormFile? formFile, string wwwRootPath)
     {
         await Task.CompletedTask;
-        if (formFile != null && formFile.Length > 0)
+        if (formFile is { Length: > 0 })
         {
             string fileName = formFile.FileName;
             string path = Path.Combine(wwwRootPath + "\\temp\\", fileName);
@@ -75,7 +75,7 @@ public static class Helper
 
     public static string ClearTempFile(string wwwRootPath)
     {
-        string path = Path.Combine(wwwRootPath + "\\temp\\");
+        var path = Path.Combine(wwwRootPath + "\\temp\\");
 
         DirectoryInfo di = new DirectoryInfo(path);
 

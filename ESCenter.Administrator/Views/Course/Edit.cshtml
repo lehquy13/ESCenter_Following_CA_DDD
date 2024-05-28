@@ -1,21 +1,19 @@
 ﻿@using ESCenter.Admin.Application.Contracts.Courses.Dtos
+@using ESCenter.Admin.Application.Contracts.Users.BasicUsers
+@using ESCenter.Domain.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ESCenter.Admin.Application.Contracts.Courses.Dtos.CourseForDetailDto
 
 @{
     ViewData["Title"] = "Edit";
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
-    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
-    List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
-    List<string> statuses = ViewData["Statuses"] as List<string> ?? new List<string>();
-
+    List<string> genders = EnumProvider.Genders;
+    List<string> academics = EnumProvider.AcademicLevels;
+    List<string> learningModes = EnumProvider.LearningModes;
+    List<string> statuses = EnumProvider.StatusWithoutConfirmed;
     var subjects = (List<SubjectDto>)(ViewData["Subjects"] ?? "");
+    var tutors = (List<UserForListDto>)(ViewData["Tutors"] ?? "");
 }
 <h1>Edit</h1>
-<nav>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active">/Course/@Model.Id</li>
-    </ol>
-</nav>
 
 <div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
     <i class="bi bi-check-circle me-1"></i>
@@ -161,19 +159,14 @@
                 <select asp-for="Status" class="form-select">
                     <option selected>@Model.Status.ToString()</option>
 
-                    @foreach (string i in statuses)
+                    @foreach (var i in statuses.Where(i => i != Model.Status))
                     {
-                        @if (i != Model.Status.ToString())
-                        {
-                            <option> @i </option>
-                        }
+                        <option> @i </option>
                     }
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
 
             </div>
-            <!-- ----------------------------------- -->
-
 
             <div class="col-md-3">
                 <label asp-for="SectionFee" class="form-label">Fee</label>
@@ -187,19 +180,61 @@
                 <span asp-validation-for="ChargeFee" class="text-danger"></span>
             </div>
 
-            <div class="col-md-3">
-                <label class="form-label">Tutor</label>
-                <input type="text" hidden="hidden" id="tutorId" name="tutorId" asp-for="TutorId" class="form-control"/>
-                <input type="text" class="form-control" id="tutorInfor" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly"/>
-                <span asp-validation-for="TutorId" class="text-danger"></span>
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Review" asp-for="ReviewDetail" style="height: 100px;"></textarea>
+                    <label asp-for="ReviewDetail" class="form-label">Review Detail</label>
+                    <span asp-validation-for="ReviewDetail" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St"/>
+                <span asp-validation-for="Address" class="text-danger"></span>
             </div>
 
 
+            <!-- ----------------------------------- hidden info -->
+            <input type="hidden" asp-for="Id"/>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit Changes</button>
+                <a asp-action="ConfirmCourse" class="btn btn-primary">Close Course</a>
+                <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+            @Html.AntiForgeryToken()
+        </form>
+        <!-- End Multi Columns Form -->
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Pick the tutor for class</h5>
+        <form class="row g-3" asp-controller="Course" asp-action="SetTutor" asp-route-courseId="@Model.Id" onsubmit="return callPostActionWithForm(this);">
+            <div class="col-md-9">
+                <label class="form-label">Tutor</label>
+                <input type="text" hidden="hidden" id="tutorId" name="tutorId" class="form-control"/>
+                <input type="text" class="form-control" id="tutorInfo" value="@Model.TutorName - @Model.TutorPhoneNumber" readonly="readonly"/>
+                <span asp-validation-for="TutorId" class="text-danger"></span>
+
+
+            </div>
             <div class="col-md-3">
                 <label class="form-label">Action</label>
 
                 <div class="row">
-                    <button type="button" class="col-4 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "Course")','Pick tutor')">
+                    <button type="button" class="col-4 btn btn-primary" onclick="OpenGetDialog('@Url.Action("PickTutor", "Course", new {subjectId = Model.SubjectId})','Pick tutor')">
                         Pick Tutor
                     </button>
 
@@ -214,58 +249,17 @@
                 </div>
             </div>
 
-            <div class="col-12">
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Review" asp-for="ReviewDetail" style="height: 100px;"></textarea>
-                    <label asp-for="ReviewDetail" class="form-label">Review Detail</label>
-                    <span asp-validation-for="ReviewDetail" class="text-danger"></span>
-
-                </div>
-            </div>
-            <!-- ----------------------------------- -->
-            <div class="col-12">
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Address" asp-for="Description" style="height: 100px;"></textarea>
-                    <label asp-for="Description" class="form-label">Description</label>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-
-                </div>
-            </div>
-            <!-- ----------------------------------- -->
-
-            <!-- address advanced set up----------------------------------- -->
-
-            <div class="col-12">
-                <label asp-for="Address" class="form-label">Address</label>
-                <input type="text" class="form-control" asp-for="Address" placeholder="1234 Main St"/>
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-
-
-            <!-- ----------------------------------- hidden info -->
-            <input type="hidden" asp-for="Id"/>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <a type="reset" asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
-            @Html.AntiForgeryToken()
         </form>
-        <!-- End Multi Columns Form -->
-
-
-    </div>
-
-
-</div>
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Pick the tutor for class</h5>
-
+        
         <!-- Table with stripped rows -->
         <table id="example" class="table datatable">
             <thead>
             <tr>
-                <!-- a avatar comlumn will be added -->
+                <!-- an avatar column will be added -->
                 <th scope="col">Status</th>
                 <th scope="col">Tutor Name</th>
                 <th scope="col">Phone Number</th>
@@ -273,16 +267,13 @@
                 <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
             </tr>
             </thead>
-            <tbody>
 
+            <tbody>
             @foreach (var requestGettingClassMinimalDto in Model.CourseRequestListForAdminDtos)
             {
                 <tr>
-
                     <input hidden name="Id" value="@requestGettingClassMinimalDto.Id"/>
-
                     <td>@requestGettingClassMinimalDto.RequestStatus</td>
-
                     <td>
                         <a asp-controller="Tutor" asp-action="Detail"
                            asp-route-id="@requestGettingClassMinimalDto.TutorId">
@@ -307,6 +298,8 @@
             }
             </tbody>
         </table>
+        
+        <partial name="_PickTutor" model="@tutors"/>
         <!-- End Table with stripped rows -->
     </div>
 </div>

@@ -47,7 +47,7 @@ public class GetCoursesQueryHandler(
                     courseQuery = courseQuery.Where(x => x.Course.CreationTime >= DateTime.Today);
                     break;
                 case "Verifying":
-                    courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnVerifying);
+                    courseQuery = courseQuery.Where(x => x.Course.Status == Status.PendingApproval);
                     break;
                 case "Purchasing":
                     courseQuery = courseQuery.Where(x => x.Course.Status == Status.OnProgressing);

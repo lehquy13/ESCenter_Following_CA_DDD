@@ -103,7 +103,7 @@ function createChangeRequest(formInput) {
 }
 
 function RemoveTutor() {
-    $('#tutorInfor').attr("value", '');
+    $('#tutorInfo').attr("value", '');
     $('#tutorId').attr("value", 0);
 }
 
@@ -162,7 +162,7 @@ function ApproveTutor(id, name, phone) {
     $(document.body).removeClass('modal-open');
     $('.modal-backdrop').remove();
     $('#tutorId').attr("value", id);
-    $('#tutorInfor').attr("value", name + " - " + phone);
+    $('#tutorInfo').attr("value", name + " - " + phone);
 
 }
 

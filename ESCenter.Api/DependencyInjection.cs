@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ESCenter.Api.Middlewares;
 using ESCenter.Infrastructure;
 using ESCenter.Mobile.Application;
 using ESCenter.Persistence;
@@ -12,9 +13,22 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         RegisterByAutoDi(services);
+        AddMiddleware(services);
+        
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services.AddCors();
 
+        return services;
+    }
+    
+    public static IServiceCollection AddMiddleware(this IServiceCollection services)
+    {
+        services.AddProblemDetails();
+
+        services.AddExceptionHandler<BadRequestExceptionHandler>();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddExceptionHandler<NotFoundExceptionHandler>();
         return services;
     }
 

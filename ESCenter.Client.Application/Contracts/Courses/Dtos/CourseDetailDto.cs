@@ -10,7 +10,7 @@ public class CourseDetailDto : BasicAuditedEntityDto<Guid>
     //Basic Information
     public string Title { get; init; } = string.Empty;
     public string Description { get; init; } = string.Empty;
-    public string Status { get; init; } = "OnVerifying";
+    public string Status { get; init; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; init; } = "Offline";
 
     public float SectionFee { get; init; } = 0;

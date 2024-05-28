@@ -1,4 +1,3 @@
-using ESCenter.Host;
 using ESCenter.Mobile.Application.ServiceImpls.Subjects.Queries.GetSubject;
 using ESCenter.Mobile.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using Matt.SharedKernel.Domain.Interfaces;

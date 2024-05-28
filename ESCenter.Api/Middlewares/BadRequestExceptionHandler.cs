@@ -1,12 +1,10 @@
 ﻿using Matt.SharedKernel;
 using Matt.SharedKernel.Domain.Interfaces;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace ESCenter.Host.Middlewares;
+namespace ESCenter.Api.Middlewares;
 
 internal sealed class BadRequestExceptionHandler(
     IServiceProvider serviceProvider

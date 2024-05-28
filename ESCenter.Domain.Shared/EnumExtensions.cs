@@ -15,14 +15,14 @@ public static class EnumProvider
         "Other"
     ];
 
-    public static List<string> FullGendersOption  =>
+    public static List<string> FullGendersOption =>
     [
         "Male",
         "Female",
         "Other",
         "Both",
         "None"
-        ];
+    ];
 
     public static List<string> FullAcademicLevelsOption =>
     [
@@ -38,11 +38,14 @@ public static class EnumProvider
         "Lecturer",
         "Optional"
     ];
-    
+
     public static List<string> LearningModes { get; } = Enum.GetNames(typeof(LearningMode))
         .ToList();
 
-    public static List<string> Statuses { get; } = Enum.GetNames(typeof(Status))
+    public static List<string> Statuses { get; } = Enum.GetNames(typeof(Status)).ToList();
+
+    public static List<string> StatusWithoutConfirmed { get; } = Enum.GetNames(typeof(Status))
+        .Where(x => x != Status.Confirmed.ToString())
         .ToList();
 
     public static List<string> FullRequestStatus { get; } = Enum.GetNames(typeof(RequestStatus))

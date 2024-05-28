@@ -42,7 +42,7 @@ public static class DependencyInjection
     {
         IList<Assembly> assemblies = [];
         
-        assemblies.AddRange(Application.DependencyInjection.GetApplicationCoreAssemblies);
+        assemblies.AddRange(Client.Application.DependencyInjection.GetApplicationCoreAssemblies);
         assemblies.AddRange(new[]
         {
             typeof(Infrastructure.DependencyInjection).Assembly,

@@ -2,10 +2,11 @@
 
 public enum Status
 {
-    OnVerifying = 0,
+    PendingApproval = 0,
     Confirmed = 1,
     Canceled = 2,
-    Available = 4,
     OnProgressing = 3,
+    Available = 4,
+    UnverifiedPayment = 5,
     None = 7
 }

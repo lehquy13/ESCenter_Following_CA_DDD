@@ -1,7 +1,6 @@
 using ESCenter.Application.Accounts.Commands.ChangePassword;
 using ESCenter.Application.Accounts.Commands.Register;
 using ESCenter.Application.Accounts.Queries.Login;
-using ESCenter.Host;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

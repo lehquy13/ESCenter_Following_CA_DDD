@@ -1,5 +1,4 @@
 ﻿using ESCenter.Domain.Shared.Courses;
-using ESCenter.Host;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using ESCenter.Mobile.Application.Contracts.Courses.Params;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.CreateCourse;

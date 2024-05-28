@@ -16,7 +16,7 @@ namespace ESCenter.Client.Application
         public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
         [
             typeof(DependencyInjection).Assembly,
-            typeof(ApplicationDependencyInjection).Assembly,
+            typeof(BaseApplicationDependencyInjection).Assembly,
             typeof(Domain.DomainDependencyInjection).Assembly
         ];
     }

@@ -1,5 +1,4 @@
-﻿using ESCenter.Host;
-using ESCenter.Mobile.Application.Contracts.Users.Params;
+﻿using ESCenter.Mobile.Application.Contracts.Users.Params;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;

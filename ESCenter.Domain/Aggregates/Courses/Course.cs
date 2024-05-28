@@ -20,7 +20,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public string Title { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
-    public Status Status { get; private set; } = Status.OnVerifying;
+    public Status Status { get; private set; } = Status.PendingApproval;
     public LearningMode LearningMode { get; private set; } = LearningMode.Offline;
     public Fee SectionFee { get; private set; } = Fee.Create(0, Currency.USD);
     public Fee ChargeFee { get; private set; } = Fee.Create(0, Currency.USD);
@@ -170,34 +170,26 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         LearnerId = learnerId;
     }
 
-    public void AssignTutor(TutorId tutorId)
+    public Result AssignTutor(TutorId tutorId)
     {
-        TutorId = tutorId;
-
-        // Cancel all other course requests
-        foreach (var courseRequest in _courseRequests)
+        switch (Status)
         {
-            if (courseRequest.TutorId == tutorId)
-            {
-                if (courseRequest.RequestStatus == RequestStatus.OnProgress)
-                {
-                    courseRequest.OnProgressing();
-                }
-                else
-                {
-                    courseRequest.Approved();
-                }
-
-                continue;
-            }
-
-            if (Status == Status.Confirmed)
-            {
-                courseRequest.Cancel();
-            }
+            case Status.Available:
+            case Status.Canceled:
+            case Status.Confirmed:
+                Status = Status.OnProgressing;
+                TutorId = tutorId;
+                break;
+            case Status.OnProgressing:
+                TutorId = tutorId;
+                break;
+            default:
+                return Result.Fail("Invalid status for assigning");
         }
 
         DomainEvents.Add(new TutorAssignedDomainEvent(this, tutorId));
+
+        return Result.Success();
     }
 
     public void UpdateCourse(string title,
@@ -238,12 +230,12 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public void UnAssignTutor()
     {
         TutorId = null;
-        Status = Status.OnVerifying;
+        Status = Status.PendingApproval;
     }
 
     public Result Purchase(TutorId tutorId)
     {
-        if (Status != Status.Confirmed || Status == Status.Canceled || Status == Status.OnVerifying)
+        if (Status != Status.Confirmed || Status == Status.Canceled || Status == Status.PendingApproval)
         {
             return Result.Fail(CourseDomainError.CourseUnavailable);
         }
@@ -274,9 +266,9 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
             courseRequest.Cancel();
         }
-        
+
         DomainEvents.Add(new CourseConfirmedDomainEvent(this));
-        
+
         return Result.Success();
     }
 

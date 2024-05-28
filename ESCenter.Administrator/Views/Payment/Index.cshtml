@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ESCenter.Admin.Application.ServiceImpls.Payments.Queries.Gets.PaymentDto>
+@{
+    var i = 0;
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Payments</h5>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tutor</th>
+                <th scope="col">Email</th>
+                <th scope="col">Course</th>
+                <th scope="col">Status</th>
+                <th data-sortable="false" scope="col" style="width:40%">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var payment in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">
+                        <input hidden value="@payment.PaymentId"/>
+                        @i
+                    </th>
+
+                    <td>@payment.TutorName</td>
+                    <td>@payment.TutorEmail</td>
+                    <td>@payment.CourseTitle</td>
+                    <td>@payment.PaymentStatus</td>
+
+                    <td>
+                        <button type="button" class="btn btn-link" 
+                                onclick="OpenGetDialog('@(Url.Action("Detail", new { id = payment.PaymentId }))','PaymentDetail')">
+                            Detail
+                        </button>
+
+                        <button type="button" class="btn btn-link" onclick="">
+                            Re-Open
+                        </button>
+
+                        <button type="button" class="btn btn-link" 
+                                onclick="CallGetAction(@(Url.Action("CancelPayment", new { id = payment.PaymentId }))">
+                            Cancel
+                        </button>
+                    </td>
+                </tr>
+            }
+
+
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+</div>

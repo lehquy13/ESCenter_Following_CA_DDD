@@ -1,47 +1,40 @@
-﻿@model IEnumerable<ESCenter.Admin.Application.Contracts.Users.BasicUsers.UserForListDto>
+﻿@model List<ESCenter.Admin.Application.Contracts.Users.BasicUsers.UserForListDto>
 @{
-    int i = 0;
-    Layout = "_ScriptLayout";
+    var counter = 0;
 }
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Pick the tutor for class</h5>
+<div class="card-body">
 
-        <!-- Table with stripped rows -->
-        <table id="example" class="table datatable">
-            <thead>
+    <!-- Table with stripped rows -->
+    <table id="example" class="table datatable">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Phone Number</th>
+            <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var user in Model)
+        {
+            counter++;
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Phone Number</th>
-                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                <th scope="row">
+                    <input hidden name="Id" value="@user.Id"/>
+                    @counter
+                </th>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.PhoneNumber</td>
+                <td>
+                    <button type="button" class="btn btn-primary" onclick="ApproveTutor('@user.Id','@user.FirstName @user.LastName', '@user.PhoneNumber');">
+                        Choose
+                    </button>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-
-            @foreach (var user in Model)
-            {
-                i++;
-                <tr>
-                    <th scope="row">
-                        <input hidden name="Id" value="@user.Id"/>
-                        @i
-                    </th>
-                    <td>@user.FirstName @user.LastName</td>
-                    <td>@user.PhoneNumber</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" onclick="ApproveTutor('@user.Id','@user.FirstName @user.LastName', '@user.PhoneNumber');">
-                            Choose
-                        </button>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-        <!-- End Table with stripped rows -->
-    </div>
+        }
+        </tbody>
+    </table>
+    <!-- End Table with stripped rows -->
 </div>
-
-
-

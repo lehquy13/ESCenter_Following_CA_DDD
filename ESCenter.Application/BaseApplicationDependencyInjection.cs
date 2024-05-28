@@ -9,13 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ESCenter.Application
 {
-    public static class ApplicationDependencyInjection
+    public static class BaseApplicationDependencyInjection
     {
         public static IServiceCollection AddBaseApplication(this IServiceCollection services, Assembly mappingAssembly)
         {
             services
                 .AddMediator(mappingAssembly)
-                .AddValidatorsFromAssembly(typeof(ApplicationDependencyInjection)
+                .AddValidatorsFromAssembly(typeof(BaseApplicationDependencyInjection)
                     .Assembly) // Handle base validation of application layer
                 .AddValidatorsFromAssembly(mappingAssembly) // Handle validation of specific application layer
                 .AddApplicationMappings(mappingAssembly)
@@ -39,7 +39,7 @@ namespace ESCenter.Application
                 cfg =>
                 {
                     cfg.RegisterServicesFromAssemblies(applicationAssembly,
-                        typeof(ApplicationDependencyInjection).Assembly,
+                        typeof(BaseApplicationDependencyInjection).Assembly,
                         typeof(Domain.DomainDependencyInjection).Assembly);
                     cfg.NotificationPublisher = new TaskWhenAllPublisher();
 
@@ -55,7 +55,7 @@ namespace ESCenter.Application
             Assembly applicationAssembly)
         {
             var config = TypeAdapterConfig.GlobalSettings;
-            config.Scan(applicationAssembly, typeof(ApplicationDependencyInjection).Assembly);
+            config.Scan(applicationAssembly, typeof(BaseApplicationDependencyInjection).Assembly);
 
             services.AddSingleton(config);
             services.AddScoped<IMapper, ServiceMapper>();

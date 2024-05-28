@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using ESCenter.Application;
+using ESCenter.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ESCenter.Mobile.Application
@@ -15,8 +16,8 @@ namespace ESCenter.Mobile.Application
         public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
         [
             typeof(DependencyInjection).Assembly,
-            typeof(ESCenter.Application.ApplicationDependencyInjection).Assembly,
-            typeof(ESCenter.Domain.DomainDependencyInjection).Assembly
+            typeof(BaseApplicationDependencyInjection).Assembly,
+            typeof(DomainDependencyInjection).Assembly
         ];
     }
     

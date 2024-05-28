@@ -1,5 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using ESCenter.Domain.Aggregates.Payment;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;

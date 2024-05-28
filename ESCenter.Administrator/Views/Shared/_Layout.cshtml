@@ -12,8 +12,6 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - EduSmart</title>
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/CED.Web.styles.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -114,13 +112,19 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" asp-controller="Payment" asp-action="Index">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Payments</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link collapsed">
                 <i class="bi bi-info-square"></i>
-                <span>Class Information</span>
+                <span>Classes</span>
             </a>
             <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.OnVerifying.ToString()">
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.PendingApproval.ToString()">
                         <i class="bi bi-circle"></i><span>Verifying</span>
                     </a>
                 </li>
@@ -225,8 +229,8 @@
     </div>
 </div><!-- End Large Modal-->
 
-<div id="preloader">
-    <div class="loader"></div>
+<div id="preloader" >
+    <div class="loader" ></div>
 </div>
 
 <footer class="border-top footer text-muted">

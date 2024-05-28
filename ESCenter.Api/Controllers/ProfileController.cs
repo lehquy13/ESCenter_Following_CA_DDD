@@ -1,7 +1,6 @@
 ﻿using ESCenter.Application.Accounts.Commands.ChangeAvatar;
 using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
-using ESCenter.Host;
 using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.AddOrResetDiscovery;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;

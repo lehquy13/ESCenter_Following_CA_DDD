@@ -232,6 +232,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="Views\Payment\Create.cshtml" />
+    <AdditionalFiles Include="Views\Payment\Detail.cshtml" />
+    <AdditionalFiles Include="Views\Payment\Edit.cshtml" />
+    <AdditionalFiles Include="Views\Payment\Index.cshtml" />
     <AdditionalFiles Include="Views\Staff\Create.cshtml" />
     <AdditionalFiles Include="Views\Staff\Delete.cshtml" />
     <AdditionalFiles Include="Views\Staff\Detail.cshtml" />

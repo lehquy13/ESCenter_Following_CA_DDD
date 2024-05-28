@@ -11,6 +11,8 @@ internal class CurrentUserService : ICurrentUserService
     public Guid UserId { get; }
     public List<string> Permissions { get; }
     public List<string> Roles { get; }
+    
+    public string? CurrentTenant { get; } = null;
     public bool IsAuthenticated { get; }
     public string? CurrentUserEmail { get; }
     public string? CurrentUserFullName { get; }
