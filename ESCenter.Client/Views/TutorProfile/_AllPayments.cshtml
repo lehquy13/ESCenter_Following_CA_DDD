@@ -1,0 +1,55 @@
+﻿@using ESCenter.Domain.Aggregates.Payment
+@model IEnumerable<ESCenter.Client.Application.ServiceImpls.Payments.Queries.Gets.PaymentDto>
+@{
+    var i = 0;
+}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Your payments</h5>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+            <tr>
+                <!-- a avatar column will be added -->
+                <th scope="col">#</th>
+                <th scope="col">Course</th>
+                <th scope="col">Status</th>
+                <th scope="col">Code</th>
+                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var paymentDto in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">
+                        <input hidden name="Id" value="@paymentDto.PaymentId"/>
+                        @i
+                    </th>
+                    <td>@paymentDto.CourseTitle</td>
+                    <td>@paymentDto.PaymentStatus</td>
+                    <td>@paymentDto.Code</td>
+
+                    <td>
+                        @if (paymentDto.PaymentStatus != PaymentStatus.Pending.ToString())
+                        {
+                            <button type="button" class="btn btn-primary">Paid</button>
+                        }
+                        else
+                        {
+                            <button type="button"
+                                    class="btn btn-primary"
+                                    onclick="OpenGetDialog('@Url.Action("MakePayment", "TutorProfile", new { id = paymentDto.PaymentId })');">
+                                Make payment
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+    </div>
+</div>

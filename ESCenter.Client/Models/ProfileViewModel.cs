@@ -1,6 +1,7 @@
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Client.Application.Contracts.Courses.Dtos;
 using ESCenter.Client.Application.Contracts.Users.Tutors;
+using ESCenter.Client.Application.ServiceImpls.Payments.Queries.Gets;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles;
 
 namespace ESCenter.Client.Models;
@@ -25,4 +26,5 @@ public class TutorProfileViewModel
     public UserProfileDto UserProfileDto { get; init; } = new();
 
     public TutorForProfileDto TutorForProfileDto { get; init; } = new();
+    public IEnumerable<PaymentDto> PaymentDtos { get; set; } = [];
 }

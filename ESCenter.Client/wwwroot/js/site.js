@@ -27,6 +27,28 @@ $(window).on('load', function () {
     }
 });
 
+function makePayment(url) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {},
+        success: function (res) {
+            if (res.res === true) {
+                alertify.success(res.message);
+                $('#largeModal').modal('hide');
+                
+                // delay 0,5s
+                setTimeout(function () {
+                    location.reload();
+                }, 500);
+            } else {
+                alertify.error(res.message);
+                $('#largeModal').modal('hide');
+            }
+
+        }
+    });
+}
 
 function callPostActionWithForm(formInput) {
     let formData = new FormData(formInput);
@@ -81,8 +103,7 @@ function createChangeRequest(formInput) {
         success: function (response) {
             if (response.res === false) {
                 alertify.error('Request failed');
-            }
-            else  if (response.res === 'updated') {
+            } else if (response.res === 'updated') {
                 alertify.success('Request successfully');
             }
 

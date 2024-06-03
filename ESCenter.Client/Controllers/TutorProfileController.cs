@@ -1,5 +1,8 @@
 ﻿using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Interfaces.Cloudinarys;
+using ESCenter.Client.Application.ServiceImpls.Payments.Commands.MakePayment;
+using ESCenter.Client.Application.ServiceImpls.Payments.Queries.Get;
+using ESCenter.Client.Application.ServiceImpls.Payments.Queries.Gets;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Commands.CreateChangeVerification;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Commands.UpdateTutorProfile;
@@ -23,12 +26,14 @@ public class TutorProfileController(ISender sender, ICloudinaryServices cloudina
         await PackStaticListToView();
         var getTutorProfile = await sender.Send(new GetTutorProfileQuery());
         var learnerProfile = await sender.Send(new GetUserProfileQuery());
+        var paymentDtos = await sender.Send(new GetAllPaymentsQuery());
 
         return View(
             new TutorProfileViewModel
             {
                 TutorForProfileDto = getTutorProfile.Value,
-                UserProfileDto = learnerProfile.Value
+                UserProfileDto = learnerProfile.Value,
+                PaymentDtos = paymentDtos.Value
             }
         );
     }
@@ -48,17 +53,14 @@ public class TutorProfileController(ISender sender, ICloudinaryServices cloudina
     {
         await PackStaticListToView();
 
-        if (ModelState.IsValid)
-        {
-            var result = await sender.Send(new UpdateTutorInformationCommand(tutorProfileUpdateDto));
+        if (!ModelState.IsValid) return Helper.FailResult();
 
-            return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
-        }
+        var result = await sender.Send(new UpdateTutorInformationCommand(tutorProfileUpdateDto));
 
-        return Helper.FailResult();
+        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
     }
-    
-    
+
+
     [HttpGet]
     [Route("request-detail/{courseId:guid}")]
     public async Task<IActionResult> TeachingClassDetail(Guid courseId)
@@ -74,18 +76,48 @@ public class TutorProfileController(ISender sender, ICloudinaryServices cloudina
     [HttpPost("create-change-request")]
     public async Task<IActionResult> CreateChangeRequest(List<IFormFile> fileElems)
     {
-        if(fileElems.Count == 0)
+        if (fileElems.Count == 0)
         {
             return Helper.FailResult();
         }
-        
+
         var filePath = (from formFile in fileElems
                 let fileName = formFile.FileName
                 select cloudinaryServices.UploadImage(fileName, formFile.OpenReadStream()))
             .ToList();
-        
+
         var result = await sender.Send(new CreateChangeVerificationCommand(filePath));
 
         return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
+    }
+
+    [HttpPost("payment/{id:guid}/set-as-paid")]
+    public async Task<IActionResult> SetAsPaid(Guid id)
+    {
+        var result = await sender.Send(new MakePaymentCommand(id));
+
+        return result.IsSuccess
+            ? Helper.SuccessResult("Payment has been made successfully.")
+            : Helper.FailResult("Payment failed. Please try again later.");
+    }
+
+    [HttpGet("payment/{id:guid}")]
+    public async Task<IActionResult> MakePayment(Guid id)
+    {
+        var paymentInfo = await sender.Send(new GetPaymentDetailQuery(id));
+
+        if (paymentInfo.IsFailure)
+        {
+            return Helper.FailResult();
+        }
+
+        var payment = new PaymentModel
+        (
+            id,
+            paymentInfo.Value.Code,
+            paymentInfo.Value.TutorName
+        );
+
+        return Helper.RenderRazorViewToString(this, "_MakePayment", payment);
     }
 }

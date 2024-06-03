@@ -1,0 +1,20 @@
+﻿@model ESCenter.Client.Models.PaymentModel
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Make payments</h5>
+
+        <p>Scan the QR below</p>
+
+        <img src="@Model.PaymentUrl" alt="">
+
+        <p> Click the button below to confirm your payment and wait for administrator confirmations</p>
+
+        <button type="button"
+                class="btn btn-primary"
+                onclick="makePayment('@Url.Action("SetAsPaid", "TutorProfile", new { id = Model.PaymentId })');">
+            Make payment
+        </button>
+
+    </div>
+</div>
