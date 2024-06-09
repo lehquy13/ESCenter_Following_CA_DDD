@@ -135,28 +135,12 @@ public class ProfileController(
             return Helper.FailResult();
         }
 
-        try
-        {
-            var loginResult = await sender.Send(new ChangePasswordCommand(
-                changePasswordRequest.CurrentPassword,
-                changePasswordRequest.NewPassword,
-                changePasswordRequest.ConfirmedPassword));
+        var loginResult = await sender.Send(new ChangePasswordCommand(
+            changePasswordRequest.CurrentPassword,
+            changePasswordRequest.NewPassword,
+            changePasswordRequest.ConfirmedPassword));
 
-            if (loginResult.IsSuccess)
-            {
-                HttpContext.Session.Clear();
-                return RedirectToAction("Index", "Authentication");
-            }
-        }
-        catch (Exception ex)
-        {
-            //Log the error (uncomment ex variable name and write a log.)
-            ModelState.AddModelError("", "Unable to save changes. " +
-                                         "Try again, and if the problem persists, " + ex.Message +
-                                         "see your system administrator.");
-        }
-
-        return Helper.FailResult();
+        return loginResult.IsSuccess ? Helper.UpdatedResult() : Helper.FailResult();
     }
 
     [HttpGet]
@@ -166,12 +150,9 @@ public class ProfileController(
         var query = new GetLearningCourseDetailQuery(courseId);
         var course = await sender.Send(query);
 
-        if (course.IsSuccess)
-        {
-            return Helper.RenderRazorViewToString(this, "_LearningCourseDetail", course.Value);
-        }
-
-        return RedirectToAction("Error", "Home");
+        return course.IsSuccess
+            ? Helper.RenderRazorViewToString(this, "_LearningCourseDetail", course.Value)
+            : RedirectToAction("Error", "Home");
     }
 
 

@@ -24,9 +24,6 @@ public class CreateUpdateUserProfileCommandHandler(
     IPublisher publisher)
     : CommandHandlerBase<CreateUpdateUserProfileCommand>(unitOfWork, logger)
 {
-    private const string DefaultAvatar =
-        "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
-
     public override async Task<Result> Handle(CreateUpdateUserProfileCommand command,
         CancellationToken cancellationToken)
     {
@@ -59,7 +56,7 @@ public class CreateUpdateUserProfileCommandHandler(
                     command.LearnerForCreateUpdateDto.City,
                     command.LearnerForCreateUpdateDto.Country),
                 command.LearnerForCreateUpdateDto.Description,
-                DefaultAvatar,
+                command.LearnerForCreateUpdateDto.Avatar,
                 command.LearnerForCreateUpdateDto.Email,
                 command.LearnerForCreateUpdateDto.PhoneNumber,
                 Role.Learner, cancellationToken);

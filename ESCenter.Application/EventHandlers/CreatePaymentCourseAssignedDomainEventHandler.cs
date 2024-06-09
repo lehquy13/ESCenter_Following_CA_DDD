@@ -26,7 +26,7 @@ public class CreatePaymentCourseAssignedDomainEventHandler(
                 throw new EventualConsistencyException(DomainServiceErrors.InvalidCourseStatusForPayment);
             }
 
-            var payment = Payment.Create(course.TutorId, course.Id);
+            var payment = Payment.Create(course.TutorId, course.Id, course.ChargeFee.Amount);
 
             await paymentRepository.InsertAsync(payment, cancellationToken);
 

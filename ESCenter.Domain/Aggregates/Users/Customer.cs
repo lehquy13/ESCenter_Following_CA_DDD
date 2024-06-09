@@ -20,7 +20,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
     public Role Role { get; private set; } = Role.Learner;
 
     private const string DefaultAvatar =
-        "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
+        "https://res.cloudinary.com/dhehywasc/image/upload/v1697006256/male/male0.png";
 
     private Customer()
     {

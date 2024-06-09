@@ -1,7 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Discoveries;
-using ESCenter.Domain.Aggregates.Discoveries.Entities;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;
 using ESCenter.Domain.Aggregates.Notifications;
 using ESCenter.Domain.Aggregates.Payment;
@@ -63,12 +62,11 @@ public class AppDbContext(
 
         if (httpContextAccessor?.HttpContext is null) return result;
 
-        Queue<IDomainEvent> domainEventsQueue =
-            httpContextAccessor.HttpContext.Items.TryGetValue(EventualConsistencyMiddleware.DomainEventsKey,
-                out var value) &&
-            value is Queue<IDomainEvent> existingDomainEvents
-                ? existingDomainEvents
-                : new();
+        var domainEventsQueue = httpContextAccessor.HttpContext
+            .Items.TryGetValue(EventualConsistencyMiddleware.DomainEventsKey,
+                out var value) && value is Queue<IDomainEvent> existingDomainEvents
+            ? existingDomainEvents
+            : new Queue<IDomainEvent>();
 
         domainEvents.ForEach(domainEventsQueue.Enqueue);
         httpContextAccessor.HttpContext.Items[EventualConsistencyMiddleware.DomainEventsKey] = domainEventsQueue;
@@ -84,7 +82,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer(
-            "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_6; Trusted_Connection=True;MultipleActiveResultSets=true"
+            "Server=(localdb)\\MSSQLLocalDB; Database=EduSmart_1; Trusted_Connection=True;MultipleActiveResultSets=true"
             // "Server=homelab-quy.duckdns.org,1433;Database=es_mssql;TrustServerCertificate=True;User Id=sa;Password=1q2w3E**;MultipleActiveResultSets=true"
             // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
         );

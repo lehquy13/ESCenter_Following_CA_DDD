@@ -46,14 +46,11 @@ public class AuthenticationController(ISender mediator, IAppLogger<Authenticatio
     {
         var result = await mediator.Send(registerRequest);
 
-        if (result.IsSuccess)
-        {
+        return result.IsSuccess
+            ?
             //await StoreCookie(result);
-            return RedirectToAction("Index", "Home");
-        }
-
-        ViewBag.isFail = true;
-        return View(registerRequest);
+            RedirectToAction("Index", "Home")
+            : View(registerRequest);
     }
 
     [HttpGet]
@@ -93,7 +90,6 @@ public class AuthenticationController(ISender mediator, IAppLogger<Authenticatio
 
         return Redirect(returnUrl);
     }
-
 
     private async Task StoreCookie(AuthenticationResult loginResult)
     {

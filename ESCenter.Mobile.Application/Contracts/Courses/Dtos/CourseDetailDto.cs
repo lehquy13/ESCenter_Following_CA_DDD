@@ -13,8 +13,8 @@ public class CourseDetailDto : BasicAuditedEntityDto<Guid>
     public string Status { get; init; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; init; } = "Offline";
 
-    public float SectionFee { get; init; } = 0;
-    public float ChargeFee { get; init; } = 0;
+    public decimal SectionFee { get; init; } = 0;
+    public decimal ChargeFee { get; init; } = 0;
 
     //Tutor related information
     public string GenderRequirement { get; init; } = "None";

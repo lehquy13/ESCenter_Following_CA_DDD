@@ -49,8 +49,8 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         string title,
         string description,
         LearningMode learningMode,
-        float sectionFee,
-        float chargeFee,
+        decimal sectionFee,
+        decimal chargeFee,
         string? currency,
         Gender genderRequirement,
         AcademicLevel academicLevelRequirement,
@@ -65,7 +65,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         SubjectId subjectId,
         CustomerId? learnerId)
     {
-        return new Course
+        var course = new Course
         {
             Id = CourseId.Create(),
             Title = title,
@@ -85,6 +85,13 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
             SubjectId = subjectId,
             LearnerId = learnerId
         };
+        
+        course.DomainEvents.Add(new NewDomainObjectCreatedEvent(
+            course.Id.Value.ToString(),
+            $"New class: {title} at {course.CreationTime.ToLongDateString()}",
+            NotificationEnum.Course));
+        
+        return course;
     }
 
     public Result ReviewCourse(short rate, string detail)
@@ -195,8 +202,8 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public void UpdateCourse(string title,
         string description,
         LearningMode learningMode,
-        float sectionFee,
-        float chargeFee,
+        decimal sectionFee,
+        decimal chargeFee,
         Gender genderRequirement,
         AcademicLevel academicLevelRequirement,
         Gender learnerGender,

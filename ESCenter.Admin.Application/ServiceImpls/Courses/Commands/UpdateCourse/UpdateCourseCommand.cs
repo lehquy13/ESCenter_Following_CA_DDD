@@ -23,8 +23,8 @@ public class CourseUpdateDto
     public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; set; } = Domain.Shared.Courses.LearningMode.Offline.ToString();
 
-    public float SectionFee { get; set; } = 0;
-    public float ChargeFee { get; set; } = 0;
+    public decimal SectionFee { get; set; } = 0;
+    public decimal ChargeFee { get; set; } = 0;
 
     //Tutor related information
     public string GenderRequirement { get; set; } = Gender.None.ToString();

@@ -1,7 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using ESCenter.Domain.DomainServices.Interfaces;
-using ESCenter.Domain.Shared.Courses;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -25,7 +23,7 @@ public class RegisterCommandHandler(
             command.BirthYear,
             Address.Create(command.City,
                 command.Country),
-            command.Country,
+            string.Empty,
             string.Empty,
             command.Email,
             command.PhoneNumber,
@@ -38,11 +36,8 @@ public class RegisterCommandHandler(
 
         await customerRepository.InsertAsync(result.Value, cancellationToken);
 
-        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-        {
-            return Result.Fail(AuthenticationErrorMessages.CreateUserFailWhileSavingChanges);
-        }
-
-        return Result.Success();
+        return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0
+            ? Result.Fail(AuthenticationErrorMessages.CreateUserFailWhileSavingChanges)
+            : Result.Success();
     }
 }

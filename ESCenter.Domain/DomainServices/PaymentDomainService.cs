@@ -32,7 +32,7 @@ public class PaymentDomainService(
             return Result.Fail(DomainServiceErrors.InvalidCourseStatusForPayment);
         }
 
-        var payment = Payment.Create(course.TutorId, course.Id);
+        var payment = Payment.Create(course.TutorId, course.Id, course.ChargeFee.Amount);
 
         await paymentRepository.InsertAsync(payment);
 

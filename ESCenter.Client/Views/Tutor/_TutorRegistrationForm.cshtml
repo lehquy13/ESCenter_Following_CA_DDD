@@ -6,7 +6,7 @@
     var subjects = ViewData["Subjects"] as ICollection<SubjectDto> ?? [];
     var academicLevels = EnumProvider.AcademicLevels;
 }
-<form asp-action="TutorRegistration" asp-controller="Tutor" onsubmit="return callPostActionWithForm(this);">
+<form asp-action="TutorRegistration" asp-controller="Tutor">
 
     <div class="card mt-5">
         <div class="card-body row">

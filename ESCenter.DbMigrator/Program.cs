@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Discoveries;
@@ -10,7 +9,6 @@ using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Persistence.EntityFrameworkCore;
@@ -24,6 +22,12 @@ namespace ESCenter.DBMigrator;
 
 internal static class Program
 {
+    private static readonly JsonSerializerSettings SomethingCalledMagic = new()
+    {
+        ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+        ContractResolver = new PrivateResolver()
+    };
+
     public static async Task Main(string[] args)
     {
         var choice = 0;
@@ -31,7 +35,6 @@ internal static class Program
         {
             var factory = new AppDbContextFactory();
             var context = factory.CreateDbContext(args);
-
 
             Console.WriteLine("1. Delete database");
             Console.WriteLine("2. Migrate database");
@@ -108,11 +111,6 @@ internal static class Program
             {
                 Console.WriteLine("No subjects found. Seeding subjects...");
 
-                var somethingCalledMagic = new JsonSerializerSettings
-                {
-                    ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                    ContractResolver = new PrivateResolver()
-                };
 
                 #region subject data
 
@@ -246,8 +244,8 @@ internal static class Program
                 List<TutorRequest> tutorRequestDatas = [];
                 List<IdentityUserRole<string>> userRoles = [];
 
-                await GetUserDataAndTutorData(
-                    somethingCalledMagic,
+                await SeedTutor.GetUserDataAndTutorData(
+                    SomethingCalledMagic,
                     userManager,
                     identityRoles,
                     userData,
@@ -255,11 +253,10 @@ internal static class Program
                     tutorRequestDatas,
                     userRoles);
 
-                SeedTutorMajor(tutorData, subjects);
+                SeedTutor.SeedMajor(tutorData, subjects);
 
                 #region Seed user discoveries
 
-                var i = userData.Count;
                 var duList = new List<DiscoveryUser>();
 
                 foreach (var user in userData)
@@ -298,7 +295,7 @@ internal static class Program
                 var file = await File.ReadAllTextAsync(
                     Path.GetFullPath("../../../1000_course.json"));
 
-                var courseData = JsonConvert.DeserializeObject<List<Course>>(file, somethingCalledMagic);
+                var courseData = JsonConvert.DeserializeObject<List<Course>>(file, SomethingCalledMagic);
 
                 if (courseData == null)
                 {
@@ -309,12 +306,12 @@ internal static class Program
                 file = await File.ReadAllTextAsync(
                     Path.GetFullPath("../../../1000_confirmedCourse.json"));
 
-                courseData.AddRange(JsonConvert.DeserializeObject<List<Course>>(file, somethingCalledMagic)!);
+                courseData.AddRange(JsonConvert.DeserializeObject<List<Course>>(file, SomethingCalledMagic)!);
 
                 file = await File.ReadAllTextAsync(
                     Path.GetFullPath("../../../100_review.json"));
 
-                var reviews = JsonConvert.DeserializeObject<List<Review>>(file, somethingCalledMagic);
+                var reviews = JsonConvert.DeserializeObject<List<Review>>(file, SomethingCalledMagic);
 
                 if (reviews == null)
                 {
@@ -401,189 +398,7 @@ internal static class Program
             await context.Database.EnsureDeletedAsync();
         }
     }
-
-    private static void SeedTutorMajor(List<Tutor> tutorData, IReadOnlyList<Subject> subjects)
-    {
-        var ii = tutorData.Count;
-
-        foreach (var tutor in tutorData)
-        {
-            if (ii-- <= 0) break;
-            var tmList = new List<TutorMajor>();
-
-            List<int> addedList = [];
-            var randomQuantity = new Random().Next(1, subjects.Count / 2);
-
-            for (var j = 0; j < randomQuantity; j++)
-            {
-                var random = new Random().Next(0, subjects.Count - 1);
-
-                if (addedList.Contains(random))
-                {
-                    j--;
-                    continue;
-                }
-
-                tmList.Add(
-                    TutorMajor.Create(
-                        tutor.Id,
-                        SubjectId.Create(random + 1),
-                        subjects[random].Name
-                    )
-                );
-
-                // Ensure no duplicate
-                addedList.Add(random);
-            }
-
-            tutor.UpdateAllMajor(tmList);
-        }
-    }
-
-    private static async Task GetUserDataAndTutorData(
-        JsonSerializerSettings somethingCalledMagic,
-        UserManager<IdentityUser> userManager,
-        List<IdentityRole> identityRoles,
-        List<Customer> userData,
-        List<Tutor> tutorData,
-        List<TutorRequest> tutorRequestData,
-        List<IdentityUserRole<string>> userRoles)
-
-    {
-        // Standard user
-        var file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_m_learner.json"));
-        var learner2000M = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic)!;
-
-        if (userData == null)
-        {
-            throw new InvalidOperationException();
-        }
-
-        userData.AddRange(learner2000M);
-
-        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_f_learner.json"));
-        var learner2000F = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
-
-        if (learner2000F == null)
-        {
-            throw new InvalidOperationException();
-        }
-
-        userData.AddRange(learner2000F);
-
-        // Tutor
-        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_f_tutor.json"));
-        var customerTutorData1 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
-
-        if (customerTutorData1 == null)
-        {
-            throw new InvalidOperationException();
-        }
-        
-        customerTutorData1 = customerTutorData1.Take(customerTutorData1.Count / 4).ToList();
-
-        var tutorData2 = JsonConvert.DeserializeObject<List<Tutor>>(file, somethingCalledMagic)!;
-
-        if (tutorData2 == null)
-        {
-            throw new InvalidOperationException();
-        }
-
-        file = await File.ReadAllTextAsync(Path.GetFullPath("../../../2000_m_tutor.json"));
-        var customerTutorData2 = JsonConvert.DeserializeObject<List<Customer>>(file, somethingCalledMagic);
-
-        if (customerTutorData2 == null)
-        {
-            throw new InvalidOperationException();
-        }
-        
-        customerTutorData2 = customerTutorData2.Take(customerTutorData2.Count / 4).ToList();
-
-        var tutorData1 = JsonConvert.DeserializeObject<List<Tutor>>(file,
-            new JsonSerializerSettings()
-            {
-                ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                ContractResolver = new PrivateResolver()
-            }
-        )!;
-
-        if (tutorData1 == null)
-        {
-            throw new InvalidOperationException();
-        }
-
-        customerTutorData1.AddRange(customerTutorData2);
-        userData.AddRange(customerTutorData1);
-
-        var identities = new List<IdentityUser>();
-        var count = 1;
-
-        await Task.WhenAll(userData.Select(async customer =>
-        {
-            var watch = Stopwatch.StartNew();
-
-            var identityUser = new IdentityUser
-            {
-                UserName = customer.Email,
-                NormalizedUserName = customer.Email.ToUpper(),
-                Email = customer.Email,
-                NormalizedEmail = customer.Email.ToUpper(),
-                PhoneNumber = customer.PhoneNumber,
-                Id = customer.Id.ToString()
-            };
-
-            // Perform async user creation
-            await userManager.CreateAsync(identityUser, "1q2w3E**");
-
-            // Add identityUser to the list in a thread-safe manner
-            lock (identities)
-            {
-                identities.Add(identityUser);
-            }
-
-            // Increment count atomically
-            Console.WriteLine($"{count++}. User {identityUser.Email} created in {watch.ElapsedMilliseconds}ms");
-        }));
-
-        userRoles.AddRange(identities.Select((identityUser, index) => new IdentityUserRole<string>
-        {
-            UserId = identityUser.Id,
-            RoleId = index >= userData.Count ? identityRoles[1].Id : identityRoles.Last().Id
-        }));
-
-
-        tutorData.AddRange(tutorData1.Take(customerTutorData1.Count / 4));
-        tutorData.AddRange(tutorData2.Take(customerTutorData2.Count / 4));
-
-        var i = 0;
-        foreach (var tutor in tutorData)
-        {
-            tutor.SetUserId(customerTutorData1[i++].Id);
-
-            if (i <= 200)
-            {
-                var random = new Random();
-
-                for (var j = 0; j < random.Next(4, 7); j++)
-                {
-                    var request = TutorRequest.Create(
-                        tutor.Id,
-                        userData[random.Next(0, 99)].Id,
-                        "");
-
-                    var doneOrNot = random.Next(0, 2);
-
-                    if (doneOrNot == 1)
-                    {
-                        request.Done();
-                    }
-
-                    tutorRequestData.Add(request);
-                }
-            }
-        }
-    }
-
+    
     private static IList<Discovery> Discoveries(IReadOnlyList<Subject> subjects)
     {
         var discovery1 = Discovery.Create("Information Technology",
@@ -684,6 +499,7 @@ internal static class Program
             }
 
             var property = member as PropertyInfo;
+
             if (property != null)
             {
                 prop.Writable = property.GetSetMethod(true) != null;
@@ -719,27 +535,19 @@ internal static class Program
         }
     }
 
-    public class MyValueProvider
-        : IValueProvider
+    private class MyValueProvider(IValueProvider valueProvider) : IValueProvider
     {
-        private readonly IValueProvider _valueProvider;
-
-        public MyValueProvider(IValueProvider valueProvider)
-        {
-            _valueProvider = valueProvider;
-        }
-
-        public void SetValue(object target, object value)
+        public void SetValue(object target, object? value)
         {
             //This is not executed during deserialization. Why?
             var randomDay = RandomDay();
-            _valueProvider.SetValue(target, randomDay);
+            valueProvider.SetValue(target, randomDay);
             Console.WriteLine($"Value set: {value}");
         }
 
-        public object GetValue(object target)
+        public object? GetValue(object target)
         {
-            var value = _valueProvider.GetValue(target);
+            var value = valueProvider.GetValue(target);
             Console.WriteLine($"Value get: {value}");
             return value;
         }

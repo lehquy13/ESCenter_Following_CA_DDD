@@ -1,14 +1,11 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Discoveries;
-using ESCenter.Domain.Aggregates.DiscoveryUsers;
-using ESCenter.Domain.Aggregates.DiscoveryUsers.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Mobile.Application.Contracts.Users.Tutors;
-using Mapster;
 using MapsterMapper;
 using Matt.Paginated;
 using Matt.ResultObject;
@@ -16,7 +13,6 @@ using Matt.SharedKernel.Application.Contracts.Interfaces;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
-using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
 namespace ESCenter.Mobile.Application.ServiceImpls.Tutors.Queries.GetTutors;
 
@@ -26,12 +22,10 @@ public class GetTutorsQueryHandler(
     ICustomerRepository customerRepository,
     IDiscoveryRepository discoveryRepository,
     ICourseRepository courseRepository,
-    IRepository<DiscoveryUser, DiscoveryUserId> discoveryUserRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetTutorsQueryHandler> logger,
     IMapper mapper
-)
-    : QueryHandlerBase<GetTutorsQuery, PaginatedList<TutorListForClientPageDto>>(logger, mapper)
+) : QueryHandlerBase<GetTutorsQuery, PaginatedList<TutorListForClientPageDto>>(logger, mapper)
 {
     public override async Task<Result<PaginatedList<TutorListForClientPageDto>>> Handle(GetTutorsQuery request,
         CancellationToken cancellationToken)
@@ -58,8 +52,8 @@ public class GetTutorsQueryHandler(
         if (!string.IsNullOrEmpty(request.TutorParams.Address))
             tutors = tutors.Where(record => record.User.Address.Match(request.TutorParams.Address));
 
-        if (request.TutorParams.Gender is { } g && g != GenderEnum.None)
-            tutors = tutors.Where(record => record.User.Gender == g.ToEnum<Gender>());
+        if (request.TutorParams.Gender is { } gender && gender != GenderEnum.None)
+            tutors = tutors.Where(record => record.User.Gender == gender.ToEnum<Gender>());
 
         if (request.TutorParams.BirthYear != 0)
             tutors = tutors.Where(record => record.User.BirthYear == request.TutorParams.BirthYear);
@@ -105,10 +99,9 @@ public class GetTutorsQueryHandler(
                 .ThenByDescending(record => record.Courses.Count());
         }
 
-
         var tutorFromDb = await asyncQueryableExecutor
             .ToListAsSplitAsync(tutors
-                    .Skip(request.TutorParams.PageIndex * request.TutorParams.PageSize)
+                    .Skip((request.TutorParams.PageIndex - 1) * request.TutorParams.PageSize)
                     .Take(request.TutorParams.PageSize),
                 false, cancellationToken);
 

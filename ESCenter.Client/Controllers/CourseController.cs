@@ -70,21 +70,18 @@ public class CourseController(ISender mediator) : Controller
         var course = await mediator.Send(query);
         var courses = await mediator.Send(query1);
 
-        if (course.IsSuccess && courses.IsSuccess)
+        if (!course.IsSuccess || !courses.IsSuccess) return RedirectToAction("Error", "Home");
+
+        var courseDetail = course.Value;
+        var relatedCourses = courses.Value;
+
+        var courseDetailViewModel = new CourseDetailViewModel()
         {
-            var courseDetail = course.Value;
-            var relatedCourses = courses.Value;
+            CourseDetailDto = courseDetail,
+            RelatedCourses = relatedCourses
+        };
 
-            var courseDetailViewModel = new CourseDetailViewModel()
-            {
-                CourseDetailDto = courseDetail,
-                RelatedCourses = relatedCourses
-            };
-
-            return View(courseDetailViewModel);
-        }
-
-        return RedirectToAction("Error", "Home");
+        return View(courseDetailViewModel);
     }
 
     [HttpGet("create")]
@@ -95,17 +92,15 @@ public class CourseController(ISender mediator) : Controller
         var result = await mediator.Send(query);
         var viewModel = new CourseCreateForLearnerDto();
 
-        if (result.IsSuccess)
-        {
-            viewModel.LearnerName = result.Value.FirstName + " " + result.Value.LastName;
-            viewModel.ContactNumber = result.Value.PhoneNumber;
-            viewModel.LearnerGender = result.Value.Gender;
-            viewModel.Address = result.Value.City + ", " + result.Value.Country;
-        }
+        if (!result.IsSuccess) return View(viewModel);
+
+        viewModel.LearnerName = result.Value.FirstName + " " + result.Value.LastName;
+        viewModel.ContactNumber = result.Value.PhoneNumber;
+        viewModel.LearnerGender = result.Value.Gender;
+        viewModel.Address = result.Value.City + ", " + result.Value.Country;
 
         return View(viewModel);
     }
-
 
     // POST <CourseController/CreateCourse>
     //[Authorize]
@@ -128,12 +123,9 @@ public class CourseController(ISender mediator) : Controller
     public async Task<IActionResult> RequestGettingClass(Guid courseId)
     {
         var result = await mediator.Send(new CreateCourseRequestCommand(courseId));
-        
-        if (result.IsFailure)
-        {
-            return RedirectToAction("FailPage", "Home", new { message = result.Error.Description });
-        }
 
-        return RedirectToAction("SuccessRequestPage", "Home");
+        return result.IsFailure
+            ? RedirectToAction("FailPage", "Home", new { message = result.Error.Description })
+            : RedirectToAction("SuccessRequestPage", "Home");
     }
 }

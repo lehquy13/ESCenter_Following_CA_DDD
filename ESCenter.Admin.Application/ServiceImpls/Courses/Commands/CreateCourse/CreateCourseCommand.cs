@@ -16,8 +16,8 @@ public class CourseForCreateDto
     public string Description { get; set; } = string.Empty;
     public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; set; } = "Offline";
-    public float Fee { get; set; }
-    public float ChargeFee { get; set; }
+    public decimal Fee { get; set; }
+    public decimal ChargeFee { get; set; }
     public string GenderRequirement { get; set; } = "None";
     public string AcademicLevelRequirement { get; set; } = "Optional";
     public string LearnerGender { get; set; } = "Male";

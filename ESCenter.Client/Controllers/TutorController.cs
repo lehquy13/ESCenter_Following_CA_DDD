@@ -1,19 +1,12 @@
-﻿using System.Security.Claims;
-using ESCenter.Application.Accounts.Queries.GetUserProfile;
+﻿using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Interfaces.Cloudinarys;
-using ESCenter.Client.Application.Contracts.Courses.Dtos;
 using ESCenter.Client.Application.Contracts.Users.Params;
-using ESCenter.Client.Application.Contracts.Users.Tutors;
-using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Commands.RegisterAsTutor;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Application.ServiceImpls.Tutors.Commands.RequestTutor;
 using ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 using ESCenter.Client.Application.ServiceImpls.Tutors.Queries.GetTutors;
-using ESCenter.Client.Models;
 using ESCenter.Client.Utilities;
-using ESCenter.Domain.Shared.Courses;
-using Matt.Paginated;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +23,6 @@ public class TutorController(
     : Controller
 {
     private readonly int _pageSize = 12;
-    private ICloudinaryServices _cloudinaryServices = cloudinaryServices;
 
     private async Task PackStaticListToView()
     {
@@ -110,12 +102,7 @@ public class TutorController(
     {
         var result = await mediator.Send(new RequestTutorCommand(tutorId, requestMessage));
 
-        if (result.IsSuccess)
-        {
-            return RedirectToAction("SuccessPage", "Home");
-        }
-
-        return RedirectToAction("Error", "Home");
+        return RedirectToAction(result.IsSuccess ? "SuccessPage" : "Error", "Home");
     }
 
     [Authorize]
@@ -125,7 +112,7 @@ public class TutorController(
         TutorRegistrationDto tutorForDetailDto,
         List<IFormFile> imageFileUrls)
     {
-        tutorForDetailDto.ImageFileUrls = new List<string>();
+        tutorForDetailDto.ImageFileUrls = [];
 
         foreach (var formFile in imageFileUrls)
         {
@@ -137,23 +124,20 @@ public class TutorController(
             var fileName = formFile.FileName;
             await using var fileStream = formFile.OpenReadStream();
 
-            var uploadResult = _cloudinaryServices.UploadImage(fileName, fileStream);
+            var uploadResult = cloudinaryServices.UploadImage(fileName, fileStream);
 
             tutorForDetailDto.ImageFileUrls.Add(uploadResult);
         }
 
         var command = new RegisterAsTutorCommand(tutorForDetailDto);
-        //throw new Exception();
         var result = await mediator.Send(command);
 
         Helper.ClearTempFile(webHostEnvironment.WebRootPath);
 
-        if (result.IsSuccess)
-        {
-            return RedirectToAction("Logout", "Authentication");
-        }
+        if (result.IsFailure) return RedirectToAction("FailPage", "Home");
 
-        return RedirectToAction("FailPage", "Home");
+        HttpContext.Session.Clear();
+        return RedirectToAction("SuccessRequestPage", "Home");
     }
 
     [HttpPost("choose-profile-pictures")]

@@ -11,8 +11,8 @@ public sealed class CourseForListDto : BasicAuditedEntityDto<Guid>
     public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; set; } = "Offline";
 
-    public float Fee { get; set; } = 0;
-    public float ChargeFee { get; set; } = 0;
+    public decimal Fee { get; set; } = 0;
+    public decimal ChargeFee { get; set; } = 0;
 
     public string GenderRequirement { get; set; } = "None";
     public string AcademicLevelRequirement { get; set; } = "Optional";
@@ -21,7 +21,7 @@ public sealed class CourseForListDto : BasicAuditedEntityDto<Guid>
     public int NumberOfLearner { get; set; } = 1;
     public string ContactNumber { get; set; } = string.Empty;
 
-    public float SessionDuration { get; set; } = 90;
+    public decimal SessionDuration { get; set; } = 90;
     public int SessionPerWeek { get; set; } = 2;
 
     public string Address { get; set; } = string.Empty;

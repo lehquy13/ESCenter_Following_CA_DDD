@@ -9,22 +9,24 @@ namespace ESCenter.Client.Application.Contracts.Courses.Dtos;
 public class LearningCourseDetailForClientDto : BasicAuditedEntityDto<Guid>
 {
     //Basic Information
-    public string Title { get; init; } = string.Empty;
-    public string Description { get; init; } = string.Empty;
-    public string Status { get; init; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
-    public string LearningMode { get; init; } = Domain.Shared.Courses.LearningMode.Online.ToString();
-    public float SectionFee { get; init; } = 0;
-    public float ChargeFee { get; init; } = 0;
-    public int SessionDuration { get; init; } = 90;
-    public int SessionPerWeek { get; init; } = 2;
-    public string Address { get; init; } = string.Empty;
-    public string SubjectName { get; init; } = string.Empty;
-    public string Detail { get; init; } = string.Empty;
-    public short Rate { get; init; }
-    public Guid TutorId { get; init; }
-    public string TutorName { get; init; } = string.Empty;
-    public string TutorContact { get; init; } = string.Empty;
-    public string TutorEmail { get; init; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string Status { get; set; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
+    public string LearningMode { get; set; } = Domain.Shared.Courses.LearningMode.Online.ToString();
+    public decimal SectionFee { get; set; } = 0;
+    public decimal ChargeFee { get; set; } = 0;
+    public int SessionDuration { get; set; } = 90;
+    public int SessionPerWeek { get; set; } = 2;
+    public string Address { get; set; } = string.Empty;
+    public string SubjectName { get; set; } = string.Empty;
+    
+    public string Detail { get; set; } = string.Empty;
+    public short Rate { get; set; }
+    
+    public Guid TutorId { get; set; }
+    public string TutorName { get; set; } = string.Empty;
+    public string TutorContact { get; set; } = string.Empty;
+    public string TutorEmail { get; set; } = string.Empty;
 }
 
 public class LearningCourseForDetailDtoMappingConfig : IRegister

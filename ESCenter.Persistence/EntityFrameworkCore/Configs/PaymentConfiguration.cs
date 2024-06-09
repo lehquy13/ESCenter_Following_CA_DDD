@@ -30,7 +30,7 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
                 id => id.Value,
                 value => TutorId.Create(value)
             );
-        
+
         builder.HasOne<Tutor>()
             .WithMany()
             .HasForeignKey(nameof(Payment.TutorId))
@@ -43,7 +43,7 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
                 id => id.Value,
                 value => CourseId.Create(value)
             );
-        
+
         builder.HasOne<Course>()
             .WithMany()
             .HasForeignKey(nameof(Payment.CourseId))
@@ -54,6 +54,9 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 
         builder.Property(x => x.Code)
             .HasMaxLength(8)
+            .IsRequired();
+
+        builder.Property(x => x.Amount)
             .IsRequired();
     }
 }

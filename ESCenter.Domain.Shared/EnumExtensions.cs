@@ -15,6 +15,10 @@ public static class EnumProvider
         "Other"
     ];
 
+    public static List<string> GenderFilters => Enum.GetNames(typeof(Gender))
+        .Where(x => x != "Both")
+        .ToList();
+
     public static List<string> FullGendersOption =>
     [
         "Male",
@@ -24,12 +28,8 @@ public static class EnumProvider
         "None"
     ];
 
-    public static List<string> FullAcademicLevelsOption =>
-    [
-        "UnderGraduated",
-        "Graduated",
-        "Lecturer",
-    ];
+    public static List<string> FullAcademicLevelsOption => Enum.GetNames(typeof(AcademicLevel))
+        .ToList();
 
     public static List<string> AcademicLevels =>
     [

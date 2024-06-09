@@ -4,9 +4,9 @@
   {
     title: '{{lorem(1,"sentence")}}',
     description: '{{lorem(1,"paragraph")}}',
-    status: '{{integer(0, 6)}}',
+    status: '{{integer(0, 6)}}', // Should random 1 2 4 only
     learningMode: 0,
-    chargeFee:{
+    sectionFee:{
       amount: '{{floating(1000, 4000, 2, "0,0.00")}}',
       currency: 'USD'
     },
@@ -52,7 +52,7 @@
     description: '{{lorem(1,"paragraph")}}',
     status: '{{integer(0, 6)}}',
     learningMode: 0,
-    chargeFee:{
+    sectionFee:{
       amount: '{{floating(1000, 4000, 2, "0,0.00")}}',
       currency: 'USD'
     },

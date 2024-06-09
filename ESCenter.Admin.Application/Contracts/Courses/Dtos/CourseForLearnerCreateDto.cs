@@ -13,7 +13,7 @@ public class CourseForLearnerCreateDto
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string LearningMode { get; set; } = "Offline";
-    public float Fee { get; set; }
+    public decimal Fee { get; set; }
     public string GenderRequirement { get; set; } = "None";
     public string AcademicLevelRequirement { get; set; } = "Optional";
     public string LearnerGender { get; set; } = "Male";
@@ -77,7 +77,7 @@ public class CourseForLearnerCreateDtoValidator : AbstractValidator<CourseForLea
             .WithMessage("Learning mode must be a valid option.");
 
         RuleFor(x => x.Fee)
-            .InclusiveBetween(0, float.MaxValue)
+            .InclusiveBetween(0, decimal.MaxValue)
             .WithMessage("Fee must be a non-negative number.");
 
         RuleFor(x => x.GenderRequirement)
@@ -108,10 +108,6 @@ public class CourseForLearnerCreateDtoValidator : AbstractValidator<CourseForLea
             .Matches(@"^\d{10}$") // Assuming 10-digit phone number
             .WithMessage("Contact number must be 10 digits long.");
 
-        // RuleFor(x => x.LearnerId)
-        //     .NotEmpty()
-        //     .WithMessage("Learner ID is required.");
-
         RuleFor(x => x.MinutePerSession)
             .InclusiveBetween(1, 180)
             .WithMessage("Minutes per session must be between 1 and 180.");
@@ -127,10 +123,5 @@ public class CourseForLearnerCreateDtoValidator : AbstractValidator<CourseForLea
         RuleFor(x => x.SubjectId)
             .GreaterThan(0)
             .WithMessage("Subject ID must be a positive number.");
-
-        // RuleFor(x => x.SubjectName)
-        //     .NotEmpty()
-        //     .MaximumLength(100)
-        //     .WithMessage("Subject name must be less than 100 characters long.");
     }
 }

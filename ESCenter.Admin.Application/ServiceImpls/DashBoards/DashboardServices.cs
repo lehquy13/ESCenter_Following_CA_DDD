@@ -109,24 +109,24 @@ internal class DashboardServices(
             });
 
 
-        List<float> resultInts = confirmedClasses
-            .Select(x => x.sum)
+        var resultInts = confirmedClasses
+            .Select(x => (float)x.sum)
             .ToList();
         if (resultInts.Count <= 0)
         {
             resultInts.Add(1);
         }
 
-        List<float> resultInts1 = canceledClasses
-            .Select(x => x.sum)
+        var resultInts1 = canceledClasses
+            .Select(x => (float)x.sum)
             .ToList();
         if (resultInts1.Count <= 0)
         {
             resultInts1.Add(1);
         }
 
-        List<float> resultInts2 = onPurchasingClasses
-            .Select(x => x.sum)
+        var resultInts2 = onPurchasingClasses
+            .Select(x => (float)x.sum)
             .ToList();
         if (resultInts2.Count <= 0)
         {
@@ -241,7 +241,7 @@ internal class DashboardServices(
                 allClasses,
                 d => d,
                 c => c.date,
-                (d, c) => c.FirstOrDefault()?.count ?? 0)
+                (_, c) => c.FirstOrDefault()?.count ?? 0)
             .ToList();
 
         // --------- Learner metrics -----------------
@@ -263,7 +263,7 @@ internal class DashboardServices(
                 allLearner,
                 d => d,
                 c => c.date,
-                (d, c) => c.FirstOrDefault()?.count ?? 0)
+                (_, c) => c.FirstOrDefault()?.count ?? 0)
             .ToList();
 
         // --------- Tutor metrics -----------------
@@ -283,7 +283,7 @@ internal class DashboardServices(
                 allTutor,
                 d => d,
                 c => c.Key,
-                (d, c) => c.FirstOrDefault()?.count ?? 0)
+                (_, c) => c.FirstOrDefault()?.count ?? 0)
             .ToList();
 
         // --------- Create the chart data -----------------

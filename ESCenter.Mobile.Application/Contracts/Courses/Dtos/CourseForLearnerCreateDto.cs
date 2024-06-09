@@ -13,7 +13,7 @@ public class CourseForLearnerCreateDto
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public LearningMode LearningMode { get; set; } 
-    public float Fee { get; set; }
+    public decimal Fee { get; set; }
     public Gender GenderRequirement { get; set; }
     public AcademicLevel AcademicLevelRequirement { get; set; }
     public Gender LearnerGender { get; set; }
@@ -75,7 +75,7 @@ public class CourseForLearnerCreateDtoValidator : AbstractValidator<CourseForLea
             .WithMessage("Learning mode must be a valid option.");
 
         RuleFor(x => x.Fee)
-            .InclusiveBetween(0, float.MaxValue)
+            .InclusiveBetween(0, decimal.MaxValue)
             .WithMessage("Fee must be a non-negative number.");
 
         RuleFor(x => x.GenderRequirement)

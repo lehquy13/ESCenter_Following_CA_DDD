@@ -11,8 +11,6 @@
 <div class="container" data-aos="fade-up">
     <div class="row">
         <div class="col-lg-12 row">
-            <h3>Requirement Description</h3>
-
             <div class="col-lg-12 mb-4">
                 <h6>Title</h6>
                 <p class="form-control">@Model.Title</p>
@@ -23,26 +21,33 @@
                 <p class="form-control">@Model.Description</p>
             </div>
 
-            <h3>Tutor Requirement</h3>
-
-            <div class="col-lg-4 mb-4">
-                <h6>Fee ($)</h6>
-                <p class="form-control">@Model.ChargeFee</p>
-            </div>
-
-            <h3>Tutor Requirement</h3>
-
             <div class="col-lg-12 mb-4">
                 <h6>Tutor information</h6>
-                <p class="form-control">Name: @Model.TutorName</p>
-                <p class="form-control">Email: @Model.TutorEmail</p>
-                <p class="form-control">Phone: @Model.TutorContact</p>
-
+                <div class="row">
+                    <div class="col-6 mb-4">
+                        <h6>Tutor</h6>
+                        <p class="form-control">@Model.TutorName</p>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <h6>Fee ($)</h6>
+                        <p class="form-control">@Model.SectionFee</p>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <h6>Email</h6>
+                        <p class="form-control">@Model.TutorEmail</p>
+                    </div>
+                    <div class="col-6">
+                        <h6>Contact</h6>
+                        <p class="form-control">@Model.TutorContact</p>
+                    </div>
+                </div>
             </div>
         </div>
-        @if (Model.TutorId != Guid.Empty)
-        {
-            <partial name="_ReviewCourseForm" view-data="ViewData" model="new ReviewCourseViewModel(Model.Detail,Model.Rate)"/>
-        }
+        
+        
     </div>
+    @if (Model.TutorId != Guid.Empty)
+    {
+        <partial name="_ReviewCourseForm" view-data="ViewData" model="new ReviewCourseViewModel(Model.Detail, Model.Rate)"/>
+    }
 </div>

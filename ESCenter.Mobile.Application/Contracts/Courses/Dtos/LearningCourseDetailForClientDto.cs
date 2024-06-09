@@ -18,8 +18,8 @@ public class LearningCourseDetailForClientDto : BasicAuditedEntityDto<Guid>
     public string Description { get; init; } = string.Empty;
     public string Status { get; init; } = Domain.Shared.Courses.Status.PendingApproval.ToString();
     public string LearningMode { get; init; } = "Offline";
-    public float SectionFee { get; init; }
-    public float ChargeFee { get; init; }
+    public decimal SectionFee { get; init; }
+    public decimal ChargeFee { get; init; }
     public int SessionDuration { get; init; } = 90;
     public int SessionPerWeek { get; init; } = 2;
     public string Address { get; init; } = string.Empty;

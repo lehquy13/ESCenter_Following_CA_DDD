@@ -12,15 +12,17 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
     public CourseId CourseId { get; private set; } = null!;
     public PaymentStatus PaymentStatus { get; private set; } = PaymentStatus.Pending;
     public string Code { get; private set; } = string.Empty;
+    public decimal Amount { get; private set; }
 
     private Payment()
     {
     }
 
-    public static Payment Create(TutorId tutorId, CourseId courseId)
+    public static Payment Create(TutorId tutorId, CourseId courseId, decimal amount)
     {
         return new Payment
         {
+            Amount = amount,
             TutorId = tutorId,
             CourseId = courseId,
             PaymentStatus = PaymentStatus.Pending,

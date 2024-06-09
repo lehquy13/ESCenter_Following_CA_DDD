@@ -1,89 +1,119 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using ESCenter.Domain.Shared
 @model ESCenter.Application.Accounts.Commands.Register.RegisterCommand
 @{
     Layout = "_LoginLayout";
     bool isFail = ViewBag.isFail ?? false;
-    var link = Url.Content("~/assets/img/hero-bg1.jpg");
+    var genders = EnumProvider.Genders;
 }
 
-    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="pt-4 pb-2">
+                            <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                            @if (isFail == true)
+                            {
+                                <p class="text-center small re text-danger">
 
-                    <div class="d-flex justify-content-center py-4">
-                        <a href="/" class="logo d-flex align-items-center w-auto">
-                            <img src="~/assets/img/logo.png" alt="">
-                            <span class="d-none d-lg-block">NiceAdmin</span>
-                        </a>
-                    </div><!-- End Logo -->
-
-                    <div class="card mb-3">
-
-                        <div class="card-body">
-
-                            <div class="pt-4 pb-2">
-                                <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                                @if (isFail == true)
-                                {
-                                    <p class="text-center small re text-danger">
-
-                                        The email address or mobile number you entered has been already registered.
-                                    </p>
-                                }
-                                else
-                                {
-                                    <p class="text-center small">Enter your personal details to create account</p>
-                                }
-                            </div>
+                                    The email address or mobile number you entered has been already registered.
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="text-center small">Enter your personal details to create account</p>
+                            }
+                        </div>
 
                         <form class="row g-3 needs-validation" asp-controller="Authentication" asp-action="Register">
-                                <div class="col-6">
-                                    <label asp-for="FirstName" class="form-label">Your First Name</label>
-                                    <input type="text" asp-for="FirstName" class="form-control" id="yourName">
-                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                            <div class="col-12">
+                                <label asp-for="Username" class="form-label">Username</label>
+                                <input type="text" asp-for="Username" class="form-control" id="yourUsername">
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-6">
+                                <label asp-for="FirstName" class="form-label">Your First Name</label>
+                                <input type="text" asp-for="FirstName" class="form-control" id="yourName">
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
 
-                                </div>
+                            <div class="col-6">
+                                <label asp-for="LastName" class="form-label">Your Last Name</label>
+                                <input type="text" asp-for="LastName" class="form-control">
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
 
-                                <div class="col-6">
-                                    <label asp-for="LastName" class="form-label">Your Last Name</label>
-                                    <input type="text" asp-for="LastName" class="form-control">
-                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                            <div class="col-6">
+                                <label asp-for="BirthYear" class="form-label">BirthYear</label>
+                                <input type="text" asp-for="BirthYear" class="form-control">
+                                <span asp-validation-for="BirthYear" class="text-danger"></span>
+                            </div>
 
-                                </div>
+                            <div class="col-6">
+                                <h6>Gender</h6>
 
-                                <div class="col-12">
-                                    <label asp-for="Email" class="form-label">Email</label>
+                                <select name="gender" asp-for="Gender" class="form-select">
+                                    @foreach (var i in genders)
+                                    {
+                                    <option class="form-control" value="@i">@i</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+
+                            </div>
+
+                            <div class="col-6">
+                                <label asp-for="City" class="form-label">City</label>
+                                <input type="text" asp-for="City" class="form-control">
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-6">
+                                <label asp-for="Country" class="form-label">Country</label>
+                                <input type="text" asp-for="Country" class="form-control">
+                                <span asp-validation-for="Country" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Email" class="form-label">Email</label>
                                 <div class="input-group has-validation">
-                                        <span class="input-group-text" id="inputGroupPrepend">@@</span>
-                                        <input asp-for="Email" type="email" class="form-control" id="yourUsername">
-                                        <span asp-validation-for="Email" class="text-danger"></span>
-                                    </div>
+                                    <span class="input-group-text" id="inputGroupPrepend">@@</span>
+                                    <input asp-for="Email" type="email" class="form-control">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
+                            </div>
 
-                                <div class="col-12">
-                                    <label asp-for="Password" class="form-label">Password</label>
-                                    <input type="password" asp-for="Password" name="password" class="form-control" id="yourPassword">
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
+                            <div class="col-12">
+                                <label asp-for="PhoneNumber" class="form-label">PhoneNumber</label>
+                                <input type="text" asp-for="PhoneNumber" class="form-control">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label asp-for="Password" class="form-label">Password</label>
+                                <input type="password" asp-for="Password" name="password" class="form-control" >
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
 
-                              
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100" type="submit">Create Account</button>
-                                </div>
-                                <div class="col-12">
-                                    <p class="small mb-0">Already have an account? <a asp-controller="Authentication" asp-action="Index">Log in</a></p>
-                                </div>
-                            </form>
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                            </div>
+                            <div class="col-12">
+                                <p class="small mb-0">Already have an account? <a asp-controller="Authentication" asp-action="Index">Log in</a></p>
+                            </div>
+                        </form>
 
-                        </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
+    </div>
 
-    </section>
-
+</section>

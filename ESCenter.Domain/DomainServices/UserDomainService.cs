@@ -13,11 +13,6 @@ public class UserDomainService(
     IIdentityService identityService
 ) : DomainServiceBase(logger), IUserDomainService
 {
-    private const string DefaultPassword = "1q2w3E*";
-
-    private const string DefaultAvatar =
-        "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
-
     public async Task<Result<Customer>> CreateAsync(
         string firstName,
         string lastName,

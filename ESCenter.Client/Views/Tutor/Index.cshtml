@@ -13,7 +13,8 @@
     var currentAcademicLevel = tutorParams.Academic == AcademicLevel.Optional.ToString() ? null : tutorParams.Academic;
     var currentAddress = tutorParams.Address;
     var currentBirthYear = tutorParams.BirthYear == 0 ? null : tutorParams.BirthYear;
-    var genders = EnumProvider.FullGendersOption;
+    
+    var genders = EnumProvider.GenderFilters;
     var academicLevels = EnumProvider.FullAcademicLevelsOption;
 }
 
@@ -81,24 +82,6 @@
 
             <div class="col-lg-2 col-sm-2 p-0 pe-2 d-flex align-items-stretch">
                 <input class="form-control" placeholder="Address" value="@currentAddress" type="text" name="address">
-
-                @* <select name="address" class="form-select"> *@
-                @*     @if (currentAcademicLevel is null) *@
-                @*     { *@
-                @*         <option class="form-control" selected="selected" value="">Cities</option> *@
-                @*     } *@
-                @*     @foreach (var i in cities) *@
-                @*     { *@
-                @*         if (i == currentAddress) *@
-                @*         { *@
-                @*             <option class="form-control" selected value="@i">@i</option> *@
-                @*         } *@
-                @*         else *@
-                @*         { *@
-                @*             <option class="form-control" value="@i">@i</option> *@
-                @*         } *@
-                @*     } *@
-                @* </select> *@
             </div>
 
             <div class="col-lg-1 col-sm-1 p-0 d-flex">

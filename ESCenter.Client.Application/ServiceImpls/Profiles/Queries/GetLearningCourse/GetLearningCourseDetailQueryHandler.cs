@@ -3,14 +3,11 @@ using ESCenter.Client.Application.ServiceImpls.Courses;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Subjects;
-using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.Aggregates.Users.ValueObjects;
-using Mapster;
+using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
-using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -21,9 +18,7 @@ public class GetLearningCourseDetailQueryHandler(
     ICourseRepository courseRepository,
     ISubjectRepository subjectRepository,
     ICustomerRepository customerRepository,
-    ITutorRepository tutorRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
-    ICurrentUserService currentUserService,
     IAppLogger<RequestHandlerBase> logger,
     IMapper mapper
 )
@@ -39,32 +34,48 @@ public class GetLearningCourseDetailQueryHandler(
             .Join(subjectRepository.GetAll(),
                 courseFromDb => courseFromDb.SubjectId,
                 subjectFromDb => subjectFromDb.Id,
-                (courseFromDb, subjectFromDb) => new { Course = courseFromDb, Subject = subjectFromDb })
-            .Join(tutorRepository.GetAll(),
-                courseSubject => courseSubject.Course.TutorId,
-                tutor => tutor.Id,
-                (courseSubject, tutor) => new { CourseSubject = courseSubject, Tutor = tutor })
-            .Join(customerRepository.GetAll(),
-                joined => joined.Tutor.CustomerId,
-                customer => customer.Id,
-                (joined, customer) => new
-                {
-                    Course = joined.CourseSubject.Course,
-                    Subject = joined.CourseSubject.Subject,
-                    TutorId = joined.Tutor.Id,
-                    TutorInfo = customer
-                });
+                (courseFromDb, subjectFromDb) => new { Course = courseFromDb, Subject = subjectFromDb });
+
 
         var course =
-            await asyncQueryableExecutor.SingleOrDefault(courseRequestQueryable, false, cancellationToken);
+            await asyncQueryableExecutor.FirstOrDefaultAsync(courseRequestQueryable, false, cancellationToken);
+
 
         if (course is null)
         {
             return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
 
-        var classDto = (course.Course, course.Subject, course.TutorId.Value, course.TutorInfo)
-            .Adapt<LearningCourseDetailForClientDto>();
+        var classDto = new LearningCourseDetailForClientDto
+        {
+            Id = course.Course.Id.Value,
+            Title = course.Course.Title,
+            Description = course.Course.Description,
+            SubjectName = course.Subject.Name,
+            Status = course.Course.Status.ToString(),
+            LearningMode = course.Course.LearningMode.ToString(),
+            ChargeFee = course.Course.ChargeFee.Amount,
+            SectionFee = course.Course.SectionFee.Amount,
+            SessionDuration = course.Course.SessionDuration.Value,
+            SessionPerWeek = course.Course.SessionPerWeek.Value,
+            Address = course.Course.Address,
+            Rate = course.Course.Review == null ? (short) 5 : course.Course.Review.Rate,
+            Detail = course.Course.Review == null ? "" : course.Course.Review.Detail
+        };
+
+        if (course.Course.TutorId is null || course.Course.Status != Status.Confirmed) return classDto;
+        
+        var tutor = await customerRepository.GetTutorByTutorId(course.Course.TutorId, cancellationToken);
+
+        if (tutor is null)
+        {
+            return Result.Fail(CourseAppServiceErrors.TutorNotExistsError);
+        }
+
+        classDto.TutorId = tutor.Id.Value;
+        classDto.TutorName = tutor.GetFullName();
+        classDto.TutorContact = tutor.PhoneNumber;
+        classDto.TutorEmail = tutor.Email;
 
         return classDto;
     }

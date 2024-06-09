@@ -1,10 +1,12 @@
 ﻿@using ESCenter.Admin.Application.Contracts.Courses.Dtos
+@using ESCenter.Domain.Shared
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ESCenter.Admin.Application.ServiceImpls.Courses.Commands.CreateCourse.CourseForCreateDto
 
 @{
     ViewData["Title"] = "Create new user";
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+    
+    List<string> genders = EnumProvider.Genders;
     List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
     List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
 

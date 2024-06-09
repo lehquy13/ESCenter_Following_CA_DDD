@@ -21,9 +21,6 @@ public class CreateUpdateStaffProfileCommandHandler(
     IMapper mapper)
     : CommandHandlerBase<CreateUpdateStaffProfileCommand>(unitOfWork, logger)
 {
-    private const string DefaultAvatar =
-        "https://res.cloudinary.com/dhehywasc/image/upload/v1686121404/default_avatar2_ws3vc5.png";
-
     public override async Task<Result> Handle(CreateUpdateStaffProfileCommand command,
         CancellationToken cancellationToken)
     {
@@ -36,12 +33,9 @@ public class CreateUpdateStaffProfileCommandHandler(
             // Update user
             mapper.Map(command.LearnerForCreateUpdateDto, user);
 
-            if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-            {
-                return Result.Fail(StaffAppServiceError.FailToUpdateStaffErrorWhileSavingChanges);
-            }
-
-            return Result.Success();
+            return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0
+                ? Result.Fail(StaffAppServiceError.FailToUpdateStaffErrorWhileSavingChanges)
+                : Result.Success();
         }
 
         // Create new user
@@ -55,7 +49,7 @@ public class CreateUpdateStaffProfileCommandHandler(
                 command.LearnerForCreateUpdateDto.City,
                 command.LearnerForCreateUpdateDto.Country),
             command.LearnerForCreateUpdateDto.Description,
-            DefaultAvatar,
+            "",
             command.LearnerForCreateUpdateDto.Email,
             command.LearnerForCreateUpdateDto.PhoneNumber);
 

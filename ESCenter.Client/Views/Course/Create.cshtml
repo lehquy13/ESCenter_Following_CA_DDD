@@ -1,25 +1,19 @@
-﻿@using ESCenter.Client.Application.Contracts.Courses.Dtos
+﻿@using ESCenter.Application.Accounts.Queries.GetUserProfile
+@using ESCenter.Client.Application.Contracts.Courses.Dtos
 @using ESCenter.Domain.Shared
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using ESCenter.Application.Accounts.Queries.GetUserProfile
 @model ESCenter.Client.Application.Contracts.Courses.Dtos.CourseCreateForLearnerDto
 
 @{
     ViewData["Title"] = "Get started ";
 
-
     var subjects = ViewData["Subjects"] as List<SubjectDto> ?? [];
-    var genders = EnumProvider.FullGendersOption;
+    
+    var genders = EnumProvider.Genders;
     var academicLevels = EnumProvider.FullAcademicLevelsOption;
+    
     var user = ViewData["LoginUser"] as UserProfileDto ?? new UserProfileDto();
 }
-
-
-<div class="alert alert-success alert-dismissible fade collapse" role="alert" id="successAlert">
-    <i class="bi bi-check-circle me-1"></i>
-    Update successfully!
-    <button type="button" class="btn-close" data-bs-toggle="collapse" id="successAlertButton" data-bs-target="#successAlert" aria-expanded="false" aria-controls="successAlert" aria-label="Close"></button>
-</div>
 
 <h4>@Model.Title</h4>
 

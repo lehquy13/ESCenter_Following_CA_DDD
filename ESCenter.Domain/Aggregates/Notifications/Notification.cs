@@ -6,8 +6,10 @@ namespace ESCenter.Domain.Aggregates.Notifications;
 public class Notification : AuditedAggregateRoot<int>
 {
     public string Message { get; private set; } = null!;
-    public string ObjectId { get; private set; } = null!;
+    public Guid? From { get; private set; }
+    public Guid To { get; private set; }
     public bool IsRead { get; private set; }
+    public string ObjectId { get; private set; } = null!;
     public NotificationEnum NotificationType { get; private set; } = NotificationEnum.Unknown;
 
     private Notification()

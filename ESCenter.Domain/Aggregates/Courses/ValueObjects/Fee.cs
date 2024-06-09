@@ -4,7 +4,7 @@ namespace ESCenter.Domain.Aggregates.Courses.ValueObjects;
 
 public class Fee : ValueObject
 {
-    public float Amount { get; private set; } = 0;
+    public decimal Amount { get; private set; }
 
     public string Currency { get; private set; } = Shared.Courses.Currency.USD;
 
@@ -12,7 +12,7 @@ public class Fee : ValueObject
     {
     }
 
-    public static Fee Create(float amount, string? currency)
+    public static Fee Create(decimal amount, string? currency)
     {
         return new Fee()
         {
