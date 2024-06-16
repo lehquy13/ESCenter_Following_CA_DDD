@@ -23,7 +23,7 @@ public class TutorController(
         return Ok(tutorDtos);
     }
     
-    [HttpGet]
+    [HttpPost]
     [Route("by-ids")]
     public async Task<IActionResult> GetTutorsByIds([FromBody] List<Guid> tutorIds)
     {

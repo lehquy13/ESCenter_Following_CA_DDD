@@ -27,7 +27,7 @@ public class CourseController(
     }
     
         
-    [HttpGet]
+    [HttpPost]
     [Route("by-ids")]
     public async Task<IActionResult> GetCoursesByIds([FromBody] List<Guid> courseIds)
     {
