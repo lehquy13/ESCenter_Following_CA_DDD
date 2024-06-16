@@ -33,7 +33,7 @@ public class GetCourseRequestsQueryHandler(
             return Result.Fail(TutorProfileAppServiceError.NonExistTutorError);
         }
 
-        var subjects = await subjectRepository.GetListAsync(cancellationToken);
+        var subjects = await subjectRepository.GetAllListAsync(cancellationToken);
 
         // Get the course that have tutor id equal to the tutor id
         var allTutorRelatedCourses = await courseRepository.GetAllTutorRelatedCourses(tutor.Id);

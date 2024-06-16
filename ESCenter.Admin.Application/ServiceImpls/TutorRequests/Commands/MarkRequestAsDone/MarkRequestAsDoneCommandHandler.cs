@@ -25,7 +25,7 @@ public class MarkRequestAsDoneCommandHandler(
 
         request.Done();
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

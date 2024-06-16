@@ -18,8 +18,7 @@ namespace ESCenter.Application
                 .AddValidatorsFromAssembly(typeof(BaseApplicationDependencyInjection)
                     .Assembly) // Handle base validation of application layer
                 .AddValidatorsFromAssembly(mappingAssembly) // Handle validation of specific application layer
-                .AddApplicationMappings(mappingAssembly)
-                .AddLazyCache();
+                .AddApplicationMappings(mappingAssembly);
 
             return services;
         }

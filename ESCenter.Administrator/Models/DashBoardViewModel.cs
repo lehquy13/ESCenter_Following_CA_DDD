@@ -15,7 +15,7 @@ public class DashBoardViewModel
     public object? DonutLabels { get; init; }
     public object? Xaxis { get; init; }
     public AreaChartViewModel AreaChartViewModel { get; init; } = new();
-    public List<NotificationDto> NotificationDtos { get; init; } = new();
+    public IEnumerable<NotificationDto> NotificationDtos { get; init; } = [];
     public IEnumerable<TutorRequestForListDto> TutorRequests { get; set; } = [];
 }
 

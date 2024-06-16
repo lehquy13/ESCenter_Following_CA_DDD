@@ -1,5 +1,6 @@
 ﻿using ESCenter.Admin.Application.Contracts.Commons;
 using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Shared.Courses;
 using FluentValidation;
 using Mapster;
 
@@ -11,7 +12,6 @@ public class LearnerForCreateUpdateDto : BasicAuditedEntityDto<Guid>
     public string LastName { get; set; } = string.Empty;
     public string Gender { get; set; } = "Male";
     public int BirthYear { get; set; } = 1960;
-
     public string Avatar { get; set; } = string.Empty;
 
     public string City { get; set; } = string.Empty;
@@ -39,7 +39,7 @@ public class LearnerForCreateUpdateDtoValidator : AbstractValidator<LearnerForCr
 
         RuleFor(dto => dto.Gender)
             .NotEmpty().WithMessage("Gender is required.")
-            .Must(gender => gender == "Male" || gender == "Female").WithMessage("Invalid gender value.");
+            .Must(gender => gender is "Male" or "Female").WithMessage("Invalid gender value.");
 
         RuleFor(dto => dto.BirthYear)
             .InclusiveBetween(1900, DateTime.UtcNow.Year).WithMessage("Birth year must be between 1900 and current year.");
@@ -50,7 +50,7 @@ public class LearnerForCreateUpdateDtoValidator : AbstractValidator<LearnerForCr
 
         RuleFor(dto => dto.PhoneNumber)
             .NotEmpty().WithMessage("Phone number is required.")
-            .Matches(@"^\d{10,11}$").WithMessage("Invalid phone number format.");
+            .WithMessage("Invalid phone number format.");
 
         RuleFor(dto => dto.City)
             .NotEmpty().WithMessage("City is required.")
@@ -65,7 +65,7 @@ public class LearnerForCreateUpdateDtoValidator : AbstractValidator<LearnerForCr
 
         RuleFor(dto => dto.Role)
             .NotEmpty().WithMessage("Role is required.")
-            .Must(role => role == "Learner" || role == "Admin").WithMessage("Invalid role value.");
+            .Must(role => role != Role.SuperAdmin.ToString()).WithMessage("Invalid role value.");
 
         RuleFor(dto => dto.IsEmailConfirmed)
             .NotNull().WithMessage("Email confirmation status is required.");

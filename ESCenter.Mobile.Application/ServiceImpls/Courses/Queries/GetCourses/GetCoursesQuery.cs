@@ -8,6 +8,8 @@ namespace ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourses;
 
 public record GetCoursesQuery(CourseParams CourseParams) : IQueryRequest<PaginatedList<CourseForListDto>>;
 
+public record GetCoursesByIdsQuery(List<Guid> Guids) : IQueryRequest<IEnumerable<CourseForListDto>>;
+
 public class GetCoursesQueryValidator : AbstractValidator<GetCoursesQuery>
 {
     public GetCoursesQueryValidator()

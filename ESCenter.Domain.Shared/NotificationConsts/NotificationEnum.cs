@@ -2,10 +2,11 @@
 
 public enum NotificationEnum 
 {
-    Course,
-    CourseRequest,
-    Tutor,
-    Learner,
-    Unknown,
-    TutorRequest
+    Unknown = 0,
+    Course = 1,
+    CourseRequest = 2,
+    Tutor = 3,
+    Learner = 4,
+    TutorRequest = 5,
+    TutorRegistration = 6,
 }

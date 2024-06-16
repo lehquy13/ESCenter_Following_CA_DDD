@@ -1,4 +1,3 @@
-using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors.DomainEvents;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -33,15 +32,9 @@ public class Tutor : AuditedAggregateRoot<TutorId>
             ChangeVerificationRequest.ChangeVerificationRequestDetails.Count));
     }
 
-    public void AddTutorMajor(TutorMajor tutorMajor)
-    {
-        _tutorMajors.Add(tutorMajor);
-    }
+    public void AddTutorMajor(TutorMajor tutorMajor) => _tutorMajors.Add(tutorMajor);
 
-    public void UpdateAllMajor(List<TutorMajor> tutorMajors)
-    {
-        _tutorMajors = tutorMajors;
-    }
+    public void UpdateAllMajor(List<TutorMajor> tutorMajors) => _tutorMajors = tutorMajors;
 
     private Tutor()
     {
@@ -58,7 +51,6 @@ public class Tutor : AuditedAggregateRoot<TutorId>
         var id = TutorId.Create();
         var verifications = verificationInfos.Select(i => Verification.Create(i, id)).ToList();
 
-
         var tutor = new Tutor
         {
             Id = id,
@@ -70,7 +62,7 @@ public class Tutor : AuditedAggregateRoot<TutorId>
             Rate = rate,
         };
 
-        var message = $"New tutor: {tutor.Id.Value} at {DateTime.Now.ToLongDateString()}";
+        var message = $"New tutor have enrolled at {DateTime.Now.ToLongDateString()}";
 
         tutor.DomainEvents.Add(new NewDomainObjectCreatedEvent(
             tutor.Id.Value.ToString(),
@@ -80,25 +72,13 @@ public class Tutor : AuditedAggregateRoot<TutorId>
         return tutor;
     }
 
-    public void Verify(bool isVerified)
-    {
-        IsVerified = isVerified;
-    }
+    public void Verify(bool isVerified) => IsVerified = isVerified;
 
-    public void UpdateRate(float reviewRate)
-    {
-        Rate = reviewRate;
-    }
+    public void UpdateRate(float reviewRate) => Rate = reviewRate;
 
-    public void RemoveMajor(TutorMajor major)
-    {
-        _tutorMajors.Remove(major);
-    }
+    public void RemoveMajor(TutorMajor major) => _tutorMajors.Remove(major);
 
-    public void SetUserId(CustomerId id)
-    {
-        CustomerId = id;
-    }
+    public void SetUserId(CustomerId id) => CustomerId = id;
 
     public Result ModifyChangeVerificationRequest(bool commandIsApproved)
     {
@@ -127,10 +107,10 @@ public class Tutor : AuditedAggregateRoot<TutorId>
         return Result.Success();
     }
 
-    public void UpdateBasicInformation(string university, string academicLevel)
+    public void UpdateBasicInformation(string university, AcademicLevel academicLevel)
     {
         University = university;
-        AcademicLevel = Enum.Parse<AcademicLevel>(academicLevel);
+        AcademicLevel = academicLevel;
 
         IsVerified = false;
     }

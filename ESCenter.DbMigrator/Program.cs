@@ -2,11 +2,8 @@
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Discoveries;
-using ESCenter.Domain.Aggregates.Discoveries.Entities;
-using ESCenter.Domain.Aggregates.Discoveries.ValueObjects;
 using ESCenter.Domain.Aggregates.DiscoveryUsers;
 using ESCenter.Domain.Aggregates.Subjects;
-using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users;
@@ -17,6 +14,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+
+// ReSharper disable PossibleMultipleEnumeration
 
 namespace ESCenter.DBMigrator;
 
@@ -31,10 +30,17 @@ internal static class Program
     public static async Task Main(string[] args)
     {
         var choice = 0;
+
         while (choice != 6)
         {
+            Console.WriteLine("database: ");
+            var dbName = Console.ReadLine();
+
+            Console.WriteLine("isLocal: ");
+            bool.TryParse(Console.ReadLine(), out var isLocal);
+
             var factory = new AppDbContextFactory();
-            var context = factory.CreateDbContext(args);
+            var context = factory.CreateDbContext(string.IsNullOrWhiteSpace(dbName) ? "esmssql" : dbName, isLocal);
 
             Console.WriteLine("1. Delete database");
             Console.WriteLine("2. Migrate database");
@@ -110,7 +116,6 @@ internal static class Program
             if (!context.Subjects.Any())
             {
                 Console.WriteLine("No subjects found. Seeding subjects...");
-
 
                 #region subject data
 
@@ -231,7 +236,7 @@ internal static class Program
 
                 #region Discovery
 
-                var discoveries = Discoveries(subjects);
+                var discoveries = Discovery.Discoveries();
 
                 context.Discoveries.AddRange(discoveries);
 
@@ -273,7 +278,7 @@ internal static class Program
                         }
 
                         existing.Add(index);
-                        duList.Add(DiscoveryUser.Create(discoveries[index].Id, user.Id));
+                        duList.Add(DiscoveryUser.Create(discoveries.ElementAt(index).Id, user.Id));
                     }
                 }
 
@@ -336,7 +341,7 @@ internal static class Program
                     var randomTutor = new Random().Next(0, seedTutorNumbers);
                     var tutor = tutorData[randomTutor];
                     course.AssignTutor(tutor.Id);
-
+                    course.ConfirmedCourse();
                     // review
                     var randomReview = reviews[new Random().Next(0, 99)];
                     course.ReviewCourse(
@@ -397,94 +402,6 @@ internal static class Program
             Console.WriteLine(e);
             await context.Database.EnsureDeletedAsync();
         }
-    }
-    
-    private static IList<Discovery> Discoveries(IReadOnlyList<Subject> subjects)
-    {
-        var discovery1 = Discovery.Create("Information Technology",
-            "The study of information and computational systems",
-            [
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(1), subjects[0].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(2), subjects[1].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(3), subjects[2].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(4), subjects[3].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(5), subjects[4].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(6), subjects[5].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(7), subjects[6].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(8), subjects[7].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(12), subjects[11].Name),
-            ]);
-        var discovery2 = Discovery.Create("Programming",
-            "Basic principles and concepts of programming",
-            [
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(2), subjects[1].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(3), subjects[2].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(4), subjects[3].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(5), subjects[4].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(6), subjects[5].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(7), subjects[6].Name),
-            ]);
-
-        var discovery3 = Discovery.Create("Language",
-            "Study of language and culture",
-            [
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(10), subjects[9].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(11), subjects[10].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(12), subjects[11].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(13), subjects[12].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(14), subjects[13].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(15), subjects[14].Name),
-            ]);
-
-        var discovery4 = Discovery.Create("Art",
-            "Study of art and culture",
-            [
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(16), subjects[15].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(17), subjects[16].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(18), subjects[17].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(19), subjects[18].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(20), subjects[19].Name),
-            ]);
-
-        var discovery5 = Discovery.Create("Fitness and Health",
-            "Study of fitness and health",
-            [
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(21), subjects[20].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(22), subjects[21].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(23), subjects[22].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(24), subjects[23].Name),
-            ]);
-
-        var discovery6 = Discovery.Create("Science",
-            "Study of science",
-            [
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(24), subjects[23].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(25), subjects[24].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(26), subjects[25].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(27), subjects[26].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(29), subjects[28].Name),
-            ]);
-
-        var discovery7 = Discovery.Create("Social",
-            "Study of social",
-            [
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(28), subjects[27].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(29), subjects[28].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(30), subjects[29].Name),
-                DiscoverySubject.Create(DiscoveryId.Create(), SubjectId.Create(31), subjects[30].Name),
-            ]);
-
-        var discoveries = new List<Discovery>()
-        {
-            discovery1,
-            discovery2,
-            discovery3,
-            discovery4,
-            discovery5,
-            discovery6,
-            discovery7
-        };
-        return discoveries;
     }
 
     private class PrivateResolver : DefaultContractResolver

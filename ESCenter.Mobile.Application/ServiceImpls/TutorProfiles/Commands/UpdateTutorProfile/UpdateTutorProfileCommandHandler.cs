@@ -4,6 +4,8 @@ using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
+using ESCenter.Domain.Shared;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Mobile.Application.ServiceImpls.Tutors;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
@@ -33,9 +35,8 @@ public class UpdateTutorInformationCommandHandler(
             return Result.Fail(UserError.NonExistTutorError);
         }
 
-        tutor.UpdateBasicInformation(
-            command.TutorBasicUpdateDto.University,
-            command.TutorBasicUpdateDto.AcademicLevel);
+        tutor.UpdateBasicInformation(command.TutorBasicUpdateDto.University,
+            command.TutorBasicUpdateDto.AcademicLevel.ToEnum<AcademicLevel>());
 
         // Collect major ids
         var subjectListAboutToUpdate =

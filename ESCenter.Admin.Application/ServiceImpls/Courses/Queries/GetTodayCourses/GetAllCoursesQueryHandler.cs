@@ -1,7 +1,6 @@
 ﻿using ESCenter.Admin.Application.Contracts.Courses.Dtos;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects;
-using Mapster;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -26,20 +25,25 @@ public class GetTodayCoursesQueryHandler(
 
         var classesQuery = filterQuery
             .OrderByDescending(x => x.CreationTime)
-            .Where(x => x.IsDeleted == false && x.CreationTime >= DateTime.Today.AddDays(-1))
-            .Join(subjectRepository.GetAll(),
-                course => course.SubjectId,
-                subject => subject.Id,
-                (course, subject) => new Tuple<Course, string>(course, subject.Name)
-            );
+            .Where(x => x.IsDeleted == false && x.CreationTime >= DateTime.Today.AddDays(-1));
+            
+        var subjects = await subjectRepository.GetAllListAsync(cancellationToken);
 
         var courses = await asyncQueryableExecutor.ToListAsync(classesQuery, false, cancellationToken);
 
         //Get the class of the page
         var classInformationDtos = courses
-            .Select(x => (x.Item1, x.Item2).Adapt<CourseForListDto>())
-            .ToList();
-
+            .Select(x => new CourseForListDto
+            {
+                Id = x.Id.Value,
+                Title = x.Title,
+                Status = x.Status.ToString(),
+                CreationTime = x.CreationTime,
+                LearningMode = x.LearningMode.ToString(),
+                SubjectId = x.SubjectId.Value,
+                SubjectName = subjects.First(s => s.Id == x.SubjectId).Name,
+            }).ToList();
+        
         return classInformationDtos;
     }
 }

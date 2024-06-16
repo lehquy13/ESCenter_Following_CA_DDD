@@ -10,6 +10,7 @@ using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.Courses;
+using ESCenter.Domain.Shared.NotificationConsts;
 using MapsterMapper;
 using Matt.SharedKernel;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -31,45 +32,26 @@ internal class DashboardServices(
 {
     public async Task<AreaChartData> GetAreaChartData(string byTime = "")
     {
-        await Task.CompletedTask;
-
         // Create a dateListRange by the query.ByTime
         List<int> dates = [];
 
-        var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(30));
-        switch (byTime)
+        var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(14));
+
+        for (int i = 0; i < 14; i++)
         {
-            case ByTime.Month:
-                startDay = DateTime.Today.Subtract(TimeSpan.FromDays(29));
-                for (int i = 0; i < 30; i++)
-                {
-                    dates.Add(startDay.Day);
-                    startDay = startDay.AddDays(1);
-                }
-
-                break;
-            case ByTime.Week:
-                for (int i = 0; i < 7; i++)
-                {
-                    dates.Add(startDay.Day);
-                    startDay = startDay.AddDays(1);
-                }
-
-                break;
+            dates.Add(startDay.Day);
+            startDay = startDay.AddDays(1);
         }
 
-        startDay = DateTime.Today.Subtract(TimeSpan.FromDays(30));
+        startDay = DateTime.Today.Subtract(TimeSpan.FromDays(14));
 
         var allClassesQuery =
-            courseRepository
-                .GetAll()
-                .Select(x => new
-                {
-                    x.Id,
-                    x.CreationTime,
-                    x.Status,
-                    x.ChargeFee
-                });
+            courseRepository.GetAll().Select(x => new
+            {
+                x.CreationTime,
+                x.Status,
+                x.ChargeFee
+            });
 
         var allClasses = await asyncQueryableExecutor.ToListAsync(allClassesQuery, false);
 
@@ -110,24 +92,27 @@ internal class DashboardServices(
 
 
         var resultInts = confirmedClasses
-            .Select(x => (float)x.sum)
+            .Select(x => x.sum)
             .ToList();
+
         if (resultInts.Count <= 0)
         {
             resultInts.Add(1);
         }
 
         var resultInts1 = canceledClasses
-            .Select(x => (float)x.sum)
+            .Select(x => x.sum)
             .ToList();
+
         if (resultInts1.Count <= 0)
         {
             resultInts1.Add(1);
         }
 
         var resultInts2 = onPurchasingClasses
-            .Select(x => (float)x.sum)
+            .Select(x => x.sum)
             .ToList();
+
         if (resultInts2.Count <= 0)
         {
             resultInts2.Add(1);
@@ -169,7 +154,7 @@ internal class DashboardServices(
 
         var courseDonut = await asyncQueryableExecutor.ToListAsync(courseDonutQuery, false);
 
-        List<int> resultLabels = courseDonut
+        var resultLabels = courseDonut
             .Select(x => x.count)
             .ToList();
 
@@ -178,9 +163,10 @@ internal class DashboardServices(
             resultLabels.Add(1);
         }
 
-        List<string> resultStrings = courseDonut
+        var resultStrings = courseDonut
             .Select(x => x.key)
             .ToList();
+
         if (resultStrings.Count <= 0)
         {
             resultStrings.Add("None");
@@ -297,17 +283,39 @@ internal class DashboardServices(
         return new LineChartData(chartWeekData, dates);
     }
 
-    public async Task<List<NotificationDto>> GetNotification()
+    public async Task<IEnumerable<NotificationDto>> GetNotification()
     {
         // Create a dateListRange
-        var notiListQueryable = notificationRepository
+        var notificationsQueryable = notificationRepository
             .GetAll()
-            .OrderBy(x => x.CreationTime)
-            .Take(5);
-        var notiList = await asyncQueryableExecutor.ToListAsync(notiListQueryable, false);
-        var notiDtoList = Mapper.Map<List<NotificationDto>>(notiList);
+            .Where(x => x.IsRead == false)
+            .OrderByDescending(x => x.CreationTime);
 
-        return notiDtoList;
+        var notifications = await asyncQueryableExecutor.ToListAsync(notificationsQueryable, false);
+
+        // If more than 10 notifications, only get the first 10
+        if (notifications.Count > 20)
+            notifications = notifications.Take(20).ToList();
+
+        return from notification in notifications
+            let detailPath = notification.NotificationType switch
+            {
+                NotificationEnum.CourseRequest or NotificationEnum.Course => $"course/{notification.ObjectId}",
+                NotificationEnum.TutorRequest => $"tutor-request/edit/{notification.ObjectId}",
+                NotificationEnum.Tutor => $"tutor/{notification.ObjectId}",
+                NotificationEnum.Learner => $"user/{notification.ObjectId}",
+                _ => ""
+            }
+            select new NotificationDto
+            {
+                CreationTime = notification.CreationTime,
+                Id = notification.Id,
+                IsRead = notification.IsRead,
+                Message = notification.Message,
+                NotificationType = notification.NotificationType.ToString(),
+                ObjectId = notification.ObjectId,
+                DetailPath = detailPath
+            };
     }
 
     public Task<List<MetricObject>> GetTutorsMetrics()

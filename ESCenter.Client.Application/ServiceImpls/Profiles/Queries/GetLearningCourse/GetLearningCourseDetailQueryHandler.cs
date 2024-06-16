@@ -36,10 +36,8 @@ public class GetLearningCourseDetailQueryHandler(
                 subjectFromDb => subjectFromDb.Id,
                 (courseFromDb, subjectFromDb) => new { Course = courseFromDb, Subject = subjectFromDb });
 
-
         var course =
             await asyncQueryableExecutor.FirstOrDefaultAsync(courseRequestQueryable, false, cancellationToken);
-
 
         if (course is null)
         {

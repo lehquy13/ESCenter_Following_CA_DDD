@@ -9,7 +9,7 @@ public interface IDashboardServices
     Task<AreaChartData> GetAreaChartData(string byTime = "");
     Task<DonutChartData> GetDonutChartData(string byTime = "");
     Task<LineChartData> GetLineChartData(string byTime = "");
-    Task<List<NotificationDto>> GetNotification();
+    Task<IEnumerable<NotificationDto>> GetNotification();
     Task<List<MetricObject>> GetTutorsMetrics();
     Task<List<MetricObject>>  GetCoursesMetrics();
     Task<List<MetricObject>>  GetLearnersMetrics();

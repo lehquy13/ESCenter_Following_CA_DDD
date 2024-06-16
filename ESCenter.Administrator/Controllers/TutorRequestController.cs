@@ -1,5 +1,6 @@
 ﻿using ESCenter.Admin.Application.ServiceImpls.TutorRequests.Commands.MarkRequestAsDone;
 using ESCenter.Admin.Application.ServiceImpls.TutorRequests.Queries.GetAllTutorRequests;
+using ESCenter.Domain.Shared.Courses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,9 @@ public class TutorRequestController(ISender sender)
     : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index([FromQuery] RequestStatus type)
     {
-        var result = await sender.Send(new GetAllTutorRequestsQuery());
+        var result = await sender.Send(new GetAllTutorRequestsQuery(type));
 
         return View(result.Value);
     }

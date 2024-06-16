@@ -1,14 +1,12 @@
-﻿using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubject;
-using ESCenter.Client.Application.ServiceImpls.Tutors;
+﻿using ESCenter.Client.Application.ServiceImpls.Tutors;
 using ESCenter.Domain.Aggregates.Subjects;
+using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.Entities;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
-using ESCenter.Domain.Specifications.Subjects;
 using ESCenter.Domain.Specifications.Tutors;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
@@ -29,21 +27,22 @@ public class UpdateTutorInformationCommandHandler(
     public override async Task<Result> Handle(UpdateTutorInformationCommand command,
         CancellationToken cancellationToken)
     {
-        var tutor = await tutorRepository.GetAsync(new TutorByCustomerIdSpec(CustomerId.Create(currentUserService.UserId)), cancellationToken);
+        var tutor = await tutorRepository.GetAsync(
+            new TutorByCustomerIdSpec(CustomerId.Create(currentUserService.UserId)), cancellationToken);
 
         // Check if the tutor exist
         if (tutor is null)
         {
             return Result.Fail(UserError.NonExistTutorError);
         }
-        
-        tutor.UpdateBasicInformation(command.TutorBasicUpdateDto.University, command.TutorBasicUpdateDto.AcademicLevel);
+
+        tutor.UpdateBasicInformation(command.TutorBasicUpdateDto.University,
+            command.TutorBasicUpdateDto.AcademicLevel.ToEnum<AcademicLevel>());
 
         // Collect major ids
         var subjectListAboutToUpdate =
-            await subjectRepository.GetListAsync(
-                new SubjectListByIdsSpec(command.TutorBasicUpdateDto.MajorIds),
-                cancellationToken);
+            await subjectRepository.GetListByIdsAsync(command.TutorBasicUpdateDto.MajorIds.Select(SubjectId.Create)
+                , cancellationToken);
 
         var majorsToRemove = tutor.TutorMajors
             .Where(major => subjectListAboutToUpdate

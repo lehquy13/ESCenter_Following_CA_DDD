@@ -33,7 +33,6 @@ function callPostActionWithForm(formInput) {
             } else if (response.res === "deleted" || response.res === "updated") {
                 //$('#verticalCentered').modal('hide');
                 alertify.success(response.res + ' successfully');
-                location.reload();
             } else if (response.res === "modalUpdated") {
                 $('#largeModal').modal('hide');
                 alertify.success('updated successfully');

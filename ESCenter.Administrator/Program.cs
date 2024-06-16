@@ -2,6 +2,7 @@ using System.Net;
 using System.Security.Claims;
 using ESCenter.Administrator;
 using ESCenter.Administrator.Middlewares;
+using ESCenter.Persistence;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Serilog;
 
@@ -67,6 +68,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.AddInfrastructureMiddleware();
 
 app.Logger.LogInformation("LAUNCHING");
 

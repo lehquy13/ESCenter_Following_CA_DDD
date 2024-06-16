@@ -21,8 +21,8 @@ public class CreateUpdateUserProfileCommandHandler(
     IMapper mapper,
     ICustomerRepository customerRepository,
     IUserDomainService userDomainService,
-    IPublisher publisher)
-    : CommandHandlerBase<CreateUpdateUserProfileCommand>(unitOfWork, logger)
+    IPublisher publisher
+) : CommandHandlerBase<CreateUpdateUserProfileCommand>(unitOfWork, logger)
 {
     public override async Task<Result> Handle(CreateUpdateUserProfileCommand command,
         CancellationToken cancellationToken)
@@ -38,12 +38,9 @@ public class CreateUpdateUserProfileCommandHandler(
                 // Update user
                 mapper.Map(command.LearnerForCreateUpdateDto, user);
 
-                if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-                {
-                    return Result.Fail(UserAppServiceError.FailToUpdateUserErrorWhileSavingChanges);
-                }
-
-                return Result.Success();
+                return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0
+                    ? Result.Fail(UserAppServiceError.FailToUpdateUserErrorWhileSavingChanges)
+                    : Result.Success();
             }
 
             // Create new user
@@ -60,12 +57,12 @@ public class CreateUpdateUserProfileCommandHandler(
                 command.LearnerForCreateUpdateDto.Email,
                 command.LearnerForCreateUpdateDto.PhoneNumber,
                 Role.Learner, cancellationToken);
-            
+
             if (result.IsFailure)
             {
                 return result.Error;
             }
-            
+
             user = result.Value;
 
             if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)

@@ -19,11 +19,10 @@ public class GetTutorMajorsQueryHandler(
     IMapper mapper)
     : QueryHandlerBase<GetTutorMajorsQuery, List<SubjectDto>>(logger, mapper)
 {
-
     public override async Task<Result<List<SubjectDto>>> Handle(GetTutorMajorsQuery request,
         CancellationToken cancellationToken)
     {
-        var subjects = await subjectRepository.GetListAsync(cancellationToken);
+        var subjects = await subjectRepository.GetAllListAsync(cancellationToken);
 
         var subjectDtos = Mapper.Map<List<SubjectDto>>(subjects);
         return subjectDtos;

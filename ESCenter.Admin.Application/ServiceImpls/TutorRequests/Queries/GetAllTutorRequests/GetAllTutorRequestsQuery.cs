@@ -3,6 +3,7 @@ using ESCenter.Admin.Application.ServiceImpls.Tutors;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
+using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
@@ -11,7 +12,7 @@ using Matt.SharedKernel.Domain.Interfaces;
 
 namespace ESCenter.Admin.Application.ServiceImpls.TutorRequests.Queries.GetAllTutorRequests;
 
-public record GetAllTutorRequestsQuery() : IQueryRequest<List<TutorRequestForListDto>>;
+public record GetAllTutorRequestsQuery(RequestStatus Type) : IQueryRequest<List<TutorRequestForListDto>>;
 
 public class GetAllTutorRequestsQueryHandler(
     IAsyncQueryableExecutor asyncQueryableExecutor,
@@ -26,6 +27,7 @@ public class GetAllTutorRequestsQueryHandler(
     {
         var queryable =
             from req in tutorRequestRepository.GetAll()
+            where req.RequestStatus == request.Type
             join user in customerRepository.GetAll() on req.LearnerId equals user.Id
             orderby req.RequestStatus descending
             select new TutorRequestForListDto

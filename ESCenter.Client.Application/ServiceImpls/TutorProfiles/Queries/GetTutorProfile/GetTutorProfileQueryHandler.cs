@@ -37,7 +37,7 @@ public class GetTutorProfileQueryHandler(
             return Result.Fail(TutorProfileAppServiceError.NonExistTutorError);
         }
 
-        var subjects = await subjectRepository.GetListAsync(cancellationToken);
+        var subjects = await subjectRepository.GetAllListAsync(cancellationToken);
 
         var tutorProfile = new TutorForProfileDto()
         {

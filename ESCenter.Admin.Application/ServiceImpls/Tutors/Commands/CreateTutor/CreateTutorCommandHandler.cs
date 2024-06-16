@@ -7,7 +7,6 @@ using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
-using MediatR;
 
 namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Commands.CreateTutor;
 
@@ -15,8 +14,7 @@ public class CreateTutorCommandHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IIdentityService identityService,
-    ITutorDomainService tutorDomainService,
-    IPublisher publisher)
+    ITutorDomainService tutorDomainService)
     : CommandHandlerBase<CreateTutorCommand>(unitOfWork, logger)
 {
     public override async Task<Result> Handle(CreateTutorCommand command, CancellationToken cancellationToken)

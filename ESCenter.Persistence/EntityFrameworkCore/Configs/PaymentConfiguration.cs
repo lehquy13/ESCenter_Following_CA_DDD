@@ -57,6 +57,7 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
             .IsRequired();
 
         builder.Property(x => x.Amount)
+            .HasPrecision(18,2)
             .IsRequired();
     }
 }

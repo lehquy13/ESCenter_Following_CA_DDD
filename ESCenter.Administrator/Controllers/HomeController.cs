@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
+using ESCenter.Admin.Application.ServiceImpls.DashBoards;
 using ESCenter.Administrator.Models;
 using ESCenter.Administrator.Utilities;
-using ESCenter.Admin.Application.Contracts.Charts;
-using ESCenter.Admin.Application.ServiceImpls.DashBoards;
-using ESCenter.Admin.Application.ServiceImpls.TutorRequests.Queries.GetAllTutorRequests;
 using ESCenter.Domain.Shared.Courses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +13,6 @@ namespace ESCenter.Administrator.Controllers;
 [Route("admin/[controller]")]
 [Authorize(Policy = "RequireAdministratorRole")]
 public class HomeController(
-    ISender sender,
     ILogger<HomeController> logger,
     IDashboardServices dashboardServices) : Controller
 {
@@ -41,8 +38,6 @@ public class HomeController(
         var donutChartData = await GetDonutChart(ByTime.Month);
         var areaListData = await AreaChartDataCalculate(ByTime.Month);
         var lineChartData = await GetLineChart(ByTime.Month);
-
-        var notificationDtos = await dashboardServices.GetNotification();
 
         return View(
             new DashBoardViewModel
@@ -85,7 +80,7 @@ public class HomeController(
                     IncomingSeries = areaListData.ElementAt(3),
                     ByTime = ByTime.Week
                 },
-                NotificationDtos = notificationDtos,
+                NotificationDtos = await dashboardServices.GetNotification(),
                 TutorRequests = await dashboardServices.GetLatestTutorRequests()
             }
         );

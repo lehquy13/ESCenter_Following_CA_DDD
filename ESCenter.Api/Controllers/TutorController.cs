@@ -22,6 +22,14 @@ public class TutorController(
         var tutorDtos = await mediator.Send(new GetTutorsQuery(tutorParams));
         return Ok(tutorDtos);
     }
+    
+    [HttpGet]
+    [Route("by-ids")]
+    public async Task<IActionResult> GetTutorsByIds([FromQuery] List<Guid> tutorIds)
+    {
+        var tutorDtos = await mediator.Send(new GetTutorsByIdsQuery(tutorIds));
+        return Ok(tutorDtos);
+    }
 
     [HttpGet]
     [Route("{id}")]

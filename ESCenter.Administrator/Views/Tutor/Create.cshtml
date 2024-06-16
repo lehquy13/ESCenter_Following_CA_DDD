@@ -8,23 +8,20 @@
 <h1>Create</h1>
 
 <hr/>
-<div class="card">
-    <div class="card-body">
 
-        <form class="row g-3" asp-action="Create" asp-controller="Tutor">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form class="row g-3" asp-action="Create" asp-controller="Tutor">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <partial name="_UserInfo" model="Model.LearnerForCreateUpdateDto" view-data="ViewData"/>
-            <partial name="_TutorInfo" model="Model.TutorProfileCreateDto"/>
-            <!-- ----------------------------------- -->
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" asp-action="Index" class="btn btn-secondary">Cancel</button>
-            </div>
-            @Html.AntiForgeryToken()
-        </form><!-- End Multi Columns Form -->
+    <partial name="_UserInfo" model="Model.LearnerForCreateUpdateDto" view-data="ViewData"/>
+
+    <partial name="_TutorInfo" model="Model.TutorProfileCreateDto"/>
+    <!-- ----------------------------------- -->
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" asp-action="Index" class="btn btn-secondary">Cancel</button>
     </div>
-</div>
+    @Html.AntiForgeryToken()
+</form><!-- End Multi Columns Form -->
 
 @section Scripts {
     @{

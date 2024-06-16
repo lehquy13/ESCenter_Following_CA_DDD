@@ -15,7 +15,6 @@ namespace ESCenter.Admin.Application.ServiceImpls.Staffs.Commands.CreateStaff;
 public class CreateUpdateStaffProfileCommandHandler(
     ICustomerRepository customerRepository,
     IStaffDomainService staffDomainService,
-    IUserDomainService userDomainService,
     IUnitOfWork unitOfWork,
     IAppLogger<CreateUpdateStaffProfileCommandHandler> logger,
     IMapper mapper)

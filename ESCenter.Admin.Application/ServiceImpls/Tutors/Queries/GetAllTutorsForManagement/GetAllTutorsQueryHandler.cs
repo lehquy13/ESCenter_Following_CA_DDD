@@ -14,7 +14,6 @@ namespace ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetAllTutorsFor
 public class GetAllTutorsQueryHandler(
     ITutorRepository tutorRepository,
     ICustomerRepository customerRepository,
-    ITutorRequestRepository tutorRequestRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetLearnersQueryHandler> logger,
     IMapper mapper)

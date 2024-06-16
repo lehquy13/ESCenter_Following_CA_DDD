@@ -105,6 +105,7 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
             navigationBuilder =>
             {
                 navigationBuilder.Property(chargeFee => chargeFee.Amount)
+                    .HasPrecision(18,2)
                     .HasColumnName("ChargeFee");
                 navigationBuilder.Property(chargeFee => chargeFee.Currency)
                     .HasColumnName(nameof(Course.ChargeFee.Currency));
@@ -114,6 +115,7 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
             navigationBuilder =>
             {
                 navigationBuilder.Property(sectionFee => sectionFee.Amount)
+                    .HasPrecision(18,2)
                     .HasColumnName("SectionFee");
                 navigationBuilder.Property(sectionFee => sectionFee.Currency)
                     .HasColumnName(nameof(Course.SectionFee.Currency));

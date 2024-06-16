@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-using System.Text;
+﻿using System.Text;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
-using ESCenter.Domain.Shared.Courses;
 using ESCenter.Infrastructure.ServiceImpls.AppLogger;
 using ESCenter.Infrastructure.ServiceImpls.Authentication;
 using ESCenter.Infrastructure.ServiceImpls.Cloudinary;
@@ -14,7 +12,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;

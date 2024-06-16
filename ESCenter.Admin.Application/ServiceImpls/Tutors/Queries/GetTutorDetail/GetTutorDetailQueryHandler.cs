@@ -37,7 +37,7 @@ public class GetTutorDetailQueryHandler(
         var queryResult =
             await asyncQueryableExecutor.FirstOrDefaultAsync(tutorDetailAsQueryable, false, cancellationToken);
 
-        var subjects = await subjectRepository.GetListAsync(cancellationToken);
+        var subjects = await subjectRepository.GetAllListAsync(cancellationToken);
 
         if (queryResult is null)
         {

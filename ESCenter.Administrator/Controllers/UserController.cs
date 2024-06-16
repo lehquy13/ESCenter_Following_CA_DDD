@@ -1,9 +1,9 @@
-﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Admin.Application.Contracts.Users.Learners;
+﻿using ESCenter.Admin.Application.Contracts.Users.Learners;
 using ESCenter.Admin.Application.ServiceImpls.Customers.Commands.CreateUpdateUserProfile;
 using ESCenter.Admin.Application.ServiceImpls.Customers.Commands.DeleteUser;
 using ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearnerDetail;
 using ESCenter.Admin.Application.ServiceImpls.Customers.Queries.GetLearners;
+using ESCenter.Administrator.Utilities;
 using ESCenter.Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -60,33 +60,16 @@ public class UserController(ILogger<UserController> logger, ISender sender) : Co
             return View("Edit", userDto);
         }
 
-        try
+        var result = await sender.Send(new CreateUpdateUserProfileCommand(userDto));
+
+        if (!result.IsSuccess)
         {
-            var result = await sender.Send(new CreateUpdateUserProfileCommand(userDto));
-
-            if (!result.IsSuccess)
-            {
-                logger.LogError("Create user failed!");
-                return RedirectToAction("Error", "Home");
-            }
-
-            PackStaticListToView();
-
-            return Helper.RenderRazorViewToString(
-                this,
-                "Edit",
-                userDto
-            );
-        }
-        catch (Exception ex)
-        {
-            //Log the error (uncomment ex variable name and write a log.)
-            ModelState.AddModelError("", "Unable to save changes. " +
-                                         "Try again, and if the problem persists, " + ex.Message +
-                                         "see your system administrator.");
+            return Helper.FailResult();
         }
 
-        return View("Edit", userDto);
+        PackStaticListToView();
+
+        return Helper.UpdatedResult();
     }
 
     [HttpGet("create")]
@@ -117,6 +100,7 @@ public class UserController(ILogger<UserController> logger, ISender sender) : Co
         PackStaticListToView();
 
         var result = await sender.Send(new GetLearnerDetail(id));
+        
         if (result.IsFailure)
         {
             return RedirectToAction("Error", "Home");
@@ -125,7 +109,7 @@ public class UserController(ILogger<UserController> logger, ISender sender) : Co
         return Helper.RenderRazorViewToString(this, "Delete", result.Value);
     }
 
-    [HttpPost("{id}/delete-confirm")]
+    [HttpPost("{id:guid}/delete-confirm")]
     public async Task<IActionResult> DeleteConfirm(Guid id)
     {
         var result = await sender.Send(new DeleteUserCommand(id));

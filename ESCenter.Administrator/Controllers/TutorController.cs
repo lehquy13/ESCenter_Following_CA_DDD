@@ -1,5 +1,4 @@
-﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Admin.Application.Contracts.Users.Learners;
+﻿using ESCenter.Admin.Application.Contracts.Users.Learners;
 using ESCenter.Admin.Application.Contracts.Users.Tutors;
 using ESCenter.Admin.Application.ServiceImpls.Customers.Commands.CreateUpdateUserProfile;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
@@ -13,6 +12,7 @@ using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetAllTutorsForMana
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorChangeVerifications;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorDetail;
 using ESCenter.Admin.Application.ServiceImpls.Tutors.Queries.GetTutorMajors;
+using ESCenter.Administrator.Utilities;
 using ESCenter.Domain.Shared;
 using MapsterMapper;
 using MediatR;
@@ -33,7 +33,6 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
     }
 
-    #region basic Tutor management
 
     [HttpGet]
     [Route("")]
@@ -69,102 +68,46 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
         [FromBody] LearnerForCreateUpdateDto learnerForCreateUpdateDto)
     {
         if (!ModelState.IsValid)
-            return Helper.RenderRazorViewToString(
-                this,
-                "Edit",
-                learnerForCreateUpdateDto,
-                true
-            );
-        try
+            return Helper.FailResult(ModelState.Values
+                .SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                .FirstOrDefault() ?? "");
+
+        var result = await sender.Send(new CreateUpdateUserProfileCommand(learnerForCreateUpdateDto));
+
+        if (!result.IsSuccess)
         {
-            var result = await sender.Send(new CreateUpdateUserProfileCommand(learnerForCreateUpdateDto));
-
-            if (!result.IsSuccess)
-            {
-                // TODO: better display error message to user
-                return Helper.RenderRazorViewToString(
-                    this,
-                    "Edit",
-                    learnerForCreateUpdateDto,
-                    true
-                );
-            }
-
-            PackStaticListToView();
-
-            // TODO: better display success message to user, the model doesn't fit the view
-            return Helper.RenderRazorViewToString(
-                this,
-                "Edit",
-                learnerForCreateUpdateDto
-            );
-        }
-        catch (Exception ex)
-        {
-            //Log the error (uncomment ex variable name and write a log.)
-            ModelState.AddModelError("", "Unable to save changes. " +
-                                         "Try again, and if the problem persists, " + ex.Message +
-                                         "see your system administrator.");
+            return Helper.FailResult(result.DisplayMessage);
         }
 
-        // TODO: better display success message to user, the model doesn't fit the view
-        return Helper.RenderRazorViewToString(
-            this,
-            "Edit",
-            learnerForCreateUpdateDto,
-            true
-        );
+        PackStaticListToView();
+
+        return Helper.UpdatedResult();
     }
 
     [HttpPost("{id}/edit-tutor-information")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditTutorInformation(
-        [FromRoute] Guid id,
-        TutorBasicUpdateDto tutorBasicUpdateDto)
+    public async Task<IActionResult> EditTutorInformation([FromRoute] Guid id, TutorBasicUpdateDto tutorBasicUpdateDto)
     {
         if (!ModelState.IsValid)
+            return Helper.FailResult(ModelState.Values
+                .SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                .FirstOrDefault() ?? "");
+
+        var result = await sender.Send(new UpdateTutorInformationCommand(tutorBasicUpdateDto));
+
+        if (!result.IsSuccess)
+        {
             return Helper.RenderRazorViewToString(
                 this,
                 "Edit",
                 "",
                 true
             );
-        try
-        {
-            var result = await sender.Send(new UpdateTutorInformationCommand(tutorBasicUpdateDto));
-
-            if (!result.IsSuccess)
-            {
-                return Helper.RenderRazorViewToString(
-                    this,
-                    "Edit",
-                    "",
-                    true
-                );
-            }
-
-            PackStaticListToView();
-
-            return Helper.RenderRazorViewToString(
-                this,
-                "Edit",
-                ""
-            );
-        }
-        catch (Exception ex)
-        {
-            //Log the error (uncomment ex variable name and write a log.)
-            ModelState.AddModelError("", "Unable to save changes. " +
-                                         "Try again, and if the problem persists, " + ex.Message +
-                                         "see your system administrator.");
         }
 
-        return Helper.RenderRazorViewToString(
-            this,
-            "Edit",
-            "",
-            true
-        );
+        PackStaticListToView();
+
+        return Helper.UpdatedResult();
     }
 
     [HttpGet("create")]
@@ -176,17 +119,17 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
 
     [HttpPost("create")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(TutorProfileCreateDto tutorProfileCreateDto, LearnerForCreateUpdateDto learnerForCreateUpdateDto)
+    public async Task<IActionResult> Create(TutorProfileCreateDto tutorProfileCreateDto,
+        LearnerForCreateUpdateDto learnerForCreateUpdateDto)
     {
         var tutorCreateDto = new TutorCreateDto
         {
             LearnerForCreateUpdateDto = learnerForCreateUpdateDto,
             TutorProfileCreateDto = tutorProfileCreateDto
         };
-        
+
         if (!ModelState.IsValid)
         {
-            var createViewModel = mapper.Map<TutorUpdateDto>(tutorCreateDto);
             return View("Create", new TutorCreateDto());
         }
 
@@ -212,8 +155,6 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
 
         return RedirectToAction("Error", "Home");
     }
-
-    #endregion
 
     [HttpGet("subjects/{id}")]
     public async Task<IActionResult> Subjects(Guid id)

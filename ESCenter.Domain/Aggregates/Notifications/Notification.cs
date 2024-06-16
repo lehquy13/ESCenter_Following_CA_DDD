@@ -19,7 +19,9 @@ public class Notification : AuditedAggregateRoot<int>
     public static Notification Create(
         string message,
         string objectId,
-        NotificationEnum notificationType)
+        NotificationEnum notificationType,
+        Guid? from = null,
+        Guid? to = null)
     {
         return new Notification()
         {

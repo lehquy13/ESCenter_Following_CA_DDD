@@ -28,7 +28,7 @@ public class UpsertSubjectCommandHandler(
         {
             // Insert
             var subject = mapper.Map<Subject>(request.SubjectDto);
-            await subjectRepository.InsertAsync(subject, cancellationToken);
+            await subjectRepository.InsertAsync(subject);
         }
 
         if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)

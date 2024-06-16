@@ -34,7 +34,8 @@ internal class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.HasIndex(r => r.Email)
             .IsUnique();
 
-        builder.Property(r => r.PhoneNumber);
+        builder.HasIndex(r => r.PhoneNumber)
+            .IsUnique();
 
         builder.Property(r => r.Gender)
             .IsRequired();
@@ -47,7 +48,7 @@ internal class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 
         builder.Property(r => r.Description)
             .IsRequired();
-        
+
         builder.Property(r => r.Role)
             .IsRequired();
 

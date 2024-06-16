@@ -24,7 +24,7 @@ internal class DiscoveryConfiguration : IEntityTypeConfiguration<Discovery>
             );
     }
 
-    private void ConfigureDiscoverySubject(EntityTypeBuilder<Discovery> builder)
+    private static void ConfigureDiscoverySubject(EntityTypeBuilder<Discovery> builder)
     {
         builder.OwnsMany(o => o.DiscoverySubjects, ib =>
         {

@@ -25,6 +25,15 @@ public class CourseController(
         var courseResult = await mediator.Send(new GetCoursesQuery(courseParams));
         return Ok(courseResult);
     }
+    
+        
+    [HttpGet]
+    [Route("by-ids")]
+    public async Task<IActionResult> GetCoursesByIds([FromQuery] List<Guid> courseIds)
+    {
+        var courses = await mediator.Send(new GetCoursesByIdsQuery(courseIds));
+        return Ok(courses);
+    }
 
     [HttpGet]
     [Route("{id:guid}")]

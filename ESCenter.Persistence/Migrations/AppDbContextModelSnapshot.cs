@@ -698,7 +698,7 @@ namespace ESCenter.Persistence.Migrations
                         .HasForeignKey("TutorId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "ChargeFee", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Course.ChargeFee#ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "ChargeFee", b1 =>
                         {
                             b1.Property<Guid>("CourseId")
                                 .HasColumnType("uniqueidentifier");
@@ -715,36 +715,13 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasKey("CourseId");
 
-                            b1.ToTable("Course");
+                            b1.ToTable("Course", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CourseId");
                         });
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "SectionFee", b1 =>
-                        {
-                            b1.Property<Guid>("CourseId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("decimal(18,2)")
-                                .HasColumnName("SectionFee");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .ValueGeneratedOnUpdateSometimes()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("Currency");
-
-                            b1.HasKey("CourseId");
-
-                            b1.ToTable("Course");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CourseId");
-                        });
-
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Courses.Entities.CourseRequest", "CourseRequests", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Courses.Course.CourseRequests#ESCenter.Domain.Aggregates.Courses.Entities.CourseRequest", "CourseRequests", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -794,7 +771,7 @@ namespace ESCenter.Persistence.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.ValueObjects.Review", "Review", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Course.Review#ESCenter.Domain.Aggregates.Courses.ValueObjects.Review", "Review", b1 =>
                         {
                             b1.Property<Guid>("CourseId")
                                 .HasColumnType("uniqueidentifier");
@@ -826,7 +803,30 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasKey("CourseId");
 
-                            b1.ToTable("Course");
+                            b1.ToTable("Course", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("CourseId");
+                        });
+
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Courses.Course.SectionFee#ESCenter.Domain.Aggregates.Courses.ValueObjects.Fee", "SectionFee", b1 =>
+                        {
+                            b1.Property<Guid>("CourseId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("decimal(18,2)")
+                                .HasColumnName("SectionFee");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Currency");
+
+                            b1.HasKey("CourseId");
+
+                            b1.ToTable("Course", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CourseId");
@@ -845,7 +845,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Discoveries.Discovery", b =>
                 {
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Discoveries.Entities.DiscoverySubject", "DiscoverySubjects", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Discoveries.Discovery.DiscoverySubjects#ESCenter.Domain.Aggregates.Discoveries.Entities.DiscoverySubject", "DiscoverySubjects", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
@@ -937,7 +937,7 @@ namespace ESCenter.Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest", "ChangeVerificationRequest", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Tutors.Tutor.ChangeVerificationRequest#ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest", "ChangeVerificationRequest", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -972,7 +972,7 @@ namespace ESCenter.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("TutorId");
 
-                            b1.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequestDetail", "ChangeVerificationRequestDetails", b2 =>
+                            b1.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Tutor.ChangeVerificationRequest#ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequest.ChangeVerificationRequestDetails#ESCenter.Domain.Aggregates.Tutors.Entities.ChangeVerificationRequestDetail", "ChangeVerificationRequestDetails", b2 =>
                                 {
                                     b2.Property<Guid>("Id")
                                         .HasColumnType("uniqueidentifier")
@@ -998,7 +998,7 @@ namespace ESCenter.Persistence.Migrations
                             b1.Navigation("ChangeVerificationRequestDetails");
                         });
 
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.TutorMajor", "TutorMajors", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Tutor.TutorMajors#ESCenter.Domain.Aggregates.Tutors.Entities.TutorMajor", "TutorMajors", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -1033,7 +1033,7 @@ namespace ESCenter.Persistence.Migrations
                                 .HasForeignKey("TutorId");
                         });
 
-                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Entities.Verification", "Verifications", b1 =>
+                    b.OwnsMany("ESCenter.Domain.Aggregates.Tutors.Tutor.Verifications#ESCenter.Domain.Aggregates.Tutors.Entities.Verification", "Verifications", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier")
@@ -1065,7 +1065,7 @@ namespace ESCenter.Persistence.Migrations
 
             modelBuilder.Entity("ESCenter.Domain.Aggregates.Users.Customer", b =>
                 {
-                    b.OwnsOne("ESCenter.Domain.Aggregates.Users.ValueObjects.Address", "Address", b1 =>
+                    b.OwnsOne("ESCenter.Domain.Aggregates.Users.Customer.Address#ESCenter.Domain.Aggregates.Users.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
                                 .HasColumnType("uniqueidentifier");
@@ -1082,7 +1082,7 @@ namespace ESCenter.Persistence.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("Customer");
+                            b1.ToTable("Customer", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
