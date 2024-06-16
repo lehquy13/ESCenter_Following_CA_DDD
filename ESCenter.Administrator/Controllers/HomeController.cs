@@ -273,7 +273,7 @@ public class HomeController(
     private async Task<List<string>> AreaChartDataCalculate(string byTime = "")
     {
         logger.LogDebug("filterPieChart's running! On getting DonutChartData...");
-        var areaChartData = await dashboardServices.GetAreaChartData(byTime);
+        var areaChartData = await dashboardServices.CalculateRevenuesChart(byTime);
         logger.LogDebug("Got donutChartData! Serializing and return");
 
         var check1 = JsonConvert.SerializeObject(areaChartData.Dates);

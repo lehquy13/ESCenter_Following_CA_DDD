@@ -1,10 +1,13 @@
-﻿@model ESCenter.Admin.Application.Contracts.Users.Learners.LearnerForCreateUpdateDto
+﻿@using ESCenter.Domain.Shared
+@model ESCenter.Admin.Application.Contracts.Users.Learners.LearnerForCreateUpdateDto
 
 @{
     ViewData["Title"] = "Create";
-    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
-    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
+    var roles = new List<string>
+    {
+        "Learner"
+    };
+    var genders = EnumProvider.Genders;
 }
 
 
@@ -36,11 +39,11 @@
             <div class="col-md-4">
                 <label asp-for="Gender" class="form-label">Gender</label>
                 <select asp-for="Gender" class="form-select">
-                    <option selected>@Model.Gender.ToString()</option>
+                    <option selected>@Model.Gender</option>
 
                     @foreach (string i in genders)
                     {
-                        @if (i != Model.Gender.ToString())
+                        @if (i != Model.Gender)
                         {
                             <option> @i </option>
                         }
@@ -51,11 +54,11 @@
             <div class="col-md-4">
                 <label asp-for="Role" class="form-label">Role</label>
                 <select asp-for="Role" class="form-select">
-                    <option selected>@Model.Role.ToString()</option>
+                    <option selected>@Model.Role</option>
 
-                    @foreach (string i in roles)
+                    @foreach (var i in roles)
                     {
-                        @if (i != Model.Role.ToString())
+                        @if (i != Model.Role)
                         {
                             <option> @i </option>
                         }

@@ -34,6 +34,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     public string LearnerName { get; private set; } = string.Empty;
     public int NumberOfLearner { get; private set; } = 1;
     public string ContactNumber { get; private set; } = string.Empty;
+    public string Note { get; private set; } = string.Empty;
     public CustomerId? LearnerId { get; private set; }
 
     public IReadOnlyCollection<CourseRequest> CourseRequests => _courseRequests.AsReadOnly();
@@ -289,12 +290,27 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         Status = Status.OnProgressing;
         TutorId = tutorId;
 
-        // TODO: Add domain event for this action
         DomainEvents.Add(new TutorAssignedDomainEvent(this, tutorId));
+
+        return Result.Success();
+    }
+
+    public Result RefundCourse(string commandNote)
+    {
+        if (Status != Status.Confirmed)
+        {
+            return Result.Fail(CourseDomainError.CourseUnavailable);
+        }
+
+        Note = commandNote;
+        Status = Status.CanceledWithRefund;
+        
+        DomainEvents.Add(new CanceledAndRefundedCourseEvent(this));
 
         return Result.Success();
     }
 }
 
-// TODO: Add domain event for this action
+public record CanceledAndRefundedCourseEvent(Course Course) : IDomainEvent;
+
 public record CourseConfirmedDomainEvent(Course Course) : IDomainEvent;

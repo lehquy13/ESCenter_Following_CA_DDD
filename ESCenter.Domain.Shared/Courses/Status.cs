@@ -8,5 +8,6 @@ public enum Status
     OnProgressing = 3,
     Available = 4,
     UnverifiedPayment = 5,
+    CanceledWithRefund = 6,
     None = 7
 }

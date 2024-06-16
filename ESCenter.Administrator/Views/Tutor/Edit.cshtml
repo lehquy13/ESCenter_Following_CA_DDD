@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Edit";
 
-    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
     List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
     List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
     bool firstItem = true;
@@ -44,11 +43,11 @@
             <div class="col-md-4">
                 <label asp-for="Gender" class="form-label">Gender</label>
                 <select asp-for="Gender" class="form-select">
-                    <option selected>@Model.Gender.ToString()</option>
+                    <option selected>@Model.Gender</option>
 
                     @foreach (string i in genders)
                     {
-                        @if (i != Model.Gender.ToString())
+                        @if (i != Model.Gender)
                         {
                             <option> @i </option>
                         }
@@ -59,8 +58,7 @@
             <div class="col-md-4">
                 <label asp-for="Role" class="form-label">Role</label>
                 <select asp-for="Role" class="form-select">
-                    <option selected>@Model.Role.ToString()</option>
-
+                    <option selected>@Model.Role</option>
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>

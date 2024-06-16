@@ -29,7 +29,7 @@ public class CourseController(
         
     [HttpGet]
     [Route("by-ids")]
-    public async Task<IActionResult> GetCoursesByIds([FromQuery] List<Guid> courseIds)
+    public async Task<IActionResult> GetCoursesByIds([FromBody] List<Guid> courseIds)
     {
         var courses = await mediator.Send(new GetCoursesByIdsQuery(courseIds));
         return Ok(courses);

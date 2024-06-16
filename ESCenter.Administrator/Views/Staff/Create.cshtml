@@ -3,8 +3,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
-    List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
+    var genders = ViewData["Genders"] as List<string> ?? new List<string>();
 }
 
 
@@ -51,8 +50,8 @@
             <div class="col-md-4">
                 <label asp-for="Role" class="form-label">Role</label>
                 <select asp-for="Role" class="form-select">
-                    <option selected>@Model.Role.ToString()</option>
-                            <option> @Role.Admin.ToString() </option>
+                    <option selected>@Model.Role</option>
+                    <option> @Role.Admin.ToString() </option>
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>

@@ -6,7 +6,7 @@ namespace ESCenter.Admin.Application.ServiceImpls.DashBoards;
 
 public interface IDashboardServices
 {
-    Task<AreaChartData> GetAreaChartData(string byTime = "");
+    Task<AreaChartData> CalculateRevenuesChart(string byTime = "");
     Task<DonutChartData> GetDonutChartData(string byTime = "");
     Task<LineChartData> GetLineChartData(string byTime = "");
     Task<IEnumerable<NotificationDto>> GetNotification();

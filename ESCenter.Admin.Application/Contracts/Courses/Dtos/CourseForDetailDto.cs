@@ -58,6 +58,7 @@ public class CourseForDetailDto
     public List<CourseRequestListForAdminDto> CourseRequestListForAdminDtos = new();
     public string? ReviewDetail { get; set; } = string.Empty;
     public int Rate { get; set; } = 0;
+    public string Note { get; set; } = string.Empty;
 }
 
 public class CourseRequestListForAdminDto : Entity<Guid>
@@ -92,6 +93,7 @@ public class CourseForDetailDtoMappingConfig : IRegister
             .Map(des => des.SubjectId, src => src.Item2.Id.Value)
             .Map(des => des.Address, src => src.Item1.Address)
             .Map(des => des.Description, src => src.Item1.Description)
+            .Map(des => des.Note, src => src.Item1.Note)
             .Map(des => des.ContactNumber, src => src.Item1.ContactNumber)
             .Map(des => des.NumberOfLearner, src => src.Item1.NumberOfLearner)
             //.Map(des => des.CourseRequestListForAdminDtos, src => src.Item1.CourseRequests)

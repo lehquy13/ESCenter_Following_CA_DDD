@@ -247,4 +247,12 @@ public class CourseController(ISender sender) : Controller
 
         return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
     }
+
+    [HttpGet("{courseId:guid}/cancel-course-with-refund")]
+    public async Task<IActionResult> CancelWithRefund(CancelCourseWithRefundCommand command)
+    {
+        var result = await sender.Send(command);
+
+        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
+    }
 }

@@ -25,7 +25,7 @@ public class TutorController(
     
     [HttpGet]
     [Route("by-ids")]
-    public async Task<IActionResult> GetTutorsByIds([FromQuery] List<Guid> tutorIds)
+    public async Task<IActionResult> GetTutorsByIds([FromBody] List<Guid> tutorIds)
     {
         var tutorDtos = await mediator.Send(new GetTutorsByIdsQuery(tutorIds));
         return Ok(tutorDtos);

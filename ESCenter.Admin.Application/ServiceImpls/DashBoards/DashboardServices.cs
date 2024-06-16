@@ -30,9 +30,8 @@ internal class DashboardServices(
     IAppLogger<DashboardServices> logger)
     : BaseAppService<DashboardServices>(mapper, unitOfWork, logger), IDashboardServices
 {
-    public async Task<AreaChartData> GetAreaChartData(string byTime = "")
+    public async Task<AreaChartData> CalculateRevenuesChart(string byTime = "")
     {
-        // Create a dateListRange by the query.ByTime
         List<int> dates = [];
 
         var startDay = DateTime.Today.Subtract(TimeSpan.FromDays(14));
@@ -55,21 +54,21 @@ internal class DashboardServices(
 
         var allClasses = await asyncQueryableExecutor.ToListAsync(allClassesQuery, false);
 
-        var confirmedClasses = dates.GroupJoin(
-            allClasses
-                .Where(x => x.CreationTime >= startDay && x.Status == Status.Confirmed)
-                .GroupBy(x => x.CreationTime.Day), // Group by day of time range, then merge with dates
-            d => d,
-            c => c.Key,
-            (d, c) => new
-            {
-                dates = d,
-                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
-            });
+        var confirmedClasses =
+            dates.GroupJoin(allClasses
+                    .Where(x => x.CreationTime >= startDay && x.Status == Status.Confirmed)
+                    .GroupBy(x => x.CreationTime.Day), // Group by day of time range, then merge with dates
+                d => d,
+                c => c.Key,
+                (d, c) => new
+                {
+                    dates = d,
+                    sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
+                });
 
         var canceledClasses = dates.GroupJoin(
             allClasses
-                .Where(x => x.CreationTime >= startDay && x.Status == Status.Canceled)
+                .Where(x => x.CreationTime >= startDay && x.Status == Status.CanceledWithRefund)
                 .GroupBy(x => x.CreationTime.Day),
             d => d,
             c => c.Key,
@@ -78,6 +77,7 @@ internal class DashboardServices(
                 dates = d,
                 sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
             });
+        
         var onPurchasingClasses = dates.GroupJoin(
             allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.OnProgressing)
@@ -90,49 +90,38 @@ internal class DashboardServices(
                 sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
             });
 
-
         var resultInts = confirmedClasses
             .Select(x => x.sum)
             .ToList();
 
         if (resultInts.Count <= 0)
-        {
             resultInts.Add(1);
-        }
 
         var resultInts1 = canceledClasses
             .Select(x => x.sum)
             .ToList();
 
         if (resultInts1.Count <= 0)
-        {
             resultInts1.Add(1);
-        }
 
         var resultInts2 = onPurchasingClasses
             .Select(x => x.sum)
             .ToList();
 
         if (resultInts2.Count <= 0)
-        {
             resultInts2.Add(1);
-        }
 
-        var resultStrings = dates
-            .Select(x => x.ToString()).ToList();
+        var dateRange = dates.Select(x => x.ToString()).ToList();
 
-        if (resultStrings.Count <= 0)
-        {
-            resultStrings.Add("None");
-        }
-
+        if (dateRange.Count <= 0)
+            dateRange.Add("None");
 
         return new AreaChartData
         (
             new AreaData("Total Revenues", resultInts),
             new AreaData("Charged", resultInts2),
             new AreaData("Refunded", resultInts1),
-            resultStrings
+            dateRange
         );
     }
 

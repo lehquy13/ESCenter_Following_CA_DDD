@@ -69,6 +69,18 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
 
         return Result.Success();
     }
+
+    public Result Refund()
+    {
+        if (PaymentStatus != PaymentStatus.Completed)
+        {
+            return Result.Fail("Payment not completed");
+        }
+
+        PaymentStatus = PaymentStatus.Refunded;
+
+        return Result.Success();
+    }
 }
 
 // TODO: add domain event handler
@@ -79,5 +91,6 @@ public enum PaymentStatus
     Pending,
     Completed,
     Canceled,
-    UnverifiedPayment
+    UnverifiedPayment,
+    Refunded
 }
