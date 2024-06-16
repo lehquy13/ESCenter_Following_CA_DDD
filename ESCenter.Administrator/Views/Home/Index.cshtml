@@ -152,89 +152,16 @@
 
 </div><!-- End Students Card -->
 <!-- Reports -->
+
 <div class="col-12">
-    <div class="card">
-
-        <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown">
-                <i class="bi bi-three-dots"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                </li>
-                <li>
-                    <a class="dropdown-item"
-                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = ByTime.Week })')">
-                        This Week
-                    </a>
-                </li>
-                <li>
-
-                    <a class="dropdown-item"
-                       href="javascript:ChartReload('@Url.Action("FilterLineChart", "Home", new { ByTime = ByTime.Month })')">
-                        This Month
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <div class="card" id="lineChartCard">
 
         <div class="card-body">
-            <h5 class="card-title">Reports </h5>
-
-            <!-- Line Chart -->
-            <div id="reportsChart"></div>
-
-            <script>
-                
-                document.addEventListener("DOMContentLoaded", () => {
-                    window.reportsChartStore = new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: @Html.Raw(@Model.ChartWeekData),
-                        id: 'reportsChart',
-                        chart: {
-                            height: 350,
-                            type: 'area',
-                            toolbar: {
-                                show: false
-                            },
-                        },
-                        markers: {
-                            size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                            type: "gradient",
-                            gradient: {
-                                shadeIntensity: 1,
-                                opacityFrom: 0.3,
-                                opacityTo: 0.4,
-                                stops: [0, 90, 100]
-                            }
-                        },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        stroke: {
-                            curve: 'smooth',
-                            width: 2
-                        },
-                        xaxis: @Html.Raw(Model.Xaxis),
-                        tooltip: {
-                            x: {
-                                format: 'dd/MM/yy HH:mm'
-                            },
-                        }
-                    });
-                    reportsChartStore.render();
-                });
-                            
-                            </script>
-            <!-- End Line Chart -->
-
+           <partial name="_LineChart" model="new LineChartViewModel(Model.ChartWeekData, Model.Xaxis)"/>
         </div>
 
-    </div>
-</div><!-- End Reports -->
+    </div></div>
+
 <!-- Recent Classes -->
 <div class="col-12">
     <div class="card recent-sales overflow-auto">
@@ -444,7 +371,7 @@
 
                     <!-- End activity item-->
                 }
-                
+
             </div>
         </div>
     </div><!-- End Recent Activity -->

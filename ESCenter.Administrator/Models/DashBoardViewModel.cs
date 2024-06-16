@@ -27,6 +27,8 @@ public class PieChartViewModel
     public string ByTime = Domain.Shared.Courses.ByTime.Today;
 }
 
+public record LineChartViewModel(object? ChartWeekData, object? Xaxis);
+
 public class AreaChartViewModel
 {
     public string TotalRevenue = "Total Revenues";

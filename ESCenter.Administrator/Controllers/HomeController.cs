@@ -92,13 +92,9 @@ public class HomeController(
     {
         var a = await GetLineChart(byTime);
 
-        return Json(new
-        {
-            ChartWeekData = a.Item1,
-            DatesWeekData = a.Item1,
-        });
+        return Helper.RenderRazorViewToString(this, "_LineChart",
+            new LineChartViewModel(a.Item1, a.Item2));
     }
-
 
     [HttpGet]
     [Route("filter-pie-chart/{byTime?}")]
@@ -109,7 +105,6 @@ public class HomeController(
         return Helper.RenderRazorViewToString(this, "_PieChart",
             await GetDonutChart(byTime));
     }
-
 
     [HttpGet]
     [Route("filter-area-chart/{byTime?}")]
@@ -143,7 +138,7 @@ public class HomeController(
         {
             Models = result1,
             IsIncrease = result1.Count > result2.Count,
-            IncreasePercentage = (Math.Abs(result1.Count - result2.Count) * 1.0 / result2.Count) * 100,
+            IncreasePercentage = (Math.Round(Math.Abs(result1.Count - result2.Count) * 1.0 / result2.Count) * 100),
             Time = byTime
         });
     }
@@ -166,7 +161,7 @@ public class HomeController(
         {
             Models = result1,
             IsIncrease = result1.Count > result2.Count,
-            IncreasePercentage = Math.Abs(result1.Count - result2.Count) * 1.0 / result2.Count * 100,
+            IncreasePercentage = Math.Round(Math.Abs(result1.Count - result2.Count) * 1.0 / result2.Count * 100),
             Time = byTime ?? "Today"
         });
     }
@@ -189,7 +184,8 @@ public class HomeController(
         {
             Models = result1,
             IsIncrease = result1.Count > result2.Count,
-            IncreasePercentage = Math.Abs(result1.Count - result2.Count) * 1.0 / result2.Count * 100,
+            // Round this value to 2 decimal places
+            IncreasePercentage = Math.Round(Math.Abs(result1.Count - result2.Count) * 1.0 / result2.Count * 100, 2),
             Time = byTime ?? "Today"
         });
     }
