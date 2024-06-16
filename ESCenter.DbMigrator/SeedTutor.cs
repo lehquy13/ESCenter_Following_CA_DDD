@@ -101,26 +101,26 @@ internal static class SeedTutor
         }));
 
         var i = 0;
-        var faker = new Faker("en");
+        var faker = new Faker();
 
         foreach (var tutor in tutorData)
         {
             tutor.SetUserId(femaleTutorCustomerData[i++].Id);
 
-            if (i > 200) continue;
+            if (i > 50) continue;
 
             var random = new Random();
 
-            for (var j = 0; j < random.Next(4, 7); j++)
+            for (var j = 0; j < random.Next(2, 7); j++)
             {
                 var request = TutorRequest.Create(
                     tutor.Id,
                     userData[random.Next(0, 99)].Id,
                     faker.Lorem.Sentence(3, 5));
 
-                var doneOrNot = random.Next(0, 2);
+                var doneOrNot = random.Next(0, 10);
 
-                if (doneOrNot == 1)
+                if (doneOrNot % 2 == 0)
                 {
                     request.Done();
                 }

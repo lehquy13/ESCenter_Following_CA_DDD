@@ -334,7 +334,7 @@ internal static class Program
                     var user = userData[randomNumber];
                     course.SetLearner(user.GetFullName(), user.Gender, user.PhoneNumber);
                     course.SetLearnerId(user.Id);
-
+                    
                     if (course.Status != Status.Confirmed) continue;
 
                     // assign tutor
