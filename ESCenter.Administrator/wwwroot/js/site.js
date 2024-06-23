@@ -66,11 +66,14 @@ function CallGetAction(url) {
         type: "GET",
         url: url,
         data: {},
-        success: function (res) {
+        success: async function (res) {
             if (res.res === true) {
-                alertify.success(res.message);
-            }
-            else{
+                alertify.success('Updated successfully');
+
+                if (res.reset === true) {
+                    setTimeout(location.reload.bind(location), 1000);
+                }
+            } else {
                 alertify.error(res.message);
             }
         }

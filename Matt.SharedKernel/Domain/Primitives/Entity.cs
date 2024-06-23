@@ -2,8 +2,7 @@
 
 namespace Matt.SharedKernel.Domain.Primitives;
 
-public abstract class Entity<TId> : IEntity<TId>
-    where TId : notnull
+public abstract class Entity<TId> : IEntity<TId> where TId : notnull
 {
     public TId Id { get; protected set; } = default!;
 

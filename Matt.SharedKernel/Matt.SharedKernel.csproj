@@ -10,35 +10,35 @@
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/lehquy13/Matt.CA_Template</RepositoryUrl>
         <PackageTags>ddd</PackageTags>
-        <Version>1.0.9.4</Version>
+        <Version>1.0.9.6</Version>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Matt.Auditing\Matt.Auditing.csproj" />
-      <ProjectReference Include="..\Matt.AutoDI\Matt.AutoDI.csproj" />
-      <ProjectReference Include="..\Matt.Paginated\Matt.Paginated.csproj" />
-      <ProjectReference Include="..\Matt.ResultObject\Matt.ResultObject.csproj" />
+        <ProjectReference Include="..\Matt.Auditing\Matt.Auditing.csproj"/>
+        <ProjectReference Include="..\Matt.AutoDI\Matt.AutoDI.csproj"/>
+        <ProjectReference Include="..\Matt.Paginated\Matt.Paginated.csproj"/>
+        <ProjectReference Include="..\Matt.ResultObject\Matt.ResultObject.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1" />
-      <PackageReference Include="Mapster" Version="7.4.0" />
-      <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
-      <PackageReference Include="MediatR" Version="12.1.1" />
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1"/>
+        <PackageReference Include="Mapster" Version="7.4.0"/>
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1"/>
+        <PackageReference Include="MediatR" Version="12.1.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="readme.md">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
+        <None Update="readme.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Logging.Abstractions">
-        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-      </Reference>
+        <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+            <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

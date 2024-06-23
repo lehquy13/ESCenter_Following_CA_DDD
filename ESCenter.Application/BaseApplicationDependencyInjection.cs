@@ -40,7 +40,7 @@ namespace ESCenter.Application
                     cfg.RegisterServicesFromAssemblies(applicationAssembly,
                         typeof(BaseApplicationDependencyInjection).Assembly,
                         typeof(Domain.DomainDependencyInjection).Assembly);
-                    cfg.NotificationPublisher = new TaskWhenAllPublisher();
+                    //cfg.NotificationPublisher = new TaskWhenAllPublisher();
 
                     cfg.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
                     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));

@@ -25,6 +25,8 @@ public class ConfirmCourseCommandHandler(
         
         course.ConfirmedCourse();
 
+        await UnitOfWork.SaveChangesAsync(cancellationToken);
+
         return Result.Success();
     }
 }

@@ -245,7 +245,7 @@ public class CourseController(ISender sender) : Controller
     {
         var result = await sender.Send(new ConfirmCourseCommand(courseId));
 
-        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
+        return result.IsFailure ? Helper.FailResult(result.DisplayMessage) : Helper.UpdatedResult();
     }
 
     [HttpGet("{courseId:guid}/cancel-course-with-refund")]

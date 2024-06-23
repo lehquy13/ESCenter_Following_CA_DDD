@@ -122,6 +122,16 @@ public static class Helper
             message
         });
     }
+    
+    public static JsonResult UpdatedThenResetResult(string message = "")
+    {
+        return new JsonResult(new
+        {
+            res = true,
+            reset = true,
+            message
+        });
+    }
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]

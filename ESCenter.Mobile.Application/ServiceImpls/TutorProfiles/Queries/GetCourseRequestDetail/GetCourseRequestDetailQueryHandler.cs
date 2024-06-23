@@ -50,7 +50,6 @@ public class GetCourseRequestDetailQueryHandler(
 
         var courseRequest = course.CourseRequests.FirstOrDefault(x => x.TutorId == tutor.Id);
 
-        // TODO: Check if the mapper is working
         var courseRequestDtos = new CourseRequestForDetailDto()
         {
             Id = course.Id.Value,
@@ -58,10 +57,15 @@ public class GetCourseRequestDetailQueryHandler(
             CourseId = course.Id.Value,
             Title = course.Title,
             SubjectName = subject.Name,
-            Description = course.Description,
-            LearnerName = course.LearnerName,
-            LearnerContact = course.ContactNumber
+            Description = course.Description
         };
+
+        if (course.Status == Status.Confirmed)
+        {
+            courseRequestDtos.LearnerName = course.LearnerName;
+            courseRequestDtos.LearnerContact = course.ContactNumber;
+            courseRequestDtos.RequestStatus = RequestStatus.Done.ToString();
+        }
 
         if (courseRequest is null)
         {

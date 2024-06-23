@@ -2,7 +2,7 @@
 
 namespace Matt.SharedKernel.Application.Mediators;
 
-public abstract class RequestHandlerBase( IAppLogger<RequestHandlerBase> logger)
+public abstract class RequestHandlerBase(IAppLogger<RequestHandlerBase> logger)
 {
     protected readonly IAppLogger<RequestHandlerBase> Logger = logger;
 }

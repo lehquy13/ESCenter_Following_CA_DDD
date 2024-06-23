@@ -2,6 +2,8 @@
 
 namespace Matt.SharedKernel.Domain.Interfaces.Repositories;
 
+public interface IRepository : IReadOnlyRepository;
+
 public interface IRepository<TEntity, TId>
     : IReadOnlyRepository<TEntity, TId>
     where TEntity : class, IAggregateRoot<TId>

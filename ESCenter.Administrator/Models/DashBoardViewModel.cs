@@ -2,6 +2,7 @@ using System.Collections;
 using ESCenter.Admin.Application.Contracts.Notifications;
 using ESCenter.Admin.Application.Contracts.Users.Learners;
 using ESCenter.Admin.Application.ServiceImpls.DashBoards;
+using ESCenter.Domain.Shared.Courses;
 
 namespace ESCenter.Administrator.Models;
 
@@ -15,7 +16,7 @@ public class DashBoardViewModel
     public object? DonutLabels { get; init; }
     public object? Xaxis { get; init; }
     public AreaChartViewModel AreaChartViewModel { get; init; } = new();
-    public IEnumerable<NotificationDto> NotificationDtos { get; init; } = [];
+    public NotificationViewModel NotificationDtos { get; init; } = new([]);
     public IEnumerable<TutorRequestForListDto> TutorRequests { get; set; } = [];
 }
 
@@ -41,3 +42,5 @@ public class AreaChartViewModel
 
     public string ByTime = Domain.Shared.Courses.ByTime.Today;
 }
+
+public record NotificationViewModel(IEnumerable<NotificationDto> NotificationDtos, string ByTime = ByTime.Today);

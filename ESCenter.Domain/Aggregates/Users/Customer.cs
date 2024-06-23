@@ -18,6 +18,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
     public string Email { get; private set; } = null!;
     public string PhoneNumber { get; private set; } = null!;
     public Role Role { get; private set; } = Role.Learner;
+    public string FCMToken { get; private set; } = null!;
 
     private const string DefaultAvatar =
         "https://res.cloudinary.com/dhehywasc/image/upload/v1697006256/male/male0.png";

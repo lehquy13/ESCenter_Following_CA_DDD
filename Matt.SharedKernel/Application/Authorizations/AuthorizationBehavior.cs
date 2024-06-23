@@ -4,11 +4,14 @@ using MediatR;
 
 namespace Matt.SharedKernel.Application.Authorizations;
 
-public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserService currentUserService)
-    : IPipelineBehavior<TRequest, TResponse>
+public class AuthorizationBehavior<TRequest, TResponse>(
+    ICurrentUserService currentUserService
+) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
         // Check if the request is an inheritor of IAuthorizationRequest  

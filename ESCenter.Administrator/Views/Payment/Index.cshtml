@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ESCenter.Admin.Application.ServiceImpls.Payments.Queries.Gets.PaymentDto>
+﻿@using ESCenter.Admin.Application.ServiceImpls.Payments.Queries.Gets
+@model IEnumerable<ESCenter.Admin.Application.ServiceImpls.Payments.Queries.Gets.PaymentDto>
 @{
     var i = 0;
 }
@@ -32,23 +33,21 @@
 
                     <td>@payment.TutorName</td>
                     <td>@payment.TutorEmail</td>
-                    <td>@payment.CourseTitle</td>
+                    <td>@payment.CourseTitle.Truncate(20)</td>
                     <td>@payment.PaymentStatus</td>
 
                     <td>
-                        <button type="button" class="btn btn-link" 
-                                onclick="OpenGetDialog('@(Url.Action("Detail", new { id = payment.PaymentId }))','PaymentDetail')">
+                        <a type="button" href="#" onclick="OpenGetDialog('@(Url.Action("Detail", new { id = payment.PaymentId }))','PaymentDetail')">
                             Detail
-                        </button>
+                        </a> |
 
-                        <button type="button" class="btn btn-link" onclick="">
-                            Re-Open
-                        </button>
+                        <a type="button" href="#" onclick="CallGetAction('@Url.Action("ReOpenPayment", "Payment", new { id = payment.PaymentId })')">
+                            Re-Open*
+                        </a> |
 
-                        <button type="button" class="btn btn-link" 
-                                onclick="CallGetAction(@(Url.Action("CancelPayment", new { id = payment.PaymentId }))">
+                        <a type="button" href="#" onclick="CallGetAction('@Url.Action("CancelPayment", "Payment", new { id = payment.PaymentId })')">
                             Cancel
-                        </button>
+                        </a>
                     </td>
                 </tr>
             }

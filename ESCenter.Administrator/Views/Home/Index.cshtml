@@ -331,7 +331,7 @@
 <div class="col-lg-4">
 
     <!-- Recent Activity -->
-    <div class="card">
+    <div class="card" id="notificationCard">
         <div class="filter">
             <a class="icon" href="#" data-bs-toggle="dropdown">
                 <i class="bi bi-three-dots"></i>
@@ -342,37 +342,19 @@
                 </li>
 
                 <li>
-                    <a class="dropdown-item" href="#">Today</a>
+                    <a class="dropdown-item" href="javascript:NotificationReload('@Url.Action("FilterNotification", "Home", new { ByTime = ByTime.Today })')">Today</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="#">This Month</a>
+                    <a class="dropdown-item" href="javascript:NotificationReload('@Url.Action("FilterNotification", "Home", new { ByTime = ByTime.Week })')">This Week</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="#">This Year</a>
+                    <a class="dropdown-item" href="javascript:NotificationReload('@Url.Action("FilterNotification", "Home", new { ByTime = ByTime.Month })')" >This Month</a>
                 </li>
             </ul>
         </div>
 
         <div class="card-body">
-            <h5 class="card-title">Recent Activity <span>| Today</span></h5>
-
-            <div class="activity">
-                @foreach (var notification in Model.NotificationDtos)
-                {
-                    <div class="activity-item d-flex">
-                        <div class="activite-label">@notification.TimeAgo</div>
-                        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                        <div class="activity-content">
-
-                            @notification.Message
-                            <a href="@notification.DetailPath" class="fw-bold text-dark">See detail</a>
-                        </div>
-                    </div>
-
-                    <!-- End activity item-->
-                }
-
-            </div>
+           <partial name="_Notification" model="@Model.NotificationDtos"/>
         </div>
     </div><!-- End Recent Activity -->
 

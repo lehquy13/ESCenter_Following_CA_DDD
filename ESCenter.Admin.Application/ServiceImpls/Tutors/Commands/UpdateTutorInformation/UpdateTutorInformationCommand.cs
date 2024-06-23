@@ -19,6 +19,7 @@ public class TutorBasicUpdateDto
     public Guid Id { get; set; }
     public string AcademicLevel { get; set; } = Domain.Shared.Courses.AcademicLevel.UnderGraduated.ToString();
     public string University { get; set; } = null!;
+    public bool IsVerified { get; set; } = false;
 }
 
 public class TutorBasicUpdateDtoValidator : AbstractValidator<TutorBasicUpdateDto>

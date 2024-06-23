@@ -1,4 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Notifications;
+﻿using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Notifications;
 using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.NotificationConsts;
@@ -9,11 +10,12 @@ using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace ESCenter.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers.CoursePurchased;
 
 public class CoursePurchasedDomainEventHandler(
     IEmailSender emailSender,
     ICustomerRepository customerRepository,
+    ICourseRepository courseRepository,
     IRepository<Notification, int> notificationRepository,
     IUnitOfWork unitOfWork
 ) : INotificationHandler<TutorPaidDomainEvent>
@@ -46,6 +48,26 @@ public class CoursePurchasedDomainEventHandler(
             NotificationEnum.Course);
 
         await notificationRepository.InsertAsync(notification, cancellationToken);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+    }
+}
+
+public class SetCoursePaidByTutorDomainEventHandler(
+    ICourseRepository courseRepository,
+    IUnitOfWork unitOfWork
+) : INotificationHandler<TutorPaidDomainEvent>
+{
+    public async Task Handle(TutorPaidDomainEvent domainEvent, CancellationToken cancellationToken)
+    {
+        var course = await courseRepository.GetAsync(domainEvent.Payment.CourseId, cancellationToken);
+
+        if (course is null)
+        {
+            throw new EventualConsistencyException(new Error("CourseNotFound", "Course not found"));
+        }
+
+        course.CoursePaidByTutor();
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }

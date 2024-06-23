@@ -27,7 +27,9 @@ public class Notification : AuditedAggregateRoot<int>
         {
             Message = message,
             ObjectId = objectId,
-            NotificationType = notificationType
+            NotificationType = notificationType,
+            From = from,
+            To = to ?? Guid.Empty
         };
     }
 }

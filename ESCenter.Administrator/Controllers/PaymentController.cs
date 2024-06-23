@@ -39,13 +39,11 @@ public class PaymentController(IAppLogger<PaymentController> logger, ISender sen
     [Route("{id:guid}/re-open")]
     public async Task<IActionResult> ReOpenPayment(Guid id)
     {
-        //var result = await sender.Send(new ReOpenPayment(id));
+        var result = await sender.Send(new ReOpenPaymentCommand(id));
 
-        // return result.IsFailure
-        //     ? Helper.FailResult()
-        //     : Helper.UpdatedResult();
-
-        return Helper.FailResult("Have not implemented yet");
+         return result.IsFailure
+             ? Helper.FailResult()
+             : Helper.UpdatedThenResetResult();
     }
 
     [HttpGet]
@@ -56,6 +54,6 @@ public class PaymentController(IAppLogger<PaymentController> logger, ISender sen
 
         return result.IsFailure
             ? Helper.FailResult()
-            : Helper.UpdatedResult();
+            : Helper.UpdatedThenResetResult();
     }
 }

@@ -1,0 +1,20 @@
+﻿@model NotificationViewModel
+<h5 class="card-title">Recent Activity <span>| @Model.ByTime </span></h5>
+
+<div class="activity" >
+  @foreach (var notification in Model.NotificationDtos)
+  {
+  <div class="activity-item d-flex">
+    <div class="activite-label">@notification.TimeAgo</div>
+    <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+    <div class="activity-content">
+
+      @notification.Message
+      <a href="@notification.DetailPath" class="fw-bold text-dark">See detail</a>
+    </div>
+  </div>
+
+  <!-- End activity item-->
+  }
+
+</div>

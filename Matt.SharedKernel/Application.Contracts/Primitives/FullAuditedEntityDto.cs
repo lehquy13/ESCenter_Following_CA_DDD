@@ -3,8 +3,7 @@
 namespace Matt.SharedKernel.Application.Contracts.Primitives;
 
 public abstract class FullAuditedEntityDto<TId>
-    : AuditedEntityDto<TId>, IFullAuditedObject
-    where TId : notnull
+    : AuditedEntityDto<TId>, IFullAuditedObject where TId : notnull
 {
     //Deletions
     public DateTime? DeletionTime { get; set; }

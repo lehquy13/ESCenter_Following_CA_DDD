@@ -6,7 +6,7 @@ public class Result : ResultBase
         : base(isSuccess, error)
     {
     }
-    
+
     public static Result Success()
     {
         return new Result(true, Error.None);
@@ -26,6 +26,26 @@ public class Result : ResultBase
     {
         return new Result(false, new Error("Unexpected error", errorMessage));
     }
+
+    public static Error Conflict(
+        string code = "General.Conflict",
+        string description = "A conflict error has occurred.") =>
+        new(code, description);
+
+    public static Error NotFound(
+        string code = "General.NotFound",
+        string description = "A 'Not Found' error has occurred.") =>
+        new(code, description);
+    
+    public static Error Unauthorized(
+        string code = "General.Unauthorized",
+        string description = "An 'Unauthorized' error has occurred.") =>
+        new(code, description);
+    
+    public static Error Forbidden(
+        string code = "General.Forbidden",
+        string description = "A 'Forbidden' error has occurred.") =>
+        new(code, description);
 
     #region implicit operators
 

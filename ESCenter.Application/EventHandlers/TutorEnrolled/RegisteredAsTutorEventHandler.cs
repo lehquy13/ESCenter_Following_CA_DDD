@@ -6,7 +6,7 @@ using ESCenter.Domain.Aggregates.Users;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers.TutorEnrolled;
 
 public class RegisteredAsTutorEventHandler(
     IUnitOfWork unitOfWork,

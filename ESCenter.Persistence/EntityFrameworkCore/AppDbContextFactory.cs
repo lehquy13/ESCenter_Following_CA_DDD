@@ -9,8 +9,8 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
         optionsBuilder.UseSqlServer(
-             "Server=(localdb)\\MSSQLLocalDB; Database=esmssql; Trusted_Connection=True;MultipleActiveResultSets=true"
-            //"Server=matthomelab.dns.army,1433;Database=esmssql;TrustServerCertificate=True;User Id=sa;Password=1q2w3E**;MultipleActiveResultSets=true"
+             // "Server=(localdb)\\MSSQLLocalDB; Database=esmssql; Trusted_Connection=True;MultipleActiveResultSets=true"
+            "Server=matthomelab.dns.army,1433;Database=esmssql;TrustServerCertificate=True;User Id=sa;Password=1q2w3E**;MultipleActiveResultSets=true"
             // "DefaultConnection": "Server=(LocalDb)\\MSSQLLocalDB;Database=EduSmart;Trusted_Connection=True;TrustServerCertificate=True"
         );
 

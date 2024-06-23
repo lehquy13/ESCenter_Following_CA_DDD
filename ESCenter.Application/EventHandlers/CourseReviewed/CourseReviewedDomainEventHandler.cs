@@ -7,7 +7,7 @@ using Matt.SharedKernel.Domain.EventualConsistency;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers.CourseReviewed;
 
 public class CourseReviewedDomainEventHandler(
     ICourseRepository courseRepository,

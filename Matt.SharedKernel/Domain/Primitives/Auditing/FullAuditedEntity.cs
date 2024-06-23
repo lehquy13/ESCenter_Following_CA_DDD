@@ -2,9 +2,7 @@
 
 namespace Matt.SharedKernel.Domain.Primitives.Auditing;
 
-public abstract class FullAuditedEntity<TId> : AuditedEntity<TId>, 
-    IFullAuditedObject
-    where TId : notnull
+public abstract class FullAuditedEntity<TId> : AuditedEntity<TId>, IFullAuditedObject where TId : notnull
 {
     public DateTime? DeletionTime { get; protected set; }
 

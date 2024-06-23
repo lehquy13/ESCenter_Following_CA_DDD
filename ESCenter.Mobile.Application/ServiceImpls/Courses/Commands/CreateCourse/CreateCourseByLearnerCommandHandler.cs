@@ -47,12 +47,6 @@ public class CreateCourseByLearnerCommandHandler(
         await courseRepository.InsertAsync(course, cancellationToken);
         await UnitOfWork.SaveChangesAsync(cancellationToken);
 
-        var message = "New class: " + course.Title + " was created by " + course.LearnerId +
-                      " at " + course.CreationTime.ToLongDateString();
-        await publisher.Publish(
-            new NewDomainObjectCreatedEvent(course.Id.Value.ToString(), message, NotificationEnum.Course),
-            cancellationToken);
-
         return Result.Success();
     }
 }

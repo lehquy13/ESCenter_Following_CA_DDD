@@ -16,7 +16,7 @@
                 <th scope="col">Course</th>
                 <th scope="col">Status</th>
                 <th scope="col">Code</th>
-                <th data-sortable="false" scope="col" style="width:30%;">Actions</th>
+                <th data-sortable="false" scope="col" >Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -33,11 +33,7 @@
                     <td>@paymentDto.Code</td>
 
                     <td>
-                        @if (paymentDto.PaymentStatus != PaymentStatus.Pending.ToString())
-                        {
-                            <button type="button" class="btn btn-primary">Paid</button>
-                        }
-                        else
+                        @if (paymentDto.PaymentStatus == PaymentStatus.Pending.ToString())
                         {
                             <button type="button"
                                     class="btn btn-primary"

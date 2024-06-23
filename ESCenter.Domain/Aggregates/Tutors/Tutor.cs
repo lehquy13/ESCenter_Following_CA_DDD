@@ -65,7 +65,7 @@ public class Tutor : AuditedAggregateRoot<TutorId>
         var message = $"New tutor have enrolled at {DateTime.Now.ToLongDateString()}";
 
         tutor.DomainEvents.Add(new NewDomainObjectCreatedEvent(
-            tutor.Id.Value.ToString(),
+            id.Value.ToString(),
             message,
             NotificationEnum.Tutor));
 

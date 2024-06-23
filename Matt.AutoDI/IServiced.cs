@@ -1,5 +1,3 @@
 ﻿namespace Matt.AutoDI;
 
-public interface IServiced
-{
-}
+public interface IServiced;

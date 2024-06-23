@@ -1,5 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Notifications;
+using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
@@ -9,11 +10,12 @@ using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace ESCenter.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers.CourseConfirmed;
 
 public class CourseConfirmedDomainEventHandler(
     IEmailSender emailSender,
     ICustomerRepository customerRepository,
+    IPaymentRepository paymentRepository,
     IRepository<Notification, int> notificationRepository,
     IUnitOfWork unitOfWork
 ) : INotificationHandler<CourseConfirmedDomainEvent>
@@ -44,5 +46,7 @@ public class CourseConfirmedDomainEventHandler(
             emailSender.SendEmail(tutor.Email, "Course Confirmed", message));
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        //await HandleNext(domainEvent, cancellationToken);
     }
 }

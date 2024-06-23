@@ -21,10 +21,9 @@ internal class CustomerConfiguration : IEntityTypeConfiguration<Customer>
                 value => CustomerId.Create(value)
             );
 
-        // TODO: learn how to config one to one relationship
-        //'The relationship from 'User' to 'IdentityUser' with foreign key properties {'Id' : IdentityGuid} cannot target the primary key {'Id' : string} because it is not compatible.
-        // Configure a principal key or a set of foreign key properties with compatible types for this relationship.' was thrown while attempting to create an instance.
-
+        builder.Property(r => r.FCMToken)
+            .IsRequired(false);
+        
         builder.Property(r => r.FirstName)
             .IsRequired();
 

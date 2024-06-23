@@ -4,6 +4,9 @@ using Matt.SharedKernel.Domain.Specifications.Interfaces;
 
 namespace Matt.SharedKernel.Domain.Interfaces.Repositories;
 
+
+public interface IReadOnlyRepository : IScoped;
+
 public interface IReadOnlyRepository<TEntity, TId> : IScoped
     where TEntity : class, IEntity<TId> where TId : notnull
 {

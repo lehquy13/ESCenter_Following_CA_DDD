@@ -52,6 +52,19 @@ function PieChartReload(url) {
         }
     })
 }
+function NotificationReload(url) {
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {},
+        success: function (res) {
+            if (res.res === true) {
+                $("#notificationCard .card-body").html(res.partialView);
+            }
+        }
+    })
+}
 
 function TotalValueCardReload(url) {
     $.ajax({

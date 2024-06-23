@@ -86,12 +86,14 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
             SubjectId = subjectId,
             LearnerId = learnerId
         };
-        
+
+        var message = $"New class: {title} at {DateTime.UtcNow.ToLongDateString()}";
+
         course.DomainEvents.Add(new NewDomainObjectCreatedEvent(
             course.Id.Value.ToString(),
-            $"New class: {title} at {course.CreationTime.ToLongDateString()}",
+            message,
             NotificationEnum.Course));
-        
+
         return course;
     }
 
@@ -114,7 +116,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         DomainEvents.Add(new CourseReviewedDomainEvent(this));
         DomainEvents.Add(new NewDomainObjectCreatedEvent(
             Id.Value.ToString(),
-            $"Review class: {Title} at {CreationTime.ToLongDateString()}",
+            $"Review class: {Title} at {DateTime.Now.ToLongDateString()}",
             NotificationEnum.Course));
 
         return Result.Success();
@@ -257,7 +259,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public Result ConfirmedCourse()
     {
-        if (Status != Status.OnProgressing || TutorId is null)
+        if (Status != Status.UnverifiedPayment || TutorId is null)
         {
             return Result.Fail(CourseDomainError.CourseUnavailableForConfirmation);
         }
@@ -304,10 +306,15 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
         Note = commandNote;
         Status = Status.CanceledWithRefund;
-        
+
         DomainEvents.Add(new CanceledAndRefundedCourseEvent(this));
 
         return Result.Success();
+    }
+    
+    public void CoursePaidByTutor()
+    {
+        Status = Status.UnverifiedPayment;
     }
 }
 

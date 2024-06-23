@@ -28,3 +28,27 @@ public class CancelPaymentCommandHandler(
             : Result.Success();
     }
 }
+
+public class ReOpenPaymentCommandHandler(
+    IRepository<Payment, PaymentId> paymentRepository,
+    IUnitOfWork unitOfWork,
+    IAppLogger<CancelPaymentCommandHandler> logger
+) : CommandHandlerBase<ReOpenPaymentCommand>(unitOfWork, logger)
+{
+    public override async Task<Result> Handle(ReOpenPaymentCommand command, CancellationToken cancellationToken)
+    {
+        var payment = await paymentRepository.GetAsync(PaymentId.Create(command.Id), cancellationToken);
+
+        if (payment == null)
+        {
+            return Result.Fail("Payment not found");
+        }
+
+        payment.ReOpen();
+
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+            return Result.Fail("Fail to re open payment");
+        else
+            return Result.Success();
+    }
+}

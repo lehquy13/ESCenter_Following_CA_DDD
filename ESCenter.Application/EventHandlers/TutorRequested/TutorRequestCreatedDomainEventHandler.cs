@@ -4,7 +4,7 @@ using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace ESCenter.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers.TutorRequested;
 
 public class TutorRequestCreatedDomainEventHandler(
     IRepository<Notification, int> notificationRepository

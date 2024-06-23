@@ -220,9 +220,8 @@
 
                     @if (Model.Status == Status.UnverifiedPayment.ToString())
                     {
-                        <a asp-action="ConfirmCourse" class="btn btn-primary">Close Course</a>
+                        <a href="javascript:CallGetAction('@Url.Action("ConfirmCourse", "Course", new { courseId = Model.Id})')" class="btn btn-primary">Close Course</a>
                     }
-
 
                     <a type="reset" asp-action="Index" class="btn btn-secondary">Back to list</a>
                 </div>

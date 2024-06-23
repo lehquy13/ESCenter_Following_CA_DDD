@@ -8,16 +8,16 @@ namespace ESCenter.Client.Application.Contracts.Courses.Dtos;
 
 public class CourseRequestForDetailDto
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
    
-    public Guid TutorId { get; init; }
-    public Guid CourseId { get; init; }
-    public string Title { get; init; } = string.Empty;
-    public string SubjectName { get; init; } = string.Empty;
-    public string Description { get; init; } = string.Empty;
+    public Guid TutorId { get; set; }
+    public Guid CourseId { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string SubjectName { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public string RequestStatus { get; set; } = Domain.Shared.Courses.RequestStatus.Pending.ToString();
-    public string LearnerName { get; init; } = string.Empty;
-    public string LearnerContact { get; init; } = string.Empty;
+    public string LearnerName { get; set; } = string.Empty;
+    public string LearnerContact { get; set; } = string.Empty;
 }
 
 public class CourseRequestForDetailDtoMappingConfig : IRegister

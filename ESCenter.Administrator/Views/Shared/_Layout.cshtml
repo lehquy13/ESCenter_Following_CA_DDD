@@ -153,6 +153,11 @@
                     </a>
                 </li>
                 <li>
+                    <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.UnverifiedPayment.ToString()">
+                        <i class="bi bi-circle"></i><span>Unverified Payment</span>
+                    </a>
+                </li>
+                <li>
                     <a asp-action="Index" asp-controller="Course" asp-route-type="@Status.Confirmed.ToString()">
                         <i class="bi bi-circle"></i><span>Confirmed</span>
                     </a>

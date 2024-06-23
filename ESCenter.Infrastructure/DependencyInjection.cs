@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using ESCenter.Application.EventHandlers;
+using ESCenter.Application.Interfaces;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Infrastructure.ServiceImpls.AppLogger;
@@ -25,6 +27,7 @@ namespace ESCenter.Infrastructure
         {
             services.AddScoped<SerilogFactory>();
             services.AddScoped(typeof(IAppLogger<>), typeof(AppLogger<>));
+            services.AddScoped<IFireBaseNotificationService, FireBaseNotificationService>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
@@ -114,7 +117,7 @@ namespace ESCenter.Infrastructure
                 });
 
             services.AddAuthorizationBuilder()
-                .AddPolicy("RequireAdministratorRole", policy => { policy.RequireRole("Admin","SuperAdmin"); })
+                .AddPolicy("RequireAdministratorRole", policy => { policy.RequireRole("Admin", "SuperAdmin"); })
                 .AddPolicy("RequireSuperAdministratorRole", policy => { policy.RequireRole("SuperAdmin"); })
                 .AddPolicy("RequireTutorRole", policy => { policy.RequireRole("Tutor"); });
 

@@ -6,7 +6,7 @@ public abstract class CreationAuditedEntityDto<TId>
     : EntityDto<TId>, ICreationAuditedObject
     where TId : notnull
 {
-    public DateTime CreationTime { get; init; }
+    public DateTime CreationTime { get; set; }
 
     public string? CreatorId { get; set; }
 

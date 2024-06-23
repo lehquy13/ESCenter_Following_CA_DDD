@@ -1,4 +1,5 @@
 ﻿using ESCenter.Admin.Application.Contracts.Commons;
+using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
 
 namespace ESCenter.Admin.Application.Contracts.Notifications;

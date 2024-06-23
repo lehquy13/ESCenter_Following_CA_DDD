@@ -17,7 +17,7 @@ internal class NewObjectCreatedEventHandler(
         logger.LogInformation("Creating new notification...");
 
         var entityToCreate = Notification.Create(
-            notification.Message, (string)notification.ObjectId, notification.NotificationEnum);
+            notification.Message, notification.ObjectId, notification.NotificationEnum);
 
 
         await notificationRepository.InsertAsync(entityToCreate, cancellationToken);

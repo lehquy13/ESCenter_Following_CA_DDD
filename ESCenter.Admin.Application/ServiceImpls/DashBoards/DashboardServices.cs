@@ -77,7 +77,7 @@ internal class DashboardServices(
                 dates = d,
                 sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
             });
-        
+
         var onPurchasingClasses = dates.GroupJoin(
             allClasses
                 .Where(x => x.CreationTime >= startDay && x.Status == Status.OnProgressing)
@@ -272,19 +272,26 @@ internal class DashboardServices(
         return new LineChartData(chartWeekData, dates);
     }
 
-    public async Task<IEnumerable<NotificationDto>> GetNotification()
+    public async Task<IEnumerable<NotificationDto>> GetNotification(string byTime)
     {
+        var startDay = DateTime.Today;
+        
+        startDay = byTime switch
+        {
+            ByTime.Month => startDay.Subtract(TimeSpan.FromDays(29)),
+            ByTime.Week => startDay.Subtract(TimeSpan.FromDays(6)),
+            _ => startDay
+        };
+
         // Create a dateListRange
         var notificationsQueryable = notificationRepository
             .GetAll()
-            .Where(x => x.IsRead == false)
+            .Where(x => x.IsRead == false 
+                        && x.To == Guid.Empty
+                        && x.CreationTime.Date >= startDay.Date)
             .OrderByDescending(x => x.CreationTime);
 
         var notifications = await asyncQueryableExecutor.ToListAsync(notificationsQueryable, false);
-
-        // If more than 10 notifications, only get the first 10
-        if (notifications.Count > 20)
-            notifications = notifications.Take(20).ToList();
 
         return from notification in notifications
             let detailPath = notification.NotificationType switch

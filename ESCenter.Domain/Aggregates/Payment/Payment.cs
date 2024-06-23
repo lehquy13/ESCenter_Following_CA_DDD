@@ -60,7 +60,7 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
 
     public Result ConfirmPayment()
     {
-        if (PaymentStatus != PaymentStatus.Canceled)
+        if (PaymentStatus != PaymentStatus.UnverifiedPayment)
         {
             return Result.Fail("Payment not paid");
         }
@@ -81,9 +81,13 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
 
         return Result.Success();
     }
+
+    public void ReOpen()
+    {
+        PaymentStatus = PaymentStatus.Pending;
+    }
 }
 
-// TODO: add domain event handler
 public record TutorPaidDomainEvent(Payment Payment) : IDomainEvent;
 
 public enum PaymentStatus

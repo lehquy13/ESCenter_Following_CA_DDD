@@ -1,7 +1,6 @@
 ﻿namespace Matt.SharedKernel.Application.Contracts.Primitives;
 
-public abstract class EntityDto<TId>
-    where TId : notnull
+public abstract class EntityDto<TId> where TId : notnull
 {
     public TId Id { get; set; }
 

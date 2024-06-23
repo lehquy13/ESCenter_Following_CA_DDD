@@ -97,12 +97,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
 
         if (!result.IsSuccess)
         {
-            return Helper.RenderRazorViewToString(
-                this,
-                "Edit",
-                "",
-                true
-            );
+            return Helper.FailResult(result.DisplayMessage);
         }
 
         PackStaticListToView();

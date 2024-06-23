@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ESCenter.Admin.Application.Contracts.Notifications;
 using ESCenter.Admin.Application.ServiceImpls.DashBoards;
 using ESCenter.Administrator.Models;
 using ESCenter.Administrator.Utilities;
@@ -55,14 +56,14 @@ public class HomeController(
                     IsIncrease = courseCountByTime > courseCountByLastTime,
                     IncreasePercentage =
                         Math.Round(Math.Abs(courseCountByTime - courseCountByLastTime) * 1.0 /
-                        courseCountByLastTime * 100, 2),
+                            courseCountByLastTime * 100, 2),
                 },
                 TutorTotalValueModel = new TotalValueModel<MetricObject>()
                 {
                     Models = tutorDtos,
                     IsIncrease = tutorCountByTime > tutorCountByLastTime,
                     IncreasePercentage = Math.Round(
-                            Math.Abs(tutorCountByTime - tutorCountByLastTime) * 1.0 /
+                        Math.Abs(tutorCountByTime - tutorCountByLastTime) * 1.0 /
                         tutorCountByLastTime * 100, 2),
                 },
 
@@ -80,7 +81,8 @@ public class HomeController(
                     IncomingSeries = areaListData.ElementAt(3),
                     ByTime = ByTime.Week
                 },
-                NotificationDtos = await dashboardServices.GetNotification(),
+                NotificationDtos =
+                    new NotificationViewModel(await dashboardServices.GetNotification(ByTime.Today), ByTime.Today),
                 TutorRequests = await dashboardServices.GetLatestTutorRequests()
             }
         );
@@ -278,5 +280,15 @@ public class HomeController(
         var check4 = JsonConvert.SerializeObject(areaChartData.Incoming.Data);
 
         return [check1, check2, check3, check4];
+    }
+
+    [HttpGet]
+    [Route("filter-notification/{byTime?}")]
+    public async Task<IActionResult> FilterNotification(string bytime = ByTime.Today)
+    {
+        var notificationDtos = await dashboardServices.GetNotification(bytime);
+
+        return Helper.RenderRazorViewToString(this, "_Notification",
+            new NotificationViewModel(notificationDtos, bytime));
     }
 }

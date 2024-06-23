@@ -5,14 +5,14 @@ using Matt.SharedKernel.Domain.EventualConsistency;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 
-namespace ESCenter.Application.EventHandlers;
+namespace ESCenter.Application.EventHandlers.CourseCanceled;
 
-public class ConfirmPaymentAfterCourseClosedDomainEventHandler(
+public class RefundPaymentWhenCourseCancelDomainEventHandler(
     IPaymentRepository paymentRepository,
     IUnitOfWork unitOfWork
-) : INotificationHandler<CourseConfirmedDomainEvent>
+) : INotificationHandler<CanceledAndRefundedCourseEvent>
 {
-    public async Task Handle(CourseConfirmedDomainEvent domainEvent, CancellationToken cancellationToken)
+    public async Task Handle(CanceledAndRefundedCourseEvent domainEvent, CancellationToken cancellationToken)
     {
         if (domainEvent.Course.TutorId is null)
         {
@@ -28,7 +28,7 @@ public class ConfirmPaymentAfterCourseClosedDomainEventHandler(
             throw new EventualConsistencyException(new Error("PaymentNotFound", "Payment not found"));
         }
 
-        var paymentResult = payment.ConfirmPayment();
+        var paymentResult = payment.Refund();
 
         if (paymentResult.IsFailure)
         {
