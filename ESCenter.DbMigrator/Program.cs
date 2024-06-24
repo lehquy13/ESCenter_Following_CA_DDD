@@ -324,7 +324,8 @@ internal static class Program
                 }
 
                 int courseCount = 1;
-                var seedTutorNumbers = tutorData.Count * 2 / 3;
+                var seedTutor =  tutorData.Take(tutorData.Count * 2 / 3).ToList();
+                var seedTutorNumbers =  tutorData.Count * 2 / 3;
                 // handle 100 course that have account
                 foreach (var course in courseData)
                 {
@@ -339,7 +340,7 @@ internal static class Program
 
                     // assign tutor
                     var randomTutor = new Random().Next(0, seedTutorNumbers);
-                    var tutor = tutorData[randomTutor];
+                    var tutor = seedTutor[randomTutor];
                     course.AssignTutor(tutor.Id);
                     course.ConfirmedCourse();
                     // review
@@ -352,7 +353,7 @@ internal static class Program
                 // Iterate through first 50 tutors to calculate the average rate
                 for (var index = 0; index < seedTutorNumbers; index++)
                 {
-                    var tutor = tutorData[index];
+                    var tutor = seedTutor[index];
                     var totalRate = 0;
                     var totalReview = 0;
                     foreach (var course in courseData

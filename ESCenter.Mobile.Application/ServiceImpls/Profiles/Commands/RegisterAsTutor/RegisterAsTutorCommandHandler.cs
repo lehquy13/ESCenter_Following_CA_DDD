@@ -25,8 +25,13 @@ public class RegisterAsTutorCommandHandler(
             command.TutorRegistrationDto.University,
             command.TutorRegistrationDto.Majors,
             command.TutorRegistrationDto.ImageFileUrls, cancellationToken);
+        
+        if(result.IsFailure)
+        {
+            return Result.Fail(result.Error);
+        }
 
-        if (result.IsFailure || await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
+        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
             Logger.LogError("Fail to register tutor with error: {Error}", result.Error.ToString());
             return Result.Fail(UserAppServiceError.FailToRegisterTutorError);

@@ -259,7 +259,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public Result ConfirmedCourse()
     {
-        if (Status != Status.UnverifiedPayment || TutorId is null)
+        if (Status is not (Status.UnverifiedPayment or Status.OnProgressing) || TutorId is null)
         {
             return Result.Fail(CourseDomainError.CourseUnavailableForConfirmation);
         }
@@ -291,6 +291,13 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
         Status = Status.OnProgressing;
         TutorId = tutorId;
+        
+        var existCourseRequest = _courseRequests.FirstOrDefault(x => x.TutorId == tutorId);
+        
+        if (existCourseRequest is not null)
+        {
+            existCourseRequest.Approved();
+        }
 
         DomainEvents.Add(new TutorAssignedDomainEvent(this, tutorId));
 

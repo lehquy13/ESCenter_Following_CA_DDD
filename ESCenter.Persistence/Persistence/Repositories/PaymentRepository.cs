@@ -12,4 +12,10 @@ internal class PaymentRepository(AppDbContext appDbContext) : IPaymentRepository
         return await appDbContext.Payments
             .FirstOrDefaultAsync(x => x.CourseId == courseId, cancellationToken);
     }
+
+    public Task InsertAsync(Payment payment, CancellationToken cancellationToken)
+    {
+        appDbContext.Payments.Add(payment);
+        return Task.CompletedTask;
+    }
 }

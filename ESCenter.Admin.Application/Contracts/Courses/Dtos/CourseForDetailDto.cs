@@ -1,4 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Courses;
+﻿using System.Diagnostics.CodeAnalysis;
+using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
@@ -58,6 +59,8 @@ public class CourseForDetailDto
     public List<CourseRequestListForAdminDto> CourseRequestListForAdminDtos = new();
     public string? ReviewDetail { get; set; } = string.Empty;
     public int Rate { get; set; } = 0;
+    
+    [AllowNull]
     public string Note { get; set; } = string.Empty;
 }
 

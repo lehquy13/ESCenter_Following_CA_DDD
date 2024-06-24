@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ESCenter.Client.Application.ServiceImpls.Notifications.NotificationDto>
+@{
+    var i = 0;
+}
+
+<div class="activity" >
+    @foreach (var notification in Model)
+    {
+    <div class="activity-item d-flex">
+        <div class="activite-label">@notification.TimeAgo</div>
+        <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+        <div class="activity-content">
+
+            @notification.Message
+        </div>
+    </div>
+
+    <!-- End activity item-->
+    }
+
+</div>

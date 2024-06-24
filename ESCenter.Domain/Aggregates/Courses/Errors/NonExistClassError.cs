@@ -18,7 +18,7 @@ public static class CourseDomainError
 
     public static Error NonExistCourseRequestError => new("NonExistCourseRequestError", "This request doesn't exist!");
 
-    public static Error RequestedCourseError => new("RequestedCourseError", "This course was requested by the user!");
+    public static Error RequestedCourseError => new("RequestedCourseError", "Course was requested!");
 
     public static Error InvalidStatusForReview { get; } = new("ReviewFailError",
         "This class isn't available for review due to not being confirmed!");

@@ -30,6 +30,11 @@ function callPostActionWithForm(formInput) {
                     $('#main').html(response.partialView);
                 }
                 alertify.success('Updated successfully');
+                
+                if(response.reset === true) {
+                    setTimeout(location.reload.bind(location), 2000);
+                }
+                
             } else if (response.res === "deleted" || response.res === "updated") {
                 //$('#verticalCentered').modal('hide');
                 alertify.success(response.res + ' successfully');
@@ -132,19 +137,24 @@ function ApproveTutor(id, name, phone) {
 
 }
 
-function CancelRequest(url) {
+function CancelRequest(formInput) {
+    let formData = new FormData(formInput);
+
     $.ajax({
-        type: "GET",
-        url: url,
-        data: {},
+        type: "POST",
+        url: formInput.action,
+        data: formData,
+        contentType: false,
+        processData: false,
         success: function (res) {
             if (res.res === true) {
                 alertify.success('Canceled successfully');
-                setTimeout('', 1000);
-                location.reload();
+                setTimeout(location.reload.bind(location), 1000);
             } else {
                 alertify.error('Cancel failed');
             }
+            
+            return false;
         }
     })
 

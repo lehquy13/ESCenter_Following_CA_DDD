@@ -12,8 +12,8 @@ namespace ESCenter.Api.Controllers;
 
 public class TutorController(
     IAppLogger<TutorController> logger,
-    ISender mediator)
-    : ApiControllerBase(logger)
+    ISender mediator
+) : ApiControllerBase(logger)
 {
     [HttpGet]
     [Route("")]
@@ -22,7 +22,7 @@ public class TutorController(
         var tutorDtos = await mediator.Send(new GetTutorsQuery(tutorParams));
         return Ok(tutorDtos);
     }
-    
+
     [HttpPost]
     [Route("by-ids")]
     public async Task<IActionResult> GetTutorsByIds([FromBody] List<Guid> tutorIds)

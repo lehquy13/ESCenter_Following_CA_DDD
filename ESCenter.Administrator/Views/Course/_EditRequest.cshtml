@@ -1,7 +1,8 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ESCenter.Admin.Application.ServiceImpls.Courses.Queries.GetCourseRequest.CourseRequestCancelDto
 
-<form asp-action="CancelRequest" asp-controller="Course" asp-route-courseId="@Model.CourseId" asp-route-requestId="@Model.CourseRequestId" onsubmit="return callPostActionWithForm(this)">
+<form asp-action="CancelRequest" asp-controller="Course" asp-route-courseId="@Model.CourseId" 
+      asp-route-requestId="@Model.CourseRequestId" onsubmit="CancelRequest(this); return false;">
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Cancellation's detail</h5>

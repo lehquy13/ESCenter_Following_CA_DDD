@@ -67,15 +67,14 @@ public class GetCourseRequestDetailQueryHandler(
             courseRequestDtos.RequestStatus = RequestStatus.Done.ToString();
         }
 
-        if (courseRequest is null)
-        {
-            if (course.TutorId != tutor.Id)
-            {
-                return Result.Fail(CourseAppServiceErrors.NonExistCourseRequestError);
-            }
+        if (courseRequest is not null) return courseRequestDtos;
 
-            courseRequestDtos.RequestStatus = RequestStatus.Done.ToString();
+        if (course.TutorId != tutor.Id)
+        {
+            return Result.Fail(CourseAppServiceErrors.NonExistCourseRequestError);
         }
+
+        courseRequestDtos.RequestStatus = RequestStatus.Done.ToString();
 
         return courseRequestDtos;
     }

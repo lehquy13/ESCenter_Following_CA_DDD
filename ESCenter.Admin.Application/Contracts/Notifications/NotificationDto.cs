@@ -24,7 +24,7 @@ public class NotificationDto : BasicAuditedEntityDto<int>
             _ => timeSpan.TotalMinutes switch
             {
                 <= 1 => "a minute",
-                < 60 => $"{timeSpan.Minutes} minutes",
+                < 60 => $"{timeSpan.Minutes} mins",
                 _ => timeSpan.TotalHours switch
                 {
                     <= 1 => "an hour",

@@ -207,12 +207,7 @@ public class CourseController(ISender sender) : Controller
             courseRequestCancelDto.CourseId,
             courseRequestCancelDto.Description));
 
-        if (!result.IsSuccess)
-        {
-            return BadRequest();
-        }
-
-        return Helper.UpdatedUsingModalResult();
+        return !result.IsSuccess ? Helper.FailResult() : Helper.UpdatedThenResetResult();
     }
 
     [HttpGet("{courseId:guid}/cancel-request/{requestId:guid}")]
@@ -237,7 +232,7 @@ public class CourseController(ISender sender) : Controller
     {
         var result = await sender.Send(new SetCourseTutorCommand(courseId, tutorId));
 
-        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
+        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedThenResetResult();
     }
 
     [HttpGet("{courseId:guid}/confirm-course")]

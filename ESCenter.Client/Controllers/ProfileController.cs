@@ -4,6 +4,7 @@ using ESCenter.Application.Accounts.Commands.UpdateBasicProfile;
 using ESCenter.Application.Accounts.Queries.GetUserProfile;
 using ESCenter.Application.Interfaces.Cloudinarys;
 using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;
+using ESCenter.Client.Application.ServiceImpls.Notifications;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourses;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
@@ -42,14 +43,17 @@ public class ProfileController(
 
         var learnerProfile = await sender.Send(new GetUserProfileQuery());
         var learningCourses = await sender.Send(new GetLearningCoursesQuery());
+        var notifications = await sender.Send(new GetNotificationsQuery());
 
         if (learnerProfile is { IsSuccess: true, Value: not null }
-            && learningCourses is { IsSuccess: true, Value: not null })
+            && learningCourses is { IsSuccess: true, Value: not null }
+            && notifications is { IsSuccess: true, Value: not null })
         {
             return View(new ProfileViewModel
             {
                 UserProfileDto = learnerProfile.Value,
-                LearningCourseForListDtos = learningCourses.Value
+                LearningCourseForListDtos = learningCourses.Value,
+                NotificationDtos = notifications.Value
             });
         }
 

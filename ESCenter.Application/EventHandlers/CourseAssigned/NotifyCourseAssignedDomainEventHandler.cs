@@ -1,13 +1,9 @@
 ﻿using ESCenter.Application.Interfaces;
 using ESCenter.Domain.Aggregates.Courses.DomainEvents;
 using ESCenter.Domain.Aggregates.Notifications;
-using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.DomainServices.Errors;
-using ESCenter.Domain.Shared.Courses;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
-using Matt.SharedKernel.Domain.EventualConsistency;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
@@ -18,7 +14,6 @@ namespace ESCenter.Application.EventHandlers.CourseAssigned;
 public class NotifyCourseAssignedDomainEventHandler(
     IEmailSender emailSender,
     ICustomerRepository customerRepository,
-    IRepository<Payment, PaymentId> paymentRepository,
     IRepository<Notification, int> notificationRepository,
     IUnitOfWork unitOfWork,
     IFireBaseNotificationService fireBaseNotificationService,
@@ -65,30 +60,17 @@ public class NotifyCourseAssignedDomainEventHandler(
             return;
         }
 
-        await emailSender.SendEmail(tutorEmail.Email, "Course Assigned", message);
-        await fireBaseNotificationService.SendNotificationAsync("Course Assigned",
-            $"Course {domainEvent.Course.Title} has been assigned to you. "
-            , tutorEmail.FCMToken);
-
-        await HandleNext(domainEvent, cancellationToken);
-    }
-
-    private async Task HandleNext(TutorAssignedDomainEvent domainEvent, CancellationToken cancellationToken)
-    {
-        if (domainEvent.Course.Status == Status.OnProgressing)
+        try
         {
-            var course = domainEvent.Course;
-
-            if (course.Status != Status.OnProgressing || course.TutorId == null)
-            {
-                throw new EventualConsistencyException(DomainServiceErrors.InvalidCourseStatusForPayment);
-            }
-
-            var payment = Payment.Create(course.TutorId, course.Id, course.ChargeFee.Amount);
-
-            await paymentRepository.InsertAsync(payment, cancellationToken);
-
-            await unitOfWork.SaveChangesAsync(cancellationToken);
+            await emailSender.SendEmail(tutorEmail.Email, "Course Assigned", message);
+            await fireBaseNotificationService.SendNotificationAsync("Course Assigned",
+                $"Course {domainEvent.Course.Title} has been assigned to you. "
+                , tutorEmail.FCMToken);
+        }
+        catch (Exception e)
+        {
+            logger.LogError("Failed to send email or notification to tutor {TutorId} for course {CourseId}",
+                domainEvent.TutorId, domainEvent.Course.Id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ComponentModel;
+using System.Text;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices;
@@ -231,10 +232,12 @@ public class IdentityService(
             return Result.Fail(DomainServiceErrors.FailRegisteringAsTutorErrorWhileAddingRole);
         }
 
-        customer.RegisterAsTutor(majors, academicLevel,
+        customer.RegisterAsTutor(
+            majors, 
+            academicLevel,
             university,
             verificationInfoDtos);
-
+        
         return Result.Success();
     }
 
