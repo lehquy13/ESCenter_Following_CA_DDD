@@ -1,9 +1,9 @@
-﻿using ESCenter.Administrator.Utilities;
-using ESCenter.Admin.Application.Contracts.Courses.Dtos;
+﻿using ESCenter.Admin.Application.Contracts.Courses.Dtos;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Commands.DeleteSubject;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Commands.UpsertSubject;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubject;
 using ESCenter.Admin.Application.ServiceImpls.Subjects.Queries.GetSubjects;
+using ESCenter.Administrator.Utilities;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -60,10 +60,10 @@ public class SubjectController(IAppLogger<SubjectController> logger, ISender sen
             ModelState.AddModelError("", "Unable to save changes. " +
                                          "Try again, and if the problem persists, " + result.DisplayMessage +
                                          "see your system administrator.");
-            return View(subjectDto);
+            return Helper.UpdatedResult();
         }
 
-        return Helper.RenderRazorViewToString(this, "Edit", subjectDto);
+        return Helper.FailResult();
     }
 
     [HttpGet("Create")]
@@ -88,10 +88,10 @@ public class SubjectController(IAppLogger<SubjectController> logger, ISender sen
             ModelState.AddModelError("", "Unable to save changes. " +
                                          "Try again, and if the problem persists, " + result.DisplayMessage +
                                          "see your system administrator.");
-            return View(subjectDto);
+            return RedirectToAction("Index");
         }
 
-        return Helper.RenderRazorViewToString(this, "Create", subjectDto);
+        return RedirectToAction("Error", "Home");
     }
 
     [HttpGet("{id}/delete-confirm")]

@@ -9,7 +9,7 @@
 
     var subjects = ViewData["Subjects"] as List<SubjectDto> ?? [];
     
-    var genders = EnumProvider.Genders;
+    var genders = EnumProvider.GenderFilters;
     var academicLevels = EnumProvider.FullAcademicLevelsOption;
     
     var user = ViewData["LoginUser"] as UserProfileDto ?? new UserProfileDto();

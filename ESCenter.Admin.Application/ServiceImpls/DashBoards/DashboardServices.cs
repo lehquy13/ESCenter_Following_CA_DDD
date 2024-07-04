@@ -5,6 +5,7 @@ using ESCenter.Application;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Notifications;
+using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
@@ -21,6 +22,7 @@ namespace ESCenter.Admin.Application.ServiceImpls.DashBoards;
 
 internal class DashboardServices(
     IReadOnlyRepository<Course, CourseId> courseRepository,
+    IReadOnlyRepository<Payment, PaymentId> paymentRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     ICustomerRepository customerRepository,
     IReadOnlyRepository<Notification, int> notificationRepository,
@@ -45,49 +47,49 @@ internal class DashboardServices(
         startDay = DateTime.Today.Subtract(TimeSpan.FromDays(14));
 
         var allClassesQuery =
-            courseRepository.GetAll().Select(x => new
+            paymentRepository.GetAll().Select(x => new
             {
                 x.CreationTime,
-                x.Status,
-                x.ChargeFee
+                x.PaymentStatus,
+                x.Amount
             });
 
         var allClasses = await asyncQueryableExecutor.ToListAsync(allClassesQuery, false);
 
         var confirmedClasses =
             dates.GroupJoin(allClasses
-                    .Where(x => x.CreationTime >= startDay && x.Status == Status.Confirmed)
+                    .Where(x => x.CreationTime >= startDay && x.PaymentStatus == PaymentStatus.Completed)
                     .GroupBy(x => x.CreationTime.Day), // Group by day of time range, then merge with dates
                 d => d,
                 c => c.Key,
                 (d, c) => new
                 {
                     dates = d,
-                    sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
+                    sum = c.FirstOrDefault()?.Sum(r => r.Amount) ?? 0
                 });
 
         var canceledClasses = dates.GroupJoin(
             allClasses
-                .Where(x => x.CreationTime >= startDay && x.Status == Status.CanceledWithRefund)
+                .Where(x => x.CreationTime >= startDay && x.PaymentStatus == PaymentStatus.Refunded)
                 .GroupBy(x => x.CreationTime.Day),
             d => d,
             c => c.Key,
             (d, c) => new
             {
                 dates = d,
-                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
+                sum = c.FirstOrDefault()?.Sum(r => r.Amount) ?? 0
             });
 
         var onPurchasingClasses = dates.GroupJoin(
             allClasses
-                .Where(x => x.CreationTime >= startDay && x.Status == Status.OnProgressing)
+                .Where(x => x.CreationTime >= startDay && x.PaymentStatus == PaymentStatus.Pending || x.PaymentStatus == PaymentStatus.UnverifiedPayment)
                 .GroupBy(x => x.CreationTime.Day),
             d => d,
             c => c.Key,
             (d, c) => new
             {
                 dates = d,
-                sum = c.FirstOrDefault()?.Sum(r => r.ChargeFee.Amount) ?? 0
+                sum = c.FirstOrDefault()?.Sum(r => r.Amount) ?? 0
             });
 
         var resultInts = confirmedClasses
@@ -203,79 +205,107 @@ internal class DashboardServices(
             .GetAll()
             .Where(x => x.CreationTime >= startDay)
             .GroupBy(x => x.CreationTime.Day)
-            .Select(x => new
+            .Select(x => new DateAndCountMetric
             {
-                date = x.Key,
-                count = x.Count()
+                Date = x.Key,
+                Count = x.Count()
             });
 
         var allClasses = await asyncQueryableExecutor.ToListAsync(allClassesQueryable, false);
 
-        var classesInWeek = dates
-            .GroupJoin( // Group by day of time range, then merge with dates
-                allClasses,
-                d => d,
-                c => c.date,
-                (_, c) => c.FirstOrDefault()?.count ?? 0)
-            .ToList();
+        var classesInWeek = DataByTime(dates, allClasses);
 
         // --------- Learner metrics -----------------
         var allUserToDay =
             customerRepository.GetAll()
                 .Where(x => x.CreationTime >= startDay && x.Role == Role.Learner)
                 .GroupBy(x => x.CreationTime.Day)
-                .Select(x => new
+                .Select(x => new DateAndCountMetric
                 {
-                    date = x.Key,
-                    count = x.Count()
+                    Date = x.Key,
+                    Count = x.Count()
                 });
 
         var allLearner = await asyncQueryableExecutor
             .ToListAsync(allUserToDay, false);
 
-        var studentsInWeek = dates
-            .GroupJoin(
-                allLearner,
-                d => d,
-                c => c.date,
-                (_, c) => c.FirstOrDefault()?.count ?? 0)
-            .ToList();
+        var studentsInWeek = DataByTime(dates, allLearner);
 
         // --------- Tutor metrics -----------------
         var allTutorToday =
             customerRepository.GetAll()
                 .Where(x => x.CreationTime >= startDay && x.Role == Role.Tutor)
                 .GroupBy(x => x.CreationTime.Day)
-                .Select(x => new
+                .Select(x => new DateAndCountMetric
                 {
-                    x.Key,
-                    count = x.Count()
+                    Date = x.Key,
+                    Count = x.Count()
                 });
         var allTutor = await asyncQueryableExecutor
             .ToListAsync(allTutorToday, false);
 
-        var tutorsInWeek = dates.GroupJoin(
-                allTutor,
-                d => d,
-                c => c.Key,
-                (_, c) => c.FirstOrDefault()?.count ?? 0)
-            .ToList();
+        var tutorsInWeek = DataByTime(dates, allTutor);
+        
+        // ---------- Tutor Request metrics -----------------
+        var allTutorRequestToday =
+            tutorRequestRepository.GetAll()
+                .Where(x => x.CreationTime >= startDay)
+                .GroupBy(x => x.CreationTime.Day)
+                .Select(x => new DateAndCountMetric
+                {
+                    Date = x.Key,
+                    Count = x.Count()
+                });
+        
+        var allTutorRequest = await asyncQueryableExecutor.ToListAsync(allTutorRequestToday, false);
+        
+        var tutorRequestsInWeek = DataByTime(dates, allTutorRequest);
+        
+        // ---------- Course Request metrics -----------------
+        
+        var allCourseRequestToday =
+            courseRepository.GetAll()
+                .Where(x => x.CreationTime >= startDay)
+                .GroupBy(x => x.CreationTime.Day)
+                .Select(x => new DateAndCountMetric
+                {
+                    Date = x.Key,
+                    Count = x.SelectMany(xx => xx.CourseRequests).Count()
+                });
+        
+        var allCourseRequest = await asyncQueryableExecutor.ToListAsync(allCourseRequestToday, false);
+        
+        var courseRequestsInWeek = DataByTime(dates, allCourseRequest);
 
         // --------- Create the chart data -----------------
         var chartWeekData = new List<LineData>()
         {
             new("Classes", classesInWeek),
             new("Tutors", tutorsInWeek),
-            new("Students", studentsInWeek)
+            new("Students", studentsInWeek),
+            new("Tutor Requests", tutorRequestsInWeek),
+            new("Course Requests", courseRequestsInWeek)
         };
 
         return new LineChartData(chartWeekData, dates);
     }
 
+    private static List<int> DataByTime(List<int> dates, List<DateAndCountMetric> allClasses)
+    {
+        var classesInWeek = dates
+            .GroupJoin( // Group by day of time range, then merge with dates
+                allClasses,
+                d => d,
+                c => c.Date,
+                (_, c) => c.FirstOrDefault()?.Count ?? 0)
+            .ToList();
+        return classesInWeek;
+    }
+
     public async Task<IEnumerable<NotificationDto>> GetNotification(string byTime)
     {
         var startDay = DateTime.Today;
-        
+
         startDay = byTime switch
         {
             ByTime.Month => startDay.Subtract(TimeSpan.FromDays(29)),
@@ -286,7 +316,7 @@ internal class DashboardServices(
         // Create a dateListRange
         var notificationsQueryable = notificationRepository
             .GetAll()
-            .Where(x => x.IsRead == false 
+            .Where(x => x.IsRead == false
                         && x.To == Guid.Empty
                         && x.CreationTime.Date >= startDay.Date)
             .OrderByDescending(x => x.CreationTime);
@@ -393,4 +423,10 @@ internal class DashboardServices(
 
         return results;
     }
+}
+
+class DateAndCountMetric
+{
+    public int Date { get; set; }
+    public int Count { get; set; }
 }

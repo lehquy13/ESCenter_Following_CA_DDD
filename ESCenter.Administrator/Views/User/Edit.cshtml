@@ -6,7 +6,6 @@
 
     List<string> roles = ViewData["Roles"] as List<string> ?? new List<string>();
     List<string> genders = ViewData["Genders"] as List<string> ?? new List<string>();
-    List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
 }
 <h1>Edit</h1>
 
@@ -47,7 +46,7 @@
 
                     @foreach (string i in genders)
                     {
-                        @if (i != Model.Gender.ToString())
+                        @if (i != Model.Gender)
                         {
                             <option> @i </option>
                         }
@@ -58,15 +57,7 @@
             <div class="col-md-4">
                 <label asp-for="Role" class="form-label">Role</label>
                 <select asp-for="Role" class="form-select">
-                    <option selected>@Model.Role.ToString()</option>
-
-                    @foreach (string i in roles)
-                    {
-                        @if (i != Model.Role.ToString())
-                        {
-                            <option> @i </option>
-                        }
-                    }
+                    <option selected>@Model.Role</option>
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
@@ -77,7 +68,7 @@
                 <span asp-validation-for="BirthYear" class="text-danger"></span>
             </div>
             <!-- disable email when confirmed -->
-            @if (Model.IsEmailConfirmed == true)
+            @if (Model.IsEmailConfirmed)
             {
                 <div class="col-md-6">
                     <label asp-for="Email" class="form-label">Email</label>
@@ -119,7 +110,7 @@
                 <input type="text" class="form-control" asp-for="City" placeholder="Sai Gon"/>
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
-            
+
             <div class="col-6">
                 <label asp-for="Country" class="form-label">Address</label>
                 <input type="text" class="form-control" asp-for="Country" placeholder="Viet Nam"/>

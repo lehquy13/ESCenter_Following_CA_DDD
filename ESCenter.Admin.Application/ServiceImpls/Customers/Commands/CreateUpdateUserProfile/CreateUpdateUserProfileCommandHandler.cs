@@ -70,7 +70,7 @@ public class CreateUpdateUserProfileCommandHandler(
                 return Result.Fail(UserAppServiceError.FailToCreateUserErrorWhileSavingChanges);
             }
 
-            var message = $"New learner: {user.FirstName} {user.LastName} at {user.CreationTime.ToLongDateString()}";
+            var message = $"New learner: {user.FirstName} {user.LastName} at {DateTime.UtcNow.ToLongDateString()}";
 
             await publisher.Publish(
                 new NewDomainObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),

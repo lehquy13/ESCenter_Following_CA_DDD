@@ -124,7 +124,7 @@ public class IdentityService(
             avatar,
             email,
             phoneNumber,
-            Role.Learner
+            role
         );
 
         return customer;

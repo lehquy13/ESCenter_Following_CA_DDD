@@ -29,7 +29,7 @@ public class TutorController(ILogger<TutorController> logger, IMapper mapper, IS
     private void PackStaticListToView()
     {
         ViewData["Roles"] = EnumProvider.Roles;
-        ViewData["Genders"] = EnumProvider.Genders;
+        ViewData["Genders"] = EnumProvider.GenderFilters;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
     }
 

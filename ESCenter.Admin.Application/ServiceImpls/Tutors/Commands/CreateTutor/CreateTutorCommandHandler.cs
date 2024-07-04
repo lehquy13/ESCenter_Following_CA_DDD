@@ -14,6 +14,7 @@ public class CreateTutorCommandHandler(
     IUnitOfWork unitOfWork,
     IAppLogger<RequestHandlerBase> logger,
     IIdentityService identityService,
+    ICustomerRepository customerRepository,
     ITutorDomainService tutorDomainService)
     : CommandHandlerBase<CreateTutorCommand>(unitOfWork, logger)
 {
@@ -39,6 +40,8 @@ public class CreateTutorCommandHandler(
         {
             return userInformation.Error;
         }
+        
+        await customerRepository.InsertAsync(userInformation.Value, cancellationToken);
 
         var result = await tutorDomainService.CreateTutorWithEmptyVerificationAsync(
             userInformation.Value.Id,

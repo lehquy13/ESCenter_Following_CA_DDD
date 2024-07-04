@@ -32,6 +32,9 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(
             typeof(TRequest).Name,
             val!,
             sw.ElapsedMilliseconds);
+        
+        // TODO: If the application is MVC, we can cast the request to <Result> and log the response body
+        
         sw.Stop();
 
         return val;

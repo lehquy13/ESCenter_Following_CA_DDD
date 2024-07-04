@@ -25,18 +25,24 @@ public class SetCourseTutorCommandHandler(
             return Result.Fail(CourseAppServiceErrors.CourseDoesNotExist);
         }
 
-        var tutor = await tutorRepository.GetTutorByUserId(CustomerId.Create(command.TutorId), cancellationToken);
-
-        if (tutor is null)
+        if (command.TutorId != Guid.Empty)
         {
-            return Result.Fail(CourseAppServiceErrors.TutorNotExistsError);
+            var tutor = await tutorRepository.GetTutorByUserId(CustomerId.Create(command.TutorId), cancellationToken);
+
+            if (tutor is null)
+            {
+                return Result.Fail(CourseAppServiceErrors.TutorNotExistsError);
+            }
+
+            var result = course.AssignTutor(tutor.Id);
+            if (result.IsFailure)
+            {
+                return result;
+            }
         }
-
-        var result = course.AssignTutor(tutor.Id);
-
-        if (result.IsFailure)
+        else
         {
-            return result;
+            course.UnAssignTutor();
         }
 
         await UnitOfWork.SaveChangesAsync(cancellationToken);

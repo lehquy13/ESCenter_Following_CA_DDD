@@ -28,7 +28,7 @@ public class CourseController(ISender sender) : Controller
     private async Task PackStaticListToView()
     {
         ViewData["Roles"] = EnumProvider.Roles;
-        ViewData["Genders"] = EnumProvider.Genders;
+        ViewData["Genders"] = EnumProvider.GenderFilters;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
         ViewData["LearningModes"] = EnumProvider.LearningModes;
         ViewData["Statuses"] = EnumProvider.Statuses;

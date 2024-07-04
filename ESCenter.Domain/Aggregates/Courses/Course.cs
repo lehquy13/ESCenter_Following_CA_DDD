@@ -116,7 +116,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         DomainEvents.Add(new CourseReviewedDomainEvent(this));
         DomainEvents.Add(new NewDomainObjectCreatedEvent(
             Id.Value.ToString(),
-            $"Review class: {Title} at {DateTime.Now.ToLongDateString()}",
+            $"Review class: {Title} at {DateTime.UtcNow.ToLongDateString()}",
             NotificationEnum.Course));
 
         return Result.Success();
@@ -140,7 +140,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
         DomainEvents.Add(new CourseReviewedDomainEvent(this));
         DomainEvents.Add(new NewDomainObjectCreatedEvent(
             Id.Value.ToString(),
-            $"Review class: {Title} at {CreationTime.ToLongDateString()}",
+            $"Review class: {Title} at {DateTime.UtcNow.ToLongDateString()}",
             NotificationEnum.Course));
 
         return Result.Success();

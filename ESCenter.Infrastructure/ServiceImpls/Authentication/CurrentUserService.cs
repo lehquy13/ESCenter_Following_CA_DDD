@@ -38,8 +38,6 @@ internal class CurrentUserService : ICurrentUserService
         }
         catch (Exception exception)
         {
-            logger.LogError("Error occurred while getting user claims: {Message}", exception.Message);
-
             UserId = Guid.Empty;
             IsAuthenticated = false;
             CurrentUserEmail = null;

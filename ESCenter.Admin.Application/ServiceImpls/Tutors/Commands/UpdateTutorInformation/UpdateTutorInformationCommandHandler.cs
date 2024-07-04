@@ -1,6 +1,7 @@
 ﻿using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.Errors;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -19,8 +20,8 @@ public class UpdateTutorInformationCommandHandler(
     public override async Task<Result> Handle(UpdateTutorInformationCommand command,
         CancellationToken cancellationToken)
     {
-        var tutorId = TutorId.Create(command.TutorBasicUpdateDto.Id);
-        var tutor = await tutorRepository.GetAsync(tutorId, cancellationToken);
+        var tutorId = CustomerId.Create(command.TutorBasicUpdateDto.Id);
+        var tutor = await tutorRepository.GetTutorByUserId(tutorId, cancellationToken);
 
         // Check if the tutor exist
         if (tutor is null)

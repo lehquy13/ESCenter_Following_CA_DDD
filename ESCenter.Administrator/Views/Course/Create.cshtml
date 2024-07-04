@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Create new user";
     
-    List<string> genders = EnumProvider.Genders;
+    List<string> genders = EnumProvider.GenderFilters;
     List<string> academics = ViewData["AcademicLevels"] as List<string> ?? new List<string>();
     List<string> learningModes = ViewData["LearningModes"] as List<string> ?? new List<string>();
 

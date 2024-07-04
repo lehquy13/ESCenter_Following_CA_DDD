@@ -35,8 +35,6 @@
     <link href="~/assets/css/style.css" rel="stylesheet">
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-
-
 </head>
 <body>
 
@@ -73,7 +71,7 @@
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>
-                        
+
                         @if (User.FindFirst(ClaimTypes.Role)?.Value == Role.Tutor.ToString())
                         {
                             <a class="dropdown-item d-flex align-items-center" asp-action="Index" asp-controller="TutorProfile">
@@ -304,36 +302,6 @@
     <div class="loader"></div>
 </div>
 
-<!-- Messenger Chat plugin Code -->
-<div id="fb-root"></div>
-
-<!-- Your Chat plugin code -->
-<div id="fb-customer-chat" class="fb-customerchat">
-</div>
-
-<script>
-        var chatbox = document.getElementById('fb-customer-chat');
-        chatbox.setAttribute("page_id", "102093292942240");
-        chatbox.setAttribute("attribution", "biz_inbox");
-    </script>
-
-<!-- Your SDK code -->
-<script>
-        window.fbAsyncInit = function () {
-            FB.init({
-                xfbml: true,
-                version: 'v17.0'
-            });
-        };
-
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
     <i class="bi bi-arrow-up-short"></i>
 </a>
@@ -345,6 +313,8 @@
 <script src="~/assets/vendor/php-email-form/validate.js"></script>
 <script src="~/simple-datatables/simple-datatables.js"></script>
 <script src="~/assets/vendor/alertifyjs/alertify.min.js"></script>
+
+<!--Start of Fchat.vn--><script type="text/javascript" src="https://cdn.fchat.vn/assets/embed/webchat.js?id=6680183acb4b7b35ff4b121b" async="async"></script><!--End of Fchat.vn-->
 
 <!-- Template Main JS File -->
 <script src="~/assets/js/main.js"></script>

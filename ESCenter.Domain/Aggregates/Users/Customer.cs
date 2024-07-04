@@ -55,12 +55,9 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
             Role = role
         };
 
-        var message =
-            $"New user: {customer.FirstName} {customer.LastName} at {customer.CreationTime.ToLongDateString()}";
-
         customer.DomainEvents.Add(new NewDomainObjectCreatedEvent(
             customer.Id.Value.ToString(),
-            message,
+            $"New user: {customer.FirstName} {customer.LastName} at {DateTime.UtcNow.ToLongDateString()}",
             NotificationEnum.Learner
         ));
 

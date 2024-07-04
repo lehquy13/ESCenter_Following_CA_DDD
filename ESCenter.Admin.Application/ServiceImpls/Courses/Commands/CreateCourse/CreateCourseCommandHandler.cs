@@ -44,7 +44,7 @@ public class CreateCourseCommandHandler(
             await courseRepository.InsertAsync(course, cancellationToken);
             await UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            var message = $"New class: {course.Title} at {course.CreationTime.ToLongDateString()}";
+            var message = $"New class: {course.Title} at {DateTime.UtcNow.ToLongDateString()}";
             await publisher.Publish(
                 new NewDomainObjectCreatedEvent(course.Id.Value.ToString(), message, NotificationEnum.Course),
                 cancellationToken);

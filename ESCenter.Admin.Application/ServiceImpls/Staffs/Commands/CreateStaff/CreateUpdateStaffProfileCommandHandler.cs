@@ -1,12 +1,10 @@
 ﻿using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices;
-using ESCenter.Domain.DomainServices.Interfaces;
 using ESCenter.Domain.Shared;
 using ESCenter.Domain.Shared.Courses;
 using MapsterMapper;
 using Matt.ResultObject;
-using Matt.SharedKernel.Application.Mediators;
 using Matt.SharedKernel.Application.Mediators.Commands;
 using Matt.SharedKernel.Domain.Interfaces;
 

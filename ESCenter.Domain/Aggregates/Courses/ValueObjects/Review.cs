@@ -26,7 +26,7 @@ public class Review : ValueObject, IAuditedObject
 
     public static Result<Review> Create(short rate, string detail, CourseId courseId)
     {
-        if (rate < MinRate || rate > MaxRate)
+        if (rate is < MinRate or > MaxRate)
         {
             return Result.Fail(CourseDomainError.InvalidReviewRate);
         }
@@ -40,6 +40,8 @@ public class Review : ValueObject, IAuditedObject
         {
             Rate = rate,
             Detail = detail,
+            CreationTime = DateTime.UtcNow,
+            LastModificationTime = DateTime.UtcNow
         };
     }
 

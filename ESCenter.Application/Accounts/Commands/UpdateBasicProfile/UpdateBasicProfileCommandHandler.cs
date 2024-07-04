@@ -65,7 +65,7 @@ public class UpdateBasicProfileCommandHandler( // Change name to Update only
 
         // TODO: Publish event
         var message = "New learner: " + user.FirstName + " " + user.LastName + " at " +
-                      user.CreationTime.ToLongDateString();
+                      DateTime.UtcNow.ToLongDateString();
         await publisher.Publish(
             new NewDomainObjectCreatedEvent(user.Id.Value.ToString(), message, NotificationEnum.Learner),
             cancellationToken);

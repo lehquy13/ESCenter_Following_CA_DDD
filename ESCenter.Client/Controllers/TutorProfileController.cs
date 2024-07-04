@@ -42,7 +42,7 @@ public class TutorProfileController(ISender sender, ICloudinaryServices cloudina
     {
         var subjects = await sender.Send(new GetSubjectsQuery());
         ViewData["Roles"] = EnumProvider.Roles;
-        ViewData["Genders"] = EnumProvider.Genders;
+        ViewData["Genders"] = EnumProvider.GenderFilters;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
         ViewData["Subjects"] = subjects.Value;
     }

@@ -20,7 +20,7 @@ public class StaffController(ILogger<StaffController> logger, ISender sender) : 
     private void PackStaticListToView()
     {
         ViewData["Roles"] = EnumProvider.Roles;
-        ViewData["Genders"] = EnumProvider.Genders;
+        ViewData["Genders"] = EnumProvider.GenderFilters;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
     }
 

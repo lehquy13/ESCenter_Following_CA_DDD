@@ -268,7 +268,7 @@ internal static class Program
                 {
                     var random = new Random();
                     var existing = new List<int>();
-                    for (var j = 0; j < random.Next(0, 3); j++)
+                    for (var j = 0; j < random.Next(1, 3); j++)
                     {
                         var index = random.Next(0, 6);
                         if (existing.Contains(index))

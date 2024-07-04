@@ -27,15 +27,10 @@ public class UpsertSubjectCommandHandler(
         else
         {
             // Insert
-            var subject = mapper.Map<Subject>(request.SubjectDto);
+            var subject = Subject.Create(request.SubjectDto.Name, request.SubjectDto.Description);
             await subjectRepository.InsertAsync(subject);
         }
 
-        if (await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
-        {
-            return Result.Fail(SubjectAppServiceError.FailToAddSubjectErrorWhileSavingChanges);
-        }
-
-        return Result.Success();
+        return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0 ? Result.Fail(SubjectAppServiceError.FailToAddSubjectErrorWhileSavingChanges) : Result.Success();
     }
 }

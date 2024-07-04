@@ -18,7 +18,7 @@ public class UserController(ILogger<UserController> logger, ISender sender) : Co
     private void PackStaticListToView()
     {
         ViewData["Roles"] = EnumProvider.Roles;
-        ViewData["Genders"] = EnumProvider.Genders;
+        ViewData["Genders"] = EnumProvider.GenderFilters;
         ViewData["AcademicLevels"] = EnumProvider.AcademicLevels;
     }
 

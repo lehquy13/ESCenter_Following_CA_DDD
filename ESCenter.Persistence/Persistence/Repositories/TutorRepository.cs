@@ -31,7 +31,7 @@ internal class TutorRepository(
 
         var tutors = await AppDbContext.Tutors
             .Where(x => result.Contains(x.Id))
-            .Take(10)
+            .Take(9)
             .ToListAsync();
 
         return tutors;

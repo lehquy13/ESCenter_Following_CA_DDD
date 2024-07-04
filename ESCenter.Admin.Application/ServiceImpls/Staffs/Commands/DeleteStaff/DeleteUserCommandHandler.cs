@@ -26,7 +26,7 @@ public class DeleteStaffCommandHandler(
         }
 
         var message = "Learner " + request.Id + " at " +
-                      DateTime.Now.ToLongDateString();
+                      DateTime.UtcNow.ToLongDateString();
 
         await publisher.Publish(
             new NewDomainObjectCreatedEvent(

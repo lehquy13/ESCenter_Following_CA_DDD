@@ -31,6 +31,12 @@ public class GetTutorsQueryHandler(
     public override async Task<Result<PaginatedList<TutorListForClientPageDto>>> Handle(GetTutorsQuery request,
         CancellationToken cancellationToken)
     {
+        return await HandleOld(request, cancellationToken);
+    }
+
+    public async Task<Result<PaginatedList<TutorListForClientPageDto>>> HandleOld(GetTutorsQuery request,
+        CancellationToken cancellationToken)
+    {
         var tutors =
             from tutor in tutorRepository.GetAll()
             join user in customerRepository.GetAll() on tutor.CustomerId equals user.Id
@@ -99,7 +105,6 @@ public class GetTutorsQueryHandler(
             tutors = tutors.OrderByDescending(record => record.Tutor.Rate)
                 .ThenByDescending(record => record.Courses.Count());
         }
-
 
         var tutorFromDb = await asyncQueryableExecutor
             .ToListAsSplitAsync(tutors

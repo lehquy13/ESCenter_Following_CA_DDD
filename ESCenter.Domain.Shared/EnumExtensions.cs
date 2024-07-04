@@ -8,17 +8,13 @@ public static class EnumProvider
         .Where(x => x != "All" && x != "Undefined")
         .ToList();
 
-    public static List<string> Genders =>
+    public static List<string> GenderFilters =>
     [
         "Male",
         "Female",
         "Other"
     ];
-
-    public static List<string> GenderFilters => Enum.GetNames(typeof(Gender))
-        .Where(x => x != "Both")
-        .ToList();
-
+    
     public static List<string> FullGendersOption =>
     [
         "Male",

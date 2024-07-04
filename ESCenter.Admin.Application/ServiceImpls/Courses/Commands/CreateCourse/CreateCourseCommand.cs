@@ -104,8 +104,5 @@ public class CourseForCreateDtoValidator : AbstractValidator<CourseForCreateDto>
         RuleFor(dto => dto.SubjectId)
             .NotEmpty().WithMessage("SubjectId is required.")
             .GreaterThan(0).WithMessage("SubjectId must be greater than 0.");
-
-        RuleFor(dto => dto.SubjectName)
-            .NotEmpty().WithMessage("SubjectName is required.");
     }
 }

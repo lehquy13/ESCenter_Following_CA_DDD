@@ -21,7 +21,7 @@ public class DeleteUserCommandHandler(
         var result = await identityRepository.RemoveAsync(CustomerId.Create(request.Id));
 
         var message = "Learner " + request.Id + " at " +
-                      DateTime.Now.ToLongDateString();
+                      DateTime.UtcNow.ToLongDateString();
 
         if (!result.IsSuccess && await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
