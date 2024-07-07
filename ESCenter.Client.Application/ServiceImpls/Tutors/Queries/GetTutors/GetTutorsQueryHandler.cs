@@ -88,7 +88,7 @@ public class GetTutorsQueryHandler(
             // Order by the number of subjects that the user has discovered
             tutors = tutors
                 .OrderByDescending(record => record.Tutor.Rate)
-                .ThenByDescending(record => record.Courses.Count())
+                //.ThenByDescending(record => record.Courses.Count())
                 .ThenByDescending(record => record.TutorMajors.Join(
                     discoveryQueryable,
                     tutorMajor => tutorMajor.SubjectId,
