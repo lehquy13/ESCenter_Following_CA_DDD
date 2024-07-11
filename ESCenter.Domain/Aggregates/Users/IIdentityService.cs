@@ -14,7 +14,7 @@ public interface IIdentityService : IDomainService
     /// <param name="password"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Customer?> SignInAsync(string email, string password, CancellationToken cancellationToken = default);
+    Task<Result<Customer>> SignInAsync(string email, string password, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Create new and empty user with default value: email, password, phoneNumber
@@ -45,7 +45,7 @@ public interface IIdentityService : IDomainService
         string phoneNumber,
         Role role = Role.Learner,
         CancellationToken cancellationToken = default);
-    
+
     /// <summary>
     /// Change password
     /// </summary>
@@ -54,7 +54,7 @@ public interface IIdentityService : IDomainService
     /// <param name="newPassword"></param>
     /// <returns></returns>
     Task<Result> ChangePasswordAsync(CustomerId customerId, string currentPassword, string newPassword);
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -63,6 +63,7 @@ public interface IIdentityService : IDomainService
     /// <param name="otpCode"></param>
     /// <returns></returns>
     Task<Result> ResetPasswordAsync(string email, string newPassword, string otpCode);
+
     Task<Result> RegisterAsTutor(
         CustomerId customerId,
         AcademicLevel academicLevel,
@@ -77,11 +78,13 @@ public interface IIdentityService : IDomainService
     /// <param name="customerId"></param>
     /// <returns></returns>
     Task<Result> RemoveAsync(CustomerId customerId);
-    
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="commandEmail"></param>
     /// <returns></returns>
     Task<Result> ForgetPasswordAsync(string commandEmail);
+
+    Task<Result> ConfirmEmail(string userId, string token);
 }

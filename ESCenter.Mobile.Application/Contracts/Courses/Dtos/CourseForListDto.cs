@@ -36,6 +36,7 @@ public class CourseForListDtoMappingConfig : IRegister
     {
         config.NewConfig<(Course, string), CourseForListDto>()
             .Map(des => des.LearningMode, src => src.Item1.LearningMode.ToString())
+            .Map(des => des.CreationTime, src => src.Item1.CreationTime)
             .Map(des => des.Status, src => src.Item1.Status.ToString())
             .Map(des => des.Fee, src => src.Item1.SectionFee.Amount)
             .Map(des => des.ChargeFee, src => src.Item1.ChargeFee.Amount)

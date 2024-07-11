@@ -27,6 +27,7 @@ public class GetAllTutorsQueryHandler(
         var tutorQ =
             from userR in customerRepository.GetAll()
             join tutorR in tutorRepository.GetAll() on userR.Id equals tutorR.CustomerId
+            orderby tutorR.IsVerified descending
             select new TutorListDto()
             {
                 Id = userR.Id.Value,

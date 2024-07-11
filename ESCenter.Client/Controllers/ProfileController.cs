@@ -7,6 +7,7 @@ using ESCenter.Client.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Client.Application.ServiceImpls.Notifications;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
 using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetLearningCourses;
+using ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetTutoringRequests;
 using ESCenter.Client.Application.ServiceImpls.Subjects.Queries.GetSubjects;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Client.Models;
@@ -44,16 +45,19 @@ public class ProfileController(
         var learnerProfile = await sender.Send(new GetUserProfileQuery());
         var learningCourses = await sender.Send(new GetLearningCoursesQuery());
         var notifications = await sender.Send(new GetNotificationsQuery());
+        var tutorRequests = await sender.Send(new GetTutorRequestsQuery());
 
         if (learnerProfile is { IsSuccess: true, Value: not null }
             && learningCourses is { IsSuccess: true, Value: not null }
-            && notifications is { IsSuccess: true, Value: not null })
+            && notifications is { IsSuccess: true, Value: not null }
+            && tutorRequests is { IsSuccess: true, Value: not null })
         {
             return View(new ProfileViewModel
             {
                 UserProfileDto = learnerProfile.Value,
                 LearningCourseForListDtos = learningCourses.Value,
-                NotificationDtos = notifications.Value
+                NotificationDtos = notifications.Value,
+                TutoringRequestForListDtos = tutorRequests.Value
             });
         }
 

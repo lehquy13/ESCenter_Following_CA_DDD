@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.Text;
+﻿using System.Text;
+using System.Text.Encodings.Web;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices;
@@ -10,6 +10,7 @@ using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,33 +19,40 @@ namespace ESCenter.Persistence.Persistence.Repositories;
 public class IdentityService(
     SignInManager<IdentityUser> signInManager,
     UserManager<IdentityUser> userManager,
-    RoleManager<IdentityRole> roleManager,
-    IUserStore<IdentityUser> userStore,
+    IUrlHelper urlHelper,
     IEmailSender emailSender,
     IAppLogger<IdentityService> logger,
     AppDbContext appDbContext)
     : DomainServiceBase(logger), IIdentityService
 {
-    public async Task<Customer?> SignInAsync(string email, string password,
+    public async Task<Result<Customer>> SignInAsync(string email, string password,
         CancellationToken cancellationToken = default)
     {
         var identityUser = await userManager.FindByEmailAsync(email);
 
         if (identityUser is null)
         {
-            return null;
+            return Result.Fail(DomainServiceErrors.UserNotFound);
         }
+
 
         var result = await signInManager.CheckPasswordSignInAsync(identityUser, password, false);
 
-        if (result.Succeeded)
+        if (!result.Succeeded)
+            return Result.Fail(DomainServiceErrors.InvalidPassword);
+
+        if (!identityUser.EmailConfirmed)
         {
-            return await appDbContext.Customers.FindAsync(
-                CustomerId.Create(new Guid(identityUser.Id)),
-                cancellationToken);
+            return Result.Fail(DomainServiceErrors.EmailNotConfirmed);
         }
 
-        return null;
+        var customer = await appDbContext.Customers.FindAsync(
+            CustomerId.Create(new Guid(identityUser.Id)),
+            cancellationToken);
+
+        return customer is null
+            ? Result.Fail(DomainServiceErrors.UserNotFound)
+            : customer;
     }
 
     public async Task<Result<Customer>> CreateAsync(
@@ -76,7 +84,6 @@ public class IdentityService(
             userName == "" ? email : userName,
             email,
             phoneNumber,
-            cancellationToken,
             esIdentityUser);
 
         if (!result.Succeeded)
@@ -87,21 +94,26 @@ public class IdentityService(
         logger.LogInformation("User created a new account with password.");
 
         var userId = new Guid(await userManager.GetUserIdAsync(esIdentityUser));
-        var code = await userManager.GenerateEmailConfirmationTokenAsync(esIdentityUser);
-
+        // This code will contain half of the userId and half of the phoneNumber
+        var code = $"{userId.ToString().Substring(0, userId.ToString().Length / 2)}{phoneNumber.Substring(0, phoneNumber.Length / 2)}";
+           
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        // var callbackUrl = Url.Page(
-        //     "/Account/ConfirmEmail",
-        //     pageHandler: null,
-        //     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-        //     protocol: Request.Scheme);
+        var local = "https://localhost:5100/";
+        var callback_url1 = $"{local}/client/authentication/confirm-email/{userId}/{code}";
 
-        emailSender.SendEmail(email, "Demo email",
-            $"This email will use to confirm your email using the code {code}");
-        
-        //await emailSender.SendHtmlEmail(email, "Confirm your email",
-        //  $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+        var azure = "https://escenter.azurewebsites.net/";
+        var uriBuilder = new UriBuilder(local + "client/authentication/confirm-email");
+
+        var callbackUrl = urlHelper.Link(
+            "client/authentication/confirm-email",
+            values: new { userId = userId, code = code, returnUrl = azure }
+        );
+
+        //emailSender.SendEmail(email, "Demo email",$"This email will use to confirm your email using the code {code}");
+
+        await emailSender.SendHtmlEmail(email, "Confirm your email",
+            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callback_url1)}'>clicking here</a>.");
 
         var roleAddResult = await userManager.AddToRoleAsync(esIdentityUser, role.ToString().ToUpper());
 
@@ -131,7 +143,6 @@ public class IdentityService(
     }
 
     private async Task<IdentityResult> CreateUser(string userName, string email, string phoneNumber,
-        CancellationToken cancellationToken,
         IdentityUser identityUser)
     {
         identityUser.UserName = userName;
@@ -233,11 +244,11 @@ public class IdentityService(
         }
 
         customer.RegisterAsTutor(
-            majors, 
+            majors,
             academicLevel,
             university,
             verificationInfoDtos);
-        
+
         return Result.Success();
     }
 
@@ -293,7 +304,32 @@ public class IdentityService(
         return Result.Success();
     }
 
-    private IdentityUser InitializeUserInstance()
+    public async Task<Result> ConfirmEmail(string userId, string token)
+    {
+        var user = await userManager.FindByIdAsync(userId);
+
+        if (user == null)
+        {
+            return Result.Fail(DomainServiceErrors.UserNotFound);
+        }
+        
+        token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+
+        // Check if the token first part is the same as the half userId
+        var isHalfUserId = user.Id.Substring(0, user.Id.Length / 2) == token[..(userId.Length / 2)];
+
+        // Check if the token second part is the same as the half phoneNumber
+        var isHalfPhoneNumber = user.PhoneNumber?.Substring(0, user.PhoneNumber.Length / 2) == 
+                                token.Substring(userId.Length / 2);
+        
+        user.EmailConfirmed = isHalfUserId && isHalfPhoneNumber;
+
+        return isHalfUserId && isHalfPhoneNumber
+            ? Result.Success()
+            : Result.Fail(DomainServiceErrors.ConfirmEmailFail);
+    }
+
+    private static IdentityUser InitializeUserInstance()
     {
         try
         {

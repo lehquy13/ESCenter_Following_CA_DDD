@@ -21,7 +21,7 @@ public class RefundPaymentWhenCourseCancelDomainEventHandler(
         }
 
         // Check if payment exists using course id
-        var payment = await paymentRepository.GetByCourseIdAsync(domainEvent.Course.Id, cancellationToken);
+        var payment = await paymentRepository.GetLatestByCourseIdAsync(domainEvent.Course.Id, cancellationToken);
 
         if (payment is null)
         {

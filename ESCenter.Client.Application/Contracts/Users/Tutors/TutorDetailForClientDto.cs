@@ -27,6 +27,7 @@ public class TutorDetailForClientDto : BasicAuditedEntityDto<Guid>
 public class ReviewDto : BasicAuditedEntityDto<Guid>
 {
     public string LearnerName { get; init; } = "";
+    public string SubjectName { get; init; } = "";
     public short Rate { get; init; } = 5;
     public string Detail { get; init; } = "";
 }

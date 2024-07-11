@@ -1,6 +1,5 @@
 ﻿using ESCenter.Domain.Aggregates.TutorRequests;
 using ESCenter.Domain.Aggregates.TutorRequests.ValueObjects;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Persistence.EntityFrameworkCore;
 using Matt.SharedKernel.Domain.Interfaces;
@@ -20,4 +19,10 @@ internal class TutorRequestRepository(
 
         return Task.CompletedTask;
     }
+
+    public async Task<IEnumerable<TutorRequest>> GetTutorRequestByLearnerId(CustomerId learnerId,
+        CancellationToken cancellationToken = default)
+        => await AppDbContext.TutorRequests
+            .Where(x => x.LearnerId == learnerId)
+            .ToListAsync(cancellationToken);
 }

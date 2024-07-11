@@ -2,6 +2,7 @@
 using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.Errors;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Interfaces;
@@ -14,6 +15,7 @@ namespace ESCenter.Domain.DomainServices;
 
 public class CourseDomainService(
     ICourseRepository courseRepository,
+    IPaymentRepository paymentRepository,
     ITutorRepository tutorRepository,
     IAppLogger<CourseDomainService> logger)
     : DomainServiceBase(logger), ICourseDomainService
@@ -110,6 +112,14 @@ public class CourseDomainService(
         if (courseFromDb.LearnerId != customerId)
         {
             return Result.Fail(CourseDomainError.IncorrectUserOfCourseError);
+        }
+
+        var payment = await paymentRepository.GetLatestByCourseIdAsync(courseFromDb.Id, CancellationToken.None);
+
+        // must be after 1 month for the course to be reviewed
+        if (payment?.CreationTime.AddMonths(1) > DateTime.Now)
+        {
+            return Result.Fail(CourseDomainError.InsufficientLearningDayForReview);
         }
 
         var result = courseFromDb.ReviewCourse(rate, detail);

@@ -5,6 +5,7 @@ namespace ESCenter.Domain.Aggregates.Payment;
 
 public interface IPaymentRepository : IRepository
 {
-    Task<Payment?> GetByCourseIdAsync(CourseId courseId, CancellationToken cancellationToken);
+    Task<List<Payment>> GetByCourseIdAsync(CourseId courseId, CancellationToken cancellationToken);
+    Task<Payment?> GetLatestByCourseIdAsync(CourseId courseId, CancellationToken cancellationToken);
     Task InsertAsync(Payment payment, CancellationToken cancellationToken);
 }

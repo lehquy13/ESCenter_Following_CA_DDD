@@ -2,12 +2,14 @@
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using Mapster;
 using MapsterMapper;
 using Matt.Paginated;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Contracts.Interfaces;
+using Matt.SharedKernel.Application.Contracts.Interfaces.Infrastructures;
 using Matt.SharedKernel.Application.Mediators.Queries;
 using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Repositories;
@@ -16,6 +18,7 @@ namespace ESCenter.Client.Application.ServiceImpls.Courses.Queries.GetCourses;
 
 public class GetCoursesQueryHandler(
     ICourseRepository courseRepository,
+    ICurrentUserService currentUserService,
     IReadOnlyRepository<Subject, SubjectId> subjectRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetCoursesQueryHandler> logger,
@@ -43,6 +46,17 @@ public class GetCoursesQueryHandler(
         {
             courseQuery = courseQuery.Where(x =>
                 x.Subject.ToLower().Contains(request.CourseParams.SubjectName.ToLower()));
+        }
+
+        if (currentUserService.IsAuthenticated)
+        {
+            // Check if he is tutor
+            if (currentUserService.Roles.Contains("Tutor"))
+            {
+                // Filter out the course that he has already requested
+                courseQuery = courseQuery.Where(x =>
+                    x.Course.CourseRequests.All(y => y.TutorId != TutorId.Create(currentUserService.UserId)));
+            }
         }
 
         var count = await asyncQueryableExecutor.CountAsync(courseQuery, cancellationToken);

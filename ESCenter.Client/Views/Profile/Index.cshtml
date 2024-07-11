@@ -38,19 +38,22 @@
                     <ul class="nav nav-tabs nav-tabs-bordered">
 
                         <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                            <button class="nav-link active" style="color: #2eca6a" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" id="profile-edit-button" data-bs-target="#profile-edit">Edit Profile</button>
+                            <button class="nav-link" style="color: #2eca6a" data-bs-toggle="tab" id="profile-edit-button" data-bs-target="#profile-edit">Edit Profile</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#learning-class">Learning Class</button>
+                            <button class="nav-link" style="color: #2eca6a" data-bs-toggle="tab" data-bs-target="#learning-class">Learning Class</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#notifications">Notifications</button>
+                            <button class="nav-link" style="color: #2eca6a" data-bs-toggle="tab" data-bs-target="#tutoring-requests">Tutoring Requests</button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password" id="profile-change-password-button">Change Password</button>
+                            <button class="nav-link" style="color: #2eca6a" data-bs-toggle="tab" data-bs-target="#notifications">Notifications</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" style="color: #2eca6a" data-bs-toggle="tab" data-bs-target="#profile-change-password" id="profile-change-password-button">Change Password</button>
                         </li>
                     </ul>
                     <div class="tab-content pt-2">
@@ -71,6 +74,12 @@
                         <div class="tab-pane fade pt-3" id="learning-class">
                             <!-- Learning Classes -->
                             <partial name="_AllLearningClass" model="@Model.LearningCourseForListDtos"/>
+                            <!-- End Learning Classes -->
+                        </div>
+                        
+                        <div class="tab-pane fade pt-3" id="tutoring-requests">
+                            <!-- Learning Classes -->
+                            <partial name="_AllTutoringRequests" model="@Model.TutoringRequestForListDtos"/>
                             <!-- End Learning Classes -->
                         </div>
                         

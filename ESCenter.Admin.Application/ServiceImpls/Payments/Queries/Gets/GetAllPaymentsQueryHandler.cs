@@ -24,8 +24,8 @@ public class GetAllPaymentsQueryHandler(
         CancellationToken cancellationToken)
     {
         var paymentQueryable = paymentRepository.GetAll()
-            .OrderByDescending(x => x.PaymentStatus == PaymentStatus.UnverifiedPayment)
-            .ThenBy(x => x.LastModificationTime)
+            .OrderByDescending(x => x.LastModificationTime)
+            .ThenBy(x => x.CreationTime)
             .Join(courseRepository.GetAll(),
                 payment => payment.CourseId,
                 course => course.Id,

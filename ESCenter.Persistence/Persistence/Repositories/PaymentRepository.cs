@@ -7,10 +7,18 @@ namespace ESCenter.Persistence.Persistence.Repositories;
 
 internal class PaymentRepository(AppDbContext appDbContext) : IPaymentRepository
 {
-    public async Task<Payment?> GetByCourseIdAsync(CourseId courseId, CancellationToken cancellationToken)
+    public async Task<List<Payment>> GetByCourseIdAsync(CourseId courseId, CancellationToken cancellationToken)
     {
         return await appDbContext.Payments
-            .FirstOrDefaultAsync(x => x.CourseId == courseId, cancellationToken);
+            .Where(x => x.CourseId == courseId).ToListAsync(cancellationToken);
+    }
+    
+    public async Task<Payment?> GetLatestByCourseIdAsync(CourseId courseId, CancellationToken cancellationToken)
+    {
+        return await appDbContext.Payments
+            .Where(x => x.CourseId == courseId)
+            .OrderByDescending(x => x.CreationTime)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
     public Task InsertAsync(Payment payment, CancellationToken cancellationToken)

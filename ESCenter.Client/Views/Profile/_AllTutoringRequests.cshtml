@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ESCenter.Client.Application.ServiceImpls.Profiles.Queries.GetTutoringRequests.TutorRequestForListDto>
+@{
+    var i = 0;
+    // Layout = "_ScriptLayout";
+}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Your tutoring request</h5>
+
+        <!-- Table with stripped rows -->
+        <table id="example" class="table datatable">
+            <thead>
+            <tr>
+                <!-- a avatar column will be added -->
+                <th scope="col">#</th>
+                
+                <th scope="col">Tutor</th>
+                <th scope="col">Request Message</th>
+                <th scope="col">Request Status</th>
+                <th scope="col">Sent At</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var classIn in Model)
+            {
+                i++;
+                <tr>
+                    <th scope="row">
+                        <input hidden name="Id" value="@classIn.Id"/>
+                        @i
+                    </th>
+                    <td>@classIn.TutorFullName</td>
+                    <td>@classIn.RequestMessage</td>
+                    <td>@classIn.Status</td>
+                    <td>@classIn.CreationTime.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+    </div>
+</div>

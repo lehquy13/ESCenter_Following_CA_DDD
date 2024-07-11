@@ -13,6 +13,8 @@ using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
 namespace ESCenter.Client.Application.ServiceImpls.Payments.Queries.Get;
 
+public record GetPaymentDetailQuery(Guid Guid) : IQueryRequest<PaymentDto>, IAuthorizationRequest;
+
 public class GetPaymentDetailQueryHandler(
     IRepository<Payment, PaymentId> paymentRepository,
     ICustomerRepository customerRepository,

@@ -1,7 +1,6 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
 using ESCenter.Domain.Aggregates.Tutors;
-using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Commands;
@@ -35,6 +34,7 @@ public class SetCourseTutorCommandHandler(
             }
 
             var result = course.AssignTutor(tutor.Id);
+            
             if (result.IsFailure)
             {
                 return result;

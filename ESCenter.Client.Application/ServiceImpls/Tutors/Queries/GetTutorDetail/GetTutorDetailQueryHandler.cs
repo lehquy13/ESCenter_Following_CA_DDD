@@ -1,6 +1,7 @@
 ﻿using ESCenter.Client.Application.Contracts.Users.Tutors;
 using ESCenter.Client.Application.ServiceImpls.TutorProfiles;
 using ESCenter.Domain.Aggregates.Courses;
+using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
 using ESCenter.Domain.Aggregates.Users;
@@ -17,6 +18,7 @@ public class GetTutorDetailQueryHandler(
     ICustomerRepository customerRepository,
     ITutorRepository tutorRepository,
     ICourseRepository courseRepository,
+    ISubjectRepository subjectRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetTutorDetailQueryHandler> logger,
     IMapper mapper)
@@ -35,7 +37,8 @@ public class GetTutorDetailQueryHandler(
             {
                 User = user,
                 Tutor = tutor,
-                Reviews = groupCourse.Where(x => x.Review != null).Select(x => new { x.Review, x.LearnerName })
+                Reviews = groupCourse.Where(x => x.Review != null)
+                    .Select(x => new { x.Review, x.LearnerName, x.SubjectId })
             };
 
         var queryResult =
@@ -46,6 +49,8 @@ public class GetTutorDetailQueryHandler(
             return Result.Fail(TutorProfileAppServiceError.NonExistTutorError);
         }
 
+        var listSubjects = await subjectRepository.GetAllListAsync(cancellationToken);
+
         var tutorForDetailDto =
             (queryResult.Tutor, queryResult.User).Adapt<TutorDetailForClientDto>();
 
@@ -55,6 +60,7 @@ public class GetTutorDetailQueryHandler(
                 LearnerName = x.LearnerName,
                 Detail = x.Review.Detail,
                 Rate = x.Review.Rate,
+                SubjectName = listSubjects.First(xx => xx.Id == x.SubjectId).Name,
                 CreationTime = x.Review.CreationTime,
                 LastModificationTime = x.Review.LastModificationTime
             }).ToList();

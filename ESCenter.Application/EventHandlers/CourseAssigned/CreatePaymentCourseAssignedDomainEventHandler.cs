@@ -26,7 +26,10 @@ public class CreatePaymentCourseWhenAssignedDomainEventHandler(
 
             var payment = await paymentRepository.GetByCourseIdAsync(course.Id, cancellationToken);
 
-            payment?.Cancel();
+            foreach (var payment1 in payment.Where(x => x.PaymentStatus == PaymentStatus.Pending))
+            {
+                payment1.Cancel();
+            }
 
             var newPayment = Payment.Create(course.TutorId, course.Id, course.ChargeFee.Amount);
 
@@ -34,5 +37,25 @@ public class CreatePaymentCourseWhenAssignedDomainEventHandler(
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
+    }
+}
+
+public class CancelPaymentWhenUnAssignedDomainEventHandler(
+    IPaymentRepository paymentRepository,
+    IUnitOfWork unitOfWork
+) : INotificationHandler<TutorUnAssignedDomainEvent>
+{
+    public async Task Handle(TutorUnAssignedDomainEvent domainEvent, CancellationToken cancellationToken)
+    {
+        var course = domainEvent.Course;
+
+        var payment = await paymentRepository.GetByCourseIdAsync(course.Id, cancellationToken);
+
+        foreach (var payment1 in payment.Where(x => x.PaymentStatus == PaymentStatus.Pending))
+        {
+            payment1.Cancel();
+        }
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

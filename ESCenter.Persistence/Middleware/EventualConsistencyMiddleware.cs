@@ -14,31 +14,33 @@ public class EventualConsistencyMiddleware(RequestDelegate next)
     {
         var transaction = await dbContext.Database.BeginTransactionAsync();
 
-        context.Response.OnCompleted(async () =>
-        {
-            try
-            {
-                if (context.Items.TryGetValue(DomainEventsKey, out var value) &&
-                    value is Queue<IDomainEvent> domainEvents)
-                {
-                    while (domainEvents.TryDequeue(out var nextEvent))
-                    {
-                        await publisher.Publish(nextEvent);
-                    }
-                }
-
-                await transaction.CommitAsync();
-            }
-            catch (EventualConsistencyException eventualConsistencyException)
-            {
-                // Handle eventual consistency exceptions
-            }
-            finally
-            {
-                await transaction.DisposeAsync();
-            }
-        });
+        // context.Response.OnCompleted(async () =>
+        // {
+        //     
+        // });
 
         await next(context);
+        
+        try
+        {
+            if (context.Items.TryGetValue(DomainEventsKey, out var value) &&
+                value is Queue<IDomainEvent> domainEvents)
+            {
+                while (domainEvents.TryDequeue(out var nextEvent))
+                {
+                    await publisher.Publish(nextEvent);
+                }
+            }
+
+            await transaction.CommitAsync();
+        }
+        catch (EventualConsistencyException eventualConsistencyException)
+        {
+            // Handle eventual consistency exceptions
+        }
+        finally
+        {
+            await transaction.DisposeAsync();
+        }
     }
 }

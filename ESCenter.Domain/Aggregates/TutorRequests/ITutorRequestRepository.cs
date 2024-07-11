@@ -8,4 +8,7 @@ namespace ESCenter.Domain.Aggregates.TutorRequests;
 public interface ITutorRequestRepository : IRepository<TutorRequest, TutorRequestId>
 {
     Task ClearTutorRequests(CustomerId tutorId, CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<TutorRequest>> GetTutorRequestByLearnerId(CustomerId learnerId,
+        CancellationToken cancellationToken = default);
 }

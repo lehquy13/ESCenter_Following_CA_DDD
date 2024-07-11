@@ -86,11 +86,6 @@ public class Payment : FullAuditedAggregateRoot<PaymentId>
     {
         PaymentStatus = PaymentStatus.Pending;
     }
-
-    public void UpdateAmount(decimal chargeFeeAmount)
-    {
-        Amount = chargeFeeAmount;
-    }
 }
 
 public record TutorPaidDomainEvent(Payment Payment) : IDomainEvent;

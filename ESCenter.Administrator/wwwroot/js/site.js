@@ -32,7 +32,7 @@ function callPostActionWithForm(formInput) {
                 alertify.success('Updated successfully');
                 
                 if(response.reset === true) {
-                    setTimeout(location.reload.bind(location), 2000);
+                    setTimeout(location.reload.bind(location), 1000);
                 }
                 
             } else if (response.res === "deleted" || response.res === "updated") {

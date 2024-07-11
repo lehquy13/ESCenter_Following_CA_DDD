@@ -40,4 +40,7 @@ public static class CourseDomainError
 
     public static Error CourseUnavailableForConfirmation { get; } = new("CourseUnavailableForConfirmation",
         "This course isn't available for confirmation!");
+
+    public static Error NotYetReviewCourseError =>
+        new("NotYetReviewCourseError", "This course hasn't been reviewed yet!");
 }

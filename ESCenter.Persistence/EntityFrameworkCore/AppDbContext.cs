@@ -22,8 +22,7 @@ namespace ESCenter.Persistence.EntityFrameworkCore;
 public class AppDbContext(
     DbContextOptions<AppDbContext> options,
     IHttpContextAccessor? httpContextAccessor = null
-)
-    : IdentityDbContext<IdentityUser, IdentityRole, string>(options)
+) : IdentityDbContext<IdentityUser, IdentityRole, string>(options)
 {
     public DbSet<Subject> Subjects { get; init; } = null!;
     public DbSet<Course> Courses { get; init; } = null!;

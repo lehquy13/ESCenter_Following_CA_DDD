@@ -1,7 +1,6 @@
 ﻿using ESCenter.Application.Contracts.Authentications;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Domain.Aggregates.Users;
-using ESCenter.Domain.DomainServices.Interfaces;
 using MapsterMapper;
 using Matt.ResultObject;
 using Matt.SharedKernel.Application.Mediators.Queries;
@@ -21,13 +20,15 @@ public class LoginQueryHandler(
         LoginQuery request,
         CancellationToken cancellationToken)
     {
-        var customer = await identityService.SignInAsync(
+        var result = await identityService.SignInAsync(
             request.Email, request.Password, cancellationToken);
 
-        if (customer is null)
+        if (result.IsFailure)
         {
-            return Result.Fail(AuthenticationErrorMessages.LoginFailError);
+            return result.Error;
         }
+
+        var customer = result.Value;
 
         //3. Generate token
         var userLoginDto = new UserLoginDto()

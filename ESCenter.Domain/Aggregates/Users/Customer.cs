@@ -77,7 +77,14 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
         Role = Role.Tutor;
         DomainEvents.Add(new RegisteredAsTutorDomainEvent(Id, majors, academicLevel, university, verificationInfoDtos));
     }
+
+    public void VerifyEmail()
+    {
+        DomainEvents.Add(new EmailVerifiedDomainEvent(this));
+    }
 }
+
+public record EmailVerifiedDomainEvent(Customer Customer) : IDomainEvent;
 
 public record RegisteredAsTutorDomainEvent(
     CustomerId CustomerId,

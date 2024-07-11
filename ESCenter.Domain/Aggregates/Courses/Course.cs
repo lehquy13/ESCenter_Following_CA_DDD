@@ -182,19 +182,24 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public Result AssignTutor(TutorId tutorId)
     {
-        switch (Status)
+        if (tutorId == LearnerId)
         {
-            case Status.Available:
-            case Status.Canceled:
-            case Status.Confirmed:
-                Status = Status.OnProgressing;
-                TutorId = tutorId;
-                break;
-            case Status.OnProgressing:
-                TutorId = tutorId;
-                break;
-            default:
-                return Result.Fail("Invalid status for assigning");
+            return Result.Fail("Can't assign this course to yourself.");
+        }
+
+        Status = Status.OnProgressing;
+        TutorId = tutorId;
+
+        foreach (var courseRequest in _courseRequests)
+        {
+            if (courseRequest.TutorId == tutorId)
+            {
+                courseRequest.Approved();
+            }
+            else
+            {
+                courseRequest.Cancel();
+            }
         }
 
         DomainEvents.Add(new TutorAssignedDomainEvent(this, tutorId));
@@ -241,6 +246,13 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
     {
         TutorId = null;
         Status = Status.PendingApproval;
+
+        // Check if there is a request approved before, then cancel it
+        var existCourseRequest = _courseRequests.FirstOrDefault(x => x.TutorId == TutorId);
+
+        existCourseRequest?.Cancel();
+        
+        DomainEvents.Add(new TutorUnAssignedDomainEvent(this));
     }
 
     public Result Purchase(TutorId tutorId)
@@ -291,9 +303,9 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
         Status = Status.OnProgressing;
         TutorId = tutorId;
-        
+
         var existCourseRequest = _courseRequests.FirstOrDefault(x => x.TutorId == tutorId);
-        
+
         if (existCourseRequest is not null)
         {
             existCourseRequest.Approved();
@@ -318,7 +330,7 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
         return Result.Success();
     }
-    
+
     public void CoursePaidByTutor()
     {
         Status = Status.UnverifiedPayment;

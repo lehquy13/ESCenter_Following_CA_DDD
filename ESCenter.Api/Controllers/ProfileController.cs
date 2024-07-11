@@ -5,6 +5,7 @@ using ESCenter.Mobile.Application.ServiceImpls.Courses.Commands.ReviewCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Commands.AddOrResetDiscovery;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningCourse;
 using ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetLearningCourses;
+using ESCenter.Mobile.Application.ServiceImpls.Profiles.Queries.GetTutoringRequests;
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Commands.UpdateTutorProfile;
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequestDetail;
 using ESCenter.Mobile.Application.ServiceImpls.TutorProfiles.Queries.GetCourseRequests;
@@ -27,6 +28,13 @@ public class ProfileController(
     {
         var loginResult = await mediator.Send(new GetUserProfileQuery());
         return Ok(loginResult);
+    }
+    
+    [HttpGet("tutoring-request")]
+    public async Task<IActionResult> GetTutoringRequests()
+    {
+        var result = await mediator.Send(new GetTutorRequestsQuery());
+        return Ok(result);
     }
 
     [HttpGet("learning-courses")]

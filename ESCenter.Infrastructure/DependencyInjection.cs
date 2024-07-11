@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using ESCenter.Application.EventHandlers;
 using ESCenter.Application.Interfaces;
 using ESCenter.Application.Interfaces.Authentications;
 using ESCenter.Application.Interfaces.Cloudinarys;
@@ -12,6 +11,9 @@ using Matt.SharedKernel.Domain.Interfaces;
 using Matt.SharedKernel.Domain.Interfaces.Emails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -44,6 +46,13 @@ namespace ESCenter.Infrastructure
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            services
+                .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+                .AddScoped<IUrlHelper>(x => x
+                    .GetRequiredService<IUrlHelperFactory>()
+                    .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext ??
+                                  throw new InvalidOperationException("ActionContext is null")));
 
             // set configuration settings to emailSettingName and turn it into Singleton
             var emailSettingNames = new EmailSettingNames();

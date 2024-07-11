@@ -29,4 +29,5 @@ public static class DomainServiceErrors
     public static Error InvalidCourseStatusForPayment { get; } = new("InvalidCourseStatusForPayment",
         "Invalid course status for payment");
 
+    public static Error ConfirmEmailFail => new("ConfirmEmailFail", "Confirm email fail");
 }

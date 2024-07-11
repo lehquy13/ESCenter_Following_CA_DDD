@@ -1,15 +1,11 @@
-﻿using ESCenter.Application.Accounts.Commands.ChangePassword;
-using ESCenter.Application.Accounts.Commands.ForgetPassword;
+﻿using ESCenter.Application.Accounts.Commands.ForgetPassword;
 using ESCenter.Application.Accounts.Commands.Register;
-using ESCenter.Application.Accounts.Commands.ResetPassword;
 using ESCenter.Application.Accounts.Queries.Login;
 using ESCenter.Application.Accounts.Queries.ValidateToken;
 using ESCenter.Application.Contracts.Authentications;
-using ESCenter.Client.Models;
 using Matt.SharedKernel.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ESCenter.Client.Controllers;
@@ -122,5 +118,16 @@ public class AuthenticationController(ISender mediator, IAppLogger<Authenticatio
         var loginResult = await mediator.Send(new ForgetPasswordCommand(email));
 
         return View("SuccessPage", "If you have registered with us, we have sent an email to your registered email.");
+    }
+
+    // Confirm email using userId and token
+    [HttpGet("confirm-email/{userId}/{token}")]
+    public async Task<IActionResult> ConfirmEmail(Guid userId, string token)
+    {
+        var result = await mediator.Send(new ConfirmEmailCommand(userId, token));
+
+        return result.IsSuccess
+            ? View("SuccessPage", "Your email has been confirmed successfully. You can now login.")
+            : View("Error");
     }
 }
