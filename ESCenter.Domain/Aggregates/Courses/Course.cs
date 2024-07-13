@@ -244,13 +244,14 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
 
     public void UnAssignTutor()
     {
-        TutorId = null;
         Status = Status.PendingApproval;
 
         // Check if there is a request approved before, then cancel it
         var existCourseRequest = _courseRequests.FirstOrDefault(x => x.TutorId == TutorId);
 
         existCourseRequest?.Cancel();
+        
+        TutorId = null;
         
         DomainEvents.Add(new TutorUnAssignedDomainEvent(this));
     }

@@ -19,7 +19,6 @@ public sealed class CourseForListDto : BasicAuditedEntityDto<Guid>
 
     public string LearnerGender { get; set; } = "None";
     public int NumberOfLearner { get; set; } = 1;
-    public string ContactNumber { get; set; } = string.Empty;
 
     public decimal SessionDuration { get; set; } = 90;
     public int SessionPerWeek { get; set; } = 2;

@@ -36,9 +36,9 @@
                         @if (paymentDto.PaymentStatus == PaymentStatus.Pending.ToString())
                         {
                             <button type="button"
-                                    class="btn btn-primary"
+                                    class="btn btn-primary" style="background-color: #2eca6a"
                                     onclick="OpenGetDialog('@Url.Action("MakePayment", "TutorProfile", new { id = paymentDto.PaymentId })');">
-                                Make payment
+                                Pay
                             </button>
                         }
                     </td>

@@ -29,7 +29,7 @@ public class GetTutorRequestsQueryHandler(
         CancellationToken cancellationToken)
     {
         var userId = CustomerId.Create(currentUserService.UserId);
-        
+
         var queryable = tutorRequestRepository.GetAll()
             .Where(t => t.LearnerId == userId)
             .Join(tutorRepository.GetAll(),
@@ -46,7 +46,7 @@ public class GetTutorRequestsQueryHandler(
                 Id = t.req.Id.Value,
                 RequestMessage = t.req.Message,
                 Status = t.req.RequestStatus,
-                TutorFullName = t.customer.FirstName + t.customer.LastName,
+                TutorFullName = t.customer.FirstName + " " + t.customer.LastName,
                 CreationTime = t.req.CreationTime
             });
 
@@ -58,7 +58,7 @@ public class TutorRequestForListDto
 {
     public Guid Id { get; set; }
     public DateTime CreationTime { get; set; }
-    public string TutorFullName {get; set; } = null!;
+    public string TutorFullName { get; set; } = null!;
     public string RequestMessage { get; set; } = null!;
     public RequestStatus Status { get; set; }
 }

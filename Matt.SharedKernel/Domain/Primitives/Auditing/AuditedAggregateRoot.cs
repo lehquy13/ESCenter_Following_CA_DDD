@@ -6,9 +6,9 @@ public abstract class AuditedAggregateRoot<TId> : AggregateRoot<TId>, IAuditedOb
     where TId : notnull
 {
     //Creation
-    public DateTime CreationTime { get; protected init; }
+    public DateTime CreationTime { get; protected set; }
 
-    public string? CreatorId { get; protected init; }
+    public string? CreatorId { get; protected set; }
 
     //Modification
     public DateTime? LastModificationTime { get; protected set;}

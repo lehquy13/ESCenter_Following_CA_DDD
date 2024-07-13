@@ -4,7 +4,7 @@
 }
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Current teaching classes</h5>
+        <h5 class="card-title">Your teaching requests </h5>
 
         <!-- Table with stripped rows -->
         <table id="example" class="table datatable">
@@ -31,7 +31,7 @@
                     <td>@requestGettingClassDto.RequestStatus</td>
 
                     <td>
-                        <button type="button" class="btn btn-primary"
+                        <button type="button" class="btn btn-primary" style="background-color: #2eca6a"
                                 onclick="OpenGetDialog('@Url.Action("TeachingClassDetail", "TutorProfile", new { courseId = requestGettingClassDto.CourseId })','Detail');">
                             Detail
                         </button>

@@ -46,7 +46,7 @@ public class GetTutorRequestsQueryHandler(
                 Id = t.req.Id.Value,
                 RequestMessage = t.req.Message,
                 Status = t.req.RequestStatus,
-                TutorFullName = t.customer.FirstName + t.customer.LastName,
+                TutorFullName = t.customer.FirstName + " " + t.customer.LastName,
                 CreationTime = t.req.CreationTime
             });
 
