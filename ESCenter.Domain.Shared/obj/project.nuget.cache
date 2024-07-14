@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "dgSpecHash": "7beUXRdfo2PxZK0bGDxcHEIJ2I48lAub7jcKMh6zrnTiewKUiMQzat0JoTjmPM2kpRabV87eL+h0+4/xSxOtmg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\ESCenter.Domain.Shared\\ESCenter.Domain.Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Matthew\\.nuget\\packages\\fluentvalidation\\11.8.1\\fluentvalidation.11.8.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.8.1\\fluentvalidation.dependencyinjectionextensions.11.8.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\mapster.dependencyinjection\\1.0.1\\mapster.dependencyinjection.1.0.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\mediatr\\12.1.1\\mediatr.12.1.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\matt.auditing\\1.0.0\\matt.auditing.1.0.0.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\matt.autodi\\1.0.0\\matt.autodi.1.0.0.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\matt.paginated\\1.0.1\\matt.paginated.1.0.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\matt.resultobject\\1.0.1\\matt.resultobject.1.0.1.nupkg.sha512",
+    "C:\\Users\\Matthew\\.nuget\\packages\\matt.sharedkernel\\1.0.9.6\\matt.sharedkernel.1.0.9.6.nupkg.sha512"
+  ],
+  "logs": []
+}

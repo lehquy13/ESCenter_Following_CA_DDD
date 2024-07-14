@@ -1,0 +1,329 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.SharedKernel\\Matt.SharedKernel.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Auditing\\Matt.Auditing.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Auditing\\Matt.Auditing.csproj",
+        "projectName": "Matt.Auditing",
+        "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Auditing\\Matt.Auditing.csproj",
+        "packagesPath": "C:\\Users\\Matthew\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Auditing\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Matthew\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.AutoDI\\Matt.AutoDI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.AutoDI\\Matt.AutoDI.csproj",
+        "projectName": "Matt.AutoDI",
+        "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.AutoDI\\Matt.AutoDI.csproj",
+        "packagesPath": "C:\\Users\\Matthew\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.AutoDI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Matthew\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Paginated\\Matt.Paginated.csproj": {
+      "version": "1.0.1",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Paginated\\Matt.Paginated.csproj",
+        "projectName": "Matt.Paginated",
+        "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Paginated\\Matt.Paginated.csproj",
+        "packagesPath": "C:\\Users\\Matthew\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Paginated\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Matthew\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.ResultObject\\Matt.ResultObject.csproj": {
+      "version": "1.0.1",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.ResultObject\\Matt.ResultObject.csproj",
+        "projectName": "Matt.ResultObject",
+        "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.ResultObject\\Matt.ResultObject.csproj",
+        "packagesPath": "C:\\Users\\Matthew\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.ResultObject\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Matthew\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.SharedKernel\\Matt.SharedKernel.csproj": {
+      "version": "1.0.9.6",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.SharedKernel\\Matt.SharedKernel.csproj",
+        "projectName": "Matt.SharedKernel",
+        "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.SharedKernel\\Matt.SharedKernel.csproj",
+        "packagesPath": "C:\\Users\\Matthew\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.SharedKernel\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Matthew\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Auditing\\Matt.Auditing.csproj": {
+                "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Auditing\\Matt.Auditing.csproj"
+              },
+              "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.AutoDI\\Matt.AutoDI.csproj": {
+                "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.AutoDI\\Matt.AutoDI.csproj"
+              },
+              "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Paginated\\Matt.Paginated.csproj": {
+                "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.Paginated\\Matt.Paginated.csproj"
+              },
+              "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.ResultObject\\Matt.ResultObject.csproj": {
+                "projectPath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.ResultObject\\Matt.ResultObject.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentValidation.DependencyInjectionExtensions": {
+              "target": "Package",
+              "version": "[11.8.1, )"
+            },
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.4.0, )"
+            },
+            "Mapster.DependencyInjection": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.1.1, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

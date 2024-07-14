@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "up1soL6lYgtdHkXSE7TpF4UG6VFZHleNwNeS/2ryMdg=",
+  "Source": "ESCenter.Api",
+  "BasePath": "_content/ESCenter.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,275 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ESCenter.Administrator
+build_property.RootNamespace = ESCenter.Administrator
+build_property.ProjectDir = C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\ESCenter.Administrator\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
+build_property.MSBuildProjectDirectory = C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\ESCenter.Administrator
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Payment/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Payment/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Payment/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Payment/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Staff/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Staff/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Staff/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZcRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Staff/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Staff/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = 
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhZmZcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Authentication/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aGVudGljYXRpb25cTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXERldGFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/ViewTutor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXFZpZXdUdXRvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/_EditRequest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXF9FZGl0UmVxdWVzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Course/_PickTutor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXF9QaWNrVHV0b3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/_AreaChart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfQXJlYUNoYXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/_PieChart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfUGllQ2hhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/_TotalClasses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfVG90YWxDbGFzc2VzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/_TotalStudents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfVG90YWxTdHVkZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Home/_TotalTutors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfVG90YWxUdXRvcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Payment/_Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxfRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Profile/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Profile/_ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxfQ2hhbmdlUGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Profile/_ProfileEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxfUHJvZmlsZUVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Profile/_ProfileOverview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZmlsZVxfUHJvZmlsZU92ZXJ2aWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Shared/Blank.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEJsYW5rLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Subject/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Subject/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Subject/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Subject/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/TutorRequest/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JSZXF1ZXN0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/EditVerification.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcRWRpdFZlcmlmaWNhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/ViewTutorRequests.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcVmlld1R1dG9yUmVxdWVzdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/_Subjects.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcX1N1YmplY3RzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/_TutorInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcX1R1dG9ySW5mby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Tutor/_UserInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHV0b3JcX1VzZXJJbmZvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/Student.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxTdHVkZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/Tutor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxUdXRvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/User/_Subjects.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxfU3ViamVjdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-w303o0bxw6
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Shared/_Layout1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQxLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-x6pzu94gln
+
+[C:/Users/Matthew/RiderProjects/ES_Center_Following_CA_DDD/ESCenter.Administrator/Views/Shared/_ScriptLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TY3JpcHRMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-7s07kgq860

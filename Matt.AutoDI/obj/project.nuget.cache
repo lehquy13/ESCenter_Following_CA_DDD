@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "cT8ER9IYqAAJmV4vMsxl7wetO5vgwUSn/JXyeVn1EqNzWNzxUD06U3mwt1UGz6jnWieYprN1P1BQDmHNON/kMg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Matthew\\RiderProjects\\ES_Center_Following_CA_DDD\\Matt.AutoDI\\Matt.AutoDI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Matthew\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Matt.Paginated</id>
+    <version>1.0.1</version>
+    <authors>Matt.Paginated</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="f28bf27163ea56161f877cd8e5d402eff64e1398" />
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Paginated\bin\Debug\net8.0\Matt.Paginated.dll" target="lib\net8.0\Matt.Paginated.dll" />
+  </files>
+</package>

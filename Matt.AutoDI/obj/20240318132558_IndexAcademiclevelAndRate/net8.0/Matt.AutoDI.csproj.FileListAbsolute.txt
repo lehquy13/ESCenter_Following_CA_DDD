@@ -1,0 +1,13 @@
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\bin\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.deps.json
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\bin\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\bin\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.pdb
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.csproj.AssemblyReference.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.AssemblyInfoInputs.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.AssemblyInfo.cs
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.csproj.CoreCompileInputs.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.sourcelink.json
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\refint\Matt.AutoDI.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\Matt.AutoDI.pdb
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.AutoDI\obj\20240318132558_IndexAcademiclevelAndRate\net8.0\ref\Matt.AutoDI.dll

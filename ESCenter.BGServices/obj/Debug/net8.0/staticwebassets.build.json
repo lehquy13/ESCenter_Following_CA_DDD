@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "w0leOcNtTBsHbzGTozueHHFWxae5Mlk6I3BKgw3zqSE=",
+  "Source": "ESCenter.BGServices",
+  "BasePath": "_content/ESCenter.BGServices",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

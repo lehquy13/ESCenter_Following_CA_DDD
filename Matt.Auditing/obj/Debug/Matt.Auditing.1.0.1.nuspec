@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Matt.Auditing</id>
+    <version>1.0.1</version>
+    <authors>Matt.Auditing</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="dae5c052c47872d1b259c3ec7614b25af28cfa08" />
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\bin\Debug\net8.0\Matt.Auditing.dll" target="lib\net8.0\Matt.Auditing.dll" />
+  </files>
+</package>

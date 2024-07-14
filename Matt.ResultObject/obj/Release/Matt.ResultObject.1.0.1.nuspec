@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Matt.ResultObject</id>
+    <version>1.0.1</version>
+    <authors>Matt.ResultObject</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="d29b9221995284bc9f4067efb86efd873c38acb7" />
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.ResultObject\bin\Release\net8.0\Matt.ResultObject.dll" target="lib\net8.0\Matt.ResultObject.dll" />
+  </files>
+</package>

@@ -1,0 +1,12 @@
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\bin\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.deps.json
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\bin\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\bin\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.pdb
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.AssemblyInfoInputs.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.AssemblyInfo.cs
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.csproj.CoreCompileInputs.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.sourcelink.json
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\refint\Matt.Auditing.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\Matt.Auditing.pdb
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\Matt.Auditing\obj\20240322161306_ChangeTutorFK\net8.0\ref\Matt.Auditing.dll

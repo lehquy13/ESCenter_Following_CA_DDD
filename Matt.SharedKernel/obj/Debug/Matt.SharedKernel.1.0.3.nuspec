@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Matt.SharedKernel</id>
+    <version>1.0.3</version>
+    <title>Matt.Clean_Architecture</title>
+    <authors>Matt.SharedKernel</authors>
+    <readme>readme.md</readme>
+    <description>This NuGet package offers a versatile collection of interfaces and classes meticulously crafted to streamline DDD practices, leverage the Specification Pattern, and more.</description>
+    <tags>ddd</tags>
+    <repository type="git" url="https://github.com/lehquy13/Matt.CA_Template" commit="c1185f03def093fde5891ed097b28d4907532ed5" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="Matt.Auditing" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Matt.AutoDI" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Matt.Paginated" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Matt.ResultObject" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="FluentValidation.DependencyInjectionExtensions" version="11.8.1" exclude="Build,Analyzers" />
+        <dependency id="Mapster" version="7.4.0" exclude="Build,Analyzers" />
+        <dependency id="Mapster.DependencyInjection" version="1.0.1" exclude="Build,Analyzers" />
+        <dependency id="MediatR" version="12.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration" version="8.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Matthew\RiderProjects\Matt.CA_Template\Matt.SharedKernel\bin\Debug\net8.0\Matt.SharedKernel.dll" target="lib\net8.0\Matt.SharedKernel.dll" />
+    <file src="C:\Users\Matthew\RiderProjects\Matt.CA_Template\Matt.SharedKernel\readme.md" target="\readme.md" />
+  </files>
+</package>

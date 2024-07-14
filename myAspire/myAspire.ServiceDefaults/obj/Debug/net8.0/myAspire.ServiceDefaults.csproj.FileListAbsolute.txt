@@ -1,0 +1,13 @@
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\bin\Debug\net8.0\myAspire.ServiceDefaults.deps.json
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\bin\Debug\net8.0\myAspire.ServiceDefaults.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\bin\Debug\net8.0\myAspire.ServiceDefaults.pdb
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.csproj.AssemblyReference.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.AssemblyInfoInputs.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.AssemblyInfo.cs
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.csproj.CoreCompileInputs.cache
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.sourcelink.json
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\refint\myAspire.ServiceDefaults.dll
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\myAspire.ServiceDefaults.pdb
+C:\Users\Matthew\RiderProjects\ES_Center_Following_CA_DDD\myAspire\myAspire.ServiceDefaults\obj\Debug\net8.0\ref\myAspire.ServiceDefaults.dll
