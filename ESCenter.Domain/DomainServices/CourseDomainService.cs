@@ -2,20 +2,24 @@
 using ESCenter.Domain.Aggregates.Courses.Entities;
 using ESCenter.Domain.Aggregates.Courses.Errors;
 using ESCenter.Domain.Aggregates.Courses.ValueObjects;
+using ESCenter.Domain.Aggregates.Notifications;
 using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.DomainServices.Interfaces;
 using ESCenter.Domain.Shared.Courses;
+using ESCenter.Domain.Shared.NotificationConsts;
 using ESCenter.Domain.Specifications.Tutors;
 using Matt.ResultObject;
 using Matt.SharedKernel.Domain.Interfaces;
+using Matt.SharedKernel.Domain.Interfaces.Repositories;
 
 namespace ESCenter.Domain.DomainServices;
 
 public class CourseDomainService(
     ICourseRepository courseRepository,
     IPaymentRepository paymentRepository,
+    IRepository<Notification, int> notificationRepository,
     ITutorRepository tutorRepository,
     IAppLogger<CourseDomainService> logger)
     : DomainServiceBase(logger), ICourseDomainService
@@ -41,6 +45,14 @@ public class CourseDomainService(
             course.Id,
             string.Empty
         );
+        
+        var notif = Notification.Create(
+            "New teaching request has been created",
+            course.Id.Value.ToString(),
+            NotificationEnum.CourseRequest
+        );
+        
+        await notificationRepository.InsertAsync(notif);
 
         var result = course.Request(courseRequestToCreate);
 

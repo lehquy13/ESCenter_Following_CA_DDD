@@ -2,24 +2,21 @@
 using ESCenter.Application;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ESCenter.Client.Application
-{
-    public static class DependencyInjection
-    {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
-        {
-            services.AddBaseApplication(typeof(DependencyInjection).Assembly);
-            
-            return services;
-        }
+namespace ESCenter.Client.Application;
 
-        public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
-        [
-            typeof(DependencyInjection).Assembly,
-            typeof(BaseApplicationDependencyInjection).Assembly,
-            typeof(Domain.DomainDependencyInjection).Assembly
-        ];
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+        services.AddBaseApplication(typeof(DependencyInjection).Assembly);
+            
+        return services;
     }
-    
-    
+
+    public static IEnumerable<Assembly> GetApplicationCoreAssemblies =>
+    [
+        typeof(DependencyInjection).Assembly,
+        typeof(BaseApplicationDependencyInjection).Assembly,
+        typeof(Domain.DomainDependencyInjection).Assembly
+    ];
 }

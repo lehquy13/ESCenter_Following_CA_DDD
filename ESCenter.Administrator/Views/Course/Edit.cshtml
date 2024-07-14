@@ -222,16 +222,16 @@
                     {
                         <a href="javascript:CallGetAction('@Url.Action("ConfirmCourse", "Course", new { courseId = Model.Id })')" class="btn btn-primary">Close Course</a>
                     }
-
+                    
+                    @if (Model.Status == Status.Confirmed.ToString())
+                    {
+                        <a href="javascript:CallGetAction('@Url.Action("CancelWithRefund", "Course", new { courseId = Model.Id })')" class="btn btn-warning">Cancel with refunding</a>
+                    }
+                    
                     <a type="reset" asp-action="Index" class="btn btn-secondary">Back to list</a>
                 </div>
             }
-
-            @if (Model.Status == Status.Confirmed.ToString())
-            {
-                <a asp-action="CancelWithRefund" asp-route-id="@Model.Id" class="btn btn-primary">Cancel with refunding</a>
-            }
-
+            
             @Html.AntiForgeryToken()
         </form>
         <!-- End Multi Columns Form -->

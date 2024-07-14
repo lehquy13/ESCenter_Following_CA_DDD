@@ -240,7 +240,7 @@ public class CourseController(ISender sender) : Controller
     {
         var result = await sender.Send(new ConfirmCourseCommand(courseId));
 
-        return result.IsFailure ? Helper.FailResult(result.DisplayMessage) : Helper.UpdatedResult();
+        return result.IsFailure ? Helper.FailResult(result.DisplayMessage) : Helper.SuccessResult();
     }
 
     [HttpGet("{courseId:guid}/cancel-course-with-refund")]
@@ -248,6 +248,6 @@ public class CourseController(ISender sender) : Controller
     {
         var result = await sender.Send(command);
 
-        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedResult();
+        return result.IsFailure ? Helper.FailResult() : Helper.UpdatedThenResetResult();
     }
 }
