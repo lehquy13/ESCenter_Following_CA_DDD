@@ -18,7 +18,7 @@ public class CourseRequestForDetailDto
     public string Title { get; set; } = string.Empty;
     public string SubjectName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string RequestStatus { get; set; } = "Verifying";
+    public string RequestStatus { get; set; } = "Canceled";
     public string LearnerName { get; set; } = string.Empty;
     public string LearnerContact { get; set; } = string.Empty;
 }

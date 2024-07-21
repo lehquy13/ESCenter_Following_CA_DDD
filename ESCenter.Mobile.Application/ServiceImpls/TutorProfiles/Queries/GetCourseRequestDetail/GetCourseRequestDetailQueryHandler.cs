@@ -52,7 +52,6 @@ public class GetCourseRequestDetailQueryHandler(
 
         var courseRequestDto = new CourseRequestForDetailDto()
         {
-            Id = course.Id.Value,
             TutorId = tutor.Id.Value,
             CourseId = course.Id.Value,
             Title = course.Title,
@@ -71,14 +70,14 @@ public class GetCourseRequestDetailQueryHandler(
 
         if (courseRequest is not null)
         {
+            courseRequestDto.Id = courseRequest.Id.Value;
+
             if (course.TutorId == tutor.Id)
             {
                 if (course.Status == Status.Confirmed)
                 {
                     courseRequestDto.LearnerName = course.LearnerName;
                     courseRequestDto.LearnerContact = course.ContactNumber;
-                    courseRequestDto.RequestStatus = RequestStatus.Done.ToString();
-
                     courseRequestDto.RequestStatus = RequestStatus.Done.ToString();
                 }
                 else
@@ -89,25 +88,27 @@ public class GetCourseRequestDetailQueryHandler(
                 return courseRequestDto;
             }
 
-            courseRequestDto.RequestStatus = RequestStatus.Canceled.ToString();
+            courseRequestDto.RequestStatus = course.TutorId == null
+                ? RequestStatus.Pending.ToString()
+                : RequestStatus.Canceled.ToString();
 
             return courseRequestDto;
         }
 
-        if (course.TutorId == tutor.Id)
+        if (course.TutorId != tutor.Id)
         {
-            if (course.Status == Status.Confirmed)
-            {
-                courseRequestDto.LearnerName = course.LearnerName;
-                courseRequestDto.LearnerContact = course.ContactNumber;
-                courseRequestDto.RequestStatus = RequestStatus.Done.ToString();
-            }
-            else
-            {
-                courseRequestDto.RequestStatus = RequestStatus.OnProgress.ToString();
-            }
+            return Result.Fail("You have no permission to view related course request.");
+        }
 
-            return courseRequestDto;
+        if (course.Status == Status.Confirmed)
+        {
+            courseRequestDto.LearnerName = course.LearnerName;
+            courseRequestDto.LearnerContact = course.ContactNumber;
+            courseRequestDto.RequestStatus = RequestStatus.Done.ToString();
+        }
+        else
+        {
+            courseRequestDto.RequestStatus = RequestStatus.OnProgress.ToString();
         }
 
         return courseRequestDto;
