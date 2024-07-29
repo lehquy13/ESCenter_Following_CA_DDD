@@ -49,7 +49,7 @@ public class Customer : FullAuditedAggregateRoot<CustomerId>
             BirthYear = birthYear,
             Address = address,
             Description = description,
-            Avatar = avatar ?? DefaultAvatar,
+            Avatar = string.IsNullOrWhiteSpace(avatar) ? DefaultAvatar : avatar,
             Email = email,
             PhoneNumber = phoneNumber,
             Role = role
