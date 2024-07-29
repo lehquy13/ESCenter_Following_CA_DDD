@@ -30,8 +30,7 @@ public class GetCoursesQueryHandler(
     {
         //Create a list of class query
         var courseQuery =
-            from course in courseRepository.GetAll()
-                .OrderByDescending(x => x.CreationTime)
+            from course in courseRepository.GetAll().OrderByDescending(x => x.CreationTime)
                 .Where(x => x.IsDeleted == false && x.Status == Status.Available)
             join subject in subjectRepository.GetAll().Where(x => x.IsDeleted == false)
                 on course.SubjectId equals subject.Id
