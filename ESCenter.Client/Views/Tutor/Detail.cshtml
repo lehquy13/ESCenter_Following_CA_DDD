@@ -61,14 +61,14 @@
             </div>
             @if (User.Identity is not null && User.Identity.IsAuthenticated)
             {
-            <form class="row g-3" asp-action="RequestTutor" asp-route-tutorId="@Model.Id">
-                <div class="form-group mt-3">
-                    <textarea class="form-control" name="requestMessage" placeholder="Type your detail request"></textarea>
-                </div>
-                <button class="btn btn-primary" style="background-color: #2eca6a" type="submit">Request</button>
-            </form>
+                <form class="row g-3" asp-action="RequestTutor" asp-route-tutorId="@Model.Id">
+                    <div class="form-group mt-3">
+                        <textarea class="form-control" name="requestMessage" placeholder="Type your detail request"></textarea>
+                    </div>
+                    <button class="btn btn-primary" style="background-color: #2eca6a" type="submit">Request</button>
+                </form>
             }
-            
+
         </div>
     </div>
 </section><!-- End Course Details Section -->
@@ -84,6 +84,7 @@
                         <h5 class="card-title">
                             @i.LearnerName
                         </h5>
+                        <p class="fst-italic">Have learnt: @i.SubjectName</p>
                         <p class="fst-italic">@i.CreationTime.ToString(CultureInfo.CurrentCulture)</p>
                         <p class="card-text">
                             @i.Detail

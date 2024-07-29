@@ -99,16 +99,9 @@ public class IdentityService(
            
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        var local = "https://localhost:5100/";
-        var callback_url1 = $"{local}/client/authentication/confirm-email/{userId}/{code}";
-
-        var azure = "https://escenter.azurewebsites.net/";
-        var uriBuilder = new UriBuilder(local + "client/authentication/confirm-email");
-
-        var callbackUrl = urlHelper.Link(
-            "client/authentication/confirm-email",
-            values: new { userId = userId, code = code, returnUrl = azure }
-        );
+        var local = "https://localhost:5100";
+        var azure = "https://escenter.azurewebsites.net";
+        var callback_url1 = $"{azure}/client/authentication/confirm-email/{userId}/{code}";
 
         //emailSender.SendEmail(email, "Demo email",$"This email will use to confirm your email using the code {code}");
 

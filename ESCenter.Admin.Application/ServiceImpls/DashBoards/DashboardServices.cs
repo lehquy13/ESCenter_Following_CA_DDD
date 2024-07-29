@@ -283,8 +283,8 @@ internal class DashboardServices(
             new("Classes", classesInWeek),
             new("Tutors", tutorsInWeek),
             new("Students", studentsInWeek),
-            new("Tutor Requests", tutorRequestsInWeek),
-            new("Course Requests", courseRequestsInWeek)
+            new("Tutoring Requests", tutorRequestsInWeek),
+            new("Teaching Requests", courseRequestsInWeek)
         };
 
         return new LineChartData(chartWeekData, dates);
