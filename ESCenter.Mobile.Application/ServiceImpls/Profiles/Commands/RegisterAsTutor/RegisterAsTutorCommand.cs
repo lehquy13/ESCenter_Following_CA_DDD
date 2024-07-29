@@ -15,8 +15,8 @@ public class TutorRegistrationDto
 
     public List<string> ImageFileUrls { get; init; } =
     [
-        "https://res.cloudinary.com/dhehywasc/image/upload/v1686459899/z4335058816137_8c84fd04f87afc35b461e273003c7dc3.jpg",
-        "https://res.cloudinary.com/dhehywasc/image/upload/v1686723383/Screenshot2023-04-19100710.png"
+        "https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F9e4860b3-756e-42c0-ae56-359f9d533b49.6.16.TH.ns2.jpg?alt=media&token=ca96e7d4-95c8-4099-9ae0-bb7c922089ad",
+        "https://firebasestorage.googleapis.com/v0/b/eds-storage.appspot.com/o/images%2F5b_NHDG.jpg?alt=media&token=3779da91-4699-4aaf-a3eb-57e8fda7ca4a"
     ];
 }
 
