@@ -1,7 +1,6 @@
 ﻿using ESCenter.Application.Interfaces;
 using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Notifications;
-using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Users;
 using ESCenter.Domain.Shared.NotificationConsts;
 using Matt.ResultObject;
