@@ -1,7 +1,9 @@
 ﻿using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Subjects;
 using ESCenter.Domain.Aggregates.Subjects.ValueObjects;
+using ESCenter.Domain.Aggregates.Tutors;
 using ESCenter.Domain.Aggregates.Tutors.ValueObjects;
+using ESCenter.Domain.Aggregates.Users.ValueObjects;
 using ESCenter.Domain.Shared.Courses;
 using ESCenter.Mobile.Application.Contracts.Courses.Dtos;
 using Mapster;
@@ -19,6 +21,7 @@ namespace ESCenter.Mobile.Application.ServiceImpls.Courses.Queries.GetCourses;
 public class GetCoursesQueryHandler(
     ICourseRepository courseRepository,
     ICurrentUserService currentUserService,
+    ITutorRepository tutorRepository,
     IReadOnlyRepository<Subject, SubjectId> subjectRepository,
     IAsyncQueryableExecutor asyncQueryableExecutor,
     IAppLogger<GetCoursesQueryHandler> logger,
@@ -49,12 +52,25 @@ public class GetCoursesQueryHandler(
 
         if (currentUserService.IsAuthenticated)
         {
-            // Check if he is tutor
             if (currentUserService.Roles.Contains("Tutor"))
             {
-                // Filter out the course that he has already requested
-                courseQuery = courseQuery.Where(x =>
-                    x.Course.CourseRequests.All(y => y.TutorId != TutorId.Create(currentUserService.UserId)));
+                // Select the course that his major matches most
+                var tutor = await tutorRepository
+                    .GetTutorByUserId(CustomerId.Create(currentUserService.UserId),
+                        cancellationToken);
+
+                if (tutor != null)
+                {
+                    courseQuery = courseQuery.Where(x =>
+                        x.Course.CourseRequests.All(y => y.TutorId != tutor.Id));
+
+                    // Order by tutor's majors
+
+                    var tutorMajors = tutor.TutorMajors.Select(x => x.SubjectId).ToList();
+
+                    courseQuery = courseQuery.OrderBy(x =>
+                        tutorMajors.Contains(x.Course.SubjectId) ? 0 : 1);
+                }
             }
         }
 
