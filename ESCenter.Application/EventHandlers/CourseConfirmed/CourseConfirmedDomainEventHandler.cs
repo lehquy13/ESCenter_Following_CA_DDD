@@ -1,4 +1,5 @@
-﻿using ESCenter.Domain.Aggregates.Courses;
+﻿using ESCenter.Application.Interfaces;
+using ESCenter.Domain.Aggregates.Courses;
 using ESCenter.Domain.Aggregates.Notifications;
 using ESCenter.Domain.Aggregates.Payment;
 using ESCenter.Domain.Aggregates.Users;
@@ -15,7 +16,7 @@ namespace ESCenter.Application.EventHandlers.CourseConfirmed;
 public class CourseConfirmedDomainEventHandler(
     IEmailSender emailSender,
     ICustomerRepository customerRepository,
-    IPaymentRepository paymentRepository,
+    IFireBaseNotificationService fireBaseNotificationService,
     IRepository<Notification, int> notificationRepository,
     IUnitOfWork unitOfWork
 ) : INotificationHandler<CourseConfirmedDomainEvent>
@@ -43,7 +44,10 @@ public class CourseConfirmedDomainEventHandler(
                 $"Course has been confirmed",
                 domainEvent.Course.Id.Value.ToString(),
                 NotificationEnum.Course), cancellationToken),
-            emailSender.SendEmail(tutor.Email, "Course Confirmed", message));
+            emailSender.SendEmail("20521318@gm.uit.edu.vn", "Course Confirmed", message),
+            fireBaseNotificationService.SendNotificationAsync("Course Assigned",
+                $"Course {domainEvent.Course.Title} has been assigned to you. "
+                , tutor.FCMToken));
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

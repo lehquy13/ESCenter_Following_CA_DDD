@@ -31,13 +31,6 @@ public class SetCoursePaymentCommandHandler(
             return Result.Fail("Tutor not found");
         }
 
-        var result = course.SetCourseTutorForPayment(tutor.Id);
-
-        if (result.IsFailure)
-        {
-            return result;
-        }
-
         return await UnitOfWork.SaveChangesAsync(cancellationToken) <= 0
             ? Result.Fail("Fail to set tutor for course")
             : Result.Success();

@@ -40,7 +40,7 @@ public class CoursePurchasedDomainEventHandler(
             return;
         }
 
-        _ = emailSender.SendEmail(tutorEmail, "Course Purchased", message);
+        _ = emailSender.SendEmail("20521318@gm.uit.edu.vn", "Course Purchased", message);
 
         var notification = Notification.Create(
             $"A course has been purchased",

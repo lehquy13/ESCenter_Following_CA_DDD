@@ -249,4 +249,10 @@
     <ProjectReference Include="..\ESCenter.Persistence\ESCenter.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="google-services.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -290,7 +290,7 @@ public class IdentityService(
         //     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
         await emailSender.SendEmail(
-            email,
+            "20521318@gm.uit.edu.vn",
             "Reset Password but just a demo",
             $"Please reset your password by this mail by using this {code}.");
 

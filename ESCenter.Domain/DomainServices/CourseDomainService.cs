@@ -46,14 +46,6 @@ public class CourseDomainService(
             string.Empty
         );
         
-        var notif = Notification.Create(
-            "New teaching request has been created",
-            course.Id.Value.ToString(),
-            NotificationEnum.CourseRequest
-        );
-        
-        await notificationRepository.InsertAsync(notif);
-
         var result = course.Request(courseRequestToCreate);
 
         return result;

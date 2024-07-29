@@ -312,8 +312,6 @@ public sealed class Course : FullAuditedAggregateRoot<CourseId>
             existCourseRequest.Approved();
         }
 
-        DomainEvents.Add(new TutorAssignedDomainEvent(this, tutorId));
-
         return Result.Success();
     }
 

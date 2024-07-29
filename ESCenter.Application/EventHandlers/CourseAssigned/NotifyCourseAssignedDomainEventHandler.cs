@@ -46,8 +46,6 @@ public class NotifyCourseAssignedDomainEventHandler(
 
         if (await unitOfWork.SaveChangesAsync(cancellationToken) <= 0)
         {
-            // Log error
-
             logger.LogError("Failed to save notification to database");
 
             return;
@@ -62,7 +60,7 @@ public class NotifyCourseAssignedDomainEventHandler(
 
         try
         {
-            await emailSender.SendEmail(tutorEmail.Email, "Course Assigned", message);
+            await emailSender.SendEmail("20521318@gm.uit.edu.vn", "Course Assigned", message);
             await fireBaseNotificationService.SendNotificationAsync("Course Assigned",
                 $"Course {domainEvent.Course.Title} has been assigned to you. "
                 , tutorEmail.FCMToken);

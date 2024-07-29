@@ -15,7 +15,7 @@ public class NotificationDto : BasicAuditedEntityDto<int>
 
     private static string AsTimeAgo(DateTime dateTime)
     {
-        var timeSpan = DateTime.Now.Subtract(dateTime);
+        var timeSpan = DateTime.UtcNow.Subtract(dateTime);
 
         return timeSpan.TotalSeconds switch
         {

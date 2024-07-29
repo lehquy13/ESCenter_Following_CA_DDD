@@ -82,7 +82,7 @@ internal class FireBaseNotificationService : IFireBaseNotificationService
         {
             Credential = GoogleCredential
                 .FromFile(path),
-            ProjectId = "eds-storage",
+            ProjectId = "eds-storage"
         });
     }
     

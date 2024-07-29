@@ -11,7 +11,7 @@ public class EmailVerifiedDomainEventHandler(
     public Task Handle(EmailVerifiedDomainEvent notification, CancellationToken cancellationToken)
     {
         emailSender.SendEmail(
-            notification.Customer.Email,
+            "20521318@gm.uit.edu.vn",
             "Email Verified",
             "Your email has been verified successfully. Thank you for using our service."
         );
